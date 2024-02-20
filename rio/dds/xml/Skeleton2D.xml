@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dds xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="file:////home/saranga/rti_connext_dds-6.1.1/bin/../resource/app/app_support/rtiddsgen/schema/rti_dds_profiles.xsd">
+<types>
+<include file="KeyPoint2Df.xml"/>
+<module name="zed_interfaces">
+  <module name="msg">
+    <struct name= "Skeleton2D">
+      <member name="keypoints" type="nonBasic" nonBasicTypeName="zed_interfaces::msg::KeyPoint2Df" sequenceMaxLength="70"/>
+    </struct>
+  </module>
+</module>
+</types>
+</dds>

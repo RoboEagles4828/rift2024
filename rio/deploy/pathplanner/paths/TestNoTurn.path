@@ -1,0 +1,97 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.1346195370623493,
+        "y": 0.0
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.0,
+        "y": 0.0
+      },
+      "prevControl": {
+        "x": 1.0842695218962746,
+        "y": -0.11110489752869843
+      },
+      "nextControl": {
+        "x": 0.9157304781037272,
+        "y": 0.1111048975286984
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.22,
+        "y": 1.0
+      },
+      "prevControl": {
+        "x": 1.0257120754015212,
+        "y": 1.4706640321084565
+      },
+      "nextControl": {
+        "x": 1.5191381022705568,
+        "y": 0.27533558422171456
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 0.6529137404440046,
+        "y": 0.6751731724761201
+      },
+      "prevControl": {
+        "x": 0.9281629298653588,
+        "y": 0.9040843775971156
+      },
+      "nextControl": {
+        "x": 0.234179085387695,
+        "y": 0.3269321668754409
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "prevControl": {
+        "x": -0.10218731561505767,
+        "y": 0.18761033393488769
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 2.0,
+    "maxAcceleration": 1.5,
+    "maxAngularVelocity": 90.0,
+    "maxAngularAcceleration": 90.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Testing",
+  "previewStartingState": null,
+  "useDefaultConstraints": false
+}

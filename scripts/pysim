@@ -1,0 +1,2 @@
+#!/usr/bin/bash
+cd /workspaces/rift2024/rio && python3 robot.py sim

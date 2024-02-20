@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dds xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="file:////home/saranga/rti_connext_dds-6.1.1/bin/../resource/app/app_support/rtiddsgen/schema/rti_dds_profiles.xsd">
+<types>
+<include file="BoundingBox2Df.xml"/>
+<include file="BoundingBox2Di.xml"/>
+<include file="BoundingBox3D.xml"/>
+<include file="Skeleton2D.xml"/>
+<include file="Skeleton3D.xml"/>
+<module name="zed_interfaces">
+  <module name="msg">
+    <struct name= "Object">
+      <member name="label_id" type="int16"/>
+      <member name="sublabel" type="string" stringMaxLength="255"/>
+      <member name="confidence" type="float32"/>
+      <member name="position" type="float32" sequenceMaxLength="3"/>
+      <member name="position_covariance" type="float32" sequenceMaxLength="6"/>
+      <member name="velocity" type="float32" sequenceMaxLength="3"/>
+      <member name="tracking_available" type="boolean"/>
+      <member name="tracking_state" type="int8"/>
+      <member name="action_state" type="int8"/>
+      <member name="bounding_box_2d" type="nonBasic" nonBasicTypeName="zed_interfaces::msg::BoundingBox2Di"/>
+      <member name="bounding_box_3d" type="nonBasic" nonBasicTypeName="zed_interfaces::msg::BoundingBox3D"/>
+      <member name="dimensions_3d" type="float32" sequenceMaxLength="3"/>
+      <member name="skeletion_available" type="boolean"/>
+      <member name="body_format" type="int8"/>
+      <member name="head_bounding_box_2d" type="nonBasic" nonBasicTypeName="zed_interfaces::msg::BoundingBox2Df"/>
+      <member name="head_bounding_box_3d" type="nonBasic" nonBasicTypeName="zed_interfaces::msg::BoundingBox3D"/>
+      <member name="head_position" type="float32" sequenceMaxLength="3"/>
+      <member name="skeleton_2d" type="nonBasic" nonBasicTypeName="zed_interfaces::msg::Skeleton2D"/>
+      <member name="skeleton_3d" type="nonBasic" nonBasicTypeName="zed_interfaces::msg::Skeleton3D"/>
+    </struct>
+  </module>
+</module>
+</types>
+</dds>

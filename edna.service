@@ -1,0 +1,15 @@
+[Unit]
+Description=edna docker compose service
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/roboeagles/rift2024
+Environment=HOME=/home/roboeagles
+ExecStart=/usr/bin/env /usr/bin/docker compose up -d
+StandardOutput=syslog
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

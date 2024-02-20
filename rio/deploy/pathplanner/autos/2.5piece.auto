@@ -1,0 +1,43 @@
+{
+  "version": 1.0,
+  "startingPose": null,
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ScorePreload"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ScoreSecondNote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "GetNoteFromLine"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ReturnToWing"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

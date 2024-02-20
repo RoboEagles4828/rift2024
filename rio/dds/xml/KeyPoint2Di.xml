@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dds xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="file:////home/saranga/rti_connext_dds-6.1.1/bin/../resource/app/app_support/rtiddsgen/schema/rti_dds_profiles.xsd">
+<types>
+<module name="zed_interfaces">
+  <module name="msg">
+    <struct name= "KeyPoint2Di">
+      <member name="kp" type="uint32" sequenceMaxLength="2"/>
+    </struct>
+  </module>
+</module>
+</types>
+</dds>

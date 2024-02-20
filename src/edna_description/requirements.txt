@@ -1,0 +1,8 @@
+rticonnextdds-connector
+robotpy
+robotpy[ctre]
+robotpy[commands2]
+robotpy[navx]
+wpilib
+squaternion
+pynetworktables

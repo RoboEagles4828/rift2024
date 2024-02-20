@@ -1,0 +1,21 @@
+#!/bin/bash
+
+INSTALL_PYTHON_DEPS=$1
+if [ "$INSTALL_PYTHON_DEPS" != "true" ]; then
+    pip install rticonnextdds-connector
+    echo "Skipping python deps install"
+    exit 0
+fi
+
+echo -e "\e[93mInstalling Python Dependencies\e[0m"
+
+pip install rticonnextdds-connector \
+    packaging==23.2 \
+    robotpy \
+
+# Go into temp directory, read the pyproject.toml, and syncronize it with robotpy cli
+pushd /tmp/rio
+python3 -m robotpy sync
+popd
+
+rm -rf /tmp/rio

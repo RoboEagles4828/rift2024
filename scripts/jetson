@@ -1,0 +1,206 @@
+#!/usr/bin/bash
+restart() {
+    echo "Restarting..."
+    cd ~/rift2024/
+    docker compose restart
+}
+
+log() {
+    echo "Logging..."
+    cd ~/rift2024/
+    if [ "$1" == "N" ]; then
+        echo "Not Following logs..."
+        docker compose logs
+        exit 0
+    fi
+    echo "Following logs..."
+    docker compose logs -f
+}
+
+jetson-kill() {
+    echo "Killing..."
+    cd ~/rift2024/
+    docker compose kill
+}
+
+stop() {
+    echo "Stopping..."
+    cd ~/rift2024/
+    docker compose stop
+}
+
+jetson-start() {
+    echo "Starting..."
+    cd ~/rift2024/
+    docker compose up -d --remove-orphans
+}
+
+container-debug() {
+    echo "Starting ROS Debug..."
+    docker exec -it $(docker ps -aqf "name=rift2024-main_control-1") bash
+}
+
+edit() {
+    echo "Editing..."
+    cd ~/rift2024/
+    nano docker-compose.yml
+}
+
+help() {
+    echo "Usage:"
+    echo "  edit    -- Opens the docker compose file in nano"
+    echo "  log     -- Outputs the docker compose logs"
+    echo "  restart -- Restarts docker container"
+    echo "  start   -- Starts docker containers"
+    echo "  stop    -- Stops docker containers"
+    echo "  kill    -- Kills docker containers"
+    echo "  ps      -- Same as docker ps"
+    echo "  debug   -- Opens a bash shell in the main_control container"
+    echo "  help    -- Displays this message"
+    echo "  "
+    echo ""
+    echo "Usage: jetson (edit | restart | stop | kill | start | log | ps)"
+}
+
+case $1 in 
+    "restart")
+        case $2 in
+            "--help")
+                help
+            ;;
+
+            "-h")
+                help
+            ;;
+
+            *)
+                restart
+            ;;
+        esac
+    ;;
+
+    "help")
+        case $2 in
+            "--help")
+                help
+            ;;
+
+            "-h")
+                help
+            ;;
+
+            *)
+                help
+            ;;
+        esac
+    ;;
+
+    "log")
+        case $2 in
+            "--help")
+                help
+            ;;
+
+            "-h")
+                help
+            ;;
+
+            "-n")
+                log "N"
+            ;;
+
+            *)
+                log "Y"
+            ;;
+        esac
+    ;;
+
+    "kill")
+        case $2 in
+            "--help")
+                help
+            ;;
+
+            "-h")
+                help
+            ;;
+
+            *)
+                jetson-kill
+            ;;
+        esac
+    ;;
+
+    "stop")
+        case $2 in
+            "--help")
+                help
+            ;;
+
+            "-h")
+                help
+            ;;
+
+            *)
+                stop
+            ;;
+        esac
+    ;;
+
+    "edit")
+        case $2 in
+            "--help")
+                help
+            ;;
+
+            "-h")
+                help
+            ;;
+
+            *)
+                edit
+            ;;
+        esac
+    ;;
+
+    "ps")
+        docker ps $2
+    ;;
+
+    "start")
+        case $2 in
+            "--help")
+                help
+            ;;
+
+            "-h")
+                help
+            ;;
+
+            *)
+                jetson-start
+            ;;
+        esac
+    ;;
+
+    "debug")
+        case $2 in
+            "--help")
+                help
+            ;;
+
+            "-h")
+                help
+            ;;
+
+            *)
+                container-debug
+            ;;
+        esac
+    ;;
+    
+    *)
+        echo "Unknown option: \"$1\""
+        help
+        ;;
+esac

@@ -1,0 +1,83 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.601330895312963,
+        "y": 5.52487143328584
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.6141155074405493,
+        "y": 4.601451700013545
+      },
+      "isLocked": false,
+      "linkedName": "Preload endpoint"
+    },
+    {
+      "anchor": {
+        "x": 1.721142080584727,
+        "y": 4.143893427136378
+      },
+      "prevControl": {
+        "x": 1.4825076926227756,
+        "y": 4.104010104664866
+      },
+      "nextControl": {
+        "x": 1.7455184299407454,
+        "y": 4.147967482893168
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.484054196274795,
+        "y": 4.143893427136378
+      },
+      "prevControl": {
+        "x": 2.49702281114091,
+        "y": 4.1289135593553485
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Intake endpoint"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 1,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "wait",
+              "data": {
+                "waitTime": 1.0
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0.0,
+    "rotateFast": true
+  },
+  "reversed": false,
+  "folder": null,
+  "previewStartingState": null,
+  "useDefaultConstraints": false
+}

@@ -1,0 +1,24 @@
+<library path="swerve_hardware">
+  <class name="swerve_hardware/IsaacDriveHardware"
+         type="swerve_hardware::IsaacDriveHardware"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      The ROS2 Control hardware interface to talk with Isaac Sim robot drive train.
+    </description>
+  </class>
+
+  <class name="swerve_hardware/TestDriveHardware"
+         type="swerve_hardware::TestDriveHardware"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      The ROS2 Control hardware interface for testing a connected controller.
+    </description>
+  </class>
+  <class name="swerve_hardware/RealDriveHardware"
+         type="swerve_hardware::RealDriveHardware"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      The ROS2 Control hardware interface for testing a connected controller.
+    </description>
+  </class>
+</library>

@@ -1,0 +1,13 @@
+{
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/Auton/Auton Selector": "String Chooser",
+      "/Shuffleboard/Teleop/Gyro": "Gyro",
+      "/Shuffleboard/Teleop/Swerve Subsystem": "Subsystem"
+    }
+  },
+  "NetworkTables Info": {
+    "visible": true
+  }
+}

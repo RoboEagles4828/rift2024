@@ -1,0 +1,192 @@
+<?xml version="1.0"?>
+<!--
+(c) 2005-2015 Copyright, Real-Time Innovations.  All rights reserved.
+No duplications, whole or partial, manual or electronic, may be made
+without express written permission.  Any such copies, or revisions thereof,
+must display this notice unaltered.
+This code contains trade secrets of Real-Time Innovations, Inc.
+ -->
+
+<dds xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://community.rti.com/schema/current/rti_dds_qos_profiles.xsd">
+
+    <!-- Qos Library -->
+    <qos_library name="ROS2_QOS">
+      <qos_profile name="Default" base_name="BuiltinQosSnippetLib::QosPolicy.Reliability.BestEffort" is_default_qos="true">
+      </qos_profile>
+    </qos_library>
+
+    <!-- types -->
+    <types>
+      <include file="Header.xml"/>
+      <include file="Object.xml"/>
+
+      <module name="std_msgs">
+        <module name="msg">
+          <module name="dds_">
+            <struct name="String_">
+              <member name="data" type="string" stringMaxLength="255"/>
+            </struct>
+          </module>
+        </module>
+      </module>
+      <module name="sensor_msgs">
+        <module name="msg">
+          <module name="dds_">
+            <struct name="Joy_">
+              <member name="header" type= "nonBasic" nonBasicTypeName="std_msgs::msg::Header"/>
+              <member name="axes" type="float32" sequenceMaxLength="100"/>
+              <member name="buttons" type="int32" sequenceMaxLength="100"/>
+            </struct>
+
+            <struct name= "JointState_">
+              <member name="header" type= "nonBasic" nonBasicTypeName="std_msgs::msg::Header"/>
+              <member name="name" sequenceMaxLength="100" stringMaxLength="255" type="string"/>
+              <member name="position" sequenceMaxLength="100" type="float64"/>
+              <member name="velocity" sequenceMaxLength="100" type="float64"/>
+              <member name="effort" sequenceMaxLength="100" type="float64"/>
+            </struct>
+          </module>
+        </module>
+      </module>
+      <module name="std_srvs">
+        <module name="srv">
+          <module name="dds_">
+            <struct name="SetBool_Request_">
+                <member name="data" type="boolean" />
+            </struct>
+            <struct name="SetBool_Response_">
+                <member name="success" type="boolean" />
+                <member name="message" type="string" />
+            </struct>
+          </module>
+        </module>
+      </module>
+      <!-- <module name="zed_interfaces">
+        <module name="msg">
+          <struct name= "ObjectsStamped">
+            <member name="header" type="nonBasic"  nonBasicTypeName= "std_msgs::msg::Header"/>
+            <member name="objects" type="nonBasic" nonBasicTypeName="zed_interfaces::msg::Object" sequenceMaxLength="100"/>
+          </struct>
+        </module>
+      </module> -->
+      <module name="geometry_msgs">
+        <module name="msg">
+          <module name="dds_">
+            <struct name="Vector3">
+              <member name="x" type="float32"/>
+              <member name="y" type="float32"/>
+              <member name="z" type="float32"/>
+            </struct>
+          </module>
+        </module>
+      </module>
+    </types>
+
+    <!-- Domain Library -->
+    <domain_library name="ROS2_DOMAIN_LIB">
+        <domain name="ROS2_DOMAIN_JOYSTICK" domain_id="0">
+            <register_type name="sensor_msgs::msg::dds_::Joy_" type_ref="sensor_msgs::msg::dds_::Joy_" />
+            <topic name="rt/real/joy" register_type_ref="sensor_msgs::msg::dds_::Joy_"/>
+        </domain>
+        <domain name="ROS2_DOMAIN_JOINT_CMDS" domain_id="0">
+          <register_type name="sensor_msgs::msg::dds_::JointState_" type_ref="sensor_msgs::msg::dds_::JointState_" />
+          <topic name="rt/real/real_joint_commands" register_type_ref="sensor_msgs::msg::dds_::JointState_"/>
+        </domain>
+        <domain name="ROS2_DOMAIN_ARM_CMDS" domain_id="0">
+          <register_type name="sensor_msgs::msg::dds_::JointState_" type_ref="sensor_msgs::msg::dds_::JointState_" />
+          <topic name="rt/real/real_arm_commands" register_type_ref="sensor_msgs::msg::dds_::JointState_"/>
+        </domain>
+        <domain name="ROS2_DOMAIN_ENCODER_INFO" domain_id="0">
+          <register_type name="sensor_msgs::msg::dds_::JointState_" type_ref="sensor_msgs::msg::dds_::JointState_" />
+          <topic name="rt/real/real_joint_states" register_type_ref="sensor_msgs::msg::dds_::JointState_"/>
+        </domain>
+        <domain name="ROS2_DOMAIN_FRC_STAGE" domain_id="0">
+          <register_type name="std_msgs::msg::dds_::String_" type_ref="std_msgs::msg::dds_::String_" />
+          <topic name="rt/real/frc_stage" register_type_ref="std_msgs::msg::dds_::String_"/>
+        </domain>
+        <domain name="ROS2_DOMAIN_ISAAC" domain_id="0">
+          <register_type name="sensor_msgs::msg::dds_::JointState_" type_ref="sensor_msgs::msg::dds_::JointState_" />
+          <topic name="rt/saranga/isaac_joint_states" register_type_ref="sensor_msgs::msg::dds_::JointState_"/>
+        </domain>
+        <domain name="ROS2_DOMAIN_SERVICE" domain_id="0">
+            <register_type name="std_srvs::srv::dds_::SetBool_Request_" type_ref="std_srvs::srv::dds_::SetBool_Request_" />
+            <topic name="rq/boolRequest" register_type_ref="std_srvs::srv::dds_::SetBool_Request_"/>
+            <register_type name="std_srvs::srv::dds_::SetBool_Response_" type_ref="std_srvs::srv::dds_::SetBool_Response_" />
+            <topic name="rr/boolReply" register_type_ref="std_srvs::srv::dds_::SetBool_Response_"/>
+        </domain>
+        <domain name="ROS2_DOMAIN_IMU" domain_id="0">
+            <register_type name="std_msgs::msg::dds_::String_" type_ref="std_msgs::msg::dds_::String_" />
+            <topic name="rt/saranga/real_imu" register_type_ref="std_msgs::msg::dds_::String_"/>
+        </domain>
+        <domain name="ROS2_DOMAIN_ZED" domain_id="0">
+            <register_type name="std_msgs::msg::dds_::String_" type_ref="std_msgs::msg::dds_::String_" />
+            <topic name="rt/real/cmd_vel" register_type_ref="std_msgs::msg::dds_::String_"/>
+        </domain>
+    </domain_library>
+
+    <!-- Participant library -->
+    <domain_participant_library name="ROS2_PARTICIPANT_LIB">
+      <domain_participant name="joystick" domain_ref="ROS2_DOMAIN_LIB::ROS2_DOMAIN_JOYSTICK">
+        <publisher name="joystick_data_publisher">
+          <data_writer name="joystick_data_writer" topic_ref="rt/real/joy">
+            <datawriter_qos>
+              <reliability>
+                <kind>RELIABLE_RELIABILITY_QOS</kind>
+              </reliability>
+              <durability>
+                <kind>VOLATILE_DURABILITY_QOS</kind>
+              </durability>
+            </datawriter_qos>
+          </data_writer>
+        </publisher>
+      </domain_participant>
+
+      <domain_participant name="joint_commands" domain_ref="ROS2_DOMAIN_LIB::ROS2_DOMAIN_JOINT_CMDS">
+        <subscriber name="isaac_joint_commands_subscriber">
+            <data_reader name="joint_commands_reader" topic_ref="rt/real/real_joint_commands" />
+        </subscriber>
+      </domain_participant>
+
+      <domain_participant name="arm_commands" domain_ref="ROS2_DOMAIN_LIB::ROS2_DOMAIN_ARM_CMDS">
+        <subscriber name="isaac_arm_commands_subscriber">
+            <data_reader name="arm_commands_reader" topic_ref="rt/real/real_arm_commands" />
+        </subscriber>
+      </domain_participant>
+
+      <domain_participant name="encoder_info" domain_ref="ROS2_DOMAIN_LIB::ROS2_DOMAIN_ENCODER_INFO">
+          <publisher name="encoder_info_publisher">
+            <data_writer name="encoder_info_writer" topic_ref="rt/real/real_joint_states" />
+          </publisher>
+      </domain_participant>
+
+      <domain_participant name="zed_objects" domain_ref="ROS2_DOMAIN_LIB::ROS2_DOMAIN_ZED">
+          <subscriber name="zed_objects_subscriber">
+            <data_reader name="zed_objects_reader" topic_ref="rt/real/cmd_vel"/>
+          </subscriber>
+      </domain_participant>
+
+      <domain_participant name="stage_broadcaster" domain_ref="ROS2_DOMAIN_LIB::ROS2_DOMAIN_FRC_STAGE">
+          <publisher name="stage_publisher">
+            <data_writer name="stage_writer" topic_ref="rt/real/frc_stage" />
+          </publisher>
+      </domain_participant>
+      <domain_participant name="isaac_subscriber" domain_ref="ROS2_DOMAIN_LIB::ROS2_DOMAIN_ISAAC">
+        <subscriber name="isaac_joint_states_subscriber">
+            <data_reader name="isaac_joint_states_reader" topic_ref="rt/saranga/isaac_joint_states" />
+        </subscriber>
+      </domain_participant>
+      <domain_participant name="service" domain_ref="ROS2_DOMAIN_LIB::ROS2_DOMAIN_SERVICE">
+        <publisher name="service_pub">
+            <data_writer name="service_writer" topic_ref="rq/boolRequest" />
+        </publisher>
+        <subscriber name="service_sub">
+            <data_reader name="service_reader" topic_ref="rr/boolReply" />
+        </subscriber>
+      </domain_participant>
+      <domain_participant name="imu" domain_ref="ROS2_DOMAIN_LIB::ROS2_DOMAIN_IMU">
+        <subscriber name="imu_subscriber">
+            <data_reader name="imu_reader" topic_ref="rt/saranga/real_imu" />
+        </subscriber>
+      </domain_participant>
+    </domain_participant_library>
+</dds>

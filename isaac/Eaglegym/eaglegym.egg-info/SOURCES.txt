@@ -1,0 +1,11 @@
+setup.py
+eaglegym/__init__.py
+eaglegym.egg-info/PKG-INFO
+eaglegym.egg-info/SOURCES.txt
+eaglegym.egg-info/dependency_links.txt
+eaglegym.egg-info/not-zip-safe
+eaglegym.egg-info/requires.txt
+eaglegym.egg-info/top_level.txt
+eaglegym/envs/__init__.py
+eaglegym/envs/vec_env_rlgames.py
+eaglegym/envs/vec_env_rlgames_mt.py
