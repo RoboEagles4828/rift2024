@@ -43,10 +43,10 @@ services:
       - /opt/nvidia/vpi2:/opt/nvidia/vpi2
       - /usr/share/vpi2:/usr/share/vpi2
       - /dev/*:/dev/*
-      - ${HOME}/rift2024/src/edna_bringup/config/zed_config-common-custom-box.yaml:/root/ros2_ws/src/zed-ros2-wrapper/zed_wrapper/config/common.yaml
+      - ${HOME}/rift2024/src/rift_bringup/config/zed_config-common-custom-box.yaml:/root/ros2_ws/src/zed-ros2-wrapper/zed_wrapper/config/common.yaml
       - ${HOME}/rift2024/model.engine:/root/ros2_ws/model.engine
       - ${HOME}/rift2024/scripts/config/SN39192289.conf:/usr/local/zed/settings/SN39192289.conf
-      - ${HOME}/rift2024/src/edna_bringup/launch/zed2i.launch.py:/root/ros2_ws/src/zed-ros2-wrapper/zed_wrapper/launch/zed2i.launch.py
+      - ${HOME}/rift2024/src/rift_bringup/launch/zed2i.launch.py:/root/ros2_ws/src/zed-ros2-wrapper/zed_wrapper/launch/zed2i.launch.py
     depends_on:
       - main_control
     deploy:

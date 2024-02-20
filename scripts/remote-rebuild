@@ -18,7 +18,7 @@ apply() {
     if [[ "$packages" == *"all"* ]]; then
         echo "FOUND ALL IN APPLY"
         packages=$(find src -maxdepth 1 -type d \
-            -not -path "src/edna_debugger*" \
+            -not -path "src/rift_debugger*" \
             -printf '%f\n' | tr '\n' ' ')
         echo $packages
     fi

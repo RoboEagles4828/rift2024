@@ -19,9 +19,9 @@ class Reader(Node):
     def __init__(self):
         super().__init__("reinforcement_learning_runner")
         # self.robot_ip = robot_ip
-        # self.policy = torch.load("/workspaces/rift2024/isaac/Eaglegym/eaglegym/runs/EdnaK/nn/EdnaK.pth")
+        # self.policy = torch.load("/workspaces/rift2024/isaac/Eaglegym/eaglegym/runs/RiftK/nn/RiftK.pth")
         
-        self.policy = self.load_checkpoint("/workspaces/rift2024/isaac/Eaglegym/eaglegym/runs/EdnaK/nn/EdnaK_1050.pth")
+        self.policy = self.load_checkpoint("/workspaces/rift2024/isaac/Eaglegym/eaglegym/runs/RiftK/nn/RiftK_1050.pth")
         
         self.joint_action_pub = self.create_publisher(String, "/real/cmd_vel", 10)
         # self.joint_trajectory_action_pub = self.create_publisher(Twist, "joint_trajectory_message", 10)
@@ -60,7 +60,7 @@ class Reader(Node):
         self.get_logger().info("\033[92m" + "Policy Runner Started" + "\033[0m")
         
     def load_checkpoint(self, filepath):
-        config = yaml.load(open("/workspaces/rift2024/isaac/Eaglegym/eaglegym/cfg/train/EdnaKPPO.yaml", "r"), Loader=yaml.FullLoader)
+        config = yaml.load(open("/workspaces/rift2024/isaac/Eaglegym/eaglegym/cfg/train/RiftKPPO.yaml", "r"), Loader=yaml.FullLoader)
         config = config["params"]
         state = load_checkpoint(filepath)
         state_dict = {k.replace('a2c_network.', ''): v for k, v in state['model'].items()}
@@ -85,7 +85,7 @@ class Reader(Node):
 
     def get_action(self, msg):
         '''
-        Gym obs type for EdnaK:
+        Gym obs type for RiftK:
             [0:3] = ([target_pos] - [robot_pos]) / 3 # x, y, z
             [3:7] = [robot_rotation_quaternion] # x, y, z, w
             [7:10] = [robot_linear_velocities] / 2 # x, y, z

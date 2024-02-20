@@ -8,7 +8,7 @@ import rclpy
 from rclpy.node import Node
 from rclpy.serialization import serialize_message
 from std_msgs.msg import String
-from edna_interfaces.srv import SetBool
+from rift_interfaces.srv import SetBool
 
 import rosbag2_py
 # create writer instance and open for writing

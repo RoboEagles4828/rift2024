@@ -4,4 +4,4 @@ input=$1
 test=${input:-$default}
 
 echo "Quick Running Test ${test}..."
-ros2 run edna_tests $test
+ros2 run rift_tests $test

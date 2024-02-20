@@ -53,7 +53,7 @@ https://www.nvidia.com/en-us/omniverse/download/
 Wait until both are downloaded and installed.
 
 - **DONE with Omniverse Setup**
-# Running Edna
+# Running Rift
 
 ### Inside of Isaac
 
