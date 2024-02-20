@@ -2,6 +2,7 @@ from commands2.subsystem import Subsystem
 # from commands2.subsystem import Command
 from commands2 import WaitCommand
 from commands2 import WaitUntilCommand
+from commands2 import cmd
 import wpimath.filter
 import wpimath
 import wpilib
@@ -76,7 +77,7 @@ class Arm(Subsystem):
             self.kZeroEncoderVelocity,
             phoenix5.DemandType.ArbitraryFeedForward,
             self.calculateGravityFeedForward())) \
-            .raceWith(WaitCommand(self.kZeroingWaitForMoveSec) \
+            .raceWith(cmd.waitSeconds(self.kZeroingWaitForMoveSec) \
             .andThen(self.detectStallAtHardStop())) \
             .andThen(self.restingAtZero()) \
             .withName("seekArmZero")
