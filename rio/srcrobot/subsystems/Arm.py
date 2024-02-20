@@ -49,6 +49,9 @@ class Arm(Subsystem):
         self.lastServoTarget = 0.0
         self.kRestingAtZero = False
 
+        # Configure REV Through Bore Encoder as the arm's remote sensor
+        self.armMotor.configSelectedFeedbackSensor(phoenix5.FeedbackDevice.RemoteSensor0, 0, 0)
+
         self.armMotor.setSensorPhase(True)
         self.armMotor.config_kP(self.kMotionMagicSlot, self.kPMotionMagic)
         self.armMotor.config_kI(self.kMotionMagicSlot, self.kIMotionMagic)
@@ -81,6 +84,11 @@ class Arm(Subsystem):
             .andThen(self.detectStallAtHardStop())) \
             .andThen(self.restingAtZero()) \
             .withName("seekArmZero")
+    
+    def isNear(a, b, tolerance):
+        if abs(a - b) < tolerance:
+            return True
+        return abs(a - b) < tolerance
 
     #     
     #     Creates a command to detect stall at the hard stop during
@@ -90,7 +98,13 @@ class Arm(Subsystem):
     #    
     def detectStallAtHardStop(self):
         stallDebouncer = wpimath.filter.Debouncer(1.0, wpimath.filter.Debouncer.DebounceType.kRising)  
-        return WaitUntilCommand(lambda: abs(self.armMotor.getSelectedSensorVelocity(self.kVelocitySlot) - 0.0) < self.ZeroingVelocityTolerance)
+        return cmd.waitUntil(lambda: stallDebouncer
+            .calculate(self.isNear(
+                0.0,
+                self.armMotor.getSelectedSensorVelocity(self.kVelocitySlot),
+                self.ZeroingVelocityTolerance)
+            )
+        )
         
 
     #     
@@ -195,7 +209,7 @@ class Arm(Subsystem):
     def isServoOnTarget(self):
         return self.kRestingAtZero \
             or (self.isServoControl \
-                and abs(self.lastServoTarget - self.getDegrees()) > self.kServoToleranceDegrees)
+                and self.isNear(self.lastServoTarget, self.getDegrees(), self.kServoToleranceDegrees))
 
 
 
