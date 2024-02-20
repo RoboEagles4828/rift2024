@@ -2,4 +2,4 @@
 cd /home/ubuntu/rift2024
 source /opt/ros/humble/setup.bash
 colcon build --symlink-install --paths src/*
-sudo systemctl restart edna.service
+sudo systemctl restart rift.service

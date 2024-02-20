@@ -1,7 +1,7 @@
 # Docker for Development
 
-This directory has the configuration for building the image used in the edna devcontainer.
-It uses the osrf ros humble image as a base and installs edna related software on top.
+This directory has the configuration for building the image used in the rift devcontainer.
+It uses the osrf ros humble image as a base and installs rift related software on top.
 
 
 When loading the devcontainer the common utils feature is used to update the user GID/UID to match local and setup zsh and other terminal nice to haves.

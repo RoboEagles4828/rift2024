@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+
+
+  <!-- Chassis Properties -->
+  <xacro:property name="chassis_length" value="0.6604" />
+  <xacro:property name="chassis_width" value="0.6604" />
+  <xacro:property name="chassis_height" value="0.0508" />
+  <xacro:property name="chassis_weight" value="11.7934" />
+
+  <xacro:property name="bumper_length" value="0.762" />
+  <xacro:property name="bumper_width" value="0.762" />
+  <xacro:property name="bumper_height" value="0.127" />
+  <xacro:property name="bumper_weight" value="6.80388555" />
+  <!-- 38.55535145 -->
+  <xacro:macro name="square_chassis" params="prefix parent *origin">
+    
+  
+    <link name="${prefix}_chassis_link">
+      <xacro:inertial_box mass="${chassis_weight}" x="${chassis_length}" y="${chassis_width}" z="${chassis_height}">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+      </xacro:inertial_box>
+      <visual>
+        <origin xyz="0 0 ${chassis_height/2}" rpy="0 0 ${pi/2}" />
+        <geometry>
+          <mesh filename="package://rift_description/meshes/SwerveChassis.stl" scale="0.001 0.001 0.001" />
+        </geometry>
+        <material name="purple"/>
+      </visual>
+      <collision>
+        <origin xyz="0 0 ${chassis_height/2}" rpy="0 0 0" />
+        <geometry>
+          <box size="${chassis_length} ${chassis_width} ${chassis_height} " />
+        </geometry>
+      </collision>
+    </link>
+
+    <!-- <link name="${prefix}_bumper_link">
+      <xacro:inertial_box mass="${bumper_weight}" x="${bumper_length}" y="${bumper_width}" z="${bumper_height}">
+        <origin xyz="0 0 ${bumper_height/2 + 0.0127}" rpy="0 0 0" />
+      </xacro:inertial_box>
+      <visual>
+        <origin xyz="0 0 ${bumper_height + 0.0127}" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://rift_description/meshes/Bumper.stl" scale="0.001 0.001 0.001" />
+        </geometry>
+        <material name="dark-blue"/>
+      </visual>
+      <collision>
+        <origin xyz="0 0 ${bumper_height/2 + 0.0127}" rpy="0 0 0" />
+        <geometry>
+          <box size="${bumper_length} ${bumper_width} ${bumper_height} " />
+        </geometry>
+      </collision>
+    </link> -->
+
+    <joint name="${prefix}_chassis_joint" type="fixed">
+      <parent link="${parent}" />
+      <child link="${prefix}_chassis_link" />
+      <xacro:insert_block name="origin" />
+    </joint>
+
+    <!-- <joint name="${prefix}_bumper_joint" type="fixed">
+      <parent link="${parent}" />
+      <child link="${prefix}_bumper_link" />
+      <xacro:insert_block name="origin" />
+    </joint> -->
+  </xacro:macro>
+
+</robot>

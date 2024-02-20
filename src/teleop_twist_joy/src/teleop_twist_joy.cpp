@@ -36,7 +36,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 #include "sensor_msgs/msg/imu.hpp"
 
 #include "teleop_twist_joy/teleop_twist_joy.hpp"
-#include "edna_interfaces/srv/set_bool.hpp"
+#include "rift_interfaces/srv/set_bool.hpp"
 #include <functional> // for bind()
 using namespace std;
 
@@ -57,14 +57,14 @@ namespace teleop_twist_joy
     void sendCmdVelMsg(const sensor_msgs::msg::Joy::SharedPtr &, const std::string &which_map);
     void imuCallback(const sensor_msgs::msg::Imu::SharedPtr imu_msg);
     void timerCallback();
-    void resetOrientationCallback(const std::shared_ptr<edna_interfaces::srv::SetBool::Request> request, std::shared_ptr<edna_interfaces::srv::SetBool::Response> response);
+    void resetOrientationCallback(const std::shared_ptr<rift_interfaces::srv::SetBool::Request> request, std::shared_ptr<rift_interfaces::srv::SetBool::Response> response);
 
     rclcpp::Subscription<sensor_msgs::msg::Joy>::SharedPtr joy_sub;
     rclcpp::Subscription<sensor_msgs::msg::Imu>::SharedPtr imu_sub;
     rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr cmd_vel_pub;
-    rclcpp::Service<edna_interfaces::srv::SetBool>::SharedPtr reset_orientation_service;
+    rclcpp::Service<rift_interfaces::srv::SetBool>::SharedPtr reset_orientation_service;
     rclcpp::TimerBase::SharedPtr timer_callback_;
-    rclcpp::Client<edna_interfaces::srv::SetBool>::SharedPtr start_writer_client_;
+    rclcpp::Client<rift_interfaces::srv::SetBool>::SharedPtr start_writer_client_;
     sensor_msgs::msg::Imu::SharedPtr last_msg;
 
     bool require_enable_button;
@@ -109,10 +109,10 @@ namespace teleop_twist_joy
     //                             [this](std::shared_ptr<writer_srv::srv::StartWriter::Request> /*request*/,  // NOLINT
     //                                    std::shared_ptr<writer_srv::srv::StartWriter::Response> response) {  // NOLINT
     //                               return startServiceCallback(std::move(response));     // NOLINT
-    pimpl_->reset_orientation_service = create_service<edna_interfaces::srv::SetBool>("reset_field_oriented", std::bind(&TeleopTwistJoy::Impl::resetOrientationCallback, this->pimpl_, std::placeholders::_1, std::placeholders::_2));
+    pimpl_->reset_orientation_service = create_service<rift_interfaces::srv::SetBool>("reset_field_oriented", std::bind(&TeleopTwistJoy::Impl::resetOrientationCallback, this->pimpl_, std::placeholders::_1, std::placeholders::_2));
 
     //                             });
-    pimpl_->start_writer_client_ = create_client<edna_interfaces::srv::SetBool>("set_bool");
+    pimpl_->start_writer_client_ = create_client<rift_interfaces::srv::SetBool>("set_bool");
 
     pimpl_->require_enable_button = this->declare_parameter("require_enable_button", true);
 
@@ -432,7 +432,7 @@ namespace teleop_twist_joy
 
     return 0.0;
   }
-  // void TeleopTwistJoy::startServiceCallBack(const std::shared_ptr<edna_interfaces::srv::SetBool::Response> response)
+  // void TeleopTwistJoy::startServiceCallBack(const std::shared_ptr<rift_interfaces::srv::SetBool::Response> response)
   // {
   //   if(joy){
 
@@ -444,7 +444,7 @@ namespace teleop_twist_joy
 
     if (start_writer_client_->service_is_ready() && serviceEnabled && serviceButtonLastState == 1)
     {
-      auto request = std::make_shared<edna_interfaces::srv::SetBool::Request>();
+      auto request = std::make_shared<rift_interfaces::srv::SetBool::Request>();
       request->data = true;
       while (!start_writer_client_->wait_for_service(1s))
       {
@@ -459,7 +459,7 @@ namespace teleop_twist_joy
     }
     else if (start_writer_client_->service_is_ready() && !serviceEnabled && serviceButtonLastState == 1)
     {
-      auto request = std::make_shared<edna_interfaces::srv::SetBool::Request>();
+      auto request = std::make_shared<rift_interfaces::srv::SetBool::Request>();
       request->data = false;
       while (!start_writer_client_->wait_for_service(1s))
       {
@@ -480,7 +480,7 @@ namespace teleop_twist_joy
     else if (!start_writer_client_->service_is_ready())
       RCLCPP_WARN(rclcpp::get_logger("teleop_twist_joy"), "[ServiceClientExample]: not calling service using callback, service not ready!");
   }
-  void TeleopTwistJoy::Impl::resetOrientationCallback(const std::shared_ptr<edna_interfaces::srv::SetBool::Request> request, std::shared_ptr<edna_interfaces::srv::SetBool::Response> response)
+  void TeleopTwistJoy::Impl::resetOrientationCallback(const std::shared_ptr<rift_interfaces::srv::SetBool::Request> request, std::shared_ptr<rift_interfaces::srv::SetBool::Response> response)
   {
     RCLCPP_INFO(rclcpp::get_logger("TeleopTwistJoy"), "received service call: %d", request->data);
     if (request->data)
