@@ -69,6 +69,7 @@ class RobotContainer:
         self.faceBack = self.driver.a()
         self.faceRight = self.driver.b()
         self.faceLeft = self.driver.x()
+        self.shoot = self.driver.rightTrigger() #just for testing will be removed later
         self.resetToAbsoluteButton = self.driver.rightBumper()
         self.intakeOn = self.driver.povRight()
         self.intakeOff = self.driver.povLeft()
@@ -159,6 +160,11 @@ class RobotContainer:
         #Intake Buttons
         self.intakeOn.onTrue(self.s_Intake.setIntakeSpeed(Constants.IntakeConstants.kIntakeSpeed))
         self.intakeOff.onTrue(self.s_Intake.stopIntake())
+
+        #Shooter Buttons
+        self.shooterOff.onTrue(self.s_Shooter.stop())
+        self.shoot.onTrue(self.s_Shooter.shoot())
+        self.reverse.onTrue(self.s_Shooter.shootReverse())
 
 
 

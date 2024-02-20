@@ -6,7 +6,7 @@ import wpilib
 import phoenix6 
 from wpimath.geometry import Rotation2d, Pose3d, Pose2d, Rotation3d
 from phoenix6.hardware.talon_fx import TalonFX
-from phoenix6.controls import VelocityVoltage
+from phoenix6.controls import VelocityVoltage, VoltageOut
 from lib.mathlib.conversions import Conversions
 import math
 from constants import Constants
@@ -19,9 +19,18 @@ class Shooter(Subsystem):
         self.bottomShooter = TalonFX(self.kBottomShooterCANID)
         self.topShooter = TalonFX(self.kBottomShooterCANID)
 
-        self.topVelocityControl = VelocityVoltage(0)
-        self.bottomVelocityControl = VelocityVoltage(0)
+        self.VelocityControl = VelocityVoltage(0)
+        self.VoltageControl = VoltageOut(0)
         
     def shoot(self):
-        self.topVelocityControl.velocity = Constants.ShooterConstants.shootSpeed
-        self.bottomVelocityControl.velocity = -Constants.ShooterConstants.shootSpeed
+        self.bottomShooter.set_control(self.VelocityControl.with_velocity(Conversions.MPSToRPS(Constants.ShooterConstants.kShootSpeed,  0.101 * math.pi)))
+        self.topShooter.set_control(self.VelocityControl.with_velocity(Conversions.MPSToRPS(-Constants.ShooterConstants.kShootSpeed,  0.101 * math.pi)))
+
+    def shootReverse(self):
+        self.bottomShooter.set_control(self.VelocityControl.with_velocity(Conversions.MPSToRPS(-Constants.ShooterConstants.kShootSpeed,  0.101 * math.pi)))
+        self.topShooter.set_control(self.VelocityControl.with_velocity(Conversions.MPSToRPS(Constants.ShooterConstants.kShootSpeed,  0.101 * math.pi)))
+
+
+    def stop(self):
+        self.bottomShooter.set_control(self.VoltageControl.with_output(0))
+        self.topShooter.set_control(self.VoltageControl.with_output(0))
