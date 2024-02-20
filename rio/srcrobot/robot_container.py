@@ -15,7 +15,9 @@ from autos.exampleAuto import exampleAuto
 from commands.TeleopSwerve import TeleopSwerve
 from subsystems.Swerve import Swerve
 from subsystems.intake import Intake
+from subsystems.indexer import Indexer
 from subsystems.Arm import Arm
+from subsystems.Shooter import Shooter
 from commands.TurnInPlace import TurnInPlace
 
 from commands.SysId import DriveSysId
@@ -44,6 +46,8 @@ class RobotContainer:
     s_Swerve : Swerve = Swerve()
     s_Arm : Arm = Arm()
     s_Intake : Intake = Intake()
+    s_Indexer : Indexer = Indexer()
+    s_Shooter : Shooter = Shooter()
 
     #SysId
     driveSysId = DriveSysId(s_Swerve)
@@ -158,13 +162,13 @@ class RobotContainer:
         
 
         #Intake Buttons
-        self.intakeOn.onTrue(self.s_Intake.setIntakeSpeed(Constants.IntakeConstants.kIntakeSpeed))
-        self.intakeOff.onTrue(self.s_Intake.stopIntake())
+        self.intakeOn.onTrue(self.s_Intake.setIntakeSpeed(Constants.IntakeConstants.kIntakeSpeed) and self.s_Indexer.indexerIntake())
+        self.intakeOff.onTrue(self.s_Intake.stopIntake() and self.s_Indexer.stopIndexer())
 
         #Shooter Buttons
-        self.shooterOff.onTrue(self.s_Shooter.stop())
-        self.shoot.onTrue(self.s_Shooter.shoot())
-        self.reverse.onTrue(self.s_Shooter.shootReverse())
+        self.shooterOff.onTrue(self.s_Shooter.stop() and self.s_Indexer.stopIndexer())
+        self.shoot.onTrue(self.s_Shooter.shoot() and self.s_Indexer.indexerShoot())
+        self.reverse.onTrue(self.s_Shooter.shootReverse() and self.s_Indexer.indexerIntake())
 
 
 

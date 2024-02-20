@@ -156,7 +156,12 @@ class Constants:
         kSubwooferPivotAngle = 0.0
         kPodiumPivotAngle = 45.0
         kAmpPivotAngle = 90.0
+        kShootSpeed = 5.0
 
     class IntakeConstants:
         kIntakeMotorID = 0
         kIntakeSpeed = 5.0
+    
+    class IndexerConstants:
+        kIndexerMotorID = 14
+        kIndexerSpeed = 3.0
