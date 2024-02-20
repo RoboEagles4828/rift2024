@@ -1,7 +1,7 @@
 # Docker for isaac ros
 
 This directory has the configuration for building the image used for isaac utilities that require l4t.
-It uses the isaac ros common container as a base and installs edna related software on top.
+It uses the isaac ros common container as a base and installs rift related software on top.
 
 # Build
 

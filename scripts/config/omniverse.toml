@@ -2,7 +2,7 @@
 [bookmarks]
 IsaacAssets = "omniverse://localhost/NVIDIA/Assets/Isaac/2022.2.1/Isaac"
 Scenarios = "omniverse://localhost/NVIDIA/Assets/Isaac/2022.2.1/Isaac/Samples/ROS2/Scenario"
-edna = "/workspaces/rift2024"
+rift = "/workspaces/rift2024"
 localhost = "omniverse://localhost"
 
 [cache]

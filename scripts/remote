@@ -25,8 +25,8 @@ smart-deploy() {
         --exclude *.rviz \
         --exclude __pycache__ \
         --exclude joy \
-        --exclude edna_debugger \
-        --exclude edna_tests \
+        --exclude rift_debugger \
+        --exclude rift_tests \
         --exclude .rsyncmetadata \
     /workspaces/rift2024/ $USERNAME@$IP_ADDRESS:$REMOTE_PATH \
         | egrep -v "sending incremental file list" | egrep -v "^\." | awk '{print $2}' | tr ' ' '\n' > /workspaces/rift2024/.rsyncmetadata
@@ -55,8 +55,8 @@ smart-deploy() {
         --exclude *.rviz \
         --exclude __pycache__ \
         --exclude joy \
-        --exclude edna_debugger \
-        --exclude edna_tests \
+        --exclude rift_debugger \
+        --exclude rift_tests \
     /workspaces/rift2024/ $USERNAME@$IP_ADDRESS:$REMOTE_PATH
     echo -e "${GREEN}Done deploying files to remote${NC}"
 }
@@ -72,23 +72,23 @@ sshCommand() {
     ssh -t $USERNAME@$IP_ADDRESS -p $PORT "$@"
 }
 
-edna-stop() {
+rift-stop() {
     sshCommand "cd $REMOTE_PATH && docker compose stop"
 }
 
-edna-kill() {
+rift-kill() {
     sshCommand "cd $REMOTE_PATH && docker compose kill"
 }
 
-edna-restart() {
+rift-restart() {
     sshCommand "cd $REMOTE_PATH && docker compose restart"
 }
 
-edna-log() {
+rift-log() {
     sshCommand "cd $REMOTE_PATH && docker compose logs -f"
 }
 
-edna-setup() {
+rift-setup() {
     if [ ! -f ~/.ssh/robot_deploy ]; then
         ssh-keygen -b 2048 -t rsa -f ~/.ssh/robot_deploy -q -N ""
         echo -e "${GREEN}robot_deploy key created${NC}"
@@ -102,11 +102,11 @@ build() {
     printf '%s\n' $@
 
     echo "Stopping containers to save resources during build..."
-    edna-kill && edna-stop
+    rift-kill && rift-stop
     echo "Rebuilding..."
     sshCommand "cd $REMOTE_PATH && ./scripts/remote-rebuild apply $@"
     echo "Restarting the containers..."
-    edna-restart
+    rift-restart
 }
 
 smart-build() {
@@ -124,12 +124,12 @@ smart-build() {
         read -p "Would you like to apply this plan? (y/n) " response
         if [ "$response" == "y" ]; then
             echo "Stopping containers to save resources during build..."
-            edna-kill && edna-stop
+            rift-kill && rift-stop
             echo "Applying plan..."
             sshCommand "cd $REMOTE_PATH && ./scripts/remote-rebuild apply $smartPlan"
             rm .rsyncmetadata
             echo "Restarting the containers..."
-            edna-restart
+            rift-restart
         fi
     fi
 }
@@ -139,13 +139,13 @@ complete-build() {
     read -p "Would you like to continue? (y/n) " response
     if [ "$response" == "y" ]; then
         echo "Stopping containers to save resources during rebuild..."
-        edna-kill && edna-stop
+        rift-kill && rift-stop
         echo "Removing old build files..."
         sshCommand "cd $REMOTE_PATH && sudo rm -rf build/ install/ log/"
         echo "Starting rebuild container..."
         sshCommand "cd $REMOTE_PATH && ./scripts/remote-rebuild apply all"
         if [ -f "./.rsyncmetadata" ]; then rm .rsyncmetadata; fi
-        edna-restart
+        rift-restart
     fi
 }
 
@@ -181,7 +181,7 @@ case $1 in
     ;;
 
     "setup")
-        edna-setup
+        rift-setup
     ;;
         
     "connect") ;&
@@ -208,19 +208,19 @@ case $1 in
         ;;
     
     "log")
-        edna-log
+        rift-log
         ;;
         
     "restart")
-        edna-restart
+        rift-restart
         ;;
     
     "stop")
-        edna-stop
+        rift-stop
         ;;
     
     "kill")
-        edna-kill
+        rift-kill
         ;;
 
     "build") ;&

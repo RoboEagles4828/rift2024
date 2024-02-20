@@ -7,7 +7,7 @@ nvidia_driver_config
 docker/developer/tmp
 view_tmp.rviz
 .devcontainer/.env
-src/edna_description/urdf/edna.urdf
+src/rift_description/urdf/rift.urdf
 .env
 .rsyncmetadataisaac/Eaglegym/eaglegym/runs/SwerveK/summaries
 isaac/Eaglegym/eaglegym/runs/SwerveK/summaries/

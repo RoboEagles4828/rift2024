@@ -1,0 +1,1239 @@
+.:
+total 52
+drwxrwxr-x 11 ugack ugack  4096 Feb 19 22:46 docker
+-rw-rw-r--  1 ugack ugack  2881 Feb 20 01:04 docker-compose.yml
+drwxrwxr-x  2 ugack ugack  4096 Jan 17 16:59 docs
+-rw-rw-r--  1 ugack ugack     0 Feb 20 01:15 file.txt
+drwxrwxr-x  5 ugack ugack  4096 Jan 17 16:59 isaac
+-rw-rw-r--  1 ugack ugack 11357 Jan 17 16:59 LICENSE
+-rw-rw-r--  1 ugack ugack  1824 Feb 20 01:04 README.md
+-rw-rw-r--  1 ugack ugack   325 Feb 20 01:04 rift.service
+drwxrwxr-x 12 ugack ugack  4096 Feb 19 22:43 rio
+drwxrwxr-x  4 ugack ugack  4096 Feb 14 19:37 scripts
+drwxrwxr-x 15 ugack ugack  4096 Feb 20 01:06 src
+-rw-rw-r--  1 ugack ugack  2820 Jan 17 16:59 ZED.md
+
+./docker:
+total 36
+drwxrwxr-x 4 ugack ugack 4096 Feb 19 22:02 developer
+drwxrwxr-x 4 ugack ugack 4096 Jan 17 16:59 developer-isaac-ros
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 developer-zed
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 isaac-sim
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 jetson
+drwxrwxr-x 3 ugack ugack 4096 Feb 19 22:46 jetson-apriltag
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 jetson-isaac-ros
+drwxrwxr-x 3 ugack ugack 4096 Jan 17 16:59 jetson-zed
+drwxrwxr-x 2 ugack ugack 4096 Jan 29 17:20 zed-engine-builder
+
+./docker/developer:
+total 20
+-rwxrwxr-x 1 ugack ugack  944 Jan 29 17:20 build
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 config
+-rw-rw-r-- 1 ugack ugack 3949 Jan 29 17:20 Dockerfile
+drwxrwxr-x 2 ugack ugack 4096 Jan 29 17:20 install-scripts
+-rw-rw-r-- 1 ugack ugack  897 Feb 20 01:04 README.md
+
+./docker/developer/config:
+total 4
+-rw-rw-r-- 1 ugack ugack 1118 Jan 17 16:59 rtps_udp_profile.xml
+
+./docker/developer/install-scripts:
+total 24
+-rwxrwxr-x 1 ugack ugack 6067 Jan 17 16:59 install-common
+-rw-rw-r-- 1 ugack ugack  574 Jan 17 16:59 install-docker
+-rw-rw-r-- 1 ugack ugack  451 Jan 29 17:20 install-python-deps
+-rw-rw-r-- 1 ugack ugack  308 Jan 29 17:20 install-rosdeps
+-rw-rw-r-- 1 ugack ugack  834 Jan 17 16:59 install-rtab
+
+./docker/developer-isaac-ros:
+total 24
+-rwxrwxr-x 1 ugack ugack  839 Jan 17 16:59 build
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 config
+-rw-rw-r-- 1 ugack ugack 2549 Jan 17 16:59 Dockerfile
+-rw-rw-r-- 1 ugack ugack  200 Jan 17 16:59 entrypoint.sh
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 install-scripts
+-rw-rw-r-- 1 ugack ugack  780 Feb 20 01:04 README.md
+
+./docker/developer-isaac-ros/config:
+total 4
+-rw-rw-r-- 1 ugack ugack 1118 Jan 17 16:59 rtps_udp_profile.xml
+
+./docker/developer-isaac-ros/install-scripts:
+total 4
+-rw-rw-r-- 1 ugack ugack 782 Jan 17 16:59 install-isaac-pkgs
+
+./docker/developer-zed:
+total 48
+-rwxrwxr-x 1 ugack ugack   578 Jan 17 16:59 build
+-rw-rw-r-- 1 ugack ugack  4637 Jan 17 16:59 Dockerfile
+-rw-rw-r-- 1 ugack ugack   409 Jan 17 16:59 ros_entrypoint.sh
+-rw-rw-r-- 1 ugack ugack  1581 Jan 17 16:59 SN39192289.conf
+-rw-rw-r-- 1 ugack ugack 12438 Jan 17 16:59 zed2i-config.yaml
+-rw-rw-r-- 1 ugack ugack  2744 Jan 17 16:59 zed2i.launch.py
+-rw-rw-r-- 1 ugack ugack  8048 Jan 17 16:59 zed-config-common.yaml
+
+./docker/isaac-sim:
+total 8
+-rwxrwxr-x 1 ugack ugack 582 Jan 17 16:59 build
+-rw-rw-r-- 1 ugack ugack 288 Jan 17 16:59 Dockerfile
+
+./docker/jetson:
+total 12
+-rwxrwxr-x 1 ugack ugack 1139 Jan 17 16:59 build
+-rwxrwxr-x 1 ugack ugack  128 Feb 20 01:04 entrypoint.sh
+-rw-rw-r-- 1 ugack ugack   21 Jan 17 16:59 README.md
+
+./docker/jetson-apriltag:
+total 16
+-rwxrwxr-x 1 ugack ugack  574 Feb 19 22:46 build
+drwxrwxr-x 2 ugack ugack 4096 Feb 19 22:46 config
+-rw-rw-r-- 1 ugack ugack  984 Feb 19 22:46 Dockerfile
+-rw-rw-r-- 1 ugack ugack  166 Feb 19 22:46 ros_entrypoint_jetson.sh
+
+./docker/jetson-apriltag/config:
+total 4
+-rw-rw-r-- 1 ugack ugack 1118 Feb 19 22:46 rtps_udp_profile.xml
+
+./docker/jetson-isaac-ros:
+total 8
+-rw-rw-r-- 1 ugack ugack 82 Feb 14 18:38 Dockerfile
+-rw-rw-r-- 1 ugack ugack 36 Jan 17 16:59 README.md
+
+./docker/jetson-zed:
+total 20
+-rwxrwxr-x 1 ugack ugack  569 Jan 17 16:59 build
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 config
+-rw-rw-r-- 1 ugack ugack 4265 Jan 17 16:59 Dockerfile
+-rw-rw-r-- 1 ugack ugack  417 Jan 17 16:59 ros_entrypoint_jetson.sh
+
+./docker/jetson-zed/config:
+total 4
+-rw-rw-r-- 1 ugack ugack 1118 Jan 17 16:59 rtps_udp_profile.xml
+
+./docker/zed-engine-builder:
+total 8
+-rwxrwxr-x 1 ugack ugack 577 Jan 29 17:20 build
+-rw-rw-r-- 1 ugack ugack 384 Jan 29 17:20 Dockerfile
+
+./docs:
+total 140
+-rw-rw-r-- 1 ugack ugack 52349 Jan 17 16:59 FRC Future Simulation Arch.drawio.svg
+-rw-rw-r-- 1 ugack ugack 46201 Jan 17 16:59 FRC Real.drawio.svg
+-rw-rw-r-- 1 ugack ugack 37557 Jan 17 16:59 FRC Simulation Arch.drawio.svg
+
+./isaac:
+total 16
+drwxrwxr-x 2 ugack ugack 4096 Feb 19 23:35 assets
+drwxrwxr-x 5 ugack ugack 4096 Jan 17 16:59 Eaglegym
+drwxrwxr-x 3 ugack ugack 4096 Feb 20 01:08 exts
+-rw-rw-r-- 1 ugack ugack   28 Jan 17 16:59 README.md
+
+./isaac/assets:
+total 0
+
+./isaac/Eaglegym:
+total 24
+-rwxrwxr-x  1 ugack ugack 1136 Jan 17 16:59 create_conda_env_rlgpu.sh
+drwxrwxr-x 11 ugack ugack 4096 Jan 17 17:16 eaglegym
+drwxrwxr-x  2 ugack ugack 4096 Jan 17 16:59 eaglegym.egg-info
+-rw-rw-r--  1 ugack ugack    0 Jan 17 16:59 __init__.py
+-rw-rw-r--  1 ugack ugack  268 Jan 17 16:59 rlgpu_conda_env.yml
+-rw-rw-r--  1 ugack ugack 1041 Jan 17 16:59 setup.py
+drwxrwxr-x  2 ugack ugack 4096 Jan 17 16:59 swervesim.egg-info
+
+./isaac/Eaglegym/eaglegym:
+total 36
+drwxrwxr-x 4 ugack ugack 4096 Jan 17 16:59 cfg
+drwxrwxr-x 3 ugack ugack 4096 Jan 17 17:16 envs
+-rw-rw-r-- 1 ugack ugack    0 Jan 17 16:59 __init__.py
+drwxrwxr-x 3 ugack ugack 4096 Jan 17 17:16 inverse_kinematics
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 17:16 __pycache__
+drwxrwxr-x 3 ugack ugack 4096 Jan 17 16:59 robots
+drwxrwxr-x 7 ugack ugack 4096 Feb 20 01:11 runs
+drwxrwxr-x 3 ugack ugack 4096 Jan 17 17:16 scripts
+drwxrwxr-x 6 ugack ugack 4096 Feb 20 01:12 tasks
+drwxrwxr-x 9 ugack ugack 4096 Jan 17 17:16 utils
+
+./isaac/Eaglegym/eaglegym/cfg:
+total 12
+-rw-rw-r-- 1 ugack ugack 1543 Jan 17 16:59 config.yaml
+drwxrwxr-x 2 ugack ugack 4096 Feb 20 01:10 task
+drwxrwxr-x 2 ugack ugack 4096 Feb 20 01:11 train
+
+./isaac/Eaglegym/eaglegym/cfg/task:
+total 24
+-rw-rw-r-- 1 ugack ugack 2375 Feb 20 01:04 RiftK.yaml
+-rw-rw-r-- 1 ugack ugack 2381 Feb 20 01:04 RiftPNP.yaml
+-rw-rw-r-- 1 ugack ugack 2383 Jan 17 16:59 SwerveCS.yaml
+-rw-rw-r-- 1 ugack ugack 2378 Jan 17 16:59 SwerveF.yaml
+-rw-rw-r-- 1 ugack ugack 2371 Jan 17 16:59 SwerveMAA.yaml
+-rw-rw-r-- 1 ugack ugack 2366 Jan 17 16:59 Swerve.yaml
+
+./isaac/Eaglegym/eaglegym/cfg/train:
+total 24
+-rw-rw-r-- 1 ugack ugack 1555 Feb 20 01:04 RiftKPPO.yaml
+-rw-rw-r-- 1 ugack ugack 1527 Feb 20 01:04 RiftPNPPPO.yaml
+-rw-rw-r-- 1 ugack ugack 1528 Jan 17 16:59 SwerveCSPPO.yaml
+-rw-rw-r-- 1 ugack ugack 1527 Jan 17 16:59 SwerveFPPO.yaml
+-rw-rw-r-- 1 ugack ugack 1527 Jan 17 16:59 SwerveMAAPPO.yaml
+-rw-rw-r-- 1 ugack ugack 1524 Jan 17 16:59 SwervePPO.yaml
+
+./isaac/Eaglegym/eaglegym/envs:
+total 12
+-rw-rw-r-- 1 ugack ugack    0 Jan 17 16:59 __init__.py
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 17:16 __pycache__
+-rw-rw-r-- 1 ugack ugack 3148 Jan 17 16:59 vec_env_rlgames_mt.py
+-rw-rw-r-- 1 ugack ugack 3933 Jan 17 16:59 vec_env_rlgames.py
+
+./isaac/Eaglegym/eaglegym/envs/__pycache__:
+total 12
+-rw-rw-r-- 1 ugack ugack  118 Jan 17 17:16 __init__.cpython-310.pyc
+-rw-rw-r-- 1 ugack ugack 2374 Jan 17 17:16 vec_env_rlgames.cpython-310.pyc
+-rw-rw-r-- 1 ugack ugack 1555 Jan 17 17:16 vec_env_rlgames_mt.cpython-310.pyc
+
+./isaac/Eaglegym/eaglegym/inverse_kinematics:
+total 16
+-rw-rw-r-- 1 ugack ugack 7567 Jan 17 16:59 inverse_kinematics.py
+-rw-rw-r-- 1 ugack ugack 1718 Jan 17 16:59 motion_magic_control.py
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 17:16 __pycache__
+
+./isaac/Eaglegym/eaglegym/inverse_kinematics/__pycache__:
+total 12
+-rw-rw-r-- 1 ugack ugack 4540 Jan 17 17:16 inverse_kinematics.cpython-310.pyc
+-rw-rw-r-- 1 ugack ugack 1526 Jan 17 17:16 motion_magic_control.cpython-310.pyc
+
+./isaac/Eaglegym/eaglegym/__pycache__:
+total 4
+-rw-rw-r-- 1 ugack ugack 113 Jan 17 17:16 __init__.cpython-310.pyc
+
+./isaac/Eaglegym/eaglegym/robots:
+total 4
+drwxrwxr-x 4 ugack ugack 4096 Feb 20 01:11 articulations
+
+./isaac/Eaglegym/eaglegym/robots/articulations:
+total 16
+-rw-rw-r-- 1 ugack ugack    0 Jan 17 16:59 __init__.py
+drwxrwxr-x 2 ugack ugack 4096 Feb 20 01:13 __pycache__
+-rw-rw-r-- 1 ugack ugack 3883 Feb 20 01:04 rift.py
+-rw-rw-r-- 1 ugack ugack 3887 Jan 17 16:59 swerve.py
+drwxrwxr-x 3 ugack ugack 4096 Feb 20 01:13 views
+
+./isaac/Eaglegym/eaglegym/robots/articulations/__pycache__:
+total 12
+-rw-rw-r-- 1 ugack ugack  134 Jan 17 17:16 __init__.cpython-310.pyc
+-rw-rw-r-- 1 ugack ugack 2266 Jan 17 17:16 rift.cpython-310.pyc
+-rw-rw-r-- 1 ugack ugack 2280 Jan 17 17:16 swerve.cpython-310.pyc
+
+./isaac/Eaglegym/eaglegym/robots/articulations/views:
+total 24
+-rw-rw-r-- 1 ugack ugack 4200 Jan 17 16:59 charge_station_view.py
+drwxrwxr-x 2 ugack ugack 4096 Feb 20 01:13 __pycache__
+-rw-rw-r-- 1 ugack ugack 4001 Feb 20 01:04 rift_view.py
+-rw-rw-r-- 1 ugack ugack 6450 Jan 17 16:59 swerve_view.py
+
+./isaac/Eaglegym/eaglegym/robots/articulations/views/__pycache__:
+total 12
+-rw-rw-r-- 1 ugack ugack 1540 Jan 17 17:16 charge_station_view.cpython-310.pyc
+-rw-rw-r-- 1 ugack ugack 1937 Jan 17 17:16 rift_view.cpython-310.pyc
+-rw-rw-r-- 1 ugack ugack 1963 Jan 17 17:16 swerve_view.cpython-310.pyc
+
+./isaac/Eaglegym/eaglegym/runs:
+total 20
+drwxrwxr-x 3 ugack ugack 4096 Jan 17 16:59 RiftK
+drwxrwxr-x 3 ugack ugack 4096 Jan 17 16:59 Swerve
+drwxrwxr-x 3 ugack ugack 4096 Jan 17 16:59 SwerveCS
+drwxrwxr-x 3 ugack ugack 4096 Jan 17 16:59 SwerveF
+drwxrwxr-x 3 ugack ugack 4096 Jan 17 16:59 SwerveK
+
+./isaac/Eaglegym/eaglegym/runs/RiftK:
+total 12
+-rw-rw-r-- 1 ugack ugack 4213 Feb 20 01:04 config.yaml
+drwxrwxr-x 2 ugack ugack 4096 Feb 20 01:11 nn
+
+./isaac/Eaglegym/eaglegym/runs/RiftK/nn:
+total 2204
+-rw-rw-r-- 1 ugack ugack 562763 Jan 17 16:59 last_RiftK_ep_1000_rew_-57991084.0.pth
+-rw-rw-r-- 1 ugack ugack 562815 Jan 17 16:59 last_RiftK_ep_1000_rew__-57991084._.pth
+-rw-rw-r-- 1 ugack ugack 559271 Jan 17 16:59 RiftK_1050.pth
+-rw-rw-r-- 1 ugack ugack 563111 Jan 17 16:59 RiftK.pth
+
+./isaac/Eaglegym/eaglegym/runs/Swerve:
+total 12
+-rw-rw-r-- 1 ugack ugack 4171 Jan 17 16:59 config.yaml
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 nn
+
+./isaac/Eaglegym/eaglegym/runs/Swerve/nn:
+total 1192
+-rw-rw-r-- 1 ugack ugack 607195 Jan 17 16:59 Best_Swerve.pth
+-rw-rw-r-- 1 ugack ugack 607195 Jan 17 16:59 Swerve.pth
+
+./isaac/Eaglegym/eaglegym/runs/SwerveCS:
+total 8
+-rw-rw-r-- 1 ugack ugack 3986 Feb 20 01:04 config.yaml
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 nn
+
+./isaac/Eaglegym/eaglegym/runs/SwerveCS/nn:
+total 13100
+-rw-rw-r-- 1 ugack ugack 635135 Jan 17 16:59 last_SwerveCS_ep_275_rew_0.15222558.pth
+-rw-rw-r-- 1 ugack ugack 635083 Jan 17 16:59 last_SwerveCS_ep_300_rew_56.845108.pth
+-rw-rw-r-- 1 ugack ugack 635239 Jan 17 16:59 last_SwerveCS_ep_325_rew_-0.002670337.pth
+-rw-rw-r-- 1 ugack ugack 635083 Jan 17 16:59 last_SwerveCS_ep_350_rew_53.106567.pth
+-rw-rw-r-- 1 ugack ugack 635083 Jan 17 16:59 last_SwerveCS_ep_375_rew_49.893482.pth
+-rw-rw-r-- 1 ugack ugack 635083 Jan 17 16:59 last_SwerveCS_ep_400_rew_59.465298.pth
+-rw-rw-r-- 1 ugack ugack 634979 Jan 17 16:59 last_SwerveCS_ep_425_rew_63.8513.pth
+-rw-rw-r-- 1 ugack ugack 635031 Jan 17 16:59 last_SwerveCS_ep_450_rew_94.00947.pth
+-rw-rw-r-- 1 ugack ugack 635031 Jan 17 16:59 last_SwerveCS_ep_475_rew_74.02935.pth
+-rw-rw-r-- 1 ugack ugack 634979 Jan 17 16:59 last_SwerveCS_ep_500_rew_82.1721.pth
+-rw-rw-r-- 1 ugack ugack 635031 Jan 17 16:59 last_SwerveCS_ep_525_rew_187.3815.pth
+-rw-rw-r-- 1 ugack ugack 635083 Jan 17 16:59 last_SwerveCS_ep_550_rew_174.90166.pth
+-rw-rw-r-- 1 ugack ugack 635083 Jan 17 16:59 last_SwerveCS_ep_575_rew_62.475574.pth
+-rw-rw-r-- 1 ugack ugack 635083 Jan 17 16:59 last_SwerveCS_ep_600_rew_280.92285.pth
+-rw-rw-r-- 1 ugack ugack 635031 Jan 17 16:59 last_SwerveCS_ep_625_rew_271.7709.pth
+-rw-rw-r-- 1 ugack ugack 635031 Jan 17 16:59 last_SwerveCS_ep_650_rew_561.2343.pth
+-rw-rw-r-- 1 ugack ugack 635083 Jan 17 16:59 last_SwerveCS_ep_675_rew_328.91818.pth
+-rw-rw-r-- 1 ugack ugack 635083 Jan 17 16:59 last_SwerveCS_ep_700_rew_252.85463.pth
+-rw-rw-r-- 1 ugack ugack 635083 Jan 17 16:59 last_SwerveCS_ep_725_rew_364.60898.pth
+-rw-rw-r-- 1 ugack ugack 635083 Jan 17 16:59 last_SwerveCS_ep_750_rew_166.53838.pth
+-rw-rw-r-- 1 ugack ugack 633539 Jan 17 16:59 SwerveCS.pth
+
+./isaac/Eaglegym/eaglegym/runs/SwerveF:
+total 12
+-rwxrwxr-x 1 ugack ugack 4129 Jan 17 16:59 config.yaml
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 summaries
+
+./isaac/Eaglegym/eaglegym/runs/SwerveF/summaries:
+total 4
+-rw-rw-r-- 1 ugack ugack 40 Jan 17 16:59 events.out.tfevents.1686603773.nitin-ROG-Zephyrus-M16-GU603ZW-GU603ZW
+
+./isaac/Eaglegym/eaglegym/runs/SwerveK:
+total 12
+-rw-rw-r-- 1 ugack ugack 4281 Feb 20 01:04 config.yaml
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 nn
+
+./isaac/Eaglegym/eaglegym/runs/SwerveK/nn:
+total 1144
+-rw-rw-r-- 1 ugack ugack 608591 Jan 17 16:59 Best_SwerveK.pth
+-rwxrwxr-x 1 ugack ugack 560719 Jan 17 16:59 SwerveK.pth
+
+./isaac/Eaglegym/eaglegym/scripts:
+total 28
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 17:16 __pycache__
+-rw-rw-r-- 1 ugack ugack 3212 Jan 17 16:59 random_policy.py
+-rw-rw-r-- 1 ugack ugack 3682 Jan 17 16:59 rlgames_demo.py
+-rw-rw-r-- 1 ugack ugack 7347 Jan 17 16:59 rlgames_train_mt.py
+-rw-rw-r-- 1 ugack ugack 5372 Jan 17 16:59 rlgames_train.py
+
+./isaac/Eaglegym/eaglegym/scripts/__pycache__:
+total 20
+-rw-rw-r-- 1 ugack ugack 1761 Jan 17 17:16 random_policy.cpython-310.pyc
+-rw-rw-r-- 1 ugack ugack 2068 Jan 17 17:16 rlgames_demo.cpython-310.pyc
+-rw-rw-r-- 1 ugack ugack 3521 Jan 17 17:16 rlgames_train.cpython-310.pyc
+-rw-rw-r-- 1 ugack ugack 5469 Jan 17 17:16 rlgames_train_mt.cpython-310.pyc
+
+./isaac/Eaglegym/eaglegym/tasks:
+total 148
+drwxrwxr-x 3 ugack ugack  4096 Jan 17 17:16 base
+drwxrwxr-x 2 ugack ugack  4096 Feb 20 01:14 __pycache__
+-rw-rw-r-- 1 ugack ugack 22242 Feb 20 01:04 rift_pick_and_place.py
+-rw-rw-r-- 1 ugack ugack 19582 Feb 20 01:04 rift_with_kinematics.py
+drwxrwxr-x 3 ugack ugack  4096 Jan 17 17:16 shared
+-rw-rw-r-- 1 ugack ugack 21508 Feb 20 01:04 swerve_charge_station.py
+-rw-rw-r-- 1 ugack ugack 20528 Jan 17 16:59 swerve_field.py
+-rw-rw-r-- 1 ugack ugack 17193 Jan 17 16:59 swerve_multi_action_auton.py
+-rw-rw-r-- 1 ugack ugack 17219 Jan 17 16:59 swerve.py
+drwxrwxr-x 3 ugack ugack  4096 Jan 17 17:16 utils
+
+./isaac/Eaglegym/eaglegym/tasks/base:
+total 16
+drwxrwxr-x 2 ugack ugack  4096 Jan 17 17:16 __pycache__
+-rw-rw-r-- 1 ugack ugack 10431 Jan 17 16:59 rl_task.py
+
+./isaac/Eaglegym/eaglegym/tasks/base/__pycache__:
+total 12
+-rw-rw-r-- 1 ugack ugack 8695 Jan 17 17:16 rl_task.cpython-310.pyc
+
+./isaac/Eaglegym/eaglegym/tasks/__pycache__:
+total 76
+-rw-rw-r-- 1 ugack ugack  9715 Jan 17 17:16 rift_pick_and_place.cpython-310.pyc
+-rw-rw-r-- 1 ugack ugack 10905 Jan 17 17:16 rift_with_kinematics.cpython-310.pyc
+-rw-rw-r-- 1 ugack ugack 12677 Jan 17 17:16 swerve_charge_station.cpython-310.pyc
+-rw-rw-r-- 1 ugack ugack  9382 Jan 17 17:16 swerve.cpython-310.pyc
+-rw-rw-r-- 1 ugack ugack 10432 Jan 17 17:16 swerve_field.cpython-310.pyc
+-rw-rw-r-- 1 ugack ugack  9558 Jan 17 17:16 swerve_multi_action_auton.cpython-310.pyc
+
+./isaac/Eaglegym/eaglegym/tasks/shared:
+total 40
+-rw-rw-r-- 1 ugack ugack 20470 Jan 17 16:59 in_hand_manipulation.py
+-rw-rw-r-- 1 ugack ugack     0 Jan 17 16:59 __init__.py
+-rw-rw-r-- 1 ugack ugack 12867 Jan 17 16:59 locomotion.py
+drwxrwxr-x 2 ugack ugack  4096 Jan 17 17:16 __pycache__
+
+./isaac/Eaglegym/eaglegym/tasks/shared/__pycache__:
+total 28
+-rw-rw-r-- 1 ugack ugack 12544 Jan 17 17:16 in_hand_manipulation.cpython-310.pyc
+-rw-rw-r-- 1 ugack ugack   126 Jan 17 17:16 __init__.cpython-310.pyc
+-rw-rw-r-- 1 ugack ugack  7720 Jan 17 17:16 locomotion.cpython-310.pyc
+
+./isaac/Eaglegym/eaglegym/tasks/utils:
+total 20
+-rw-rw-r-- 1 ugack ugack 8787 Jan 17 16:59 anymal_terrain_generator.py
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 17:16 __pycache__
+-rw-rw-r-- 1 ugack ugack 3628 Jan 17 16:59 usd_utils.py
+
+./isaac/Eaglegym/eaglegym/tasks/utils/__pycache__:
+total 12
+-rw-rw-r-- 1 ugack ugack 4418 Jan 17 17:16 anymal_terrain_generator.cpython-310.pyc
+-rw-rw-r-- 1 ugack ugack 1995 Jan 17 17:16 usd_utils.cpython-310.pyc
+
+./isaac/Eaglegym/eaglegym/utils:
+total 36
+drwxrwxr-x 3 ugack ugack 4096 Jan 17 17:16 config_utils
+-rw-rw-r-- 1 ugack ugack 2151 Jan 17 16:59 demo_util.py
+drwxrwxr-x 3 ugack ugack 4096 Jan 17 17:16 domain_randomization
+drwxrwxr-x 3 ugack ugack 4096 Jan 17 17:16 hydra_cfg
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 17:16 __pycache__
+drwxrwxr-x 3 ugack ugack 4096 Jan 17 17:16 rlgames
+-rw-rw-r-- 1 ugack ugack 2752 Feb 20 01:04 task_util.py
+drwxrwxr-x 3 ugack ugack 4096 Jan 17 17:16 terrain_utils
+drwxrwxr-x 3 ugack ugack 4096 Jan 17 17:16 usd_utils
+
+./isaac/Eaglegym/eaglegym/utils/config_utils:
+total 36
+-rw-rw-r-- 1 ugack ugack  4803 Jan 17 16:59 default_scene_params.py
+-rw-rw-r-- 1 ugack ugack  2656 Jan 17 16:59 path_utils.py
+drwxrwxr-x 2 ugack ugack  4096 Jan 17 17:16 __pycache__
+-rw-rw-r-- 1 ugack ugack 18898 Jan 17 16:59 sim_config.py
+
+./isaac/Eaglegym/eaglegym/utils/config_utils/__pycache__:
+total 20
+-rw-rw-r-- 1 ugack ugack  1748 Jan 17 17:16 default_scene_params.cpython-310.pyc
+-rw-rw-r-- 1 ugack ugack  1312 Jan 17 17:16 path_utils.cpython-310.pyc
+-rw-rw-r-- 1 ugack ugack 11185 Jan 17 17:16 sim_config.cpython-310.pyc
+
+./isaac/Eaglegym/eaglegym/utils/domain_randomization:
+total 48
+drwxrwxr-x 2 ugack ugack  4096 Jan 17 17:16 __pycache__
+-rw-rw-r-- 1 ugack ugack 41564 Jan 17 16:59 randomize.py
+
+./isaac/Eaglegym/eaglegym/utils/domain_randomization/__pycache__:
+total 20
+-rw-rw-r-- 1 ugack ugack 17088 Jan 17 17:16 randomize.cpython-310.pyc
+
+./isaac/Eaglegym/eaglegym/utils/hydra_cfg:
+total 12
+-rw-rw-r-- 1 ugack ugack 2207 Jan 17 16:59 hydra_utils.py
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 17:16 __pycache__
+-rw-rw-r-- 1 ugack ugack 2307 Jan 17 16:59 reformat.py
+
+./isaac/Eaglegym/eaglegym/utils/hydra_cfg/__pycache__:
+total 8
+-rw-rw-r-- 1 ugack ugack 738 Jan 17 17:16 hydra_utils.cpython-310.pyc
+-rw-rw-r-- 1 ugack ugack 923 Jan 17 17:16 reformat.cpython-310.pyc
+
+./isaac/Eaglegym/eaglegym/utils/__pycache__:
+total 8
+-rw-rw-r-- 1 ugack ugack  644 Jan 17 17:16 demo_util.cpython-310.pyc
+-rw-rw-r-- 1 ugack ugack 1114 Jan 17 17:16 task_util.cpython-310.pyc
+
+./isaac/Eaglegym/eaglegym/utils/rlgames:
+total 12
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 17:16 __pycache__
+-rw-rw-r-- 1 ugack ugack 5154 Jan 17 16:59 rlgames_utils.py
+
+./isaac/Eaglegym/eaglegym/utils/rlgames/__pycache__:
+total 4
+-rw-rw-r-- 1 ugack ugack 3682 Jan 17 17:16 rlgames_utils.cpython-310.pyc
+
+./isaac/Eaglegym/eaglegym/utils/terrain_utils:
+total 32
+-rw-rw-r-- 1 ugack ugack  7869 Jan 17 16:59 create_terrain_demo.py
+drwxrwxr-x 2 ugack ugack  4096 Jan 17 17:16 __pycache__
+-rw-rw-r-- 1 ugack ugack 17478 Jan 17 16:59 terrain_utils.py
+
+./isaac/Eaglegym/eaglegym/utils/terrain_utils/__pycache__:
+total 20
+-rw-rw-r-- 1 ugack ugack  6255 Jan 17 17:16 create_terrain_demo.cpython-310.pyc
+-rw-rw-r-- 1 ugack ugack 11768 Jan 17 17:16 terrain_utils.cpython-310.pyc
+
+./isaac/Eaglegym/eaglegym/utils/usd_utils:
+total 12
+-rw-rw-r-- 1 ugack ugack 5639 Jan 17 16:59 create_instanceable_assets.py
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 17:16 __pycache__
+
+./isaac/Eaglegym/eaglegym/utils/usd_utils/__pycache__:
+total 4
+-rw-rw-r-- 1 ugack ugack 3411 Jan 17 17:16 create_instanceable_assets.cpython-310.pyc
+
+./isaac/Eaglegym/eaglegym.egg-info:
+total 24
+-rw-rw-r-- 1 ugack ugack   1 Jan 17 16:59 dependency_links.txt
+-rw-rw-r-- 1 ugack ugack   1 Jan 17 16:59 not-zip-safe
+-rw-rw-r-- 1 ugack ugack 249 Jan 17 16:59 PKG-INFO
+-rw-rw-r-- 1 ugack ugack 152 Jan 17 16:59 requires.txt
+-rw-rw-r-- 1 ugack ugack 314 Jan 17 16:59 SOURCES.txt
+-rw-rw-r-- 1 ugack ugack   9 Jan 17 16:59 top_level.txt
+
+./isaac/Eaglegym/swervesim.egg-info:
+total 24
+-rw-rw-r-- 1 ugack ugack   1 Jan 17 16:59 dependency_links.txt
+-rw-rw-r-- 1 ugack ugack   1 Jan 17 16:59 not-zip-safe
+-rw-rw-r-- 1 ugack ugack 249 Jan 17 16:59 PKG-INFO
+-rw-rw-r-- 1 ugack ugack 138 Jan 17 16:59 requires.txt
+-rw-rw-r-- 1 ugack ugack 370 Jan 17 16:59 SOURCES.txt
+-rw-rw-r-- 1 ugack ugack   9 Jan 17 16:59 top_level.txt
+
+./isaac/exts:
+total 4
+drwxrwxr-x 6 ugack ugack 4096 Jan 17 16:59 omni.isaac.rift
+
+./isaac/exts/omni.isaac.rift:
+total 16
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 config
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 data
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 docs
+drwxrwxr-x 3 ugack ugack 4096 Jan 17 16:59 omni
+
+./isaac/exts/omni.isaac.rift/config:
+total 4
+-rw-rw-r-- 1 ugack ugack 1012 Feb 20 01:04 extension.toml
+
+./isaac/exts/omni.isaac.rift/data:
+total 8
+-rw-rw-r-- 1 ugack ugack 2698 Jan 17 16:59 icon.png
+-rw-rw-r-- 1 ugack ugack  297 Jan 17 16:59 preview.png
+
+./isaac/exts/omni.isaac.rift/docs:
+total 8
+-rw-rw-r-- 1 ugack ugack 175 Jan 17 16:59 CHANGELOG.md
+-rw-rw-r-- 1 ugack ugack 113 Jan 17 16:59 README.md
+
+./isaac/exts/omni.isaac.rift/omni:
+total 4
+drwxrwxr-x 3 ugack ugack 4096 Feb 20 01:09 isaac
+
+./isaac/exts/omni.isaac.rift/omni/isaac:
+total 4
+drwxrwxr-x 4 ugack ugack 4096 Feb 20 01:09 rift
+
+./isaac/exts/omni.isaac.rift/omni/isaac/rift:
+total 28
+drwxrwxr-x 3 ugack ugack  4096 Feb  9 17:43 base_sample
+drwxrwxr-x 3 ugack ugack  4096 Feb  9 17:43 import_bot
+-rw-rw-r-- 1 ugack ugack 19212 Feb 20 01:04 rift.urdf
+
+./isaac/exts/omni.isaac.rift/omni/isaac/rift/base_sample:
+total 28
+-rw-rw-r-- 1 ugack ugack 10520 Feb 20 01:04 base_sample_extension.py
+-rw-rw-r-- 1 ugack ugack  4816 Jan 17 16:59 base_sample.py
+-rw-rw-r-- 1 ugack ugack   574 Feb 20 01:04 __init__.py
+drwxr-xr-x 2 ugack ugack  4096 Feb  9 17:43 __pycache__
+
+./isaac/exts/omni.isaac.rift/omni/isaac/rift/base_sample/__pycache__:
+total 24
+-rw-r--r-- 1 ugack ugack 4561 Feb  9 17:43 base_sample.cpython-37.pyc
+-rw-r--r-- 1 ugack ugack 8883 Feb  9 17:43 base_sample_extension.cpython-37.pyc
+-rw-r--r-- 1 ugack ugack  331 Feb  9 17:43 __init__.cpython-37.pyc
+
+./isaac/exts/omni.isaac.rift/omni/isaac/rift/import_bot:
+total 52
+-rw-rw-r-- 1 ugack ugack  2080 Feb 20 01:04 import_bot_extension.py
+-rw-rw-r-- 1 ugack ugack 37823 Feb 20 01:04 import_bot.py
+-rw-rw-r-- 1 ugack ugack   140 Feb 20 01:04 __init__.py
+drwxr-xr-x 2 ugack ugack  4096 Feb  9 17:43 __pycache__
+
+./isaac/exts/omni.isaac.rift/omni/isaac/rift/import_bot/__pycache__:
+total 32
+-rw-r--r-- 1 ugack ugack 22921 Feb  9 17:43 import_bot.cpython-37.pyc
+-rw-r--r-- 1 ugack ugack  1877 Feb  9 17:43 import_bot_extension.cpython-37.pyc
+-rw-r--r-- 1 ugack ugack   324 Feb  9 17:43 __init__.cpython-37.pyc
+
+./rio:
+total 64
+drwxrwxr-x  4 ugack ugack  4096 Jan 17 17:26 dds
+drwxrwxr-x  3 ugack ugack  4096 Jan 29 17:20 deploy
+drwxrwxr-x  5 ugack ugack  4096 Feb 19 22:43 hardware_interface
+-rw-r--r--  1 ugack ugack 15702 Feb 19 22:43 old-robot.py
+drwxrwxr-x  4 ugack ugack  4096 Feb 19 22:46 POC
+drwxr-xr-x  2 ugack ugack  4096 Jan 17 19:46 __pycache__
+-rw-rw-r--  1 ugack ugack    10 Jan 17 16:59 README.md
+-rw-rw-r--  1 ugack ugack  1185 Jan 29 17:20 shuffleboard.json
+drwxrwxr-x  3 ugack ugack  4096 Feb 19 22:43 sim
+-rw-rw-r--  1 ugack ugack  1612 Jan 17 17:26 simgui-ds.json
+-rw-rw-r--  1 ugack ugack  2352 Jan 29 17:20 simgui.json
+-rw-rw-r--  1 ugack ugack  1704 Jan 29 17:20 simgui-window.json
+drwxrwxr-x 11 ugack ugack  4096 Feb 19 22:43 srcrobot
+
+./rio/dds:
+total 12
+-rw-rw-r-- 1 ugack ugack 1491 Jan 17 16:59 dds.py
+-rw-rw-r-- 1 ugack ugack    0 Jan 17 16:59 __init__.py
+drwxr-xr-x 2 ugack ugack 4096 Jan 17 17:26 __pycache__
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 xml
+
+./rio/dds/__pycache__:
+total 8
+-rw-r--r-- 1 ugack ugack 1867 Jan 17 17:26 dds.cpython-310.pyc
+-rw-r--r-- 1 ugack ugack  139 Jan 17 17:26 __init__.cpython-310.pyc
+
+./rio/dds/xml:
+total 56
+-rw-rw-r-- 1 ugack ugack  549 Jan 17 16:59 BoundingBox2Df.xml
+-rw-rw-r-- 1 ugack ugack  549 Jan 17 16:59 BoundingBox2Di.xml
+-rw-rw-r-- 1 ugack ugack  546 Jan 17 16:59 BoundingBox3D.xml
+-rw-rw-r-- 1 ugack ugack  561 Jan 17 16:59 Header.xml
+-rw-rw-r-- 1 ugack ugack  453 Jan 17 16:59 KeyPoint2Df.xml
+-rw-rw-r-- 1 ugack ugack  452 Jan 17 16:59 KeyPoint2Di.xml
+-rw-rw-r-- 1 ugack ugack  452 Jan 17 16:59 KeyPoint3D.xml
+-rw-rw-r-- 1 ugack ugack 2002 Jan 17 16:59 Object.xml
+-rw-rw-r-- 1 ugack ugack 9316 Jan 17 16:59 ROS_RTI.xml
+-rw-rw-r-- 1 ugack ugack  548 Jan 17 16:59 Skeleton2D.xml
+-rw-rw-r-- 1 ugack ugack  547 Jan 17 16:59 Skeleton3D.xml
+-rw-rw-r-- 1 ugack ugack  477 Jan 17 16:59 Time.xml
+
+./rio/deploy:
+total 4
+drwxrwxr-x 4 ugack ugack 4096 Jan 29 17:20 pathplanner
+
+./rio/deploy/pathplanner:
+total 20
+drwxrwxr-x 2 ugack ugack 4096 Jan 29 17:20 autos
+-rw-rw-r-- 1 ugack ugack 8961 Jan 29 17:20 navgrid.json
+drwxrwxr-x 2 ugack ugack 4096 Jan 29 17:20 paths
+
+./rio/deploy/pathplanner/autos:
+total 16
+-rw-rw-r-- 1 ugack ugack 768 Jan 29 17:20 2.5piece.auto
+-rw-rw-r-- 1 ugack ugack 529 Jan 29 17:20 2piece.auto
+-rw-rw-r-- 1 ugack ugack 375 Jan 29 17:20 TestAuto.auto
+-rw-rw-r-- 1 ugack ugack 484 Jan 29 17:20 TestNoTurnAuto.auto
+
+./rio/deploy/pathplanner/paths:
+total 32
+-rw-rw-r-- 1 ugack ugack 1387 Jan 29 17:20 GetNoteFromLine.path
+-rw-rw-r-- 1 ugack ugack 1711 Jan 29 17:20 Intake.path
+-rw-rw-r-- 1 ugack ugack 1016 Jan 29 17:20 ReturnToWing.path
+-rw-rw-r-- 1 ugack ugack 1167 Jan 29 17:20 ScorePreload.path
+-rw-rw-r-- 1 ugack ugack 1484 Jan 29 17:20 ScoreSecondNote.path
+-rw-rw-r-- 1 ugack ugack  927 Jan 29 17:20 TestingPath.path
+-rw-rw-r-- 1 ugack ugack 1935 Jan 29 17:20 TestNoTurn.path
+-rw-rw-r-- 1 ugack ugack  947 Jan 29 17:20 TestPathReverse.path
+
+./rio/hardware_interface:
+total 12
+drwxrwxr-x 3 ugack ugack 4096 Feb 19 22:43 commands
+drwxr-xr-x 2 ugack ugack 4096 Jan 20 14:01 __pycache__
+drwxrwxr-x 3 ugack ugack 4096 Feb 19 22:43 subsystems
+
+./rio/hardware_interface/commands:
+total 4
+drwxr-xr-x 2 ugack ugack 4096 Jan 17 19:46 __pycache__
+
+./rio/hardware_interface/commands/__pycache__:
+total 20
+-rw-r--r-- 1 ugack ugack 3808 Jan 17 19:46 arm_commands.cpython-310.pyc
+-rw-r--r-- 1 ugack ugack 1177 Jan 17 19:46 do_nothing_command.cpython-310.pyc
+-rw-r--r-- 1 ugack ugack 9789 Jan 17 19:46 drive_commands.cpython-310.pyc
+
+./rio/hardware_interface/__pycache__:
+total 60
+-rw-r--r-- 1 ugack ugack 11995 Jan 17 19:46 armcontroller.cpython-310.pyc
+-rw-r--r-- 1 ugack ugack 21105 Jan 20 14:01 drivetrain.cpython-310.pyc
+-rw-r--r-- 1 ugack ugack  1135 Jan 17 17:25 GeometryUtils.cpython-310.pyc
+-rw-r--r-- 1 ugack ugack   154 Jan 17 17:25 __init__.cpython-310.pyc
+-rw-r--r-- 1 ugack ugack  3269 Jan 17 17:25 joystick.cpython-310.pyc
+-rw-r--r-- 1 ugack ugack  1544 Jan 17 17:25 motion_magic.cpython-310.pyc
+-rw-r--r-- 1 ugack ugack  2736 Jan 17 17:25 navxSim.cpython-310.pyc
+-rw-r--r-- 1 ugack ugack  1115 Jan 17 17:25 toggle.cpython-310.pyc
+
+./rio/hardware_interface/subsystems:
+total 4
+drwxr-xr-x 2 ugack ugack 4096 Jan 17 19:46 __pycache__
+
+./rio/hardware_interface/subsystems/__pycache__:
+total 12
+-rw-r--r-- 1 ugack ugack 2323 Jan 17 17:26 arm_subsystem.cpython-310.pyc
+-rw-r--r-- 1 ugack ugack 6271 Jan 17 19:46 drive_subsystem.cpython-310.pyc
+
+./rio/POC:
+total 8
+drwxrwxr-x 3 ugack ugack 4096 Feb 19 22:56 crescendo
+drwxrwxr-x 3 ugack ugack 4096 Feb 19 22:43 shooter_test
+
+./rio/POC/crescendo:
+total 0
+
+./rio/POC/shooter_test:
+total 4
+drwxr-xr-x 2 ugack ugack 4096 Jan 29 18:15 __pycache__
+
+./rio/POC/shooter_test/__pycache__:
+total 4
+-rw-r--r-- 1 ugack ugack 1513 Jan 29 18:15 robot.cpython-310.pyc
+
+./rio/__pycache__:
+total 12
+-rw-r--r-- 1 ugack ugack 3529 Jan 17 19:46 auton_selector.cpython-310.pyc
+-rw-r--r-- 1 ugack ugack 7496 Jan 17 17:26 physics.cpython-310.pyc
+
+./rio/sim:
+total 4
+drwxr-xr-x 2 ugack ugack 4096 Jan 17 17:26 __pycache__
+
+./rio/sim/__pycache__:
+total 12
+-rw-r--r-- 1 ugack ugack 1725 Jan 17 17:26 cancoderSim.cpython-310.pyc
+-rw-r--r-- 1 ugack ugack  139 Jan 17 17:26 __init__.cpython-310.pyc
+-rw-r--r-- 1 ugack ugack 3231 Jan 17 17:26 talonFxSim.cpython-310.pyc
+
+./rio/srcrobot:
+total 80
+drwxr-xr-x 2 ugack ugack 4096 Feb 19 22:43 autos
+drwxr-xr-x 2 ugack ugack 4096 Feb 19 22:43 commands
+-rw-r--r-- 1 ugack ugack 5409 Feb 19 22:43 constants.py
+-rw-r--r-- 1 ugack ugack 3845 Feb 19 22:43 CTREConfigs.py
+drwxr-xr-x 2 ugack ugack 4096 Feb 19 22:43 ctre_sim
+drwxr-xr-x 3 ugack ugack 4096 Feb 19 22:43 deploy
+-rw-r--r-- 1 ugack ugack    0 Feb 19 22:43 __init__.py
+drwxr-xr-x 4 ugack ugack 4096 Feb 19 22:43 lib
+-rw-r--r-- 1 ugack ugack    3 Feb 19 22:43 networktables.json
+-rw-r--r-- 1 ugack ugack  723 Feb 19 22:43 pyproject.toml
+-rw-r--r-- 1 ugack ugack 7638 Feb 19 22:43 robot_container.py
+-rw-r--r-- 1 ugack ugack 1951 Feb 19 22:43 robot.py
+-rw-r--r-- 1 ugack ugack 1498 Feb 19 22:43 simgui-ds.json
+-rw-r--r-- 1 ugack ugack  291 Feb 19 22:43 simgui.json
+-rw-r--r-- 1 ugack ugack 1180 Feb 19 22:43 simgui-window.json
+drwxrwxr-x 2 ugack ugack 4096 Feb 19 22:43 subsystems
+-rw-r--r-- 1 ugack ugack 4239 Feb 19 22:43 SwerveModule.py
+drwxr-xr-x 2 ugack ugack 4096 Feb 19 22:43 tests
+
+./rio/srcrobot/autos:
+total 8
+-rw-r--r-- 1 ugack ugack 2572 Feb 19 22:43 exampleAuto.py
+-rw-r--r-- 1 ugack ugack  669 Feb 19 22:43 PathPlannerAutoRunner.py
+
+./rio/srcrobot/commands:
+total 12
+-rw-r--r-- 1 ugack ugack 2313 Feb 19 22:43 SysId.py
+-rw-r--r-- 1 ugack ugack 1398 Feb 19 22:43 TeleopSwerve.py
+-rw-r--r-- 1 ugack ugack 1246 Feb 19 22:43 TurnInPlace.py
+
+./rio/srcrobot/ctre_sim:
+total 48
+-rw-r--r-- 1 ugack ugack 2048 Feb 19 22:43 CANCoder vers. H - 011 - 0 - ext.dat
+-rw-r--r-- 1 ugack ugack 2048 Feb 19 22:43 CANCoder vers. H - 02 - 0 - ext.dat
+-rw-r--r-- 1 ugack ugack 2048 Feb 19 22:43 CANCoder vers. H - 05 - 0 - ext.dat
+-rw-r--r-- 1 ugack ugack 2048 Feb 19 22:43 CANCoder vers. H - 08 - 0 - ext.dat
+-rw-r--r-- 1 ugack ugack 2048 Feb 19 22:43 Talon FX vers. C - 010 - 0 - ext.dat
+-rw-r--r-- 1 ugack ugack 2048 Feb 19 22:43 Talon FX vers. C - 01 - 0 - ext.dat
+-rw-r--r-- 1 ugack ugack 2048 Feb 19 22:43 Talon FX vers. C - 012 - 0 - ext.dat
+-rw-r--r-- 1 ugack ugack 2048 Feb 19 22:43 Talon FX vers. C - 03 - 0 - ext.dat
+-rw-r--r-- 1 ugack ugack 2048 Feb 19 22:43 Talon FX vers. C - 04 - 0 - ext.dat
+-rw-r--r-- 1 ugack ugack 2048 Feb 19 22:43 Talon FX vers. C - 06 - 0 - ext.dat
+-rw-r--r-- 1 ugack ugack 2048 Feb 19 22:43 Talon FX vers. C - 07 - 0 - ext.dat
+-rw-r--r-- 1 ugack ugack 2048 Feb 19 22:43 Talon FX vers. C - 09 - 0 - ext.dat
+
+./rio/srcrobot/deploy:
+total 4
+drwxr-xr-x 4 ugack ugack 4096 Feb 19 22:43 pathplanner
+
+./rio/srcrobot/deploy/pathplanner:
+total 20
+drwxr-xr-x 2 ugack ugack 4096 Feb 19 22:43 autos
+-rw-r--r-- 1 ugack ugack 8961 Feb 19 22:43 navgrid.json
+drwxr-xr-x 2 ugack ugack 4096 Feb 19 22:43 paths
+
+./rio/srcrobot/deploy/pathplanner/autos:
+total 4
+-rw-r--r-- 1 ugack ugack 482 Feb 19 22:43 TestAuto.auto
+
+./rio/srcrobot/deploy/pathplanner/paths:
+total 4
+-rw-r--r-- 1 ugack ugack 1474 Feb 19 22:43 TestPath.path
+
+./rio/srcrobot/lib:
+total 8
+drwxr-xr-x 2 ugack ugack 4096 Feb 19 22:43 mathlib
+drwxr-xr-x 2 ugack ugack 4096 Feb 19 22:43 util
+
+./rio/srcrobot/lib/mathlib:
+total 8
+-rw-r--r-- 1 ugack ugack 1286 Feb 19 22:43 conversions.py
+-rw-r--r-- 1 ugack ugack  751 Feb 19 22:43 units.py
+
+./rio/srcrobot/lib/util:
+total 8
+-rw-r--r-- 1 ugack ugack 2747 Feb 19 22:43 COTSTalonFXSwerveConstants.py
+-rw-r--r-- 1 ugack ugack  424 Feb 19 22:43 SwerveModuleConstants.py
+
+./rio/srcrobot/subsystems:
+total 28
+-rw-r--r-- 1 ugack ugack 9145 Feb 19 22:43 Arm.py
+-rw-r--r-- 1 ugack ugack    0 Feb 19 22:43 indexer.py
+-rw-r--r-- 1 ugack ugack  557 Feb 19 22:43 intake.py
+-rw-r--r-- 1 ugack ugack 1031 Feb 19 22:43 Shooter.py
+-rw-r--r-- 1 ugack ugack 6310 Feb 19 22:43 Swerve.py
+
+./rio/srcrobot/tests:
+total 4
+-rw-r--r-- 1 ugack ugack 165 Feb 19 22:43 pyfrc_test.py
+
+./scripts:
+total 76
+drwxrwxr-x 2 ugack ugack 4096 Feb 12 17:03 config
+-rwxrwxr-x 1 ugack ugack  111 Jan 17 16:59 dds-ping
+-rwxrwxr-x 1 ugack ugack 2705 Feb 20 01:04 gym
+-rwxrwxr-x 1 ugack ugack  182 Feb 20 01:04 gym-setup
+-rwxrwxr-x 1 ugack ugack 3243 Feb 20 01:04 isaac
+-rwxrwxr-x 1 ugack ugack 1764 Feb 20 01:04 isaac-ros
+-rwxrwxr-x 1 ugack ugack   74 Jan 17 16:59 isaac-setup
+-rw-rw-r-- 1 ugack ugack 3366 Feb 19 23:36 jetson
+-rwxrwxr-x 1 ugack ugack  150 Feb 20 01:04 launch
+-rwxrwxr-x 1 ugack ugack 2297 Jan 29 17:20 local-setup.sh
+-rwxrwxr-x 1 ugack ugack   67 Feb 19 23:36 pysim
+-rw-r--r-- 1 ugack ugack 1227 Feb 14 19:37 quickpub.py
+drwxrwxr-x 4 ugack ugack 4096 Jan 17 16:59 real-startup
+-rwxrwxr-x 1 ugack ugack 7144 Feb 20 01:04 remote
+-rwxrwxr-x 1 ugack ugack 2021 Feb 20 01:04 remote-rebuild
+-rwxrwxr-x 1 ugack ugack  131 Jan 17 16:59 restart-ros2
+-rwxrwxr-x 1 ugack ugack  128 Feb 20 01:04 tests
+-rw-rw-r-- 1 ugack ugack   15 Jan 17 16:59 train-model
+
+./scripts/config:
+total 20
+-rw-rw-r-- 1 ugack ugack  164 Feb 20 00:54 nvidia_driver_config
+-rw-r--r-- 1 ugack ugack  397 Feb 20 01:04 omniverse.toml
+-rw-rw-r-- 1 ugack ugack  120 Feb 19 23:36 remote-config
+-rw-rw-r-- 1 ugack ugack  120 Feb 19 23:36 remote-config-orin
+-rw-rw-r-- 1 ugack ugack 1581 Jan 17 16:59 SN39192289.conf
+
+./scripts/real-startup:
+total 8
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 jetson
+drwxrwxr-x 2 ugack ugack 4096 Feb 20 01:14 pi
+-rw-rw-r-- 1 ugack ugack    0 Jan 17 16:59 README.md
+
+./scripts/real-startup/jetson:
+total 8
+-rw-rw-r-- 1 ugack ugack 59 Feb 19 23:36 startup.sh
+-rw-rw-r-- 1 ugack ugack 61 Feb 19 23:36 stop.sh
+
+./scripts/real-startup/pi:
+total 12
+-rwxrwxr-x 1 ugack ugack 151 Feb 20 01:04 post-recieve
+-rw-rw-r-- 1 ugack ugack 319 Feb 20 01:04 rift.service
+-rw-rw-r-- 1 ugack ugack 188 Feb 20 01:04 startup.sh
+
+./src:
+total 52
+drwxrwxr-x 5 ugack ugack 4096 Jan 17 16:59 frc_auton
+drwxrwxr-x 5 ugack ugack 4096 Jan 17 16:59 isaac_hardware_test
+drwxrwxr-x 5 ugack ugack 4096 Jan 17 16:59 joint_trajectory_teleop
+drwxrwxr-x 5 ugack ugack 4096 Jan 17 16:59 policy_runner
+drwxrwxr-x 5 ugack ugack 4096 Jan 17 16:59 rift_bringup
+drwxrwxr-x 4 ugack ugack 4096 Feb 20 01:09 rift_debugger
+drwxrwxr-x 4 ugack ugack 4096 Jan 17 16:59 rift_description
+drwxrwxr-x 4 ugack ugack 4096 Jan 17 16:59 rift_interfaces
+drwxrwxr-x 4 ugack ugack 4096 Feb 20 01:06 rift_tests
+drwxrwxr-x 4 ugack ugack 4096 Jan 17 16:59 swerve_controller
+drwxrwxr-x 4 ugack ugack 4096 Jan 17 16:59 swerve_hardware
+drwxrwxr-x 4 ugack ugack 4096 Jan 17 16:59 teleop_twist_joy
+drwxrwxr-x 5 ugack ugack 4096 Jan 17 16:59 zed_object_hardware_interface
+
+./src/frc_auton:
+total 24
+drwxrwxr-x 4 ugack ugack 4096 Jan 27 12:47 frc_auton
+-rw-rw-r-- 1 ugack ugack  629 Jan 17 16:59 package.xml
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 resource
+-rw-rw-r-- 1 ugack ugack   87 Jan 17 16:59 setup.cfg
+-rw-rw-r-- 1 ugack ugack  721 Jan 17 16:59 setup.py
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 test
+
+./src/frc_auton/frc_auton:
+total 32
+drwxrwxr-x 3 ugack ugack  4096 Jan 17 16:59 Auto_ros_bag
+-rw-rw-r-- 1 ugack ugack     0 Jan 17 16:59 __init__.py
+-rw-rw-r-- 1 ugack ugack  2975 Feb 19 23:36 policy_runner.py
+drwxr-xr-x 2 ugack ugack  4096 Jan 27 12:47 __pycache__
+-rw-rw-r-- 1 ugack ugack 10919 Feb 20 01:04 reader.py
+-rw-rw-r-- 1 ugack ugack   974 Jan 17 16:59 test_frc_stage.py
+-rw-rw-r-- 1 ugack ugack  3865 Feb 20 01:04 writer.py
+
+./src/frc_auton/frc_auton/Auto_ros_bag:
+total 4
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 bag_0
+
+./src/frc_auton/frc_auton/Auto_ros_bag/bag_0:
+total 56
+-rw-rw-r-- 1 ugack ugack 53248 Jan 17 16:59 bag_0_0.db3
+-rw-rw-r-- 1 ugack ugack   930 Jan 17 16:59 metadata.yaml
+
+./src/frc_auton/frc_auton/__pycache__:
+total 12
+-rw-r--r-- 1 ugack ugack  157 Jan 27 12:47 __init__.cpython-310.pyc
+-rw-r--r-- 1 ugack ugack 7765 Jan 27 12:47 reader.cpython-310.pyc
+
+./src/frc_auton/resource:
+total 0
+-rw-rw-r-- 1 ugack ugack 0 Jan 17 16:59 frc_auton
+
+./src/frc_auton/test:
+total 12
+-rw-rw-r-- 1 ugack ugack 962 Jan 17 16:59 test_copyright.py
+-rw-rw-r-- 1 ugack ugack 884 Jan 17 16:59 test_flake8.py
+-rw-rw-r-- 1 ugack ugack 803 Jan 17 16:59 test_pep257.py
+
+./src/isaac_hardware_test:
+total 24
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 isaac_hardware_test
+-rw-rw-r-- 1 ugack ugack  640 Jan 17 16:59 package.xml
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 resource
+-rw-rw-r-- 1 ugack ugack  107 Jan 17 16:59 setup.cfg
+-rw-rw-r-- 1 ugack ugack  696 Jan 17 16:59 setup.py
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 test
+
+./src/isaac_hardware_test/isaac_hardware_test:
+total 8
+-rw-rw-r-- 1 ugack ugack    0 Jan 17 16:59 __init__.py
+-rw-rw-r-- 1 ugack ugack 7251 Jan 17 16:59 isaac_drive.py
+
+./src/isaac_hardware_test/resource:
+total 0
+-rw-rw-r-- 1 ugack ugack 0 Jan 17 16:59 isaac_hardware_test
+
+./src/isaac_hardware_test/test:
+total 12
+-rw-rw-r-- 1 ugack ugack 962 Jan 17 16:59 test_copyright.py
+-rw-rw-r-- 1 ugack ugack 884 Jan 17 16:59 test_flake8.py
+-rw-rw-r-- 1 ugack ugack 803 Jan 17 16:59 test_pep257.py
+
+./src/joint_trajectory_teleop:
+total 24
+drwxrwxr-x 3 ugack ugack 4096 Jan 27 12:47 joint_trajectory_teleop
+-rw-rw-r-- 1 ugack ugack  644 Jan 17 16:59 package.xml
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 resource
+-rw-rw-r-- 1 ugack ugack  115 Jan 17 16:59 setup.cfg
+-rw-rw-r-- 1 ugack ugack  728 Jan 17 16:59 setup.py
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 test
+
+./src/joint_trajectory_teleop/joint_trajectory_teleop:
+total 20
+-rw-rw-r-- 1 ugack ugack    0 Jan 17 16:59 __init__.py
+-rw-rw-r-- 1 ugack ugack 8659 Feb 20 01:04 joint_trajectory_teleop.py
+drwxr-xr-x 2 ugack ugack 4096 Jan 27 12:47 __pycache__
+-rw-rw-r-- 1 ugack ugack  291 Feb 20 01:04 yaml_test.py
+
+./src/joint_trajectory_teleop/joint_trajectory_teleop/__pycache__:
+total 12
+-rw-r--r-- 1 ugack ugack  185 Jan 27 12:47 __init__.cpython-310.pyc
+-rw-r--r-- 1 ugack ugack 6005 Jan 27 12:47 joint_trajectory_teleop.cpython-310.pyc
+
+./src/joint_trajectory_teleop/resource:
+total 0
+-rw-rw-r-- 1 ugack ugack 0 Jan 17 16:59 joint_trajectory_teleop
+
+./src/joint_trajectory_teleop/test:
+total 12
+-rw-rw-r-- 1 ugack ugack 962 Jan 17 16:59 test_copyright.py
+-rw-rw-r-- 1 ugack ugack 884 Jan 17 16:59 test_flake8.py
+-rw-rw-r-- 1 ugack ugack 803 Jan 17 16:59 test_pep257.py
+
+./src/policy_runner:
+total 24
+-rw-rw-r-- 1 ugack ugack  634 Jan 17 16:59 package.xml
+drwxrwxr-x 3 ugack ugack 4096 Jan 27 12:47 policy_runner
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 resource
+-rw-rw-r-- 1 ugack ugack   95 Jan 17 16:59 setup.cfg
+-rw-rw-r-- 1 ugack ugack  743 Jan 17 16:59 setup.py
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 test
+
+./src/policy_runner/policy_runner:
+total 20
+-rw-rw-r-- 1 ugack ugack    0 Jan 17 16:59 __init__.py
+-rw-rw-r-- 1 ugack ugack 1594 Jan 17 16:59 odom_test.py
+-rw-rw-r-- 1 ugack ugack 9125 Feb 20 01:04 policy_runner.py
+drwxr-xr-x 2 ugack ugack 4096 Jan 27 12:47 __pycache__
+
+./src/policy_runner/policy_runner/__pycache__:
+total 12
+-rw-r--r-- 1 ugack ugack  165 Jan 27 12:47 __init__.cpython-310.pyc
+-rw-r--r-- 1 ugack ugack 6307 Jan 27 12:47 policy_runner.cpython-310.pyc
+
+./src/policy_runner/resource:
+total 0
+-rw-rw-r-- 1 ugack ugack 0 Jan 17 16:59 policy_runner
+
+./src/policy_runner/test:
+total 12
+-rw-rw-r-- 1 ugack ugack 962 Jan 17 16:59 test_copyright.py
+-rw-rw-r-- 1 ugack ugack 884 Jan 17 16:59 test_flake8.py
+-rw-rw-r-- 1 ugack ugack 803 Jan 17 16:59 test_pep257.py
+
+./src/rift_bringup:
+total 20
+-rw-rw-r-- 1 ugack ugack  863 Feb 20 01:04 CMakeLists.txt
+drwxrwxr-x 2 ugack ugack 4096 Jan 27 13:13 config
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 launch
+-rw-rw-r-- 1 ugack ugack  945 Feb 20 01:04 package.xml
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 scripts
+
+./src/rift_bringup/config:
+total 124
+-rw-rw-r-- 1 ugack ugack  3706 Jan 17 16:59 controllers.yaml
+-rw-rw-r-- 1 ugack ugack 12200 Jan 27 13:13 description.rviz
+-rw-rw-r-- 1 ugack ugack 11170 Jan 17 16:59 real.rviz
+-rw-rw-r-- 1 ugack ugack  9996 Jan 17 16:59 riodebug.rviz
+-rw-rw-r-- 1 ugack ugack  1278 Jan 17 16:59 teleop-control.yaml
+-rw-rw-r-- 1 ugack ugack 12718 Jan 27 13:13 view.rviz
+-rw-rw-r-- 1 ugack ugack 21456 Jan 17 16:59 vslam.rviz
+-rw-rw-r-- 1 ugack ugack   610 Jan 17 16:59 xbox-real.yaml
+-rw-rw-r-- 1 ugack ugack   522 Jan 17 16:59 xbox-sim.yaml
+-rw-rw-r-- 1 ugack ugack 12704 Jan 17 16:59 zed_config-common-custom-box.yaml
+-rw-rw-r-- 1 ugack ugack 12465 Jan 17 16:59 zed-config-common.yaml
+
+./src/rift_bringup/launch:
+total 68
+-rw-rw-r-- 1 ugack ugack 6942 Feb 20 01:04 controlLayer.launch.py
+-rw-rw-r-- 1 ugack ugack 3908 Feb 20 01:04 debugLayer.launch.py
+-rw-rw-r-- 1 ugack ugack 1094 Jan 17 16:59 gym.launch.py
+-rw-rw-r-- 1 ugack ugack 1957 Feb 20 01:04 isaac.launch.py
+-rw-rw-r-- 1 ugack ugack 1642 Feb 20 01:04 isaac_pysim.launch.py
+-rw-rw-r-- 1 ugack ugack 1592 Feb 20 01:04 isaac-vslam.launch.py
+-rw-rw-r-- 1 ugack ugack 1611 Feb 20 01:04 real.launch.py
+-rw-rw-r-- 1 ugack ugack 1037 Feb 20 01:04 real-rviz.launch.py
+-rw-rw-r-- 1 ugack ugack 1214 Feb 20 01:04 real-vslam.launch.py
+-rw-rw-r-- 1 ugack ugack 1762 Feb 20 01:04 rio-debug.launch.py
+-rw-rw-r-- 1 ugack ugack 1741 Jan 17 16:59 rtab.launch.py
+-rw-rw-r-- 1 ugack ugack 1749 Jan 17 16:59 rtab-real.launch.py
+-rw-rw-r-- 1 ugack ugack 1471 Feb 20 01:04 rviz.launch.py
+-rw-rw-r-- 1 ugack ugack 3004 Jan 17 16:59 teleopLayer.launch.py
+-rw-rw-r-- 1 ugack ugack 1956 Feb 20 01:04 test_hw.launch.py
+-rw-rw-r-- 1 ugack ugack 2264 Jan 17 16:59 zed2i.launch.py
+
+./src/rift_bringup/scripts:
+total 4
+-rw-rw-r-- 1 ugack ugack 1314 Jan 17 16:59 parseRviz.py
+
+./src/rift_debugger:
+total 20
+-rw-rw-r-- 1 ugack ugack  829 Feb 20 01:04 package.xml
+drwxrwxr-x 2 ugack ugack 4096 Feb 20 01:13 resource
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 rift_debugger
+-rw-rw-r-- 1 ugack ugack   95 Feb 20 01:04 setup.cfg
+-rw-rw-r-- 1 ugack ugack  674 Feb 20 01:04 setup.py
+
+./src/rift_debugger/resource:
+total 0
+-rw-rw-r-- 1 ugack ugack 0 Jan 17 16:59 rift_debugger
+
+./src/rift_debugger/rift_debugger:
+total 48
+-rw-rw-r-- 1 ugack ugack 14516 Feb 20 01:04 debugger.py
+-rw-rw-r-- 1 ugack ugack  6445 Jan 17 16:59 flow_layout.py
+-rw-rw-r-- 1 ugack ugack     0 Jan 17 16:59 __init__.py
+-rw-rw-r-- 1 ugack ugack 20839 Jan 17 16:59 joint_state_publisher.py
+
+./src/rift_description:
+total 20
+-rw-rw-r-- 1 ugack ugack  806 Feb 20 01:04 CMakeLists.txt
+drwxrwxr-x 2 ugack ugack 4096 Feb 20 00:25 meshes
+-rw-rw-r-- 1 ugack ugack  886 Feb 20 01:04 package.xml
+-rw-rw-r-- 1 ugack ugack  113 Jan 17 16:59 requirements.txt
+drwxrwxr-x 6 ugack ugack 4096 Feb 20 01:05 urdf
+
+./src/rift_description/meshes:
+total 101752
+-rw-rw-r-- 1 ugack ugack   312284 Feb 20 00:25 ArmPart.stl
+-rw-rw-r-- 1 ugack ugack    22484 Feb 19 22:56 Back_Legs_V6.stl
+-rw-rw-r-- 1 ugack ugack  3094684 Feb 19 22:56 Bumper.stl
+-rw-rw-r-- 1 ugack ugack    32284 Feb 19 22:56 contact_mesh_chasis.stl
+-rw-rw-r-- 1 ugack ugack    42684 Feb 19 22:56 Front_Intake_V2.stl
+-rw-rw-r-- 1 ugack ugack    13584 Feb 19 22:56 Front_Legs_V2.stl
+-rw-rw-r-- 1 ugack ugack 46848884 Feb 19 22:56 RiftChassis.stl
+-rw-rw-r-- 1 ugack ugack  5155484 Feb 19 22:56 RiftIntake.stl
+-rw-rw-r-- 1 ugack ugack 17451684 Feb 19 22:56 RiftShooter.stl
+-rw-rw-r-- 1 ugack ugack    33484 Feb 19 22:56 Roller_Bar.stl
+-rw-rw-r-- 1 ugack ugack    33884 Feb 19 22:56 Roller_Bar_V2.stl
+-rw-rw-r-- 1 ugack ugack   196684 Feb 20 00:23 ShooterMount.stl
+-rw-rw-r-- 1 ugack ugack  1684084 Feb 19 22:56 SwerveAxle.stl
+-rw-rw-r-- 1 ugack ugack 26005684 Feb 19 22:56 SwerveChassis.stl
+-rw-rw-r-- 1 ugack ugack  2505184 Feb 19 22:56 SwerveWheel.stl
+-rw-rw-r-- 1 ugack ugack   718084 Feb 19 22:56 zed2i.stl
+
+./src/rift_description/urdf:
+total 44
+drwxrwxr-x 2 ugack ugack  4096 Jan 17 16:59 control
+drwxrwxr-x 2 ugack ugack  4096 Feb 19 22:56 parts
+-rw-r--r-- 1 ugack ugack 25493 Feb  9 18:46 rift.urdf
+drwxrwxr-x 2 ugack ugack  4096 Feb 20 01:05 robots
+drwxrwxr-x 2 ugack ugack  4096 Feb 19 22:56 util
+
+./src/rift_description/urdf/control:
+total 8
+-rw-rw-r-- 1 ugack ugack 5356 Jan 17 16:59 drive.xacro
+
+./src/rift_description/urdf/parts:
+total 68
+-rw-rw-r-- 1 ugack ugack 3225 Feb 20 01:04 arm.xacro
+-rw-rw-r-- 1 ugack ugack 1784 Feb 20 01:04 back_leg.xacro
+-rw-rw-r-- 1 ugack ugack 3557 Feb 20 01:04 elevator_leg.xacro
+-rw-rw-r-- 1 ugack ugack 8008 Feb 20 01:04 elevator.xacro
+-rw-rw-r-- 1 ugack ugack 4717 Feb 20 01:04 gripper.xacro
+-rw-rw-r-- 1 ugack ugack 1976 Feb 20 01:04 intake.xacro
+-rw-rw-r-- 1 ugack ugack  776 Jan 17 16:59 lidar.xacro
+-rw-rw-r-- 1 ugack ugack 6413 Feb 20 01:04 shooter.xacro
+-rw-rw-r-- 1 ugack ugack 1633 Jan 17 16:59 slider.xacro
+-rw-rw-r-- 1 ugack ugack 2592 Feb 20 01:04 square_chassis.xacro
+-rw-rw-r-- 1 ugack ugack 2965 Feb 20 01:04 swerve_axle.xacro
+-rw-rw-r-- 1 ugack ugack  861 Feb 19 22:56 versaroller.xacro
+-rw-rw-r-- 1 ugack ugack 5961 Feb 20 01:04 zed_macro.urdf.xacro
+
+./src/rift_description/urdf/robots:
+total 8
+-rw-rw-r-- 1 ugack ugack 4997 Feb 20 01:04 rift.urdf.xacro
+
+./src/rift_description/urdf/util:
+total 8
+-rw-rw-r-- 1 ugack ugack 1367 Jan 17 16:59 macros.xacro
+-rw-rw-r-- 1 ugack ugack 1252 Feb 19 22:56 materials.xacro
+
+./src/rift_interfaces:
+total 16
+-rw-rw-r-- 1 ugack ugack 1708 Feb 20 01:04 CMakeLists.txt
+drwxrwxr-x 3 ugack ugack 4096 Jan 17 16:59 include
+-rw-rw-r-- 1 ugack ugack  806 Feb 20 01:04 package.xml
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 srv
+
+./src/rift_interfaces/include:
+total 4
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 writer_srv
+
+./src/rift_interfaces/include/writer_srv:
+total 4
+-rw-rw-r-- 1 ugack ugack 13 Jan 17 16:59 text_file_to_keep_folder.txt
+
+./src/rift_interfaces/srv:
+total 4
+-rw-rw-r-- 1 ugack ugack 172 Jan 17 16:59 SetBool.srv
+
+./src/rift_tests:
+total 20
+-rw-rw-r-- 1 ugack ugack  728 Feb 20 01:04 package.xml
+drwxrwxr-x 2 ugack ugack 4096 Feb 20 01:06 resource
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 rift_tests
+-rw-rw-r-- 1 ugack ugack   89 Feb 20 01:04 setup.cfg
+-rw-rw-r-- 1 ugack ugack  926 Feb 20 01:04 setup.py
+
+./src/rift_tests/resource:
+total 0
+-rw-rw-r-- 1 ugack ugack 0 Jan 17 16:59 rift_tests
+
+./src/rift_tests/rift_tests:
+total 32
+-rw-rw-r-- 1 ugack ugack 1267 Jan 17 16:59 arm_tests.py
+-rw-rw-r-- 1 ugack ugack    0 Jan 17 16:59 __init__.py
+-rw-rw-r-- 1 ugack ugack 4791 Jan 17 16:59 joint_test.py
+-rw-rw-r-- 1 ugack ugack 1931 Jan 17 16:59 publish_joint_arm_command.py
+-rw-rw-r-- 1 ugack ugack 1746 Jan 17 16:59 publish_joint_drive_command.py
+-rw-rw-r-- 1 ugack ugack  868 Jan 17 16:59 publish_twist_command.py
+-rw-rw-r-- 1 ugack ugack 4771 Jan 17 16:59 run_tests_command.py
+
+./src/swerve_controller:
+total 20
+-rw-rw-r-- 1 ugack ugack 2056 Jan 17 16:59 CMakeLists.txt
+drwxrwxr-x 3 ugack ugack 4096 Jan 17 16:59 include
+-rw-rw-r-- 1 ugack ugack 1079 Jan 17 16:59 package.xml
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 src
+-rw-rw-r-- 1 ugack ugack  370 Jan 17 16:59 swerve_plugin.xml
+
+./src/swerve_controller/include:
+total 4
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 swerve_controller
+
+./src/swerve_controller/include/swerve_controller:
+total 16
+-rw-rw-r-- 1 ugack ugack 3424 Jan 17 16:59 speed_limiter.hpp
+-rw-rw-r-- 1 ugack ugack 5965 Jan 17 16:59 swerve_controller.hpp
+-rw-rw-r-- 1 ugack ugack 2229 Jan 17 16:59 visibility_control.h
+
+./src/swerve_controller/src:
+total 36
+-rw-rw-r-- 1 ugack ugack  3527 Jan 17 16:59 speed_limiter.cpp
+-rw-rw-r-- 1 ugack ugack 28958 Jan 17 16:59 swerve_controller.cpp
+
+./src/swerve_hardware:
+total 20
+-rw-rw-r-- 1 ugack ugack 1834 Jan 17 16:59 CMakeLists.txt
+drwxrwxr-x 3 ugack ugack 4096 Jan 17 16:59 include
+-rw-rw-r-- 1 ugack ugack  795 Jan 17 16:59 package.xml
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 src
+-rw-rw-r-- 1 ugack ugack  925 Jan 17 16:59 swerve_hardware.xml
+
+./src/swerve_hardware/include:
+total 4
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 swerve_hardware
+
+./src/swerve_hardware/include/swerve_hardware:
+total 28
+-rw-rw-r-- 1 ugack ugack 4262 Jan 17 16:59 isaac_drive.hpp
+-rw-rw-r-- 1 ugack ugack 1307 Jan 17 16:59 motion_magic.hpp
+-rw-rw-r-- 1 ugack ugack 5378 Jan 17 16:59 real_drive.hpp
+-rw-rw-r-- 1 ugack ugack 3033 Jan 17 16:59 test_drive.hpp
+-rw-rw-r-- 1 ugack ugack 2184 Jan 17 16:59 visibility_control.h
+
+./src/swerve_hardware/src:
+total 48
+-rw-rw-r-- 1 ugack ugack 11877 Jan 17 16:59 isaac_drive.cpp
+-rw-rw-r-- 1 ugack ugack  2741 Jan 17 16:59 motion_magic.cpp
+-rw-rw-r-- 1 ugack ugack 16614 Jan 17 16:59 real_drive.cpp
+-rw-rw-r-- 1 ugack ugack  9533 Jan 17 16:59 test_drive.cpp
+
+./src/teleop_twist_joy:
+total 20
+-rw-rw-r-- 1 ugack ugack 2179 Feb 20 01:04 CMakeLists.txt
+drwxrwxr-x 3 ugack ugack 4096 Jan 17 16:59 include
+-rw-rw-r-- 1 ugack ugack 1469 Jan 17 16:59 LICENSE.txt
+-rw-rw-r-- 1 ugack ugack 1027 Feb 20 01:04 package.xml
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 src
+
+./src/teleop_twist_joy/include:
+total 4
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 teleop_twist_joy
+
+./src/teleop_twist_joy/include/teleop_twist_joy:
+total 4
+-rw-rw-r-- 1 ugack ugack 2237 Jan 17 16:59 teleop_twist_joy.hpp
+
+./src/teleop_twist_joy/src:
+total 32
+-rw-rw-r-- 1 ugack ugack  1931 Jan 17 16:59 teleop_node.cpp
+-rw-rw-r-- 1 ugack ugack 26597 Feb 20 01:04 teleop_twist_joy.cpp
+
+./src/zed_object_hardware_interface:
+total 24
+-rw-rw-r-- 1 ugack ugack  650 Jan 17 16:59 package.xml
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 resource
+-rw-rw-r-- 1 ugack ugack  127 Jan 17 16:59 setup.cfg
+-rw-rw-r-- 1 ugack ugack  721 Jan 17 16:59 setup.py
+drwxrwxr-x 2 ugack ugack 4096 Jan 17 16:59 test
+drwxrwxr-x 3 ugack ugack 4096 Jan 27 12:47 zed_object_hardware_interface
+
+./src/zed_object_hardware_interface/resource:
+total 0
+-rw-rw-r-- 1 ugack ugack 0 Jan 17 16:59 zed_object_hardware_interface
+
+./src/zed_object_hardware_interface/test:
+total 12
+-rw-rw-r-- 1 ugack ugack 962 Jan 17 16:59 test_copyright.py
+-rw-rw-r-- 1 ugack ugack 884 Jan 17 16:59 test_flake8.py
+-rw-rw-r-- 1 ugack ugack 803 Jan 17 16:59 test_pep257.py
+
+./src/zed_object_hardware_interface/zed_object_hardware_interface:
+total 8
+-rw-rw-r-- 1 ugack ugack    0 Jan 17 16:59 __init__.py
+drwxr-xr-x 2 ugack ugack 4096 Jan 27 12:47 __pycache__
+-rw-rw-r-- 1 ugack ugack 1638 Jan 17 16:59 zed_conversion.py
+
+./src/zed_object_hardware_interface/zed_object_hardware_interface/__pycache__:
+total 8
+-rw-r--r-- 1 ugack ugack  197 Jan 27 12:47 __init__.cpython-310.pyc
+-rw-r--r-- 1 ugack ugack 1861 Jan 27 12:47 zed_conversion.cpython-310.pyc

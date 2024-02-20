@@ -44,7 +44,7 @@ launch_isaac() {
     -v ${nvidia_icd}:/etc/vulkan/icd.d/nvidia_icd.json \
     -v ${_10_nvidia}:/usr/share/glvnd/egl_vendor.d/10_nvidia.json \
     -v ${WORKSPACE_LOCAL_PATH}/scripts/config/omniverse.toml:/root/.nvidia-omniverse/config/omniverse.toml:rw \
-    -v ${WORKSPACE_LOCAL_PATH}/:/root/edna/:rw \
+    -v ${WORKSPACE_LOCAL_PATH}/:/root/rift/:rw \
     -v ${WORKSPACE_LOCAL_PATH}/isaac/Eaglegym/eaglegym/runs:/isaac-sim/runs:rw \
     -v ${ISAAC_LOCAL_STORAGE}/cache/kit:/isaac-sim/kit/cache/Kit:rw \
     -v ${ISAAC_LOCAL_STORAGE}/cache/ov:/root/.cache/ov:rw \
@@ -61,7 +61,7 @@ launch_isaac() {
 # Update the urdf file before launching
 if [ -d /workspaces/rift2024/install ]; then
     source /workspaces/rift2024/install/setup.bash
-    xacro /workspaces/rift2024/src/edna_description/urdf/robots/edna.urdf.xacro > /workspaces/rift2024/src/edna_description/urdf/edna.urdf namespace:=$ROS_NAMESPACE
+    xacro /workspaces/rift2024/src/rift_description/urdf/robots/rift.urdf.xacro > /workspaces/rift2024/src/rift_description/urdf/rift.urdf namespace:=$ROS_NAMESPACE
 fi
 
 # Check if an isaac container already exists

@@ -19,7 +19,7 @@ if [[ "$1" == "vslam" ]]; then
     CMD="/home/admin/entrypoint.sh ros2 launch isaac_ros_visual_slam isaac_ros_visual_slam_isaac_sim.launch.py"
 fi
 
-local_sim_launch_path="${WORKSPACE_LOCAL_PATH}/src/edna_bringup/launch/vslam.py"
+local_sim_launch_path="${WORKSPACE_LOCAL_PATH}/src/rift_bringup/launch/vslam.py"
 sim_launch_path="/home/admin/workspaces/isaac_ros-dev/src/isaac_ros_visual_slam/isaac_ros_visual_slam/launch/isaac_ros_visual_slam_isaac_sim.launch.py"
 
 launch_isaac() {

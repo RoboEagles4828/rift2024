@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:macro name="intake" params="parent *origin">
+
+    <link name="intake_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 {pi}/2 0" />
+            <geometry>
+                <mesh filename="package://rift_description/meshes/RiftIntake.stl" scale="1 1 1" />
+            </geometry>
+            <material name="blue"/>
+        </visual>
+        <!-- Front plate collision -->
+        <collision>
+            <origin xyz="0 ${0.0254/2} 0" rpy="0 0 0" />
+            <geometry>
+                <box size="0.575 0.0254 0.102" />
+            </geometry>
+        </collision>
+        <!-- +Y side collision -->
+        <collision>
+            <origin xyz="${0.575/2+0.038/2} 0.065 0.007" rpy="0 0 0" />
+            <geometry>
+                <box size="0.038 0.127 0.22" />
+            </geometry>
+        </collision>
+        <!-- -Y side collision -->
+        <collision>
+            <origin xyz="${-0.575/2-0.038/2} 0.065 0.007" rpy="0 0 0" />
+            <geometry>
+                <box size="0.038 0.127 0.22" />
+            </geometry>
+        </collision>
+    </link>
+
+    <xacro:versaroller prefix="0" parent="intake_link">
+        <origin xyz="0 .10836 -0.008356" rpy="0 ${pi/2} 0" />
+    </xacro:versaroller>
+
+    <xacro:versaroller prefix="1" parent="intake_link">
+        <origin xyz="0.000201 0.045509 0.028214" rpy="0 ${pi/2} 0" />
+    </xacro:versaroller>
+    
+    <xacro:versaroller prefix="2" parent="intake_link">
+        <origin xyz="-0.000036 0.088642 -0.08196" rpy="0 ${pi/2} 0" />
+    </xacro:versaroller>
+    
+    <xacro:versaroller prefix="3" parent="intake_link">
+        <origin xyz="-0.000053 0.0254 -0.045558" rpy="0 ${pi/2} 0" />
+    </xacro:versaroller>
+
+    <joint name="intake_joint" type="fixed">
+        <parent link="${parent}"/>
+        <child link="intake_link"/>
+        <xacro:insert_block name="origin" />
+    </joint>
+
+    </xacro:macro>
+</robot>
