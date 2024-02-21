@@ -13,6 +13,8 @@ from constants import Constants
 
 from autos.exampleAuto import exampleAuto
 from commands.TeleopSwerve import TeleopSwerve
+from rio.srcrobot.gameState import GameState
+from rio.srcrobot.robotState import RobotState
 from subsystems.Swerve import Swerve
 from subsystems.intake import Intake
 from subsystems.indexer import Indexer
@@ -55,6 +57,13 @@ class RobotContainer:
 
     # The container for the robot. Contains subsystems, OI devices, and commands.
     def __init__(self):
+        self.gameState = GameState()
+        self.robotState = RobotState()
+        self.robotState.initialize(
+            lambda: self.s_Swerve.getHeading().degrees(),
+            lambda: self.s_Arm.getDegrees(),
+            lambda: self.s_Shooter.getSpeed()
+            )
         translation = lambda: 0.0
         strafe = lambda: 0.0
         rotation = lambda: 0.0
@@ -92,6 +101,8 @@ class RobotContainer:
         # self.queClimbFront = self.operator.povDown()
         # self.queClimbRight = self.operator.povRight()
         # self.queClimbLeft = self.operator.povLeft()
+        self.automationOn = self.operator.start()
+        self.automationOff = self.operator.back()
         self.configureButtonBindings()
 
         self.auton_selector = SendableChooser()
@@ -146,6 +157,10 @@ class RobotContainer:
                 robotcentric
             )
         )
+
+        # Automation enablement buttons
+        self.automationOn.onTrue(InstantCommand(lambda: self.robotState.enableAutomation(True)))
+        self.automationOff.onTrue(InstantCommand(lambda: self.robotState.enableAutomation(False)))
 
         # Arm Buttons
         self.s_Arm.setDefaultCommand(self.s_Arm.seekArmZero())

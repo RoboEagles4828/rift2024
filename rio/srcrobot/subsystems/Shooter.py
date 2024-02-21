@@ -52,6 +52,10 @@ class Shooter(Subsystem):
             InstantCommand(lambda:self.topShooter.set_control(self.VelocityControl.with_velocity(Conversions.MPSToRPS(-Constants.ShooterConstants.kPodiumShootSpeed,  0.101 * math.pi))))
         )
 
+    def getSpeed(self) -> float:
+        # TODO implemenent this!!!
+        return 5.0
+
     def stop(self):
         return InstantCommand(lambda: self.bottomShooter.set_control(self.VoltageControl.with_output(0))).alongWith(
             InstantCommand(lambda:self.topShooter.set_control(self.VoltageControl.with_output(0)))

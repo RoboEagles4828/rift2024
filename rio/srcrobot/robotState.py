@@ -14,6 +14,8 @@ class RobotState:
     kShooterVelocityTolerance = 10.0
 
     m_gameState = GameState()
+    m_automationEnabled = False
+    """ Default to automation off. Turned on in autonomousInit or with OI. """
 
     def __new__(cls):
         """
@@ -77,3 +79,15 @@ class RobotState:
         return (not self.m_gameState.hasNote()) and math.isclose(
             0.0, self.m_armAngleSupplier(), abs_tol=self.kArmAngleTolerance
         )
+
+    def isAutomationEnabled(self) -> bool:
+        """
+        Returns True if automation is on and False otherwise.
+        """
+        return self.m_automationEnabled
+
+    def enableAutomation(self, enable):
+        """
+        :param enable: True to turn on automation.
+        """
+        self.m_automationEnabled = enable
