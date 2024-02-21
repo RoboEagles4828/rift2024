@@ -2,6 +2,7 @@ from wpilib import TimedRobot
 from commands2 import Command
 from commands2 import CommandScheduler
 from CTREConfigs import CTREConfigs
+from rio.srcrobot.robotState import RobotState
 from robot_container import RobotContainer
 
 from wpilib.shuffleboard import Shuffleboard, ShuffleboardTab
@@ -36,6 +37,8 @@ class Robot(TimedRobot):
     pass
 
   def autonomousInit(self):
+    RobotState().enableAutomation(True)
+
     m_autonomousCommand: Command = self.m_robotContainer.getAutonomousCommand()
 
     # schedule the autonomous command (example)
