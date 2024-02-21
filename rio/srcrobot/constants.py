@@ -9,6 +9,7 @@ import lib.mathlib.units as Units
 from lib.util.COTSTalonFXSwerveConstants import COTSTalonFXSwerveConstants
 from lib.util.SwerveModuleConstants import SwerveModuleConstants
 import math
+from enum import Enum
 
 from wpimath.units import rotationsToRadians
 
@@ -167,3 +168,19 @@ class Constants:
     class IndexerConstants:
         kIndexerMotorID = 14
         kIndexerSpeed = 3.0
+
+    # An enumeration of known shot locations and data critical to executing the
+    # shot. TODO decide on shooter velocity units and tune angles.
+    class NextShot(Enum):
+      AMP = (0, -90.0, 90.0, 90.0, 100.0)
+      SPEAKER_AMP = (1, 45.0, -45.0, 0.0, 1000.0)
+      SPEAKER_CENTER = (2, 0.0, 0.0, 0.0, 1000.0)
+      SPEAKER_PODIUM = (3, -45.0, 45.0, 0.0, 1000.0)
+      PODIUM = (4, -30.0, 30.0, 45.0, 2000.00)
+
+      def __init__(self, value, blueSideBotHeading, redSideBotHeading, armAngle, shooterVelocity):
+        self._value_ = value
+        self.m_blueSideBotHeading = blueSideBotHeading
+        self.m_redSideBotHeading = redSideBotHeading
+        self.m_armAngle = armAngle
+        self.m_shooterVelocity = shooterVelocity
