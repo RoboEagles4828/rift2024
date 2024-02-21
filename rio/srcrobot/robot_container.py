@@ -131,10 +131,11 @@ class RobotContainer:
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
     """
     def configureButtonBindings(self):
-        translation = lambda: -self.driver.getRawAxis(self.translationAxis) + self.driver.getLeftTriggerAxis()*self.driver.getRawAxis(self.translationAxis)*Constants.Swerve.slowMoveModifier
-        strafe = lambda: -self.driver.getRawAxis(self.strafeAxis) + self.driver.getLeftTriggerAxis()*self.driver.getRawAxis(self.strafeAxis)*Constants.Swerve.slowMoveModifier
-        rotation = lambda: self.driver.getRawAxis(self.rotationAxis) - self.driver.getRightTriggerAxis()*self.driver.getRawAxis(self.rotationAxis)*Constants.Swerve.slowTurnModifier
+        translation = lambda: -self.driver.getRawAxis(self.translationAxis)
+        strafe = lambda: -self.driver.getRawAxis(self.strafeAxis)
+        rotation = lambda: self.driver.getRawAxis(self.rotationAxis)
         robotcentric = lambda: self.robotCentric_value
+        slow = lambda: self.driver.getLeftTriggerAxis()*Constants.Swerve.slowMoveModifier, self.driver.getRightTriggerAxis()*Constants.Swerve.slowTurnModifier
 
         self.s_Swerve.setDefaultCommand(
             TeleopSwerve(
@@ -142,7 +143,8 @@ class RobotContainer:
                 translation,
                 strafe,
                 rotation,
-                robotcentric
+                robotcentric,
+                slow
             )
         )
 
