@@ -105,6 +105,11 @@ class Constants:
             ReplanningConfig(),
         )
 
+        # Slowdown speed
+        ## The speed is multiplied by this value when the trigger is fully held down
+        slowMoveModifier = 0.5
+        slowTurnModifier = 0.5
+
         # Module Specific Constants
         # Front Left Module - Module 0
         class Mod0:

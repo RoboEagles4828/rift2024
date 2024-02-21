@@ -73,10 +73,11 @@ class RobotContainer:
         self.faceBack = self.driver.a()
         self.faceRight = self.driver.b()
         self.faceLeft = self.driver.x()
-        self.shoot = self.driver.rightTrigger() #just for testing will be removed later
+        # self.shoot = self.driver.rightTrigger() # Just for testing will be removed later
         self.resetToAbsoluteButton = self.driver.rightBumper()
         self.intakeOn = self.driver.povRight()
         self.intakeOff = self.driver.povLeft()
+
         # Operator Controls
         self.manualArm = self.operator.leftBumper() 
         self.armHome = self.operator.rightTrigger()
@@ -130,9 +131,9 @@ class RobotContainer:
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
     """
     def configureButtonBindings(self):
-        translation = lambda: -self.driver.getRawAxis(self.translationAxis) 
-        strafe = lambda: -self.driver.getRawAxis(self.strafeAxis)
-        rotation = lambda: self.driver.getRawAxis(self.rotationAxis)
+        translation = lambda: -self.driver.getRawAxis(self.translationAxis) + self.driver.getLeftTriggerAxis()*self.driver.getRawAxis(self.translationAxis)*Constants.Swerve.slowMoveModifier
+        strafe = lambda: -self.driver.getRawAxis(self.strafeAxis) + self.driver.getLeftTriggerAxis()*self.driver.getRawAxis(self.strafeAxis)*Constants.Swerve.slowMoveModifier
+        rotation = lambda: self.driver.getRawAxis(self.rotationAxis) - self.driver.getRightTriggerAxis()*self.driver.getRawAxis(self.rotationAxis)*Constants.Swerve.slowTurnModifier
         robotcentric = lambda: self.robotCentric_value
 
         self.s_Swerve.setDefaultCommand(
