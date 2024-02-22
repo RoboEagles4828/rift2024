@@ -1,7 +1,7 @@
 from wpilib.interfaces import GenericHID
 from wpilib import Joystick
 from wpilib import XboxController
-from commands2.button import CommandXboxController
+from commands2.button import CommandXboxController, Trigger
 from commands2 import Command, Subsystem
 from commands2 import InstantCommand, ConditionalCommand, WaitCommand
 from commands2.button import JoystickButton
@@ -40,7 +40,7 @@ class RobotContainer:
 
     sysId = JoystickButton(driver, XboxController.Button.kY)
 
-    robotCentric_value = True
+    robotCentric_value = False
 
     # Subsystems
     s_Swerve : Swerve = Swerve()
@@ -73,22 +73,18 @@ class RobotContainer:
         self.faceBack = self.driver.a()
         self.faceRight = self.driver.b()
         self.faceLeft = self.driver.x()
-        self.shoot = self.driver.leftBumper()
-        self.resetToAbsoluteButton = self.driver.rightBumper()
-        self.intakeOff = self.driver.povLeft()
+        self.shoot = self.driver.rightTrigger() #just for testing will be removed later
+        self.intake = self.driver.rightBumper()
+        self.intakeReverse = self.driver.leftBumper()
         # Operator Controls
-        self.manualArm = self.driver.povRight()
-        self.intakeOn = self.operator.leftBumper()
-        self.armHome = self.operator.rightTrigger()
-        #self.shooterOff = self.operator.rightBumper()
-        self.reverse = self.operator.leftTrigger()
-        self.queSubFront = self.operator.a()
-        self.quePodium = self.operator.y()
-        self.queSubRight = self.operator.b()
-        self.queSubLeft = self.operator.x()
-        self.queAmp = self.operator.povUp()
-        self.climbUp = self.operator.povDown()
-        self.climbDown = self.operator.povLeft()
+        self.manualArm = self.operator.leftBumper() 
+        self.armHome = self.operator.rightBumper()
+        self.shooterRev = self.operator.rightTrigger()
+        # self.queSubFront = self.operator.a()
+        # self.quePodium = self.operator.y()
+        # self.queSubRight = self.operator.b()
+        # self.queSubLeft = self.operator.x()
+        # self.queAmp = self.operator.povUp()
         # self.queClimbFront = self.operator.povDown()
         # self.queClimbRight = self.operator.povRight()
         # self.queClimbLeft = self.operator.povLeft()
@@ -150,9 +146,10 @@ class RobotContainer:
         # Arm Buttons
         self.s_Arm.setDefaultCommand(self.s_Arm.seekArmZero())
         self.manualArm.whileTrue(self.s_Arm.moveArm(lambda: self.operator.getLeftY()))
-        self.queAmp.onTrue(self.s_Arm.servoArmToTarget(Constants.ShooterConstants.kAmpPivotAngle))
-        self.quePodium.onTrue(self.s_Arm.servoArmToTarget(Constants.ShooterConstants.kPodiumPivotAngle))
-        self.queSubFront.onTrue(self.s_Arm.servoArmToTarget(Constants.ShooterConstants.kSubwooferPivotAngle))
+        # self.queAmp.onTrue(self.s_Arm.servoArmToTarget(Constants.ShooterConstants.kAmpPivotAngle))
+        # self.quePodium.onTrue(self.s_Arm.servoArmToTarget(Constants.ShooterConstants.kPodiumPivotAngle))
+        # self.queSubFront.onTrue(self.s_Arm.servoArmToTarget(Constants.ShooterConstants.kSubwooferPivotAngle))
+
         # Driver Buttons
         self.zeroGyro.onTrue(InstantCommand(lambda: self.s_Swerve.zeroYaw()))
         self.robotCentric.onFalse(InstantCommand(lambda: self.toggleFieldOriented()))
@@ -161,20 +158,20 @@ class RobotContainer:
         self.faceBack.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(0)), translation, strafe, rotation, robotcentric))
         self.faceLeft.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(90)), translation, strafe, rotation, robotcentric))
         self.faceRight.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(-90)), translation, strafe, rotation, robotcentric))
-        
 
         #Intake Buttons
-        self.intakeOn.onTrue(self.s_Intake.setIntakeSpeed(Constants.IntakeConstants.kIntakeSpeed).alongWith(self.s_Indexer.indexerIntake()))
-        if(self.s_Indexer.getBeamBreakState() == True):
-            self.s_Intake.stopIntake().alongWith(self.s_Indexer.stopIndexer())
-        self.intakeOff.onTrue(self.s_Intake.stopIntake().alongWith(self.s_Indexer.stopIndexer()))
+        self.s_Intake.setDefaultCommand(self.s_Intake.stopIntake())
+        self.s_Indexer.setDefaultCommand(self.s_Indexer.stopIndexer())
+        self.intake.whileTrue(self.s_Intake.intake().alongWith(self.s_Indexer.indexerIntake()))
+        self.intakeReverse.whileTrue(self.s_Intake.outtake().alongWith(self.s_Indexer.indexerOuttake()))
 
         #Shooter Buttons
-        self.shoot.onTrue(self.s_Shooter.shoot().andThen(WaitCommand(1.0)).\
-                          andThen(self.s_Indexer.indexerShoot()).andThen(WaitCommand(2.0)).\
-                          andThen(self.s_Shooter.stop().alongWith(self.s_Indexer.stopIndexer())))
-        #self.reverse.onTrue(self.s_Shooter.shootReverse().alongWith(self.s_Indexer.indexerIntake()))
-        #self.shooterOff.onTrue(self.s_Shooter.stop().alongWith(self.s_Indexer.stopIndexer()))
+        self.s_Shooter.setDefaultCommand(self.s_Shooter.idle())
+        self.shooterRev.whileTrue(self.s_Shooter.shoot())
+        self.shoot.and_(self.s_Shooter.isShooterReady).whileTrue(self.s_Indexer.indexerShoot())
+        
+        self.beamBreakTrigger = Trigger(self.s_Indexer.getBeamBreakState)
+        self.beamBreakTrigger.onTrue(self.s_Intake.stopIntake().alongWith(self.s_Indexer.stopIndexer()))
 
 
 

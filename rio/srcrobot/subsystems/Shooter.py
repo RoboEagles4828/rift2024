@@ -38,21 +38,36 @@ class Shooter(Subsystem):
         self.VelocityControl = VelocityVoltage(0)
         self.VoltageControl = VoltageOut(0)
         self.percentOutput = DutyCycleOut(0)
-        
+
+        self.currentShotVelocity = 0.0
+
+        self.topShooterVelocitySupplier = self.topShooter.get_velocity().as_supplier()
+        self.bottomShooterVelocitySupplier = self.bottomShooter.get_velocity().as_supplier()
+
+    def setShooterVelocity(self, velocity):
+        self.topShooter.set_control(self.VelocityControl.with_velocity(Conversions.MPSToRPS(velocity,  0.101 * math.pi)))
+        self.bottomShooter.set_control(self.VelocityControl.with_velocity(Conversions.MPSToRPS(velocity,  0.101 * math.pi)))
+
+        self.currentShotVelocity = Conversions.MPSToRPS(velocity,  0.101 * math.pi)
+
+    def neutralizeShooter(self):
+        self.topShooter.set_control(self.VoltageControl.with_output(0))
+        self.bottomShooter.set_control(self.VoltageControl.with_output(0))
+
+    def idle(self):
+        return self.run(self.setShooterVelocity(Constants.ShooterConstants.kAmpShootSpeed))    
+    
     def shoot(self):
-        # return InstantCommand(lambda: self.bottomShooter.set_control(self.VelocityControl.with_velocity(Conversions.MPSToRPS(Constants.ShooterConstants.kPodiumShootSpeed,  0.101 * math.pi)))).alongWith(
-        #     InstantCommand(lambda:self.topShooter.set_control(self.VelocityControl.with_velocity(Conversions.MPSToRPS(Constants.ShooterConstants.kPodiumShootSpeed,  0.101 * math.pi))))
-        # )
-        return InstantCommand(lambda: self.bottomShooter.set_control(self.VelocityControl.with_velocity(Conversions.MPSToRPS(Constants.ShooterConstants.kPodiumShootSpeed,  0.101 * math.pi)))).alongWith(
-            InstantCommand(lambda:self.topShooter.set_control(self.VelocityControl.with_velocity(Conversions.MPSToRPS(Constants.ShooterConstants.kPodiumShootSpeed,  0.101 * math.pi))))
-        )
+        return self.run(lambda: self.setShooterVelocity(Constants.ShooterConstants.kPodiumShootSpeed))
 
     def shootReverse(self):
-        return InstantCommand(lambda: self.bottomShooter.set_control(self.VelocityControl.with_velocity(Conversions.MPSToRPS(-Constants.ShooterConstants.kPodiumShootSpeed,  0.101 * math.pi)))).alongWith(
-            InstantCommand(lambda:self.topShooter.set_control(self.VelocityControl.with_velocity(Conversions.MPSToRPS(-Constants.ShooterConstants.kPodiumShootSpeed,  0.101 * math.pi))))
-        )
+        return self.run(lambda: self.setShooterVelocity(-Constants.ShooterConstants.kPodiumShootSpeed))
+    
+    def isShooterReady(self):
+        topShooterReady = abs(self.topShooterVelocitySupplier() - self.currentShotVelocity) < 0.5
+        bottomShooterReady = abs(self.bottomShooterVelocitySupplier() - self.currentShotVelocity) < 0.5
+
+        return topShooterReady and bottomShooterReady
 
     def stop(self):
-        return InstantCommand(lambda: self.bottomShooter.set_control(self.VoltageControl.with_output(0))).alongWith(
-            InstantCommand(lambda:self.topShooter.set_control(self.VoltageControl.with_output(0)))
-        )
+        return self.run(lambda: self.neutralizeShooter())
