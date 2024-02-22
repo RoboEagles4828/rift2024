@@ -3,7 +3,7 @@ from wpilib import Joystick
 from wpilib import XboxController
 from commands2.button import CommandXboxController
 from commands2 import Command, Subsystem
-from commands2 import InstantCommand, ConditionalCommand
+from commands2 import InstantCommand, ConditionalCommand, WaitCommand
 from commands2.button import JoystickButton
 from CTREConfigs import CTREConfigs
 from commands2 import CommandScheduler
@@ -162,13 +162,13 @@ class RobotContainer:
         
 
         #Intake Buttons
-        self.intakeOn.onTrue(self.s_Intake.setIntakeSpeed(Constants.IntakeConstants.kIntakeSpeed) and self.s_Indexer.indexerIntake())
-        self.intakeOff.onTrue(self.s_Intake.stopIntake() and self.s_Indexer.stopIndexer())
+        self.intakeOn.onTrue(self.s_Intake.setIntakeSpeed(Constants.IntakeConstants.kIntakeSpeed).alongWith(self.s_Indexer.indexerIntake()))
+        self.intakeOff.onTrue(self.s_Intake.stopIntake().alongWith(self.s_Indexer.stopIndexer()))
 
         #Shooter Buttons
-        self.shooterOff.onTrue(self.s_Shooter.stop() and self.s_Indexer.stopIndexer())
-        self.shoot.onTrue(self.s_Shooter.shoot() and self.s_Indexer.indexerShoot())
-        self.reverse.onTrue(self.s_Shooter.shootReverse() and self.s_Indexer.indexerIntake())
+        self.shooterOff.onTrue(self.s_Shooter.stop().alongWith(self.s_Indexer.stopIndexer()))
+        self.shoot.onTrue(self.s_Shooter.shoot().andThen(WaitCommand(2.0)).andThen(self.s_Indexer.indexerShoot()))
+        self.reverse.onTrue(self.s_Shooter.shootReverse().alongWith(self.s_Indexer.indexerIntake()))
 
 
 
