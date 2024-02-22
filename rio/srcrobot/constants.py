@@ -169,6 +169,10 @@ class Constants:
         kIndexerMotorID = 14
         kIndexerSpeed = 3.0
 
+    class ClimberConstants:
+        kLeftMotorID = 14
+        kRightMotorID = 13
+
     # An enumeration of known shot locations and data critical to executing the
     # shot. TODO decide on shooter velocity units and tune angles.
     class NextShot(Enum):

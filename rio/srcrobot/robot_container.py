@@ -87,9 +87,9 @@ class RobotContainer:
         self.queSubRight = self.operator.b()
         self.queSubLeft = self.operator.x()
         self.queAmp = self.operator.povUp()
-        self.queClimbFront = self.operator.povDown()
-        self.queClimbRight = self.operator.povRight()
-        self.queClimbLeft = self.operator.povLeft()
+        self.ClimbUp = self.operator.povLeft()
+        self.ClimbDown = self.operator.povRight()
+
         self.configureButtonBindings()
 
         self.auton_selector = SendableChooser()
