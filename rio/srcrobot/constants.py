@@ -175,6 +175,7 @@ class Constants:
         kIndexerMotorID = 14
         kIndexerMaxSpeedMS = 10.0
         kIndexerIntakeSpeedMS = 2.6
+        kBeamBreakerID = 0
 
     # An enumeration of known shot locations and data critical to executing the
     # shot. TODO decide on shooter velocity units and tune angles.

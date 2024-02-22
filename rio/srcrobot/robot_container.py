@@ -169,6 +169,9 @@ class RobotContainer:
         self.s_Shooter.setDefaultCommand(self.s_Shooter.idle())
         self.shooterRev.whileTrue(self.s_Shooter.shoot())
         self.shoot.and_(self.s_Shooter.isShooterReady).whileTrue(self.s_Indexer.indexerShoot())
+        
+        self.beamBreakTrigger = Trigger(self.s_Indexer.getBeamBreakState)
+        self.beamBreakTrigger.onTrue(self.s_Intake.stopIntake().alongWith(self.s_Indexer.stopIndexer()))
 
 
 
