@@ -10,8 +10,11 @@ class Intake(Subsystem):
         self.intakeMotor = TalonSRX(Constants.IntakeConstants.kIntakeMotorID)
         self.intakeMotor.configFactoryDefault()
 
-    def setIntakeSpeed(self, speed: float):
-        return InstantCommand(lambda: self.intakeMotor.set(TalonSRXControlMode.PercentOutput, 1.0))
+    def intake(self):
+        return self.run(lambda: self.intakeMotor.set(TalonSRXControlMode.PercentOutput, 1.0))
+    
+    def outtake(self):
+        return self.run(lambda: self.intakeMotor.set(TalonSRXControlMode.PercentOutput, -1.0))
 
     def stopIntake(self):
-        return InstantCommand(lambda: self.intakeMotor.set(TalonSRXControlMode.Current, 0.0))
+        return self.run(lambda: self.intakeMotor.set(TalonSRXControlMode.Current, 0.0))

@@ -27,22 +27,21 @@ class Constants:
 
         # Drivetrain Constants
         trackWidth = Units.inchesToMeters(26.0)
-        wheelBase = Units.inchesToMeters(26.0)
+        wheelBase = Units.inchesToMeters(31.125)
         wheelCircumference = chosenModule.wheelCircumference
 
-        frontLeftLocation = Translation2d(Units.inchesToMeters(-10.375), Units.inchesToMeters(7.8125))
-        frontRightLocation = Translation2d(Units.inchesToMeters(10.375), Units.inchesToMeters(7.8125))
-        backLeftLocation = Translation2d(Units.inchesToMeters(-10.375), Units.inchesToMeters(-12.9375))
-        backRightLocation = Translation2d(Units.inchesToMeters(10.375), Units.inchesToMeters(-12.9375))
+        frontLeftLocation = Translation2d((wheelBase / 2.0) - trackWidth, -trackWidth / 2.0)
+        frontRightLocation = Translation2d((wheelBase / 2.0) - trackWidth, trackWidth / 2.0)
+        backLeftLocation = Translation2d(wheelBase / 2.0, -trackWidth / 2.0)
+        backRightLocation = Translation2d(wheelBase / 2.0, trackWidth / 2.0)
 
         robotCenterLocation = Translation2d(0.0, 0.0)
 
-        # Swerve Kinematics 
         swerveKinematics = SwerveDrive4Kinematics(
-            frontRightLocation,
-            backRightLocation,
             frontLeftLocation,
-            backLeftLocation
+            frontRightLocation,
+            backLeftLocation,
+            backRightLocation
         )
 
         # Module Gear Ratios
@@ -167,7 +166,8 @@ class Constants:
     
     class IndexerConstants:
         kIndexerMotorID = 14
-        kIndexerSpeed = 10.0
+        kIndexerMaxSpeedMS = 10.0
+        kIndexerIntakeSpeedMS = 2.6
 
     # An enumeration of known shot locations and data critical to executing the
     # shot. TODO decide on shooter velocity units and tune angles.
