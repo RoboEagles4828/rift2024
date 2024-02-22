@@ -1,7 +1,7 @@
 from wpilib.interfaces import GenericHID
 from wpilib import Joystick
 from wpilib import XboxController
-from commands2.button import CommandXboxController
+from commands2.button import CommandXboxController, Trigger
 from commands2 import Command, Subsystem
 from commands2 import InstantCommand, ConditionalCommand, WaitCommand
 from commands2.button import JoystickButton
@@ -167,13 +167,7 @@ class RobotContainer:
 
         #Shooter Buttons
         self.shooterRev.onTrue(self.s_Shooter.shoot())
-        self.shoot.onTrue(
-            ConditionalCommand(
-                self.s_Indexer.indexerShoot(),
-                self.s_Indexer.stopIndexer(),
-                self.s_Shooter.isShooterReady
-            )
-        )
+        self.shoot.and_(self.s_Shooter.isShooterReady).onTrue(self.s_Indexer.indexerShoot())
 
 
 

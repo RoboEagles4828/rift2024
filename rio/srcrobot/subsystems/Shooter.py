@@ -41,6 +41,9 @@ class Shooter(Subsystem):
 
         self.currentShotVelocity = 0.0
 
+        self.topShooterVelocitySupplier = self.topShooter.get_velocity().as_supplier()
+        self.bottomShooterVelocitySupplier = self.bottomShooter.get_velocity().as_supplier()
+
     def setShooterVelocity(self, velocity):
         self.topShooter.set_control(self.VelocityControl.with_velocity(Conversions.MPSToRPS(velocity,  0.101 * math.pi)))
         self.bottomShooter.set_control(self.VelocityControl.with_velocity(Conversions.MPSToRPS(velocity,  0.101 * math.pi)))
@@ -61,8 +64,8 @@ class Shooter(Subsystem):
         return self.run(lambda: self.setShooterVelocity(-Constants.ShooterConstants.kPodiumShootSpeed))
     
     def isShooterReady(self):
-        topShooterReady = abs(abs(self.topShooter.get_velocity().as_supplier()) - self.currentShotVelocity) < 0.5
-        bottomShooterReady = abs(abs(self.topShooter.get_velocity().as_supplier()) - self.currentShotVelocity) < 0.5
+        topShooterReady = abs(abs(self.topShooterVelocitySupplier()) - self.currentShotVelocity) < 0.5
+        bottomShooterReady = abs(abs(self.bottomShooterVelocitySupplier()) - self.currentShotVelocity) < 0.5
 
         return topShooterReady and bottomShooterReady
 

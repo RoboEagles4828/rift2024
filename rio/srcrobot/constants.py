@@ -27,13 +27,20 @@ class Constants:
 
         # Drivetrain Constants
         trackWidth = Units.inchesToMeters(26.0)
-        wheelBase = Units.inchesToMeters(31.125)
+        # wheelBase = Units.inchesToMeters(31.125)
+        wheelBase = Units.inchesToMeters(26.0)
         wheelCircumference = chosenModule.wheelCircumference
 
-        frontLeftLocation = Translation2d((wheelBase / 2.0) - trackWidth, -trackWidth / 2.0)
-        frontRightLocation = Translation2d((wheelBase / 2.0) - trackWidth, trackWidth / 2.0)
+        # frontLeftLocation = Translation2d((wheelBase / 2.0) - trackWidth, -trackWidth / 2.0)
+        # frontRightLocation = Translation2d((wheelBase / 2.0) - trackWidth, trackWidth / 2.0)
+        # backLeftLocation = Translation2d(wheelBase / 2.0, -trackWidth / 2.0)
+        # backRightLocation = Translation2d(wheelBase / 2.0, trackWidth / 2.0)
+
+        frontLeftLocation = Translation2d(-wheelBase / 2.0, -trackWidth / 2.0)
+        frontRightLocation = Translation2d(-wheelBase / 2.0, trackWidth / 2.0)
         backLeftLocation = Translation2d(wheelBase / 2.0, -trackWidth / 2.0)
         backRightLocation = Translation2d(wheelBase / 2.0, trackWidth / 2.0)
+
 
         robotCenterLocation = Translation2d(0.0, 0.0)
 
