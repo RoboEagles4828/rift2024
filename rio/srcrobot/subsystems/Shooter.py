@@ -64,8 +64,8 @@ class Shooter(Subsystem):
         return self.run(lambda: self.setShooterVelocity(-Constants.ShooterConstants.kPodiumShootSpeed))
     
     def isShooterReady(self):
-        topShooterReady = abs(abs(self.topShooterVelocitySupplier()) - self.currentShotVelocity) < 0.5
-        bottomShooterReady = abs(abs(self.bottomShooterVelocitySupplier()) - self.currentShotVelocity) < 0.5
+        topShooterReady = abs(self.topShooterVelocitySupplier() - self.currentShotVelocity) < 0.5
+        bottomShooterReady = abs(self.bottomShooterVelocitySupplier() - self.currentShotVelocity) < 0.5
 
         return topShooterReady and bottomShooterReady
 
