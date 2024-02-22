@@ -167,6 +167,7 @@ class Constants:
     
     class IndexerConstants:
         kIndexerMotorID = 14
+        kBeamBreakerID = 0
         kIndexerSpeed = 10.0
 
     # An enumeration of known shot locations and data critical to executing the

@@ -73,23 +73,25 @@ class RobotContainer:
         self.faceBack = self.driver.a()
         self.faceRight = self.driver.b()
         self.faceLeft = self.driver.x()
-        self.shoot = self.driver.rightTrigger() #just for testing will be removed later
+        self.shoot = self.driver.leftBumper()
         self.resetToAbsoluteButton = self.driver.rightBumper()
-        self.intakeOn = self.driver.povRight()
         self.intakeOff = self.driver.povLeft()
         # Operator Controls
-        self.manualArm = self.operator.leftBumper() 
+        self.manualArm = self.driver.povRight()
+        self.intakeOn = self.operator.leftBumper()
         self.armHome = self.operator.rightTrigger()
-        self.shooterOff = self.operator.rightBumper()
+        #self.shooterOff = self.operator.rightBumper()
         self.reverse = self.operator.leftTrigger()
         self.queSubFront = self.operator.a()
         self.quePodium = self.operator.y()
         self.queSubRight = self.operator.b()
         self.queSubLeft = self.operator.x()
         self.queAmp = self.operator.povUp()
-        self.queClimbFront = self.operator.povDown()
-        self.queClimbRight = self.operator.povRight()
-        self.queClimbLeft = self.operator.povLeft()
+        self.climbUp = self.operator.povDown()
+        self.climbDown = self.operator.povLeft()
+        # self.queClimbFront = self.operator.povDown()
+        # self.queClimbRight = self.operator.povRight()
+        # self.queClimbLeft = self.operator.povLeft()
         self.configureButtonBindings()
 
         self.auton_selector = SendableChooser()
@@ -163,12 +165,16 @@ class RobotContainer:
 
         #Intake Buttons
         self.intakeOn.onTrue(self.s_Intake.setIntakeSpeed(Constants.IntakeConstants.kIntakeSpeed).alongWith(self.s_Indexer.indexerIntake()))
+        if(self.s_Indexer.getBeamBreakState() == True):
+            self.s_Intake.stopIntake().alongWith(self.s_Indexer.stopIndexer())
         self.intakeOff.onTrue(self.s_Intake.stopIntake().alongWith(self.s_Indexer.stopIndexer()))
 
         #Shooter Buttons
-        self.shooterOff.onTrue(self.s_Shooter.stop().alongWith(self.s_Indexer.stopIndexer()))
-        self.shoot.onTrue(self.s_Shooter.shoot().andThen(WaitCommand(2.0)).andThen(self.s_Indexer.indexerShoot()))
-        self.reverse.onTrue(self.s_Shooter.shootReverse().alongWith(self.s_Indexer.indexerIntake()))
+        self.shoot.onTrue(self.s_Shooter.shoot().andThen(WaitCommand(1.0)).\
+                          andThen(self.s_Indexer.indexerShoot()).andThen(WaitCommand(1.0)).\
+                          andThen(self.s_Shooter.stop().alongWith(self.s_Indexer.stopIndexer())))
+        #self.reverse.onTrue(self.s_Shooter.shootReverse().alongWith(self.s_Indexer.indexerIntake()))
+        #self.shooterOff.onTrue(self.s_Shooter.stop().alongWith(self.s_Indexer.stopIndexer()))
 
 
 
