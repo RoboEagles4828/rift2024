@@ -73,7 +73,7 @@ class RobotContainer:
         self.faceBack = self.driver.a()
         self.faceRight = self.driver.b()
         self.faceLeft = self.driver.x()
-        # self.shoot = self.driver.rightTrigger() # Just for testing will be removed later
+        self.shoot = self.driver.rightStick() # Just for testing will be removed later
         self.resetToAbsoluteButton = self.driver.rightBumper()
         self.intakeOn = self.driver.povRight()
         self.intakeOff = self.driver.povLeft()
@@ -135,7 +135,7 @@ class RobotContainer:
         strafe = lambda: -self.driver.getRawAxis(self.strafeAxis)
         rotation = lambda: self.driver.getRawAxis(self.rotationAxis)
         robotcentric = lambda: self.robotCentric_value
-        slow = lambda: self.driver.getLeftTriggerAxis()*Constants.Swerve.slowMoveModifier, self.driver.getRightTriggerAxis()*Constants.Swerve.slowTurnModifier
+        slow = lambda: [self.driver.getLeftTriggerAxis(), self.driver.getRightTriggerAxis()]
 
         self.s_Swerve.setDefaultCommand(
             TeleopSwerve(

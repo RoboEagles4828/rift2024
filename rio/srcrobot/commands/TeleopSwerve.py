@@ -17,7 +17,7 @@ class TeleopSwerve(Command):
     robotCentricSup: Callable[[], bool]
     slowSup: Callable[[], list[float]]
 
-    def __init__(self, s_Swerve, translationSup, strafeSup, rotationSup, robotCentricSup, slowSup):
+    def __init__(self, s_Swerve, translationSup, strafeSup, rotationSup, robotCentricSup, slowSup=lambda: [0.0, 0.0]):
         self.s_Swerve = s_Swerve
         self.addRequirements(s_Swerve)
 
@@ -35,9 +35,18 @@ class TeleopSwerve(Command):
         rotationVal = self.getRotationValue()
 
         # Apply slowmode
-        translationVal *= self.slowSup[0]
-        strafeVal *= self.slowSup[0]
-        rotationVal *= self.slowSup[1]
+        slowMove, slowTurn = self.slowSup()
+
+        # TODO: REMOVE THIS IN PRODUCTION. THIS IS TO SAVE THE ROBOT DURING TESTING.
+        if slowMove < 0 or slowTurn < 0:
+            print("SLOWMODE ERROR: SLOW OFFSET IS NEGATIVE")
+            print("OVERRIDING TO ZERO")
+            slowMove = 0
+            slowTurn = 0
+
+        translationVal -= translationVal*slowMove*Constants.Swerve.slowMoveModifier
+        strafeVal -= strafeVal*slowMove*Constants.Swerve.slowMoveModifier
+        rotationVal -= rotationVal*slowTurn*Constants.Swerve.slowTurnModifier
 
         # Drive
         self.s_Swerve.drive(
