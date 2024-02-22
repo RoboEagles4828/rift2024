@@ -171,7 +171,7 @@ class RobotContainer:
 
         #Shooter Buttons
         self.shoot.onTrue(self.s_Shooter.shoot().andThen(WaitCommand(1.0)).\
-                          andThen(self.s_Indexer.indexerShoot()).andThen(WaitCommand(1.0)).\
+                          andThen(self.s_Indexer.indexerShoot()).andThen(WaitCommand(2.0)).\
                           andThen(self.s_Shooter.stop().alongWith(self.s_Indexer.stopIndexer())))
         #self.reverse.onTrue(self.s_Shooter.shootReverse().alongWith(self.s_Indexer.indexerIntake()))
         #self.shooterOff.onTrue(self.s_Shooter.stop().alongWith(self.s_Indexer.stopIndexer()))
