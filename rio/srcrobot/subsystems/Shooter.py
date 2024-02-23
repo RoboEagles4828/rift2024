@@ -28,9 +28,9 @@ class Shooter(Subsystem):
         self.topShooterConfig = TalonFXConfiguration()
 
         self.topShooterConfig.slot0.k_v = (1/(Conversions.MPSToRPS(Constants.ShooterConstants.kPodiumShootSpeed, self.wheelCircumference)*self.gearRatio))
-        self.topShooterConfig.slot0.k_p = 8.0
+        self.topShooterConfig.slot0.k_p = 6.0
         self.topShooterConfig.slot0.k_i = 0.0
-        self.topShooterConfig.slot0.k_d = 0.0
+        self.topShooterConfig.slot0.k_d = 0.001
 
         self.bottomShooterConfig = deepcopy(self.topShooterConfig)
 
