@@ -40,7 +40,7 @@ class RobotContainer:
 
     sysId = JoystickButton(driver, XboxController.Button.kY)
 
-    robotCentric_value = False
+    robotCentric_value = True
 
     # Subsystems
     s_Swerve : Swerve = Swerve()
@@ -100,11 +100,11 @@ class RobotContainer:
             .withPosition(0, 0)
         
         self.teleop.addBoolean("Field Centric", lambda: not self.robotCentric_value)\
-            .withPosition(9, 0)\
+            .withPosition(7, 0)\
             .withSize(1, 1)\
             .withWidget(BuiltInWidgets.kBooleanBox)
         self.teleop.addBoolean("Zero Gyro", lambda: self.zeroGyro.getAsBoolean())\
-            .withPosition(10, 0)\
+            .withPosition(8, 0)\
             .withSize(1, 1)\
             .withWidget(BuiltInWidgets.kBooleanBox)
         # self.teleop.addBoolean("SysId", lambda: self.sysId.getAsBoolean())\
@@ -115,9 +115,12 @@ class RobotContainer:
             .withPosition(0, 0)\
             .withSize(2, 2)\
             .withWidget(BuiltInWidgets.kGyro)
+        self.teleop.addDouble("HEADING", lambda: self.s_Swerve.getHeading().degrees())
         self.teleop.add("Swerve Subsystem", self.s_Swerve)\
             .withPosition(0, 2)\
             .withSize(3, 3)
+        self.teleop.addDouble("FLYWHEEL TARGET", lambda: self.s_Shooter.getTargetVelocity())
+        self.teleop.addDouble("FLYWHEEL CURRENT", self.s_Shooter.getVelocity)
         
         Shuffleboard.update()
 
@@ -144,15 +147,15 @@ class RobotContainer:
         )
 
         # Arm Buttons
-        self.s_Arm.setDefaultCommand(self.s_Arm.seekArmZero())
+        # self.s_Arm.setDefaultCommand(self.s_Arm.seekArmZero())
         self.manualArm.whileTrue(self.s_Arm.moveArm(lambda: self.operator.getLeftY()))
         # self.queAmp.onTrue(self.s_Arm.servoArmToTarget(Constants.ShooterConstants.kAmpPivotAngle))
         # self.quePodium.onTrue(self.s_Arm.servoArmToTarget(Constants.ShooterConstants.kPodiumPivotAngle))
         # self.queSubFront.onTrue(self.s_Arm.servoArmToTarget(Constants.ShooterConstants.kSubwooferPivotAngle))
 
         # Driver Buttons
-        self.zeroGyro.onTrue(InstantCommand(lambda: self.s_Swerve.zeroYaw()))
-        self.robotCentric.onFalse(InstantCommand(lambda: self.toggleFieldOriented()))
+        self.zeroGyro.onTrue(InstantCommand(lambda: self.s_Swerve.zeroHeading()))
+        self.robotCentric.onTrue(InstantCommand(lambda: self.toggleFieldOriented()))
 
         self.faceForward.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(180)), translation, strafe, rotation, robotcentric))
         self.faceBack.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(0)), translation, strafe, rotation, robotcentric))
@@ -166,14 +169,12 @@ class RobotContainer:
         self.intakeReverse.whileTrue(self.s_Intake.outtake().alongWith(self.s_Indexer.indexerOuttake()))
 
         #Shooter Buttons
-        self.s_Shooter.setDefaultCommand(self.s_Shooter.idle())
+        self.s_Shooter.setDefaultCommand(self.s_Shooter.stop())
         self.shooterRev.whileTrue(self.s_Shooter.shoot())
         self.shoot.and_(self.s_Shooter.isShooterReady).whileTrue(self.s_Indexer.indexerShoot())
         
         self.beamBreakTrigger = Trigger(self.s_Indexer.getBeamBreakState)
         self.beamBreakTrigger.onTrue(self.s_Intake.stopIntake().alongWith(self.s_Indexer.stopIndexer()))
-
-
 
     def toggleFieldOriented(self):
         self.robotCentric_value = not self.robotCentric_value

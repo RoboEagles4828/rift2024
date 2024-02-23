@@ -23,7 +23,7 @@ class TurnInPlace(TeleopSwerve):
         self.turnPID.setSetpoint(self.angle)
 
     def getRotationValue(self):
-        self.angularvelMRadiansPerSecond = self.turnPID.calculate(-self.s_Swerve.getGyroYaw().radians())
+        self.angularvelMRadiansPerSecond = self.turnPID.calculate(self.s_Swerve.getGyroYaw().radians())
         return self.angularvelMRadiansPerSecond
 
     def isFinished(self) -> bool:

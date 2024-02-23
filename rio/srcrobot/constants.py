@@ -26,20 +26,22 @@ class Constants:
         chosenModule = COTSTalonFXSwerveConstants.MK4i.Falcon500(COTSTalonFXSwerveConstants.MK4i.driveRatios.L2)
 
         # Drivetrain Constants
-        trackWidth = Units.inchesToMeters(26.0)
-        # wheelBase = Units.inchesToMeters(31.125)
-        wheelBase = Units.inchesToMeters(26.0)
+        trackWidth = Units.inchesToMeters(20.75)
+        wheelBase = Units.inchesToMeters(20.75)
+        rotationBase = Units.inchesToMeters(31.125 - 5.25)
+        frontOffset = rotationBase - wheelBase
+
         wheelCircumference = chosenModule.wheelCircumference
 
-        # frontLeftLocation = Translation2d((wheelBase / 2.0) - trackWidth, -trackWidth / 2.0)
-        # frontRightLocation = Translation2d((wheelBase / 2.0) - trackWidth, trackWidth / 2.0)
-        # backLeftLocation = Translation2d(wheelBase / 2.0, -trackWidth / 2.0)
-        # backRightLocation = Translation2d(wheelBase / 2.0, trackWidth / 2.0)
-
-        frontLeftLocation = Translation2d(-wheelBase / 2.0, -trackWidth / 2.0)
-        frontRightLocation = Translation2d(-wheelBase / 2.0, trackWidth / 2.0)
+        frontLeftLocation = Translation2d(-((wheelBase / 2.0) - frontOffset), -trackWidth / 2.0)
+        frontRightLocation = Translation2d(-((wheelBase / 2.0) - frontOffset), trackWidth / 2.0)
         backLeftLocation = Translation2d(wheelBase / 2.0, -trackWidth / 2.0)
         backRightLocation = Translation2d(wheelBase / 2.0, trackWidth / 2.0)
+
+        # frontLeftLocation = Translation2d(-wheelBase / 2.0, -trackWidth / 2.0)
+        # frontRightLocation = Translation2d(-wheelBase / 2.0, trackWidth / 2.0)
+        # backLeftLocation = Translation2d(wheelBase / 2.0, -trackWidth / 2.0)
+        # backRightLocation = Translation2d(wheelBase / 2.0, trackWidth / 2.0)
 
 
         robotCenterLocation = Translation2d(0.0, 0.0)
@@ -117,7 +119,7 @@ class Constants:
             driveMotorID = 2
             angleMotorID = 1
             canCoderID = 3
-            angleOffset = Rotation2d(rotationsToRadians(2.63623)+math.pi)
+            angleOffset = Rotation2d(rotationsToRadians(0.145020))
             constants = SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset)
 
         # Front Right Module - Module 1
@@ -125,7 +127,7 @@ class Constants:
             driveMotorID = 19
             angleMotorID = 18
             canCoderID = 20
-            angleOffset = Rotation2d(rotationsToRadians(0.766846)+math.pi)
+            angleOffset = Rotation2d(rotationsToRadians(1.267334))
             constants = SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset)
         
         # Back Left Module - Module 2
@@ -133,7 +135,7 @@ class Constants:
             driveMotorID = 9
             angleMotorID = 8
             canCoderID = 7
-            angleOffset = Rotation2d(rotationsToRadians(1.149902)+math.pi)
+            angleOffset = Rotation2d(rotationsToRadians(0.648926))
             constants = SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset)
 
         # Back Right Module - Module 3
@@ -141,7 +143,7 @@ class Constants:
             driveMotorID = 12
             angleMotorID = 11
             canCoderID = 10
-            angleOffset = Rotation2d(rotationsToRadians(1.075195)+math.pi)
+            angleOffset = Rotation2d(rotationsToRadians(1.575195))
             constants = SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset)
 
     class AutoConstants:
@@ -163,7 +165,7 @@ class Constants:
         kSubwooferPivotAngle = 0.0
         kPodiumPivotAngle = 45.0
         kAmpPivotAngle = 90.0
-        kSubwooferShootSpeed = 3.0
+        kSubwooferShootSpeed = 40.0
         kPodiumShootSpeed = 20.0
         kAmpShootSpeed = 2.0
 

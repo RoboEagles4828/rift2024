@@ -21,9 +21,14 @@ class Shooter(Subsystem):
         self.bottomShooter = TalonFX(self.kBottomShooterCANID)
         self.topShooter = TalonFX(self.kTopShooterCANID)
 
+        self.gearRatio = 3.0/4.0
+
+        self.wheelCircumference = 0.101*math.pi
+
         self.topShooterConfig = TalonFXConfiguration()
 
-        self.topShooterConfig.slot0.k_p = 100.0
+        self.topShooterConfig.slot0.k_v = (1/(Conversions.MPSToRPS(Constants.ShooterConstants.kPodiumShootSpeed, self.wheelCircumference)*self.gearRatio))
+        self.topShooterConfig.slot0.k_p = 8.0
         self.topShooterConfig.slot0.k_i = 0.0
         self.topShooterConfig.slot0.k_d = 0.0
 
@@ -45,29 +50,35 @@ class Shooter(Subsystem):
         self.bottomShooterVelocitySupplier = self.bottomShooter.get_velocity().as_supplier()
 
     def setShooterVelocity(self, velocity):
-        self.topShooter.set_control(self.VelocityControl.with_velocity(Conversions.MPSToRPS(velocity,  0.101 * math.pi)))
-        self.bottomShooter.set_control(self.VelocityControl.with_velocity(Conversions.MPSToRPS(velocity,  0.101 * math.pi)))
+        self.topShooter.set_control(self.VelocityControl.with_velocity(Conversions.MPSToRPS(velocity,  self.wheelCircumference)*self.gearRatio))
+        self.bottomShooter.set_control(self.VelocityControl.with_velocity(Conversions.MPSToRPS(velocity,  self.wheelCircumference)*self.gearRatio))
 
-        self.currentShotVelocity = Conversions.MPSToRPS(velocity,  0.101 * math.pi)
+        self.currentShotVelocity = Conversions.MPSToRPS(velocity,  self.wheelCircumference)*self.gearRatio
 
     def neutralizeShooter(self):
         self.topShooter.set_control(self.VoltageControl.with_output(0))
         self.bottomShooter.set_control(self.VoltageControl.with_output(0))
 
     def idle(self):
-        return self.run(self.setShooterVelocity(Constants.ShooterConstants.kAmpShootSpeed))    
+        return self.run(lambda: self.setShooterVelocity(Constants.ShooterConstants.kAmpShootSpeed))
     
     def shoot(self):
-        return self.run(lambda: self.setShooterVelocity(Constants.ShooterConstants.kPodiumShootSpeed))
+        return self.run(lambda: self.setShooterVelocity(Constants.ShooterConstants.kSubwooferShootSpeed))
 
     def shootReverse(self):
         return self.run(lambda: self.setShooterVelocity(-Constants.ShooterConstants.kPodiumShootSpeed))
     
     def isShooterReady(self):
-        topShooterReady = abs(self.topShooterVelocitySupplier() - self.currentShotVelocity) < 0.5
-        bottomShooterReady = abs(self.bottomShooterVelocitySupplier() - self.currentShotVelocity) < 0.5
+        topShooterReady = abs(self.topShooterVelocitySupplier() - self.currentShotVelocity) < 5
+        bottomShooterReady = abs(self.bottomShooterVelocitySupplier() - self.currentShotVelocity) < 5
 
         return topShooterReady and bottomShooterReady
 
     def stop(self):
         return self.run(lambda: self.neutralizeShooter())
+    
+    def getTargetVelocity(self):
+        return Conversions.RPSToMPS(self.currentShotVelocity, self.wheelCircumference)/self.gearRatio
+    
+    def getVelocity(self):
+        return Conversions.RPSToMPS(self.topShooterVelocitySupplier(), self.wheelCircumference)/self.gearRatio
