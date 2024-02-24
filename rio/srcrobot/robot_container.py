@@ -136,7 +136,7 @@ class RobotContainer:
         strafe = lambda: -self.driver.getRawAxis(self.strafeAxis)
         rotation = lambda: self.driver.getRawAxis(self.rotationAxis)
         robotcentric = lambda: self.robotCentric_value
-        slow = lambda: [self.driver.getLeftTriggerAxis(), self.driver.getRightTriggerAxis()]
+        slow = lambda: self.driver.getRightTriggerAxis()
 
         self.s_Swerve.setDefaultCommand(
             TeleopSwerve(
