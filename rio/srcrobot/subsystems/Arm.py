@@ -7,6 +7,7 @@ import wpimath.filter
 import wpimath
 import wpilib
 import phoenix5
+from phoenix5 import TalonSRXControlMode
 import math
 
 class Arm(Subsystem):
@@ -172,7 +173,7 @@ class Arm(Subsystem):
     #     @return a command that drives the arm via double supplier.
     #    
     def moveArm(self, percentOutput):
-        return self.run(lambda: self.armMotor.set(percentOutput() * 0.4)) \
+        return self.run(lambda: self.armMotor.set(TalonSRXControlMode.PercentOutput, percentOutput() * 0.4)) \
         .withName("moveArm")
   
 

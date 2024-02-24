@@ -26,23 +26,31 @@ class Constants:
         chosenModule = COTSTalonFXSwerveConstants.MK4i.Falcon500(COTSTalonFXSwerveConstants.MK4i.driveRatios.L2)
 
         # Drivetrain Constants
-        trackWidth = Units.inchesToMeters(29.0)
-        wheelBase = Units.inchesToMeters(29.0)
+        trackWidth = Units.inchesToMeters(20.75)
+        wheelBase = Units.inchesToMeters(20.75)
+        rotationBase = Units.inchesToMeters(31.125 - 5.25)
+        frontOffset = rotationBase - wheelBase
+
         wheelCircumference = chosenModule.wheelCircumference
 
-        frontLeftLocation = Translation2d(wheelBase / 2.0, trackWidth / 2.0)
-        frontRightLocation = Translation2d(-wheelBase / 2.0, trackWidth / 2.0)
+        frontLeftLocation = Translation2d(-((wheelBase / 2.0) - frontOffset), -trackWidth / 2.0)
+        frontRightLocation = Translation2d(-((wheelBase / 2.0) - frontOffset), trackWidth / 2.0)
         backLeftLocation = Translation2d(wheelBase / 2.0, -trackWidth / 2.0)
-        backRightLocation = Translation2d(-wheelBase / 2.0, -trackWidth / 2.0)
+        backRightLocation = Translation2d(wheelBase / 2.0, trackWidth / 2.0)
+
+        # frontLeftLocation = Translation2d(-wheelBase / 2.0, -trackWidth / 2.0)
+        # frontRightLocation = Translation2d(-wheelBase / 2.0, trackWidth / 2.0)
+        # backLeftLocation = Translation2d(wheelBase / 2.0, -trackWidth / 2.0)
+        # backRightLocation = Translation2d(wheelBase / 2.0, trackWidth / 2.0)
+
 
         robotCenterLocation = Translation2d(0.0, 0.0)
 
-        # Swerve Kinematics 
         swerveKinematics = SwerveDrive4Kinematics(
-            backRightLocation,
-            frontRightLocation, 
-            backLeftLocation, 
-            frontLeftLocation
+            frontLeftLocation,
+            frontRightLocation,
+            backLeftLocation,
+            backRightLocation
         )
 
         # Module Gear Ratios
@@ -113,34 +121,34 @@ class Constants:
         # Module Specific Constants
         # Front Left Module - Module 0
         class Mod0:
-            driveMotorID = 3
+            driveMotorID = 2
             angleMotorID = 1
-            canCoderID = 2
-            angleOffset = Rotation2d(2.8025+math.pi)
+            canCoderID = 3
+            angleOffset = Rotation2d(rotationsToRadians(0.145020))
             constants = SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset)
 
         # Front Right Module - Module 1
         class Mod1:
-            driveMotorID = 6
-            angleMotorID = 4
-            canCoderID = 5
-            angleOffset = Rotation2d(-0.763922)
+            driveMotorID = 19
+            angleMotorID = 18
+            canCoderID = 20
+            angleOffset = Rotation2d(rotationsToRadians(1.267334))
             constants = SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset)
         
         # Back Left Module - Module 2
         class Mod2:
-            driveMotorID = 12
-            angleMotorID = 10
-            canCoderID = 11
-            angleOffset = Rotation2d(-0.30526+math.pi)
+            driveMotorID = 9
+            angleMotorID = 8
+            canCoderID = 7
+            angleOffset = Rotation2d(rotationsToRadians(0.648926))
             constants = SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset)
 
         # Back Right Module - Module 3
         class Mod3:
-            driveMotorID = 9
-            angleMotorID = 7
-            canCoderID = 8
-            angleOffset = Rotation2d(0.107378)
+            driveMotorID = 12
+            angleMotorID = 11
+            canCoderID = 10
+            angleOffset = Rotation2d(rotationsToRadians(1.575195))
             constants = SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset)
 
     class AutoConstants:
@@ -162,8 +170,8 @@ class Constants:
         kSubwooferPivotAngle = 0.0
         kPodiumPivotAngle = 45.0
         kAmpPivotAngle = 90.0
-        kSubwooferShootSpeed = 3.0
-        kPodiumShootSpeed = 5.0
+        kSubwooferShootSpeed = 40.0
+        kPodiumShootSpeed = 20.0
         kAmpShootSpeed = 2.0
 
     class IntakeConstants:
@@ -172,7 +180,9 @@ class Constants:
     
     class IndexerConstants:
         kIndexerMotorID = 14
-        kIndexerSpeed = 3.0
+        kIndexerMaxSpeedMS = 10.0
+        kIndexerIntakeSpeedMS = 2.6
+        kBeamBreakerID = 0
 
     # An enumeration of known shot locations and data critical to executing the
     # shot. TODO decide on shooter velocity units and tune angles.

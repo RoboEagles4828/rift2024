@@ -1,6 +1,8 @@
 from constants import Constants
 from commands2.subsystem import Subsystem
-from phoenix5 import TalonSRX, TalonSRXConfiguration, TalonSRXControlMode
+from phoenix5 import TalonSRX, TalonSRXConfiguration, TalonSRXControlMode, TalonSRXFeedbackDevice, NeutralMode
+from wpilib import DigitalInput
+from commands2 import InstantCommand
 import math
 
 class Indexer(Subsystem):
@@ -8,11 +10,28 @@ class Indexer(Subsystem):
         self.indexerMotor = TalonSRX(Constants.IndexerConstants.kIndexerMotorID)
         self.indexerMotor.configFactoryDefault()
 
+        self.beamBreak = DigitalInput(Constants.IndexerConstants.kBeamBreakerID)
+
+        self.indexerMotor.setInverted(True)
+        self.indexerMotor.config_kP(0, 2.0)
+        self.indexerMotor.setNeutralMode(NeutralMode.Brake)
+
+        self.indexerDiameter = 0.031
+        self.indexerEncoderCPR = 2048.0
+        self.indexerIntakeVelocity = -(Constants.IndexerConstants.kIndexerIntakeSpeedMS/(math.pi*self.indexerDiameter))*self.indexerEncoderCPR
+        self.indexerShootVelocity = -(Constants.IndexerConstants.kIndexerMaxSpeedMS/(math.pi*self.indexerDiameter))*self.indexerEncoderCPR
+        
+    def getBeamBreakState(self):
+        return not bool(self.beamBreak.get())
+
     def indexerIntake(self):
-        self.indexerMotor.set(TalonSRXControlMode.Velocity, (Constants.IndexerConstants.kIndexerSpeed/(math.pi*0.031))*2048.0)
+        return self.run(lambda: self.indexerMotor.set(TalonSRXControlMode.Velocity, self.indexerIntakeVelocity))
 
     def indexerShoot(self):
-        self.indexerMotor.set(TalonSRXControlMode.Velocity, -(Constants.IndexerConstants.kIndexerSpeed/(math.pi*0.031))*2048.0)
+        return self.run(lambda: self.indexerMotor.set(TalonSRXControlMode.Velocity, self.indexerShootVelocity))
+    
+    def indexerOuttake(self):
+        return self.run(lambda: self.indexerMotor.set(TalonSRXControlMode.Velocity, -self.indexerIntakeVelocity))
 
     def stopIndexer(self):
-        self.indexerMotor.set(TalonSRXControlMode.Velocity, 0.0)
+        return self.run(lambda: self.indexerMotor.set(TalonSRXControlMode.PercentOutput, 0.0))
