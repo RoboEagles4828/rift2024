@@ -24,7 +24,7 @@
 
   <!-- Axle Position Variables -->
   <xacro:property name="axle_pos" value="0.261523" />
-  <xacro:property name="axle_pos_z" value="${69.056 / 1000}" />
+  <xacro:property name="axle_pos_z" value="${39.056 / 1000}" />
   <xacro:property name="elevator_middle_distance" value = ".457" />
   <xacro:property name= "chassis_side_width" value = ".0254" />
 
@@ -38,11 +38,11 @@
   <!-- Chassis -->
   <link name="base_link">
   <!-- Set mass to 0 and give a valid inertia tensor of 0 -->
-    <inertial>
+    <!-- <inertial>
       <mass value="0.0"/>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
-    </inertial>
+    </inertial> -->
   </link>
 
 
@@ -51,20 +51,20 @@
   </xacro:square_chassis>
 
   <!-- Arm -->
-  <xacro:arm parent="base_link">
+  <!-- <xacro:arm parent="base_link">
     <origin xyz="0 0 0" rpy="0 0 0" />
-  </xacro:arm>
+  </xacro:arm> -->
 
   <!-- Intake -->
   <xacro:intake parent="swerve_chassis_link">
-    <origin xyz="0.46 0 0.09" rpy="0 0 ${pi/2}" />
+    <origin xyz="0.24 0 0.09" rpy="0 0 0" />
   </xacro:intake>
 
-  <!-- Shooter -->
+  <!-- Shooter
   <xacro:shooter prefix="shooter" parent="base_link">
-    <!-- <origin xyz="0 0 0" rpy="0 0 0" /> -->
-    <origin xyz="0.25 0 .33" rpy="0 ${-pi/6} 0" /> <!-- Made up values for shooter location & rotation. Change later. -->
-  </xacro:shooter>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <origin xyz="0.25 0 .33" rpy="0 ${-pi/6} 0" /> Made up values for shooter location & rotation. Change later.
+  </xacro:shooter> -->
 
   <!-- Drive Train -->
   <xacro:swerve_axle prefix="front_left" parent="swerve_chassis_link">

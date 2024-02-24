@@ -13,7 +13,7 @@
     <!-- NOTE: The below values are **guesses**-->
     <!-- NOTE: Pretty good **guesses**-->
     <xacro:property name="wheel_pos_y" value="0.022"/>
-    <xacro:property name="wheel_pos_z" value="0.063"/>
+    <xacro:property name="wheel_pos_z" value="0.025"/>
 
     <xacro:macro name="swerve_axle" params="prefix parent *origin">
         <link name="${prefix}_axle_link">
@@ -39,7 +39,7 @@
         
         <link name="${prefix}_wheel_link">
             <visual>
-                <origin xyz="0 ${wheel_pos_y} 0" rpy="${pi / 2} 0 ${pi / 4}" />
+                <origin xyz="0 0 0" rpy="${pi / 2} 0 ${pi/2}" />
                 <geometry>
                     <mesh filename="package://rift_description/meshes/SwerveWheel.stl" scale="0.001 0.001 0.001" />
                 </geometry>
