@@ -20,6 +20,8 @@ from pathplannerlib.config import ReplanningConfig
 class Constants:
     stickDeadband = 0.1
 
+
+    exampleConst = "This is an example constant" # to showcase jurigged
     class Swerve:
         navxID = 0
 

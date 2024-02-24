@@ -57,6 +57,8 @@ class RobotContainer:
 
     # The container for the robot. Contains subsystems, OI devices, and commands.
     def __init__(self):
+        import jurigged; # These two lines would be commented out for comps
+        jurigged.watch()
 
         self.currentArmAngle = self.s_Arm.getDegrees()
 
@@ -160,7 +162,8 @@ class RobotContainer:
         self.robotCentric.onTrue(InstantCommand(lambda: self.toggleFieldOriented()))
 
         self.faceForward.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(180)), translation, strafe, rotation, robotcentric))
-        self.faceBack.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(0)), translation, strafe, rotation, robotcentric))
+        self.faceBack.onTrue(InstantCommand(lambda: self.doOtherTHing())) # Example replacement to show hotreload + robotpy
+        # self.faceBack.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(0)), translation, strafe, rotation, robotcentric))
         self.faceLeft.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(90)), translation, strafe, rotation, robotcentric))
         self.faceRight.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(-90)), translation, strafe, rotation, robotcentric))
 
@@ -184,6 +187,8 @@ class RobotContainer:
     def toggleFieldOriented(self):
         self.robotCentric_value = not self.robotCentric_value
 
+    def doOtherThing(self): # Example function to showcase hot reload
+        print(Constants.exampleConst)
 
     """
      * Use this to pass the autonomous command to the main {@link Robot} class.
