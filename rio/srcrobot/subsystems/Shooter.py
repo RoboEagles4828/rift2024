@@ -28,9 +28,14 @@ class Shooter(Subsystem):
         self.topShooterConfig = TalonFXConfiguration()
 
         self.topShooterConfig.slot0.k_v = (1/(Conversions.MPSToRPS(Constants.ShooterConstants.kPodiumShootSpeed, self.wheelCircumference)*self.gearRatio))
-        self.topShooterConfig.slot0.k_p = 6.0
+        self.topShooterConfig.slot0.k_p = 1.5
         self.topShooterConfig.slot0.k_i = 0.0
-        self.topShooterConfig.slot0.k_d = 0.001
+        self.topShooterConfig.slot0.k_d = 0.0
+
+        self.topShooterConfig.current_limits.supply_current_limit_enable = True
+        self.topShooterConfig.current_limits.supply_current_limit = Constants.Swerve.driveCurrentLimit
+        self.topShooterConfig.current_limits.supply_current_threshold = Constants.Swerve.driveCurrentThreshold
+        self.topShooterConfig.current_limits.supply_time_threshold = Constants.Swerve.driveCurrentThresholdTime
 
         self.bottomShooterConfig = deepcopy(self.topShooterConfig)
 
@@ -64,13 +69,20 @@ class Shooter(Subsystem):
     
     def shoot(self):
         return self.run(lambda: self.setShooterVelocity(Constants.ShooterConstants.kSubwooferShootSpeed))
+    
+    def amp(self):
+        return self.run(lambda: self.setShooterVelocity(Constants.ShooterConstants.kAmpShootSpeed))
 
     def shootReverse(self):
         return self.run(lambda: self.setShooterVelocity(-Constants.ShooterConstants.kPodiumShootSpeed))
     
-    def isShooterReady(self):
-        topShooterReady = abs(self.topShooterVelocitySupplier() - self.currentShotVelocity) < 5
-        bottomShooterReady = abs(self.bottomShooterVelocitySupplier() - self.currentShotVelocity) < 5
+    def isShooterReady(self, isAuto=False):
+        if not isAuto:
+            topShooterReady = abs(self.topShooterVelocitySupplier() - self.currentShotVelocity) < 5
+            bottomShooterReady = abs(self.bottomShooterVelocitySupplier() - self.currentShotVelocity) < 5
+        else:
+            topShooterReady = abs(self.topShooterVelocitySupplier() - Conversions.MPSToRPS(Constants.ShooterConstants.kSubwooferShootSpeed,  self.wheelCircumference)*self.gearRatio) < 5
+            bottomShooterReady = abs(self.bottomShooterVelocitySupplier() - self.currentShotVelocity) < 5
 
         return topShooterReady and bottomShooterReady
 

@@ -32,6 +32,16 @@ class Indexer(Subsystem):
     
     def indexerOuttake(self):
         return self.run(lambda: self.indexerMotor.set(TalonSRXControlMode.Velocity, -self.indexerIntakeVelocity))
+    
+    def setIndexerVelocity(self, velocity):
+        return self.run(lambda: self.indexerMotor.set(TalonSRXControlMode.Velocity, -(velocity/(math.pi*self.indexerDiameter))*self.indexerEncoderCPR))
+    
+    def levelIndexer(self):
+        return self.indexerIntake().withTimeout(0.1)\
+        .andThen(self.indexerOuttake().withTimeout(0.1))\
+        .andThen(self.indexerIntake().until(self.getBeamBreakState))\
+        .andThen(self.indexerIntake().withTimeout(0.01))\
+        .andThen(self.stopIndexer())
 
     def stopIndexer(self):
         return self.run(lambda: self.indexerMotor.set(TalonSRXControlMode.PercentOutput, 0.0))

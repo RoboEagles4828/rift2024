@@ -3,7 +3,7 @@ from wpilib import Joystick
 from wpilib import XboxController
 from commands2.button import CommandXboxController, Trigger
 from commands2 import Command, Subsystem
-from commands2 import InstantCommand, ConditionalCommand, WaitCommand
+from commands2 import InstantCommand, ConditionalCommand, WaitCommand, PrintCommand
 from commands2.button import JoystickButton
 from CTREConfigs import CTREConfigs
 from commands2 import CommandScheduler
@@ -27,6 +27,8 @@ from wpilib import SendableChooser
 
 from autos.PathPlannerAutoRunner import PathPlannerAutoRunner
 from pathplannerlib.auto import NamedCommands
+
+
 
 class RobotContainer:
     ctreConfigs = CTREConfigs()
@@ -55,6 +57,9 @@ class RobotContainer:
 
     # The container for the robot. Contains subsystems, OI devices, and commands.
     def __init__(self):
+
+        self.currentArmAngle = self.s_Arm.getDegrees()
+
         translation = lambda: 0.0
         strafe = lambda: 0.0
         rotation = lambda: 0.0
@@ -67,6 +72,12 @@ class RobotContainer:
         # Driver Controls
         self.auton = Shuffleboard.getTab("Auton")
         self.teleop = Shuffleboard.getTab("Teleop")
+
+        # self.armAngleSlider = self.teleop.add("ARM POS", self.currentArmAngle)\
+        #     .withWidget(BuiltInWidgets.kNumberSlider)\
+        #     .withProperties({"min": -360, "max": 360})\
+        #     .getEntry()
+
         self.zeroGyro = self.driver.back()
         self.robotCentric = self.driver.start()
         self.faceForward = self.driver.y()
@@ -80,6 +91,7 @@ class RobotContainer:
         self.manualArm = self.operator.leftBumper() 
         self.armHome = self.operator.rightBumper()
         self.shooterRev = self.operator.rightTrigger()
+        self.shooterAmpRev = self.operator.leftTrigger()
         # self.queSubFront = self.operator.a()
         # self.quePodium = self.operator.y()
         # self.queSubRight = self.operator.b()
@@ -90,15 +102,29 @@ class RobotContainer:
         # self.queClimbLeft = self.operator.povLeft()
         self.configureButtonBindings()
 
+        self.s_Intake.setDefaultCommand(self.s_Intake.stopIntake())
+        self.s_Indexer.setDefaultCommand(self.s_Indexer.stopIndexer())
+        self.s_Shooter.setDefaultCommand(self.s_Shooter.stop())
+
+        NamedCommands.registerCommand("RevShooter", self.s_Shooter.shoot())
+        NamedCommands.registerCommand("ShootSubwoofer", self.s_Shooter.shoot().withTimeout(2.0).andThen(self.s_Indexer.indexerShoot().withTimeout(1.0)))
+        NamedCommands.registerCommand("runIntake", self.s_Shooter.stop().withTimeout(0.5).andThen(self.s_Intake.intake().alongWith(self.s_Indexer.indexerIntake().withTimeout(2.0)).withTimeout(2.0)))
+        NamedCommands.registerCommand("print0", InstantCommand(lambda: print("0")))
+        NamedCommands.registerCommand("print1", InstantCommand(lambda: print("1")))
+        NamedCommands.registerCommand("print2", InstantCommand(lambda: print("2")))
+        NamedCommands.registerCommand("print3", InstantCommand(lambda: print("3")))
+        NamedCommands.registerCommand("print4", InstantCommand(lambda: print("4")))
+
         self.auton_selector = SendableChooser()
-        self.auton_selector.setDefaultOption("Test Auto", PathPlannerAutoRunner("TestAuto", self.s_Swerve).getCommand())
-        self.auton_selector.addOption("Example Auto", exampleAuto(self.s_Swerve).getCommand())
+        self.auton_selector.setDefaultOption("Straight Auto", PathPlannerAutoRunner("StraightAuto", self.s_Swerve).getCommand())
+        self.auton_selector.addOption("RightSubwooferTaxiAuto", PathPlannerAutoRunner("RightSubwooferTaxiAuto", self.s_Swerve).getCommand())
+        self.auton_selector.addOption("CenterSubwoofer2PieceAuto", PathPlannerAutoRunner("CenterSubwoofer2Piece", self.s_Swerve).getCommand())
 
         self.auton.add("Auton Selector", self.auton_selector)\
             .withWidget(BuiltInWidgets.kComboBoxChooser)\
             .withSize(2, 1)\
             .withPosition(0, 0)
-        
+
         self.teleop.addBoolean("Field Centric", lambda: not self.robotCentric_value)\
             .withPosition(7, 0)\
             .withSize(1, 1)\
@@ -121,7 +147,7 @@ class RobotContainer:
             .withSize(3, 3)
         self.teleop.addDouble("FLYWHEEL TARGET", lambda: self.s_Shooter.getTargetVelocity())
         self.teleop.addDouble("FLYWHEEL CURRENT", self.s_Shooter.getVelocity)
-        
+        self.teleop.addDouble("ARM ANGLE", self.s_Arm.getDegrees)
         Shuffleboard.update()
 
     """
@@ -147,7 +173,7 @@ class RobotContainer:
         )
 
         # Arm Buttons
-        # self.s_Arm.setDefaultCommand(self.s_Arm.seekArmZero())
+        self.s_Arm.setDefaultCommand(self.s_Arm.seekArmZero())
         self.manualArm.whileTrue(self.s_Arm.moveArm(lambda: self.operator.getLeftY()))
         # self.queAmp.onTrue(self.s_Arm.servoArmToTarget(Constants.ShooterConstants.kAmpPivotAngle))
         # self.quePodium.onTrue(self.s_Arm.servoArmToTarget(Constants.ShooterConstants.kPodiumPivotAngle))
@@ -163,18 +189,18 @@ class RobotContainer:
         self.faceRight.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(-90)), translation, strafe, rotation, robotcentric))
 
         #Intake Buttons
-        self.s_Intake.setDefaultCommand(self.s_Intake.stopIntake())
-        self.s_Indexer.setDefaultCommand(self.s_Indexer.stopIndexer())
         self.intake.whileTrue(self.s_Intake.intake().alongWith(self.s_Indexer.indexerIntake()))
         self.intakeReverse.whileTrue(self.s_Intake.outtake().alongWith(self.s_Indexer.indexerOuttake()))
 
         #Shooter Buttons
-        self.s_Shooter.setDefaultCommand(self.s_Shooter.stop())
         self.shooterRev.whileTrue(self.s_Shooter.shoot())
+        self.shooterAmpRev.whileTrue(self.s_Shooter.amp())
         self.shoot.and_(self.s_Shooter.isShooterReady).whileTrue(self.s_Indexer.indexerShoot())
         
         self.beamBreakTrigger = Trigger(self.s_Indexer.getBeamBreakState)
-        self.beamBreakTrigger.onTrue(self.s_Intake.stopIntake().alongWith(self.s_Indexer.stopIndexer()))
+        self.beamBreakTrigger.onTrue(WaitCommand(0.02).andThen(self.s_Intake.stopIntake().alongWith(self.s_Indexer.levelIndexer())))
+        # self.alwaysTrue = Trigger(lambda: True)
+        # self.alwaysTrue.whileTrue(self.s_Arm.servoArmToTarget(self.armAngleSlider.getDouble()))
 
     def toggleFieldOriented(self):
         self.robotCentric_value = not self.robotCentric_value

@@ -7,7 +7,7 @@ import wpimath.filter
 import wpimath
 import wpilib
 import phoenix5
-from phoenix5 import TalonSRXControlMode
+from phoenix5 import TalonSRXControlMode, TalonSRXFeedbackDevice
 import math
 
 class Arm(Subsystem):
@@ -51,9 +51,9 @@ class Arm(Subsystem):
         self.kRestingAtZero = False
 
         # Configure REV Through Bore Encoder as the arm's remote sensor
-        self.armMotor.configSelectedFeedbackSensor(phoenix5.FeedbackDevice.RemoteSensor0, 0, 0)
-
-        self.armMotor.setSensorPhase(True)
+        self.armMotor.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.QuadEncoder)
+        self.armMotor.setSensorPhase(False)
+        self.armMotor.setInverted(True)
         self.armMotor.config_kP(self.kMotionMagicSlot, self.kPMotionMagic)
         self.armMotor.config_kI(self.kMotionMagicSlot, self.kIMotionMagic)
         self.armMotor.config_kD(self.kMotionMagicSlot, self.kDMotionMagic)
@@ -198,7 +198,7 @@ class Arm(Subsystem):
     #    
     def getDegrees(self):
         currentPos = self.armMotor.getSelectedSensorPosition()
-        return (currentPos - self.kMeasuredTicksWhenHorizontal) / self.kEncoderTicksPerDegreeOfArmMotion
+        return (currentPos - self.kMeasuredTicksWhenHorizontal) / self.kEncoderTicksPerDegreeOfArmMotion / 2.0
 
 
     #    
