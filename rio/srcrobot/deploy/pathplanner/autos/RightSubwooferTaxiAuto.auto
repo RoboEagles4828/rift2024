@@ -14,7 +14,25 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootSubwoofer"
+            "name": "RevShooter"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterOff"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IndexerOff"
           }
         },
         {

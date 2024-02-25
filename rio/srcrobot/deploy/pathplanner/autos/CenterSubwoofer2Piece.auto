@@ -14,23 +14,41 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootSubwoofer"
+            "name": "RevShooter"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "print"
+            "name": "Shoot"
           }
         },
         {
-          "type": "parallel",
+          "type": "named",
+          "data": {
+            "name": "ShooterOff"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IndexerOff"
+          }
+        },
+        {
+          "type": "deadline",
           "data": {
             "commands": [
               {
+                "type": "path",
+                "data": {
+                  "pathName": "CenterSubwoofertoCenterPiece"
+                }
+              },
+              {
                 "type": "named",
                 "data": {
-                  "name": "runIntake"
+                  "name": "IntakeOn"
                 }
               },
               {
@@ -38,15 +56,21 @@
                 "data": {
                   "commands": [
                     {
-                      "type": "path",
+                      "type": "named",
                       "data": {
-                        "pathName": "CenterSubwoofertoCenterPiece"
+                        "name": "IndexerIntake"
                       }
                     },
                     {
-                      "type": "path",
+                      "type": "wait",
                       "data": {
-                        "pathName": "CenterPiecetoCenterSubwoofer"
+                        "waitTime": 3.0
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "IndexerOff"
                       }
                     }
                   ]
@@ -56,27 +80,64 @@
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "print"
+            "pathName": "CenterPiecetoCenterSubwoofer"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "print"
+            "name": "IntakeOff"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ShootSubwoofer"
+            "name": "IndexerOff"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "print3"
+            "name": "RevShooter"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeOn"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterOff"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IndexerOff"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeOff"
           }
         }
       ]

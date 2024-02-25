@@ -106,7 +106,7 @@ class Constants:
 
         holonomicPathConfig = HolonomicPathFollowerConfig(
             PIDConstants(5.0, 0.0, 0.0),
-            PIDConstants(2.0, 0.0, 0.0),
+            PIDConstants(0.0, 0.0, 0.0),
             maxAutoModuleSpeed,
             #distance from center to the furthest module
             Units.inchesToMeters(16),

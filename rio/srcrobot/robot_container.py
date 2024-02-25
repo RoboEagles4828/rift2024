@@ -65,10 +65,12 @@ class RobotContainer:
         rotation = lambda: 0.0
         robotcentric = lambda: False
 
-        NamedCommands.registerCommand("FaceForward", TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(180)), translation, strafe, rotation, robotcentric))
-        NamedCommands.registerCommand("FaceBackward", TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(0)), translation, strafe, rotation, robotcentric))
-        NamedCommands.registerCommand("FaceLeft", TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(90)), translation, strafe, rotation, robotcentric))
-        NamedCommands.registerCommand("FaceRight", TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(-90)), translation, strafe, rotation, robotcentric))
+        self.auto = False
+
+        # NamedCommands.registerCommand("FaceForward", TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(180)), translation, strafe, rotation, robotcentric))
+        # NamedCommands.registerCommand("FaceBackward", TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(0)), translation, strafe, rotation, robotcentric))
+        # NamedCommands.registerCommand("FaceLeft", TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(90)), translation, strafe, rotation, robotcentric))
+        # NamedCommands.registerCommand("FaceRight", TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(-90)), translation, strafe, rotation, robotcentric))
         # Driver Controls
         self.auton = Shuffleboard.getTab("Auton")
         self.teleop = Shuffleboard.getTab("Teleop")
@@ -102,18 +104,16 @@ class RobotContainer:
         # self.queClimbLeft = self.operator.povLeft()
         self.configureButtonBindings()
 
-        self.s_Intake.setDefaultCommand(self.s_Intake.stopIntake())
-        self.s_Indexer.setDefaultCommand(self.s_Indexer.stopIndexer())
         self.s_Shooter.setDefaultCommand(self.s_Shooter.stop())
 
-        NamedCommands.registerCommand("RevShooter", self.s_Shooter.shoot())
-        NamedCommands.registerCommand("ShootSubwoofer", self.s_Shooter.shoot().withTimeout(2.0).andThen(self.s_Indexer.indexerShoot().withTimeout(1.0)))
-        NamedCommands.registerCommand("runIntake", self.s_Shooter.stop().withTimeout(0.5).andThen(self.s_Intake.intake().alongWith(self.s_Indexer.indexerIntake().withTimeout(2.0)).withTimeout(2.0)))
-        NamedCommands.registerCommand("print0", InstantCommand(lambda: print("0")))
-        NamedCommands.registerCommand("print1", InstantCommand(lambda: print("1")))
-        NamedCommands.registerCommand("print2", InstantCommand(lambda: print("2")))
-        NamedCommands.registerCommand("print3", InstantCommand(lambda: print("3")))
-        NamedCommands.registerCommand("print4", InstantCommand(lambda: print("4")))
+        NamedCommands.registerCommand("RevShooter", self.s_Shooter.shoot().withTimeout(2.0))
+        NamedCommands.registerCommand("Shoot", self.s_Indexer.indexerShoot().withTimeout(1.0))
+        NamedCommands.registerCommand("ShooterOff", InstantCommand(self.s_Shooter.brake, self.s_Shooter))
+        NamedCommands.registerCommand("IndexerIntake", self.s_Indexer.indexerIntakeOnce())
+        NamedCommands.registerCommand("IndexerOff", self.s_Indexer.stopIndexer())
+        NamedCommands.registerCommand("IntakeOn", self.s_Intake.intakeOnce())
+        NamedCommands.registerCommand("IntakeOff", self.s_Intake.stopIntake())
+        # NamedCommands.registerCommand("Command ")
 
         self.auton_selector = SendableChooser()
         self.auton_selector.setDefaultOption("Straight Auto", PathPlannerAutoRunner("StraightAuto", self.s_Swerve).getCommand())
@@ -145,9 +145,14 @@ class RobotContainer:
         self.teleop.add("Swerve Subsystem", self.s_Swerve)\
             .withPosition(0, 2)\
             .withSize(3, 3)
+        self.teleop.add("Intake Sub", self.s_Intake)
+        self.teleop.add("Indexer Sub", self.s_Indexer)
+        self.teleop.add("Shooter Sub", self.s_Indexer)
         self.teleop.addDouble("FLYWHEEL TARGET", lambda: self.s_Shooter.getTargetVelocity())
         self.teleop.addDouble("FLYWHEEL CURRENT", self.s_Shooter.getVelocity)
         self.teleop.addDouble("ARM ANGLE", self.s_Arm.getDegrees)
+
+        self.teleop.addDouble("BEAM", lambda: float(self.s_Indexer.getBeamBreakState()))
         Shuffleboard.update()
 
     """
@@ -189,6 +194,8 @@ class RobotContainer:
         self.faceRight.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(-90)), translation, strafe, rotation, robotcentric))
 
         #Intake Buttons
+        self.s_Indexer.setDefaultCommand(self.s_Indexer.stopIndexer())
+        self.s_Intake.setDefaultCommand(self.s_Intake.stopIntake())
         self.intake.whileTrue(self.s_Intake.intake().alongWith(self.s_Indexer.indexerIntake()))
         self.intakeReverse.whileTrue(self.s_Intake.outtake().alongWith(self.s_Indexer.indexerOuttake()))
 
@@ -198,7 +205,7 @@ class RobotContainer:
         self.shoot.and_(self.s_Shooter.isShooterReady).whileTrue(self.s_Indexer.indexerShoot())
         
         self.beamBreakTrigger = Trigger(self.s_Indexer.getBeamBreakState)
-        self.beamBreakTrigger.onTrue(WaitCommand(0.02).andThen(self.s_Intake.stopIntake().alongWith(self.s_Indexer.levelIndexer())))
+        self.beamBreakTrigger.and_(self.intake.getAsBoolean).onTrue(PrintCommand("BEAM BREAK").andThen(WaitCommand(0.02)).andThen(self.s_Intake.stopIntake().alongWith(self.s_Indexer.levelIndexer().withTimeout(1.0)))).onFalse(PrintCommand("NO BEAM BREAK"))
         # self.alwaysTrue = Trigger(lambda: True)
         # self.alwaysTrue.whileTrue(self.s_Arm.servoArmToTarget(self.armAngleSlider.getDouble()))
 
