@@ -4,6 +4,13 @@
     <xacro:macro name="versaroller" params="prefix parent *origin">
 
     <link name="intake_rollerbar_${prefix}_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 ${pi/2} ${pi/2}" />
+            <geometry>
+                <cylinder length="0.575" radius="0.016"/>
+            </geometry>
+            <material name="yellow" />
+        </visual>
         <collision>
             <geometry>
                 <cylinder length="0.575" radius="0.016"/>

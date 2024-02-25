@@ -24,7 +24,7 @@
       <visual>
         <origin xyz="0 0 ${chassis_height/2}" rpy="0 0 ${pi/2}" />
         <geometry>
-          <mesh filename="package://rift_description/meshes/SwerveChassis.stl" scale="0.001 0.001 0.001" />
+          <mesh filename="package://rift_description/meshes/RiftChassis.stl" scale="0.001 0.001 0.001" />
         </geometry>
         <material name="purple"/>
       </visual>
