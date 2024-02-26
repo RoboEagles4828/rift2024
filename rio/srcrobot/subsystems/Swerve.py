@@ -20,12 +20,37 @@ from wpimath.units import volts
 
 from pathplannerlib.auto import AutoBuilder
 
-from wpilib import DriverStation
+from wpilib import DriverStation, SmartDashboard
+from wpiutil import Sendable, SendableBuilder
 
 class Swerve(Subsystem):
     swerveOdometry: SwerveDrive4Odometry
     mSwerveMods: list[SwerveModule, SwerveModule, SwerveModule, SwerveModule]
     gyro: AHRS
+
+    class SwerveSendable(Sendable):
+        def __init__(self, swerve, swerveMods):
+            self.mSwerveMods = swerveMods
+            self.swerve = swerve
+            super().__init__()
+
+        def initSendable(self, builder: SendableBuilder):
+            builder.setSmartDashboardType("SwerveDrive")
+
+            builder.addDoubleProperty("Front Left Angle", lambda: self.mSwerveMods[0].getState().angle.radians(), lambda val: None)
+            builder.addDoubleProperty("Front Left Velocity", lambda: self.mSwerveMods[0].getState().speed, lambda val: None)
+
+            builder.addDoubleProperty("Front Right Angle", lambda: self.mSwerveMods[1].getState().angle.radians(), lambda val: None)
+            builder.addDoubleProperty("Front Right Velocity", lambda: self.mSwerveMods[1].getState().speed, lambda val: None)
+
+            builder.addDoubleProperty("Back Left Angle", lambda: self.mSwerveMods[2].getState().angle.radians(), lambda val: None)
+            builder.addDoubleProperty("Back Left Velocity", lambda: self.mSwerveMods[2].getState().speed, lambda val: None)
+
+            builder.addDoubleProperty("Back Right Angle", lambda: self.mSwerveMods[3].getState().angle.radians(), lambda val: None)
+            builder.addDoubleProperty("Back Right Velocity", lambda: self.mSwerveMods[3].getState().speed, lambda val: None)
+
+            builder.addDoubleProperty("Robot Angle", lambda: self.swerve.getHeading().radians(), lambda val: None)
+        
 
     def __init__(self):
         self.gyro = AHRS.create_spi()
@@ -65,6 +90,8 @@ class Swerve(Subsystem):
                 .withSize(2, 1)\
                 .withWidget(BuiltInWidgets.kNumberBar)
             Shuffleboard.update()
+
+        SmartDashboard.putData("Swerve Drive", self.SwerveSendable(self, self.mSwerveMods))
 
     def drive(self, translation: Translation2d, rotation, fieldRelative, isOpenLoop):
         discreteSpeeds = ChassisSpeeds.discretize(translation.X(), translation.Y(), rotation, 0.02)
@@ -160,3 +187,5 @@ class Swerve(Subsystem):
 
     def periodic(self):
         self.swerveOdometry.update(self.getGyroYaw(), tuple(self.getModulePositions()))
+
+        SmartDashboard.putNumber("Gyro", self.getHeading().degrees())

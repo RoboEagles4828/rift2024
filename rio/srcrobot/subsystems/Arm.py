@@ -6,6 +6,7 @@ from commands2 import cmd
 import wpimath.filter
 import wpimath
 import wpilib
+from wpilib import SmartDashboard
 import phoenix5
 from phoenix5 import TalonSRXControlMode, TalonSRXFeedbackDevice
 import math
@@ -65,6 +66,8 @@ class Arm(Subsystem):
         self.armMotor.config_kI(self.kVelocitySlot, 0.0)
         self.armMotor.config_kD(self.kVelocitySlot, 0.0)
         self.armMotor.config_kF(self.kVelocitySlot, self.kF)
+
+        SmartDashboard.putData("Arm", self)
         
 
     #     

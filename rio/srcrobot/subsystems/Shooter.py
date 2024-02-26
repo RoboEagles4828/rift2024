@@ -75,16 +75,16 @@ class Shooter(Subsystem):
         self.bottomShooter.set_control(self.VoltageControl.with_output(0))
 
     def idle(self):
-        return self.run(lambda: self.setShooterVelocity(Constants.ShooterConstants.kAmpShootSpeed))
+        return self.run(lambda: self.setShooterVelocity(Constants.ShooterConstants.kAmpShootSpeed)).withName("IdleShooter")
     
     def shoot(self):
-        return self.run(lambda: self.setShooterVelocity(Constants.ShooterConstants.kSubwooferShootSpeed))
+        return self.run(lambda: self.setShooterVelocity(Constants.ShooterConstants.kSubwooferShootSpeed)).withName("Shoot")
     
     def amp(self):
-        return self.run(lambda: self.setShooterVelocity(Constants.ShooterConstants.kAmpShootSpeed))
+        return self.run(lambda: self.setShooterVelocity(Constants.ShooterConstants.kAmpShootSpeed)).withName("Amp")
 
     def shootReverse(self):
-        return self.run(lambda: self.setShooterVelocity(-Constants.ShooterConstants.kPodiumShootSpeed))
+        return self.run(lambda: self.setShooterVelocity(-Constants.ShooterConstants.kPodiumShootSpeed)).withName("ShootReverse")
     
     def isShooterReady(self, isAuto=False):
         if not isAuto:
@@ -106,7 +106,7 @@ class Shooter(Subsystem):
         self.bottomShooter.set_control(self.VoltageControl.with_output(0))
 
     def stop(self):
-        return self.run(lambda: self.neutralizeShooter())
+        return self.run(lambda: self.neutralizeShooter()).withName("StopShooter")
     
     def getTargetVelocity(self):
         return Conversions.RPSToMPS(self.currentShotVelocity, self.wheelCircumference)/self.gearRatio

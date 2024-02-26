@@ -23,7 +23,7 @@ from commands.TurnInPlace import TurnInPlace
 from commands.SysId import DriveSysId
 
 from wpilib.shuffleboard import Shuffleboard, BuiltInWidgets, BuiltInLayouts
-from wpilib import SendableChooser
+from wpilib import SendableChooser, SmartDashboard
 
 from autos.PathPlannerAutoRunner import PathPlannerAutoRunner
 from pathplannerlib.auto import NamedCommands
@@ -72,13 +72,6 @@ class RobotContainer:
         # NamedCommands.registerCommand("FaceLeft", TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(90)), translation, strafe, rotation, robotcentric))
         # NamedCommands.registerCommand("FaceRight", TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(-90)), translation, strafe, rotation, robotcentric))
         # Driver Controls
-        self.auton = Shuffleboard.getTab("Auton")
-        self.teleop = Shuffleboard.getTab("Teleop")
-
-        # self.armAngleSlider = self.teleop.add("ARM POS", self.currentArmAngle)\
-        #     .withWidget(BuiltInWidgets.kNumberSlider)\
-        #     .withProperties({"min": -360, "max": 360})\
-        #     .getEntry()
 
         self.zeroGyro = self.driver.back()
         self.robotCentric = self.driver.start()
@@ -104,11 +97,9 @@ class RobotContainer:
         # self.queClimbLeft = self.operator.povLeft()
         self.configureButtonBindings()
 
-        self.s_Shooter.setDefaultCommand(self.s_Shooter.stop())
-
         NamedCommands.registerCommand("RevShooter", self.s_Shooter.shoot().withTimeout(2.0))
         NamedCommands.registerCommand("Shoot", self.s_Indexer.indexerShoot().withTimeout(1.0))
-        NamedCommands.registerCommand("ShooterOff", InstantCommand(self.s_Shooter.brake, self.s_Shooter))
+        NamedCommands.registerCommand("ShooterOff", InstantCommand(self.s_Shooter.brake, self.s_Shooter).withName("ShooterBrake"))
         NamedCommands.registerCommand("IndexerIntake", self.s_Indexer.indexerIntakeOnce())
         NamedCommands.registerCommand("IndexerOff", self.s_Indexer.stopIndexer())
         NamedCommands.registerCommand("IntakeOn", self.s_Intake.intakeOnce())
@@ -120,40 +111,20 @@ class RobotContainer:
         self.auton_selector.addOption("RightSubwooferTaxiAuto", PathPlannerAutoRunner("RightSubwooferTaxiAuto", self.s_Swerve).getCommand())
         self.auton_selector.addOption("CenterSubwoofer2PieceAuto", PathPlannerAutoRunner("CenterSubwoofer2Piece", self.s_Swerve).getCommand())
 
-        self.auton.add("Auton Selector", self.auton_selector)\
-            .withWidget(BuiltInWidgets.kComboBoxChooser)\
-            .withSize(2, 1)\
-            .withPosition(0, 0)
+        SmartDashboard.putData("Auton Selector", self.auton_selector)
 
-        self.teleop.addBoolean("Field Centric", lambda: not self.robotCentric_value)\
-            .withPosition(7, 0)\
-            .withSize(1, 1)\
-            .withWidget(BuiltInWidgets.kBooleanBox)
-        self.teleop.addBoolean("Zero Gyro", lambda: self.zeroGyro.getAsBoolean())\
-            .withPosition(8, 0)\
-            .withSize(1, 1)\
-            .withWidget(BuiltInWidgets.kBooleanBox)
-        # self.teleop.addBoolean("SysId", lambda: self.sysId.getAsBoolean())\
-        #     .withPosition(11, 0)\
-        #     .withSize(1, 1)\
-        #     .withWidget(BuiltInWidgets.kBooleanBox)
-        self.teleop.add("Gyro", self.s_Swerve.gyro)\
-            .withPosition(0, 0)\
-            .withSize(2, 2)\
-            .withWidget(BuiltInWidgets.kGyro)
-        self.teleop.addDouble("HEADING", lambda: self.s_Swerve.getHeading().degrees())
-        self.teleop.add("Swerve Subsystem", self.s_Swerve)\
-            .withPosition(0, 2)\
-            .withSize(3, 3)
-        self.teleop.add("Intake Sub", self.s_Intake)
-        self.teleop.add("Indexer Sub", self.s_Indexer)
-        self.teleop.add("Shooter Sub", self.s_Indexer)
-        self.teleop.addDouble("FLYWHEEL TARGET", lambda: self.s_Shooter.getTargetVelocity())
-        self.teleop.addDouble("FLYWHEEL CURRENT", self.s_Shooter.getVelocity)
-        self.teleop.addDouble("ARM ANGLE", self.s_Arm.getDegrees)
+        SmartDashboard.putBoolean("Field Centric", not self.robotCentric_value)
+        SmartDashboard.putBoolean("Zero Gyro", self.zeroGyro.getAsBoolean())
+        SmartDashboard.putData("Swerve Subsystem", self.s_Swerve)
+        SmartDashboard.putData("Intake Sub", self.s_Intake)
+        SmartDashboard.putData("Indexer Sub", self.s_Indexer)
+        SmartDashboard.putData("Shooter Sub", self.s_Shooter)
+        SmartDashboard.putNumber("FLYWHEEL TARGET", self.s_Shooter.getTargetVelocity())
+        SmartDashboard.putNumber("FLYWHEEL CURRENT", self.s_Shooter.getVelocity())
+        SmartDashboard.putNumber("ARM ANGLE", self.s_Arm.getDegrees())
 
-        self.teleop.addDouble("BEAM", lambda: float(self.s_Indexer.getBeamBreakState()))
-        Shuffleboard.update()
+        SmartDashboard.putBoolean("BEAM BREAK", self.s_Indexer.getBeamBreakState())
+        SmartDashboard.updateValues()
 
     """
      * Use this method to define your button->command mappings. Buttons can be created by
@@ -200,6 +171,7 @@ class RobotContainer:
         self.intakeReverse.whileTrue(self.s_Intake.outtake().alongWith(self.s_Indexer.indexerOuttake()))
 
         #Shooter Buttons
+        self.s_Shooter.setDefaultCommand(self.s_Shooter.stop())
         self.shooterRev.whileTrue(self.s_Shooter.shoot())
         self.shooterAmpRev.whileTrue(self.s_Shooter.amp())
         self.shoot.and_(self.s_Shooter.isShooterReady).whileTrue(self.s_Indexer.indexerShoot())

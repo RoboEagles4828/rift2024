@@ -26,31 +26,31 @@ class Indexer(Subsystem):
         return not bool(self.beamBreak.get())
 
     def indexerIntake(self):
-        return self.run(lambda: self.indexerMotor.set(TalonSRXControlMode.Velocity, self.indexerIntakeVelocity))
+        return self.run(lambda: self.indexerMotor.set(TalonSRXControlMode.Velocity, self.indexerIntakeVelocity)).withName("Intake")
     
     def indexerIntakeOnce(self):
         return self.run(lambda: self.indexerMotor.set(TalonSRXControlMode.Velocity, self.indexerIntakeVelocity)).until(self.getBeamBreakState)\
             .andThen(self.indexerOuttake().withTimeout(0.15))\
-            .finallyDo(lambda interrupted: self.stopIndexer())
+            .finallyDo(lambda interrupted: self.stopIndexer()).withName("IntakeOnce")
 
     def indexerShoot(self): 
-        return self.run(lambda: self.indexerMotor.set(TalonSRXControlMode.Velocity, self.indexerShootVelocity))
+        return self.run(lambda: self.indexerMotor.set(TalonSRXControlMode.Velocity, self.indexerShootVelocity)).withName("Shoot")
     
     def indexerOuttake(self):
-        return self.run(lambda: self.indexerMotor.set(TalonSRXControlMode.Velocity, -self.indexerIntakeVelocity))
+        return self.run(lambda: self.indexerMotor.set(TalonSRXControlMode.Velocity, -self.indexerIntakeVelocity)).withName("Outtake")
     
     def setIndexerVelocity(self, velocity):
-        return self.run(lambda: self.indexerMotor.set(TalonSRXControlMode.Velocity, -(velocity/(math.pi*self.indexerDiameter))*self.indexerEncoderCPR))
+        return self.run(lambda: self.indexerMotor.set(TalonSRXControlMode.Velocity, -(velocity/(math.pi*self.indexerDiameter))*self.indexerEncoderCPR)).withName("SetIndexerVelocity")
     
     def levelIndexer(self):
         return self.indexerIntake().withTimeout(0.1)\
         .andThen(self.indexerOuttake().withTimeout(0.1))\
         .andThen(self.indexerIntake().until(self.getBeamBreakState))\
         .andThen(self.indexerOuttake().withTimeout(0.1))\
-        .andThen(self.stopIndexer())
+        .andThen(self.stopIndexer()).withName("LevelIndexer")
 
     def instantStop(self):
-        return InstantCommand(lambda: self.indexerMotor.set(TalonSRXControlMode.PercentOutput, 0.0))
+        return InstantCommand(lambda: self.indexerMotor.set(TalonSRXControlMode.PercentOutput, 0.0)).withName("InstantStop")
 
     def stopIndexer(self):
-        return self.runOnce(lambda: self.indexerMotor.set(TalonSRXControlMode.PercentOutput, 0.0))
+        return self.runOnce(lambda: self.indexerMotor.set(TalonSRXControlMode.PercentOutput, 0.0)).withName("StopIndexer")
