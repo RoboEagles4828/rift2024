@@ -162,7 +162,7 @@ class RobotContainer:
         self.robotCentric.onTrue(InstantCommand(lambda: self.toggleFieldOriented()))
 
         self.faceForward.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(180)), translation, strafe, rotation, robotcentric))
-        self.faceBack.onTrue(InstantCommand(lambda: self.doOtherTHing())) # Example replacement to show hotreload + robotpy
+        self.faceBack.onTrue(InstantCommand(lambda: self.doOtherThing())) # Example replacement to show hotreload + robotpy
         # self.faceBack.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(0)), translation, strafe, rotation, robotcentric))
         self.faceLeft.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(90)), translation, strafe, rotation, robotcentric))
         self.faceRight.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(-90)), translation, strafe, rotation, robotcentric))
@@ -188,7 +188,10 @@ class RobotContainer:
         self.robotCentric_value = not self.robotCentric_value
 
     def doOtherThing(self): # Example function to showcase hot reload
-        print(Constants.exampleConst)
+        if False:
+            print(Constants.exampleConst)
+        else:
+            print(7 + 4)
 
     """
      * Use this to pass the autonomous command to the main {@link Robot} class.

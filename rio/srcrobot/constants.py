@@ -21,7 +21,7 @@ class Constants:
     stickDeadband = 0.1
 
 
-    exampleConst = "This is an example constant" # to showcase jurigged
+    exampleConst = "This is hot reloading" # to showcase jurigged
     class Swerve:
         navxID = 0
 
