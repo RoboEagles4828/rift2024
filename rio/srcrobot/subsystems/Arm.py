@@ -21,7 +21,7 @@ class Arm(Subsystem):
     def __init__(self):
         self.kArmMotorCANId = 5
         self.kMeasuredTicksWhenHorizontal = 0
-        self.kEncoderTickPerEncoderRotation = 4096
+        self.kEncoderTickPerEncoderRotation = 4096*2
         self.kEncoderToArmGearRatio = 1.0
         self.kEncoderTicksPerArmRotation = self.kEncoderTickPerEncoderRotation * self.kEncoderToArmGearRatio
         self.kEncoderTicksPerDegreeOfArmMotion = self.kEncoderTicksPerArmRotation / 360.0
@@ -198,7 +198,7 @@ class Arm(Subsystem):
     #    
     def getDegrees(self):
         currentPos = self.armMotor.getSelectedSensorPosition()
-        return (currentPos - self.kMeasuredTicksWhenHorizontal) / self.kEncoderTicksPerDegreeOfArmMotion / 2.0
+        return (currentPos - self.kMeasuredTicksWhenHorizontal) / self.kEncoderTicksPerDegreeOfArmMotion
 
 
     #    
