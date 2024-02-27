@@ -35,10 +35,16 @@ def generate_launch_description():
                     bringup_path,'launch','gym.launch.py'
                 )]), launch_arguments={'use_sim_time': 'false'}.items()
     )
+    camera_launch = IncludeLaunchDescription(
+                PythonLaunchDescriptionSource([os.path.join(
+                    bringup_path,'launch','camera.launch.py'
+                )]), launch_arguments={'use_sim_time': 'false'}.items()
+    )
 
     # Launch!
     return LaunchDescription([
         control_layer,
         teleop_layer,
-        gym_launch
+        gym_launch,
+        camera_launch
     ])

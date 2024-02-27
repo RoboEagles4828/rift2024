@@ -8,6 +8,7 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(joint_trajectory_controller REQUIRED)
+find_package(usb_cam REQUIRED)
 
 install(
   DIRECTORY launch config scripts

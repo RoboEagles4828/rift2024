@@ -1,0 +1,21 @@
+/**:
+  ros__parameters:
+    video_device: "/dev/video0"
+    framerate: 30.0
+    io_method: "mmap"
+    frame_id: "usb_camera_1_link"
+    image_width: 1280
+    image_height: 720
+    camera_name: "camera_1"
+    camera_info_url: "package://rift_bringup/config/camera_info.yaml"
+    brightness: -1
+    contrast: -1
+    saturation: -1
+    sharpness: -1
+    gain: -1
+    auto_white_balance: true
+    white_balance: 4000
+    autoexposure: true
+    exposure: 100
+    autofocus: false
+    focus: -1
