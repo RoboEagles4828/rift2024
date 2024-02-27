@@ -1,0 +1,63 @@
+#!/usr/bin/bash
+
+IP_ADDRESS="10.48.28.2"
+
+check-directory() {
+    if [ ! -f "$1/robot.py" ]; then
+        echo "ERROR: $1/robot.py does not exist!"
+        exit
+    fi
+}
+
+sshCommand() {
+    ssh -t lvuser@$IP_ADDRESS "$@"
+}
+
+restart-code() {
+    sshCommand "/usr/local/frc/bin/frcKillRobot.sh"
+}
+
+sync() {
+    check-directory $1
+    # Instead of copying all files, it should read the .riosyncmetadata file instead to determine what files changed 
+    scp $1/* lvuser@10.48.28.2:/home/lvuser/py/
+    restart-code
+}
+
+
+help() {
+    echo "In active development!"
+    echo "Here be dragons!"
+}
+
+case $1 in 
+    "check")
+        check-directory "${2-.}"
+    ;;
+
+    "restart")
+        restart-code
+    ;;
+
+    "deploy")
+        echo "Would deploy here..."
+    ;;
+
+    "sync")
+        sync "${2-.}"
+    ;;
+
+    "ssh")
+        sshCommand "bash"
+    ;;
+
+
+    "help")
+        help
+    ;;
+    
+    *)
+        echo "Unknown option: \"$1\""
+        help
+    ;;
+esac
