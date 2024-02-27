@@ -182,10 +182,10 @@ class Constants:
     # An enumeration of known shot locations and data critical to executing the
     # shot. TODO decide on shooter velocity units and tune angles.
     class NextShot(Enum):
-      AMP = (0, -90.0, 90.0, 90.0, 100.0)
-      SPEAKER_AMP = (1, 45.0, -45.0, 0.0, 1000.0)
-      SPEAKER_CENTER = (2, 0.0, 0.0, 0.0, 1000.0)
-      SPEAKER_PODIUM = (3, -45.0, 45.0, 0.0, 1000.0)
+      AMP = (0, -90.0, 90.0, 90.0, 2.0)
+      SPEAKER_AMP = (1, 60.0, -60.0, 0.0, 25.0)
+      SPEAKER_CENTER = (2, 0.0, 0.0, 0.0, 25.0)
+      SPEAKER_PODIUM = (3, -60.0, 60.0, 0.0, 25.0)
       PODIUM = (4, -30.0, 30.0, 45.0, 2000.00)
 
       def __init__(self, value, blueSideBotHeading, redSideBotHeading, armAngle, shooterVelocity):
@@ -194,3 +194,13 @@ class Constants:
         self.m_redSideBotHeading = redSideBotHeading
         self.m_armAngle = armAngle
         self.m_shooterVelocity = shooterVelocity
+
+      def calculate(self, distance):
+        shooterRegressionEquation = lambda x: (0.178571*(x**2)) + (0.107143*x) + 24.9286
+        armRegressionEquation = lambda x: (0.175*(x**2)) + (1.605*x) + 8.88
+
+        shooterSpeed = shooterRegressionEquation(distance)
+        armAngle = armRegressionEquation(distance)
+
+        return (shooterSpeed, armAngle)
+    

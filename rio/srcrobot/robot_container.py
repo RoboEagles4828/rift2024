@@ -28,6 +28,8 @@ from wpilib import SendableChooser, SmartDashboard
 from autos.PathPlannerAutoRunner import PathPlannerAutoRunner
 from pathplannerlib.auto import NamedCommands
 
+from robotState import RobotState
+
 
 
 class RobotContainer:
@@ -53,6 +55,13 @@ class RobotContainer:
 
     #SysId
     driveSysId = DriveSysId(s_Swerve)
+
+    m_robotState : RobotState = RobotState()
+    m_robotState.initialize(
+        s_Swerve.getHeading,
+        s_Arm.getDegrees,
+        s_Shooter.getVelocity
+    )
 
 
     # The container for the robot. Contains subsystems, OI devices, and commands.
@@ -122,6 +131,7 @@ class RobotContainer:
         SmartDashboard.putNumber("FLYWHEEL TARGET", self.s_Shooter.getTargetVelocity())
         SmartDashboard.putNumber("FLYWHEEL CURRENT", self.s_Shooter.getVelocity())
         SmartDashboard.putNumber("ARM ANGLE", self.s_Arm.getDegrees())
+        SmartDashboard.putBoolean("State", self.m_robotState.isReadyToIntake())
 
         SmartDashboard.putBoolean("BEAM BREAK", self.s_Indexer.getBeamBreakState())
         SmartDashboard.updateValues()
@@ -137,6 +147,10 @@ class RobotContainer:
         strafe = lambda: -self.driver.getRawAxis(self.strafeAxis)
         rotation = lambda: self.driver.getRawAxis(self.rotationAxis)
         robotcentric = lambda: self.robotCentric_value
+
+        SmartDashboard.putNumber("Translation", translation())
+        SmartDashboard.putNumber("Strafe", strafe())
+        SmartDashboard.putNumber("Rotation", rotation())
 
         self.s_Swerve.setDefaultCommand(
             TeleopSwerve(
@@ -160,11 +174,11 @@ class RobotContainer:
         self.zeroGyro.onTrue(InstantCommand(lambda: self.s_Swerve.zeroHeading()))
         self.robotCentric.onTrue(InstantCommand(lambda: self.toggleFieldOriented()))
 
-        self.faceForward.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(180)), translation, strafe, rotation, robotcentric))
+        self.faceForward.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(180)), translation, strafe, rotation, robotcentric).withTimeout(2.0))
         # self.faceBack.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(0)), translation, strafe, rotation, robotcentric))
         self.faceBack.whileTrue(self.s_Arm.servoArmToTarget(45))
-        self.faceLeft.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(90)), translation, strafe, rotation, robotcentric))
-        self.faceRight.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(-90)), translation, strafe, rotation, robotcentric))
+        self.faceLeft.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(90)), translation, strafe, rotation, robotcentric).withTimeout(2.0))
+        self.faceRight.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(-90)), translation, strafe, rotation, robotcentric).withTimeout(2.0))
 
         #Intake Buttons
         self.s_Indexer.setDefaultCommand(self.s_Indexer.stopIndexer())
@@ -180,8 +194,6 @@ class RobotContainer:
         
         self.beamBreakTrigger = Trigger(self.s_Indexer.getBeamBreakState)
         self.beamBreakTrigger.and_(self.intake.getAsBoolean).onTrue(PrintCommand("BEAM BREAK").andThen(WaitCommand(0.02)).andThen(self.s_Intake.stopIntake().alongWith(self.s_Indexer.levelIndexer().withTimeout(1.0)))).onFalse(PrintCommand("NO BEAM BREAK"))
-        # self.alwaysTrue = Trigger(lambda: True)
-        # self.alwaysTrue.whileTrue(self.s_Arm.servoArmToTarget(self.armAngleSlider.getDouble()))
 
     def toggleFieldOriented(self):
         self.robotCentric_value = not self.robotCentric_value
