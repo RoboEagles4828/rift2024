@@ -29,11 +29,11 @@ class Arm(Subsystem):
         self.kMotionMagicSlot = 0
         self.kVelocitySlot = 1
         self.MaxGravityFF = 0.0 #0.26 # In percent output [1.0:1.0]
-        self.kF = 0.15
-        self.kPMotionMagic = 1.0 #4.0
-        self.kPVelocity = 1.0 #0.8
+        self.kF = 0.3
+        self.kPMotionMagic = 2.0 #4.0
+        self.kPVelocity = 3.0 #0.8
         self.kIMotionMagic = 0.0
-        self.kDMotionMagic = 0.0
+        self.kDMotionMagic = 0.001
         self.kCruiseVelocity = 1000.0 # ticks per 100ms
         self.kMaxAccel = 1000.0 # Accel to cruise in 1 sec
         self.kServoToleranceDegrees = 1.0 # +/- 1.0 for 2.0 degree window
