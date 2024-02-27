@@ -1,22 +1,29 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
     <!-- I made this file just because I felt that having it four times in the intake was a *bad* idea. Feel free to give better ideas. -->
+    <xacro:property name="rollerbar_length" value="0.575" />
+    <xacro:property name="rollerbar_radius" value="0.016" />
+    <xacro:property name="rollerbar_mass" value="0.5" />
     <xacro:macro name="versaroller" params="prefix parent *origin">
 
     <link name="intake_rollerbar_${prefix}_link">
         <visual>
             <origin xyz="0 0 0" rpy="0 ${pi/2} ${pi/2}" />
             <geometry>
-                <cylinder length="0.575" radius="0.016"/>
+                <cylinder length="${rollerbar_length}" radius="${rollerbar_radius}"/>
             </geometry>
             <material name="yellow" />
         </visual>
         <collision>
+            <origin xyz="0 0 0" rpy="0 ${pi/2} ${pi/2}" />
             <geometry>
                 <cylinder length="0.575" radius="0.016"/>
             </geometry>
             <!-- <material name="ghost" /> -->
         </collision>
+        <xacro:inertial_cylinder mass="${rollerbar_mass}" radius="${rollerbar_radius}" length="${rollerbar_length}">
+            <origin xyz="0 0 0" rpy="0 0 0" />
+        </xacro:inertial_cylinder>
     </link>
 
 
