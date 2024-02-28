@@ -58,16 +58,14 @@ class RobotContainer:
     #SysId
     driveSysId = DriveSysId(s_Swerve)
 
-    m_robotState : RobotState = RobotState()
-    m_robotState.initialize(
-        s_Swerve.getHeading,
-        s_Arm.getDegrees,
-        s_Shooter.getVelocity
-    )
-
-
     # The container for the robot. Contains subsystems, OI devices, and commands.
     def __init__(self):
+        self.m_robotState : RobotState = RobotState()
+        self.m_robotState.initialize(
+            lambda: self.s_Swerve.getHeading().degrees(),
+            self.s_Arm.getDegrees,
+            self.s_Shooter.getVelocity
+        )
 
         self.currentArmAngle = self.s_Arm.getDegrees()
 
