@@ -12,7 +12,7 @@ class Climber(Subsystem):
         self.right.set(ControlMode.MotionMagic, newHeight)
 
     def climberUp(self):
-        return self.run(lambda: self.__setClimbers(Constants.ClimberConstants.maxClimbHeight)).withName("ClimberUp")
+        return self.runOnce(lambda: self.__setClimbers(Constants.ClimberConstants.maxClimbHeight)).withName("ClimberUp")
     
     def climberDown(self):
-        return self.run(lambda: self.__setClimbers(0)).withName("ClimberDown")
+        return self.runOnce(lambda: self.__setClimbers(0)).withName("ClimberDown")
