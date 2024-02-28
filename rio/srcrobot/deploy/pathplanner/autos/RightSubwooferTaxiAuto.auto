@@ -1,38 +1,44 @@
 {
   "version": 1.0,
-  "startingPose": null,
+  "startingPose": {
+    "position": {
+      "x": 0.75,
+      "y": 6.63
+    },
+    "rotation": 60.0
+  },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "ScorePreload"
+            "name": "RevShooter"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterOff"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IndexerOff"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Intake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "ScoreSecondNote"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "GetNoteFromLine"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "ReturnToWing"
+            "pathName": "RightSubwooferTaxiPath"
           }
         }
       ]

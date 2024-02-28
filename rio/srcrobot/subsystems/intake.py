@@ -1,6 +1,7 @@
 from constants import Constants
 from commands2.subsystem import Subsystem
 from phoenix5 import TalonSRX, TalonSRXConfiguration, TalonSRXControlMode
+from commands2 import InstantCommand
 import math
 
 class Intake(Subsystem):
@@ -9,8 +10,14 @@ class Intake(Subsystem):
         self.intakeMotor = TalonSRX(Constants.IntakeConstants.kIntakeMotorID)
         self.intakeMotor.configFactoryDefault()
 
-    def setIntakeSpeed(self, speed: float):
-        self.intakeMotor.set(TalonSRXControlMode.Velocity, (speed/(math.pi*0.031))*2048.0)
+    def intake(self):
+        return self.run(lambda: self.intakeMotor.set(TalonSRXControlMode.PercentOutput, 1.0)).withName("Intake")
+    
+    def intakeOnce(self):
+        return self.runOnce(lambda: self.intakeMotor.set(TalonSRXControlMode.PercentOutput, 1.0)).withName("IntakeOnce")
+    
+    def outtake(self):
+        return self.run(lambda: self.intakeMotor.set(TalonSRXControlMode.PercentOutput, -1.0)).withName("Outtake")
 
     def stopIntake(self):
-        self.intakeMotor.set(TalonSRXControlMode.Velocity, 0.0)
+        return self.runOnce(lambda: self.intakeMotor.set(TalonSRXControlMode.Current, 0.0)).withName("StopIntake")

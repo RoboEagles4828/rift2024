@@ -19,9 +19,6 @@ class Robot(TimedRobot):
     # autonomous chooser on the dashboard.
     self.m_robotContainer = RobotContainer()
 
-    self.auton_tab = Shuffleboard.getTab("Auton")
-    self.teleop_tab = Shuffleboard.getTab("Teleop")
-
   def robotPeriodic(self):
     # Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     # commands, running already-scheduled commands, removing finished or interrupted commands,
@@ -50,6 +47,9 @@ class Robot(TimedRobot):
     # teleop starts running. If you want the autonomous to
     # continue until interrupted by another command, remove
     # this line or comment it out.
+
+    self.m_robotContainer.auto = False
+
     if self.m_autonomousCommand is not None:
       self.m_autonomousCommand.cancel()
 
