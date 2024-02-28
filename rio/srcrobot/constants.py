@@ -182,6 +182,7 @@ class Constants:
     class ClimberConstants:
         kLeftMotorID = 14
         kRightMotorID = 13
+        maxClimbHeight = 0
 
     # An enumeration of known shot locations and data critical to executing the
     # shot. TODO decide on shooter velocity units and tune angles.
