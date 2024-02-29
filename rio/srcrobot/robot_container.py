@@ -18,7 +18,7 @@ from subsystems.intake import Intake
 from subsystems.indexer import Indexer
 from subsystems.Arm import Arm
 from subsystems.Shooter import Shooter
-from subsystems.Climber import Climber
+# from subsystems.Climber import Climber
 from commands.TurnInPlace import TurnInPlace
 
 from commands.SysId import DriveSysId
@@ -51,7 +51,7 @@ class RobotContainer:
     s_Intake : Intake = Intake()
     s_Indexer : Indexer = Indexer()
     s_Shooter : Shooter = Shooter()
-    s_Climber : Climber = Climber()
+    # s_Climber : Climber = Climber()
 
     #SysId
     driveSysId = DriveSysId(s_Swerve)
@@ -117,13 +117,12 @@ class RobotContainer:
 
         SmartDashboard.putData("Auton Selector", self.auton_selector)
 
-        SmartDashboard.putBoolean("Field Centric", not self.robotCentric_value)
+        SmartDashboard.putBoolean("Field Centric", self.getFieldOriented())
         SmartDashboard.putBoolean("Zero Gyro", self.zeroGyro.getAsBoolean())
         SmartDashboard.putData("Swerve Subsystem", self.s_Swerve)
         SmartDashboard.putData("Intake Sub", self.s_Intake)
         SmartDashboard.putData("Indexer Sub", self.s_Indexer)
         SmartDashboard.putData("Shooter Sub", self.s_Shooter)
-        SmartDashboard.putData("Climber Sub", self.s_Climber)
         SmartDashboard.putNumber("FLYWHEEL TARGET", self.s_Shooter.getTargetVelocity())
         SmartDashboard.putNumber("FLYWHEEL CURRENT", self.s_Shooter.getVelocity())
         SmartDashboard.putNumber("ARM ANGLE", self.s_Arm.getDegrees())
@@ -156,7 +155,7 @@ class RobotContainer:
         # Arm Buttons
         self.s_Arm.setDefaultCommand(self.s_Arm.seekArmZero())
         self.manualArm.whileTrue(self.s_Arm.moveArm(lambda: self.operator.getLeftY()))
-        self.armHome.onTrue(InstantCommand(lambda: self.s_Arm.hardSetEncoderToZero()))
+        self.armHome.onTrue(self.s_Arm.seekArmZero().andThen(InstantCommand(lambda: self.s_Arm.hardSetEncoderToZero())))
         # self.queAmp.onTrue(self.s_Arm.servoArmToTarget(Constants.ShooterConstants.kAmpPivotAngle))
         # self.quePodium.onTrue(self.s_Arm.servoArmToTarget(Constants.ShooterConstants.kPodiumPivotAngle))
         # self.queSubFront.onTrue(self.s_Arm.servoArmToTarget(Constants.ShooterConstants.kSubwooferPivotAngle))
@@ -165,11 +164,11 @@ class RobotContainer:
         self.zeroGyro.onTrue(InstantCommand(lambda: self.s_Swerve.zeroHeading()))
         self.robotCentric.onTrue(InstantCommand(lambda: self.toggleFieldOriented()))
 
-        self.faceForward.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(180)), translation, strafe, rotation, robotcentric))
+        # self.faceForward.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(180)), translation, strafe, rotation, robotcentric))
         # self.faceBack.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(0)), translation, strafe, rotation, robotcentric))
-        self.faceBack.whileTrue(self.s_Arm.servoArmToTarget(45))
-        self.faceLeft.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(90)), translation, strafe, rotation, robotcentric))
-        self.faceRight.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(-90)), translation, strafe, rotation, robotcentric))
+        self.faceBack.onTrue(self.s_Arm.servoArmToTarget(90))
+        self.faceForward.onTrue(self.s_Arm.servoArmToTarget(20))
+        # self.faceRight.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(-90)), translation, strafe, rotation, robotcentric))
 
         #Intake Buttons
         self.s_Indexer.setDefaultCommand(self.s_Indexer.stopIndexer())
@@ -184,16 +183,21 @@ class RobotContainer:
         self.shoot.and_(self.s_Shooter.isShooterReady).whileTrue(self.s_Indexer.indexerShoot())
         
         self.beamBreakTrigger = Trigger(self.s_Indexer.getBeamBreakState)
-        self.beamBreakTrigger.and_(self.intake.getAsBoolean).onTrue(PrintCommand("BEAM BREAK").andThen(WaitCommand(0.02)).andThen(self.s_Intake.stopIntake().alongWith(self.s_Indexer.levelIndexer().withTimeout(1.0)))).onFalse(PrintCommand("NO BEAM BREAK"))
+        # self.beamBreakTrigger.onTrue(InstantCommand(self.driver.getHID().setRumble(XboxController.RumbleType.kBothRumble, 0.5)).andThen(WaitCommand(0.5)).andThen(InstantCommand(self.driver.getHID().setRumble(XboxController.RumbleType.kBothRumble, 0.0))))
+        self.beamBreakTrigger.and_(self.intake.getAsBoolean).onTrue(WaitCommand(0.02).andThen(self.s_Intake.stopIntake().alongWith(self.s_Indexer.levelIndexer().withTimeout(1.0))))
         # self.alwaysTrue = Trigger(lambda: True)
         # self.alwaysTrue.whileTrue(self.s_Arm.servoArmToTarget(self.armAngleSlider.getDouble()))
 
         # Climber Buttons
-        self.climbUp.whileTrue(self.s_Climber.setClimbers(0.5))
-        self.climbDown.onTrue(self.s_Climber.setClimbers(-0.5))
+        # self.s_Climber.setDefaultCommand(self.s_Climber.stopClimbers())
+        # self.climbUp.whileTrue(self.s_Climber.runClimbersUp())
+        # self.climbDown.whileTrue(self.s_Climber.runClimbersDown())
 
     def toggleFieldOriented(self):
         self.robotCentric_value = not self.robotCentric_value
+
+    def getFieldOriented(self):
+        return not self.robotCentric_value
 
 
     """

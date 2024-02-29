@@ -185,6 +185,7 @@ class Constants:
         kLeftCANID = 4
         kRightCANID = 15
         maxClimbHeight = 0
+        kClimberSpeed = 0.5
 
     # An enumeration of known shot locations and data critical to executing the
     # shot. TODO decide on shooter velocity units and tune angles.

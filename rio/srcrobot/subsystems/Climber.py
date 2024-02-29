@@ -38,10 +38,16 @@ class Climber(Subsystem):
         self.leftClimberConfig.current_limits.stator_current_limit_enable = True
         self.leftClimberConfig.current_limits.stator_current_limit = 10
 
-        self.rightClimberConfig = deepcopy(self.rightClimberConfig)
+        self.rightClimberConfig = deepcopy(self.leftClimberConfig)
 
         self.rightClimberConfig.motor_output.inverted = InvertedValue.CLOCKWISE_POSITIVE
         self.leftClimberConfig.motor_output.inverted = InvertedValue.CLOCKWISE_POSITIVE
+
+        self.rightClimberConfig.software_limit_switch.forward_soft_limit_enable = True
+        self.rightClimberConfig.software_limit_switch.forward_soft_limit_threshold = 1000.0 # TODO: Change this value
+
+        self.leftClimberConfig.software_limit_switch.forward_soft_limit_enable = True
+        self.leftClimberConfig.software_limit_switch.forward_soft_limit_threshold = 1000.0
 
         self.leftClimber.configurator.apply(self.leftClimberConfig)
         self.rightClimber.configurator.apply(self.rightClimberConfig)
@@ -54,4 +60,13 @@ class Climber(Subsystem):
 
     def setClimbers(self, velocity):
         self.leftClimber.set_control(self.velocityControl.with_velocity(Conversions.MPSToRPS(circumference=self.wheelCircumference, wheelMPS=velocity)*self.gearRatio))
-        self.rightClimber.set_control(self.velocityControl.with_velocity(Conversions.MPSToRPS(velocity, self.wheelCircumference)))
+        self.rightClimber.set_control(self.velocityControl.with_velocity(Conversions.MPSToRPS(velocity, self.wheelCircumference)*self.gearRatio))
+
+    def runClimbersUp(self):
+        return self.run(lambda: self.setClimbers(Constants.ClimberConstants.kClimberSpeed))
+    
+    def stopClimbers(self):
+        return self.run(lambda: self.setClimbers(0.0))
+    
+    def runClimbersDown(self):
+        return self.run(lambda: self.setClimbers(-Constants.ClimberConstants.kClimberSpeed))
