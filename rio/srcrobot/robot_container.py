@@ -189,8 +189,8 @@ class RobotContainer:
         # self.alwaysTrue.whileTrue(self.s_Arm.servoArmToTarget(self.armAngleSlider.getDouble()))
 
         # Climber Buttons
-        self.climbUp.onTrue(self.s_Climber.climberUp)
-        self.climbDown.onTrue(self.s_Climber.climberDown)
+        self.climbUp.whileTrue(self.s_Climber.setClimbers(0.5))
+        self.climbDown.onTrue(self.s_Climber.setClimbers(-0.5))
 
     def toggleFieldOriented(self):
         self.robotCentric_value = not self.robotCentric_value
