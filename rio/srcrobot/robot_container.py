@@ -18,6 +18,7 @@ from subsystems.intake import Intake
 from subsystems.indexer import Indexer
 from subsystems.Arm import Arm
 from subsystems.Shooter import Shooter
+from subsystems.Climber import Climber
 from commands.TurnInPlace import TurnInPlace
 
 from commands.SysId import DriveSysId
@@ -50,6 +51,7 @@ class RobotContainer:
     s_Intake : Intake = Intake()
     s_Indexer : Indexer = Indexer()
     s_Shooter : Shooter = Shooter()
+    s_Climber : Climber = Climber()
 
     #SysId
     driveSysId = DriveSysId(s_Swerve)
@@ -95,6 +97,8 @@ class RobotContainer:
         # self.queClimbFront = self.operator.povDown()
         # self.queClimbRight = self.operator.povRight()
         # self.queClimbLeft = self.operator.povLeft()
+        self.climbUp = self.operator.povLeft()
+        self.climbDown = self.operator.povRight()
         self.configureButtonBindings()
 
         NamedCommands.registerCommand("RevShooter", self.s_Shooter.shoot().withTimeout(2.0).withName("AutoRevShooter"))
@@ -119,6 +123,7 @@ class RobotContainer:
         SmartDashboard.putData("Intake Sub", self.s_Intake)
         SmartDashboard.putData("Indexer Sub", self.s_Indexer)
         SmartDashboard.putData("Shooter Sub", self.s_Shooter)
+        SmartDashboard.putData("Climber Sub", self.s_Climber)
         SmartDashboard.putNumber("FLYWHEEL TARGET", self.s_Shooter.getTargetVelocity())
         SmartDashboard.putNumber("FLYWHEEL CURRENT", self.s_Shooter.getVelocity())
         SmartDashboard.putNumber("ARM ANGLE", self.s_Arm.getDegrees())
@@ -182,6 +187,10 @@ class RobotContainer:
         self.beamBreakTrigger.and_(self.intake.getAsBoolean).onTrue(PrintCommand("BEAM BREAK").andThen(WaitCommand(0.02)).andThen(self.s_Intake.stopIntake().alongWith(self.s_Indexer.levelIndexer().withTimeout(1.0)))).onFalse(PrintCommand("NO BEAM BREAK"))
         # self.alwaysTrue = Trigger(lambda: True)
         # self.alwaysTrue.whileTrue(self.s_Arm.servoArmToTarget(self.armAngleSlider.getDouble()))
+
+        # Climber Buttons
+        self.climbUp.whileTrue(self.s_Climber.setClimbers(0.5))
+        self.climbDown.onTrue(self.s_Climber.setClimbers(-0.5))
 
     def toggleFieldOriented(self):
         self.robotCentric_value = not self.robotCentric_value
