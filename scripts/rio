@@ -20,10 +20,27 @@ restart-code() {
 sync() {
     check-directory $1
     # Instead of copying all files, it should read the .riosyncmetadata file instead to determine what files changed 
-    scp $1/* lvuser@10.48.28.2:/home/lvuser/py/
-    restart-code
+    RSYNC_RESULT=$(rsync -azPi \
+        --exclude __pycache__ \
+        --exclude .pathplanner \
+        --exclude simgui*.json \
+        $1 lvuser@$IP_ADDRESS:/home/lvuser/py/)
+    
+    if [ -n "${RSYNC_RESULT}" ]; then
+        echo "Result: $RSYNC_RESULT"
+        restart-code
+    else
+        echo "No changes made: $RSYNC_RESULT"
+    fi
+
 }
 
+install-fastdeploy() {
+    # Untested currently, but should work if the RIO has internet
+    # Do note: the RIO NEEDS INTERNET for this to work
+    sshCommand "opkg update"
+    sshCommand "opkg install rsync"
+}
 
 help() {
     echo "In active development!"
@@ -48,9 +65,12 @@ case $1 in
     ;;
 
     "ssh")
-        sshCommand "bash"
+        sshCommand
     ;;
 
+    "install-fastdeploy")
+        install-fastdeploy
+    ;;
 
     "help")
         help
