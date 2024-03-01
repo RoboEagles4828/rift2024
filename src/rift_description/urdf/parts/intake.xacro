@@ -4,50 +4,54 @@
 
     <link name="intake_link">
         <visual>
-            <origin xyz="0 0 0" rpy="0 {pi}/2 0" />
+            <origin xyz="0 0 0" rpy="0 0 ${pi/2}" />
             <geometry>
-                <mesh filename="package://rift_description/meshes/RiftIntake.stl" scale="1 1 1" />
+                <mesh filename="package://rift_description/meshes/RiftIntake.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="blue"/>
         </visual>
         <!-- Front plate collision -->
         <collision>
-            <origin xyz="0 ${0.0254/2} 0" rpy="0 0 0" />
+            <origin xyz="0.21 0 0" rpy="0 0 ${pi/2}" />
             <geometry>
-                <box size="0.575 0.0254 0.102" />
+                <box size="0.64 0.0254 0.102" />
             </geometry>
         </collision>
         <!-- +Y side collision -->
         <collision>
-            <origin xyz="${0.575/2+0.038/2} 0.065 0.007" rpy="0 0 0" />
+            <origin xyz="0.12 ${0.575/2+0.038/2} 0.007" rpy="0 0 ${pi/2}" />
             <geometry>
                 <box size="0.038 0.127 0.22" />
             </geometry>
         </collision>
         <!-- -Y side collision -->
         <collision>
-            <origin xyz="${-0.575/2-0.038/2} 0.065 0.007" rpy="0 0 0" />
+            <origin xyz="0.12 ${-0.575/2-0.038/2} 0.007" rpy="0 0 ${pi/2}" />
             <geometry>
                 <box size="0.038 0.127 0.22" />
             </geometry>
         </collision>
+        <xacro:inertial_box mass="0.5" x="0.575" y="0.127" z="0.22">
+            <origin xyz="0 0 0" rpy="0 0 0" />
+        </xacro:inertial_box>
     </link>
 
     <xacro:versaroller prefix="0" parent="intake_link">
-        <origin xyz="0 .10836 -0.008356" rpy="0 ${pi/2} 0" />
+        <origin xyz="${-0.10836 + 0.215} 0 ${-0.008356-0.005}" rpy="0 0 0" /> 
     </xacro:versaroller>
 
     <xacro:versaroller prefix="1" parent="intake_link">
-        <origin xyz="0.000201 0.045509 0.028214" rpy="0 ${pi/2} 0" />
+        <origin xyz=" ${-0.045509 + 0.215} 0.000201 ${0.028214-0.005}" rpy="0 0 0" />
     </xacro:versaroller>
     
     <xacro:versaroller prefix="2" parent="intake_link">
-        <origin xyz="-0.000036 0.088642 -0.08196" rpy="0 ${pi/2} 0" />
+        <origin xyz="${-0.088642 + 0.215} -0.000036  ${-0.08196-0.005}" rpy="0 0 0" />
     </xacro:versaroller>
     
     <xacro:versaroller prefix="3" parent="intake_link">
-        <origin xyz="-0.000053 0.0254 -0.045558" rpy="0 ${pi/2} 0" />
+        <origin xyz="${-0.0254 + 0.215} -0.000053 ${-0.045558-0.005}" rpy="0 0 0" />
     </xacro:versaroller>
+
 
     <joint name="intake_joint" type="fixed">
         <parent link="${parent}"/>

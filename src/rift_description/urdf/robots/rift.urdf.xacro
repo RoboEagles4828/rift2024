@@ -11,12 +11,11 @@
   <xacro:include filename="$(find rift_description)/urdf/parts/square_chassis.xacro" />
   <xacro:include filename="$(find rift_description)/urdf/parts/swerve_axle.xacro" />
   <xacro:include filename="$(find rift_description)/urdf/parts/zed_macro.urdf.xacro" />
-  <xacro:include filename="$(find rift_description)/urdf/parts/elevator_leg.xacro" />
-  <xacro:include filename="$(find rift_description)/urdf/parts/back_leg.xacro" />
+
   <xacro:include filename="$(find rift_description)/urdf/parts/lidar.xacro" />
-  <xacro:include filename="$(find rift_description)/urdf/parts/elevator.xacro" />
-  <xacro:include filename="$(find rift_description)/urdf/parts/gripper.xacro" />
-  <xacro:include filename="$(find rift_description)/urdf/parts/slider.xacro" />
+  <xacro:include filename="$(find rift_description)/urdf/parts/usb_camera.xacro" />
+
+  <xacro:include filename="$(find rift_description)/urdf/parts/stow_hardstop.xacro" />
   <xacro:include filename="$(find rift_description)/urdf/parts/intake.xacro" />
   <xacro:include filename="$(find rift_description)/urdf/parts/shooter.xacro" />
   <xacro:include filename="$(find rift_description)/urdf/parts/versaroller.xacro" />
@@ -24,26 +23,22 @@
 
   <!-- Axle Position Variables -->
   <xacro:property name="axle_pos" value="0.261523" />
-  <xacro:property name="axle_pos_z" value="${69.056 / 1000}" />
+  <xacro:property name="axle_pos_z" value="${39.056 / 1000}" />
   <xacro:property name="elevator_middle_distance" value = ".457" />
   <xacro:property name= "chassis_side_width" value = ".0254" />
 
   <!-- Camera Position Variables -->
-  <xacro:property name="cam_pos" value="0.2 0 0.35"/> <!-- Made up values, replace with real ones later. -->
+  <xacro:property name="cam_pos" value="0.05 0 -0.03"/> <!-- Made up values, replace with real ones later. -->
+  <xacro:property name="usb_cam_1_pos" value="0 -0.14 0.05"/> <!-- Made up values, replace with real ones later. -->
+  <xacro:property name="usb_cam_2_pos" value="-0.15 0 0.05"/> <!-- Made up values, replace with real ones later. -->
+  <xacro:property name="usb_cam_3_pos" value="0 0.14 0.05"/> <!-- Made up values, replace with real ones later. -->
 
   <!-- X IS FORWARD -->
   <!-- Y IS LEFT -->
   <!-- Z IS UP -->
 
   <!-- Chassis -->
-  <link name="base_link">
-  <!-- Set mass to 0 and give a valid inertia tensor of 0 -->
-    <inertial>
-      <mass value="0.0"/>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
-    </inertial>
-  </link>
+  <link name="base_link"/>
 
 
   <xacro:square_chassis prefix="swerve" parent="base_link">
@@ -52,18 +47,20 @@
 
   <!-- Arm -->
   <xacro:arm parent="base_link">
-    <origin xyz="0 0 0" rpy="0 0 0" />
+    <origin xyz="-0.09 -0.01 0.18" rpy="0 0 0" />
   </xacro:arm>
 
   <!-- Intake -->
   <xacro:intake parent="swerve_chassis_link">
-    <origin xyz="0.46 0 0.09" rpy="0 0 ${pi/2}" />
+    <origin xyz="0.24 0 0.09" rpy="0 0 0" />
   </xacro:intake>
-
+<!--Stow hardstop-->
+  <xacro:stow_hardstop parent="swerve_chassis_link">
+    <origin xyz="0.08 0 0.16" rpy="0 0 0" />
+  </xacro:stow_hardstop>
   <!-- Shooter -->
-  <xacro:shooter prefix="shooter" parent="base_link">
-    <!-- <origin xyz="0 0 0" rpy="0 0 0" /> -->
-    <origin xyz="0.25 0 .33" rpy="0 ${-pi/6} 0" /> <!-- Made up values for shooter location & rotation. Change later. -->
+  <xacro:shooter parent="arm_bar_link">
+    <origin xyz="0.48 -0.01 0.07" rpy="0 0 0" />
   </xacro:shooter>
 
   <!-- Drive Train -->
@@ -82,36 +79,23 @@
   
 
   <!-- Sensors -->
-  <!-- <xacro:zed_camera prefix="zed2i" model="zed2i" parent="swerve_chassis_link">
+  <xacro:usb_camera prefix="1" parent="stow_hardstop_link">
+    <origin xyz="${usb_cam_1_pos}" rpy="0 0 0" />
+  </xacro:usb_camera>
+  <xacro:usb_camera prefix="2" parent="arm_mount_link">
+    <origin xyz="${usb_cam_2_pos}" rpy="0 0 0" />
+  </xacro:usb_camera>
+  <xacro:usb_camera prefix="3" parent="stow_hardstop_link">
+    <origin xyz="${usb_cam_3_pos}" rpy="0 0 0" />
+  </xacro:usb_camera>
+
+  <xacro:zed_camera prefix="zed2i" model="zed2i" parent="shooter_link">
     <origin xyz="${cam_pos}" rpy="0 0 0" />
-  </xacro:zed_camera> -->
+  </xacro:zed_camera>
 
   <!-- <xacro:lidar prefix="lidar" parent="swerve_chassis_link" radius="0.035" length="0.025">
     <origin xyz="${lidar_pos}" rpy="0 0 0" />
   </xacro:lidar> -->
-
-
-  <!-- Arm -->
-  <!-- <xacro:property name="elevator_leg_z" value="0.527"/>
-  <xacro:elevator_leg prefix="arm" parent="swerve_chassis_link">
-    <origin xyz = "0.1905 0 ${elevator_leg_z/2 + 0.03}" rpy = "0 0 0"/>
-  </xacro:elevator_leg>
-
-  <xacro:back_leg prefix="arm" parent="swerve_chassis_link">
-    <origin xyz = "-${chassis_length/2 - each_leg_width * 2} 0 ${chassis_height}" rpy = "0 0 0" />
-  </xacro:back_leg> -->
-
-  <!--Elevator-->
-  <!-- <xacro:elevator prefix="elevator" parent="arm_back_leg_link">
-    <origin xyz = "-.03 -${elevator_middle_distance / 2} ${back_leg_height - .0215}" rpy = "0 0 0" />
-  </xacro:elevator> -->
-
-  <!-- Top Slider + Gripper -->
-  <!-- <xacro:property name= "slider_pos" value = "0.330 ${elevator_middle_distance / 2} ${slider_block_height/2}" />
-  <xacro:slider prefix="top" parent="elevator_outer_2_link">
-    <origin xyz = "${slider_pos}" rpy = "0 0 0" />
-  </xacro:slider> -->
-
   <!-- Control -->
   <xacro:swerve_drive_control plugin="$(arg hw_interface_plugin)"/>
 </robot>
