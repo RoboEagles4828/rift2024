@@ -13,11 +13,14 @@ from constants import Constants
 
 from autos.exampleAuto import exampleAuto
 from commands.TeleopSwerve import TeleopSwerve
+from commands.PathFindToTag import PathFindToTag
+
 from subsystems.Swerve import Swerve
 from subsystems.intake import Intake
 from subsystems.indexer import Indexer
 from subsystems.Arm import Arm
 from subsystems.Shooter import Shooter
+from subsystems.Vision import Vision
 # from subsystems.Climber import Climber
 from commands.TurnInPlace import TurnInPlace
 
@@ -51,6 +54,7 @@ class RobotContainer:
     s_Intake : Intake = Intake()
     s_Indexer : Indexer = Indexer()
     s_Shooter : Shooter = Shooter()
+    s_Vision : Vision = Vision.getInstance()
     # s_Climber : Climber = Climber()
 
     #SysId
@@ -77,7 +81,7 @@ class RobotContainer:
 
         self.zeroGyro = self.driver.back()
         self.robotCentric = self.driver.start()
-        self.faceForward = self.driver.y()
+        self.pathfind = self.driver.y()
         self.faceBack = self.driver.a()
         self.faceRight = self.driver.b()
         self.faceLeft = self.driver.x()
@@ -167,7 +171,7 @@ class RobotContainer:
         # self.faceForward.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(180)), translation, strafe, rotation, robotcentric))
         # self.faceBack.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(0)), translation, strafe, rotation, robotcentric))
         self.faceBack.onTrue(self.s_Arm.servoArmToTarget(90))
-        self.faceForward.onTrue(self.s_Arm.servoArmToTarget(20))
+        self.pathfind.whileTrue(PathFindToTag(self.s_Swerve, self.s_Vision, 7, 39))
         # self.faceRight.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(-90)), translation, strafe, rotation, robotcentric))
 
         #Intake Buttons
