@@ -29,16 +29,16 @@ class Arm(Subsystem):
         self.kMotionMagicSlot = 0
         self.kVelocitySlot = 1
         self.MaxGravityFF = 0.0 #0.26 # In percent output [1.0:1.0]
-        self.kF = 0.3
-        self.kPMotionMagic = 2.0 #4.0
+        self.kF = 0.7
+        self.kPMotionMagic = 2.5 #4.0
         self.kPVelocity = 3.0 #0.8
         self.kIMotionMagic = 0.0
-        self.kDMotionMagic = 0.001
+        self.kDMotionMagic = 0.0
         self.kCruiseVelocity = 1000.0 # ticks per 100ms
         self.kMaxAccel = 1000.0 # Accel to cruise in 1 sec
         self.kServoToleranceDegrees = 1.0 # +/- 1.0 for 2.0 degree window
         # Velocity for safely zeroing arm encoder in native units (ticks) per 100ms
-        self.kZeroEncoderVelocity = -self.kEncoderTicksPerDegreeOfArmMotion * 5.0
+        self.kZeroEncoderVelocity = -self.kEncoderTicksPerDegreeOfArmMotion * 5.5
         self.kZeroingWaitForMoveSec = 2.0
         self.ZeroingVelocityTolerance = 10.0
         
@@ -81,13 +81,14 @@ class Arm(Subsystem):
         
         return self.runOnce(lambda: self.selectPIDSlot(self.kVelocitySlot)).andThen(self.run(lambda: self.armMotor.set(
             phoenix5.ControlMode.Velocity,
-            self.kZeroEncoderVelocity,
-            phoenix5.DemandType.ArbitraryFeedForward,
-            self.calculateGravityFeedForward()))) \
+            self.kZeroEncoderVelocity)))\
             .raceWith(cmd.waitSeconds(self.kZeroingWaitForMoveSec) \
             .andThen(self.detectStallAtHardStop())) \
             .andThen(self.restingAtZero()) \
             .withName("seekArmZero")
+    
+            # phoenix5.DemandType.ArbitraryFeedForward,
+            # self.calculateGravityFeedForward()))) \
 
     
     def isNear(self, a, b, tolerance):

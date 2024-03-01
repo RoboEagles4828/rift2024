@@ -20,6 +20,7 @@ from subsystems.intake import Intake
 from subsystems.indexer import Indexer
 from subsystems.Arm import Arm
 from subsystems.Shooter import Shooter
+# from subsystems.Climber import Climber
 from commands.TurnInPlace import TurnInPlace
 
 from commands.SysId import DriveSysId
@@ -54,6 +55,7 @@ class RobotContainer:
     s_Intake : Intake = Intake()
     s_Indexer : Indexer = Indexer()
     s_Shooter : Shooter = Shooter()
+    # s_Climber : Climber = Climber()
 
     #SysId
     driveSysId = DriveSysId(s_Swerve)
@@ -104,6 +106,8 @@ class RobotContainer:
         # self.queClimbFront = self.operator.povDown()
         # self.queClimbRight = self.operator.povRight()
         # self.queClimbLeft = self.operator.povLeft()
+        self.climbUp = self.operator.povLeft()
+        self.climbDown = self.operator.povRight()
         self.configureButtonBindings()
 
         NamedCommands.registerCommand("RevShooter", self.s_Shooter.shoot().withTimeout(2.0).withName("AutoRevShooter"))
@@ -122,7 +126,7 @@ class RobotContainer:
 
         SmartDashboard.putData("Auton Selector", self.auton_selector)
 
-        SmartDashboard.putBoolean("Field Centric", not self.robotCentric_value)
+        SmartDashboard.putBoolean("Field Centric", self.getFieldOriented())
         SmartDashboard.putBoolean("Zero Gyro", self.zeroGyro.getAsBoolean())
         SmartDashboard.putData("Swerve Subsystem", self.s_Swerve)
         SmartDashboard.putData("Intake Sub", self.s_Intake)
@@ -238,8 +242,16 @@ class RobotContainer:
 
 
 
+        # Climber Buttons
+        # self.s_Climber.setDefaultCommand(self.s_Climber.stopClimbers())
+        # self.climbUp.whileTrue(self.s_Climber.runClimbersUp())
+        # self.climbDown.whileTrue(self.s_Climber.runClimbersDown())
+
     def toggleFieldOriented(self):
         self.robotCentric_value = not self.robotCentric_value
+
+    def getFieldOriented(self):
+        return not self.robotCentric_value
 
 
     """
