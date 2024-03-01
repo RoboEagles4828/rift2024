@@ -21,16 +21,18 @@ sync() {
     check-directory $1
     # Instead of copying all files, it should read the .riosyncmetadata file instead to determine what files changed 
     RSYNC_RESULT=$(rsync -azPi \
+        --out-format="Updated File: %i %n%L" \
         --exclude __pycache__ \
         --exclude .pathplanner \
         --exclude simgui*.json \
         $1 lvuser@$IP_ADDRESS:/home/lvuser/py/)
     
-    if [ -n "${RSYNC_RESULT}" ]; then
-        echo "Result: $RSYNC_RESULT"
+    if [[ $RSYNC_RESULT == *"Updated File"* ]]; then
+        echo $RSYNC_RESULT
         restart-code
     else
-        echo "No changes made: $RSYNC_RESULT"
+        echo "No changes made to files"
+        echo "Not restarting robot!"
     fi
 
 }
