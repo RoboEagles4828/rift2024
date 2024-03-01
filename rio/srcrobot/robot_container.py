@@ -188,10 +188,7 @@ class RobotContainer:
         self.robotCentric_value = not self.robotCentric_value
 
     def doOtherThing(self): # Example function to showcase hot reload
-        if False:
-            print(Constants.exampleConst)
-        else:
-            print(7 + 4)
+        print(Constants.exampleConst)
 
     """
      * Use this to pass the autonomous command to the main {@link Robot} class.
