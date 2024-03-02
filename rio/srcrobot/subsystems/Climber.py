@@ -28,7 +28,7 @@ class Climber(Subsystem):
 
         self.leftClimberConfig.slot0.k_p = 10.0
         self.leftClimberConfig.slot0.k_i = 0.0
-        self.leftClimberConfig.slot0.k_d = 0.1
+        self.leftClimberConfig.slot0.k_d = 0.0
 
         self.leftClimberConfig.motor_output.neutral_mode = NeutralModeValue.BRAKE
 
