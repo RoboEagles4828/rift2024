@@ -12,7 +12,7 @@ import math
 from constants import Constants
 from phoenix6.configs.talon_fx_configs import TalonFXConfiguration
 from copy import deepcopy
-from commands2 import InstantCommand
+from commands2 import InstantCommand, Command
 class Shooter(Subsystem):
     def __init__(self):
         self.kBottomShooterCANID = 6 
@@ -65,7 +65,7 @@ class Shooter(Subsystem):
 
         self.currentShotVelocity = Conversions.MPSToRPS(velocity,  self.wheelCircumference)*self.gearRatio
 
-    def shootVelocity(self, velocity):
+    def shootVelocity(self, velocity) -> Command:
         return self.run(lambda: self.setShooterVelocity(velocity)).withName("ShootVelocity")
 
     def neutralizeShooter(self):

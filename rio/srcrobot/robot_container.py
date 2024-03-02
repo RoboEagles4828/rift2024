@@ -136,12 +136,9 @@ class RobotContainer:
         SmartDashboard.putData("Intake Sub", self.s_Intake)
         SmartDashboard.putData("Indexer Sub", self.s_Indexer)
         SmartDashboard.putData("Shooter Sub", self.s_Shooter)
-        SmartDashboard.putNumber("FLYWHEEL TARGET", self.s_Shooter.getTargetVelocity())
-        SmartDashboard.putNumber("FLYWHEEL CURRENT", self.s_Shooter.getVelocity())
-        SmartDashboard.putNumber("ARM ANGLE", self.s_Arm.getDegrees())
-        SmartDashboard.putBoolean("State", self.m_robotState.isReadyToIntake())
 
-        SmartDashboard.putBoolean("BEAM BREAK", self.s_Indexer.getBeamBreakState())
+        Shuffleboard.getTab("Teleop").addBoolean("Field Oriented", self.getFieldOriented)
+
         SmartDashboard.updateValues()
 
     """
