@@ -33,10 +33,10 @@ class Climber(Subsystem):
         self.leftClimberConfig.motor_output.neutral_mode = NeutralModeValue.BRAKE
 
         self.leftClimberConfig.current_limits.supply_current_limit_enable = True
-        self.leftClimberConfig.current_limits.supply_current_limit = 10
-        self.leftClimberConfig.current_limits.supply_current_threshold = 25
+        self.leftClimberConfig.current_limits.supply_current_limit = 40
+        self.leftClimberConfig.current_limits.supply_current_threshold = 40
         self.leftClimberConfig.current_limits.stator_current_limit_enable = True
-        self.leftClimberConfig.current_limits.stator_current_limit = 10
+        self.leftClimberConfig.current_limits.stator_current_limit = 40
 
         self.rightClimberConfig = deepcopy(self.leftClimberConfig)
 
