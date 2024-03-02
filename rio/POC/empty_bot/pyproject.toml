@@ -32,5 +32,7 @@ requires = [
     "robotpy-ctre",
     "squaternion",
     "robotpy-pathplannerlib>=2024.1.2",
-    "rticonnextdds-connector"
+    "rticonnextdds-connector",
+    "watchdog>=4.0.0",
+    "jurigged>=0.5.7"
 ]

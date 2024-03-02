@@ -8,6 +8,8 @@ from wpimath.units import seconds
 class Robot(TimedRobot):
 
   def robotInit(self):
+    import jurigged;
+    jurigged.watch()
     # Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     # autonomous chooser on the dashboard.
 
@@ -16,7 +18,7 @@ class Robot(TimedRobot):
 
   def buttonBindings(self):
       self.controller.a().onTrue(InstantCommand(self.buttonCallbackA))
-      self.controller.b().onTrue(InstantCommand(lambda: print("B icorn button pressed")))
+      self.controller.b().onTrue(InstantCommand(lambda: print("B button pressed")))
 
   def buttonCallbackA(self):
     print("A button pressed")
