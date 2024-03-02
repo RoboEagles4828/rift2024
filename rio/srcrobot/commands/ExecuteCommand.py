@@ -4,6 +4,8 @@ from subsystems.Arm import Arm
 from subsystems.Shooter import Shooter
 from subsystems.Swerve import Swerve
 
+from wpimath.geometry import Rotation2d
+
 from robotState import RobotState
 
 class ExecuteCommand(ParallelCommandGroup):
@@ -18,11 +20,10 @@ class ExecuteCommand(ParallelCommandGroup):
         # self.shooter_velocity = self.robotState.m_gameState.getNextShot().m_shooterVelocity
         self.robot_angle = self.robotState.m_gameState.getNextShotRobotAngle()
 
-        self.addRequirements(self.swerve, self.arm, self.shooter)
         self.setName(f"Execute {self.robotState.m_gameState.getNextShot().name}")
 
         self.addCommands(
             self.arm.servoArmToTarget(self.arm_angle),
             # self.shooter.shootVelocity(self.shooter_velocity),
-            TurnInPlace(self.swerve, lambda: self.robot_angle, translationSupplier, strafeSupplier, rotationSupplier, robotCentricSupplier)
+            TurnInPlace(self.swerve, lambda: Rotation2d.fromDegrees(self.robot_angle), translationSupplier, strafeSupplier, rotationSupplier, robotCentricSupplier)
         )
