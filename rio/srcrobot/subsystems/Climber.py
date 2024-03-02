@@ -21,27 +21,27 @@ class Climber(Subsystem):
 
         self.leftClimber = TalonFX(self.kLeftClimberCANID)
         self.rightClimber = TalonFX(self.kRightClimberCANID)
-        self.gearRatio = 1.0/14.0
+        self.gearRatio = 1.0/14.2
         self.wheelCircumference = 0.01905*math.pi
         self.leftClimberConfig = TalonFXConfiguration()
         self.rightClimberConfig = TalonFXConfiguration()
 
-        self.leftClimberConfig.slot0.k_p = 1.0
+        self.leftClimberConfig.slot0.k_p = 10.0
         self.leftClimberConfig.slot0.k_i = 0.0
         self.leftClimberConfig.slot0.k_d = 0.0
 
-        self.leftClimberConfig.motor_output.neutral_mode = NeutralModeValue.COAST
+        self.leftClimberConfig.motor_output.neutral_mode = NeutralModeValue.BRAKE
 
         self.leftClimberConfig.current_limits.supply_current_limit_enable = True
-        self.leftClimberConfig.current_limits.supply_current_limit = 10
-        self.leftClimberConfig.current_limits.supply_current_threshold = 25
+        self.leftClimberConfig.current_limits.supply_current_limit = 40
+        self.leftClimberConfig.current_limits.supply_current_threshold = 40
         self.leftClimberConfig.current_limits.stator_current_limit_enable = True
-        self.leftClimberConfig.current_limits.stator_current_limit = 10
+        self.leftClimberConfig.current_limits.stator_current_limit = 40
 
         self.rightClimberConfig = deepcopy(self.leftClimberConfig)
 
         self.rightClimberConfig.motor_output.inverted = InvertedValue.CLOCKWISE_POSITIVE
-        self.leftClimberConfig.motor_output.inverted = InvertedValue.CLOCKWISE_POSITIVE
+        self.leftClimberConfig.motor_output.inverted = InvertedValue.COUNTER_CLOCKWISE_POSITIVE
 
         self.rightClimberConfig.software_limit_switch.forward_soft_limit_enable = True
         self.rightClimberConfig.software_limit_switch.forward_soft_limit_threshold = 1000.0 # TODO: Change this value
@@ -52,21 +52,27 @@ class Climber(Subsystem):
         self.leftClimber.configurator.apply(self.leftClimberConfig)
         self.rightClimber.configurator.apply(self.rightClimberConfig)
 
+        self.dutyCycleControl = DutyCycleOut(0)
         self.velocityControl = VelocityVoltage(0)
         self.VoltageControl = VoltageOut(0)
 
         self.leftClimbervelocitySupplier = self.leftClimber.get_velocity().as_supplier()
         self.rightClimbervelocitySupplier = self.rightClimber.get_velocity().as_supplier()
+        # Conversions.MPSToRPS(circumference=self.wheelCircumference, wheelMPS=velocity)*self.gearRatio)
 
-    def setClimbers(self, velocity):
-        self.leftClimber.set_control(self.velocityControl.with_velocity(Conversions.MPSToRPS(circumference=self.wheelCircumference, wheelMPS=velocity)*self.gearRatio))
-        self.rightClimber.set_control(self.velocityControl.with_velocity(Conversions.MPSToRPS(velocity, self.wheelCircumference)*self.gearRatio))
+    def setClimbers(self, percentOutput):
+        self.leftClimber.set_control(self.dutyCycleControl.with_output(percentOutput))
+        self.rightClimber.set_control(self.dutyCycleControl.with_output(percentOutput))
+        # print(Conversions.MPSToRPS(velocity, self.wheelCircumference)*self.gearRatio)
+
+    def setClimbersLambda(self, climberAxis):
+        return self.run(lambda: self.setClimbers(climberAxis()))
 
     def runClimbersUp(self):
-        return self.run(lambda: self.setClimbers(Constants.ClimberConstants.kClimberSpeed))
+        return self.run(lambda: self.setClimbers(-Constants.ClimberConstants.kClimberSpeed))
     
     def stopClimbers(self):
         return self.run(lambda: self.setClimbers(0.0))
     
     def runClimbersDown(self):
-        return self.run(lambda: self.setClimbers(-Constants.ClimberConstants.kClimberSpeed))
+        return self.run(lambda: self.setClimbers(Constants.ClimberConstants.kClimberSpeed))

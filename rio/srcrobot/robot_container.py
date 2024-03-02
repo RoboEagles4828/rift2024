@@ -3,7 +3,7 @@ from wpilib import Joystick
 from wpilib import XboxController
 from commands2.button import CommandXboxController, Trigger
 from commands2 import Command, Subsystem
-from commands2 import InstantCommand, ConditionalCommand, WaitCommand, PrintCommand
+from commands2 import InstantCommand, ConditionalCommand, WaitCommand, PrintCommand, RunCommand
 from commands2.button import JoystickButton
 from CTREConfigs import CTREConfigs
 from commands2 import CommandScheduler
@@ -19,6 +19,7 @@ from subsystems.Swerve import Swerve
 from subsystems.intake import Intake
 from subsystems.indexer import Indexer
 from subsystems.Arm import Arm
+from subsystems.Climber import Climber
 from subsystems.Shooter import Shooter
 # from subsystems.Climber import Climber
 from commands.TurnInPlace import TurnInPlace
@@ -47,7 +48,7 @@ class RobotContainer:
 
     sysId = JoystickButton(driver, XboxController.Button.kY)
 
-    robotCentric_value = True
+    robotCentric_value = False
 
     # Subsystems
     s_Swerve : Swerve = Swerve()
@@ -55,7 +56,7 @@ class RobotContainer:
     s_Intake : Intake = Intake()
     s_Indexer : Indexer = Indexer()
     s_Shooter : Shooter = Shooter()
-    # s_Climber : Climber = Climber()
+    s_Climber : Climber = Climber()
 
     #SysId
     driveSysId = DriveSysId(s_Swerve)
@@ -110,6 +111,7 @@ class RobotContainer:
         # self.queClimbLeft = self.operator.povLeft()
         self.climbUp = self.operator.povLeft()
         self.climbDown = self.operator.povRight()
+        # self.climbUpM = self.operator.leftStick()
         self.configureButtonBindings()
 
         NamedCommands.registerCommand("RevShooter", self.s_Shooter.shoot().withTimeout(2.0).withName("AutoRevShooter"))
@@ -154,9 +156,7 @@ class RobotContainer:
         rotation = lambda: self.driver.getRawAxis(self.rotationAxis)
         robotcentric = lambda: self.robotCentric_value
 
-        SmartDashboard.putNumber("Translation", translation())
-        SmartDashboard.putNumber("Strafe", strafe())
-        SmartDashboard.putNumber("Rotation", rotation())
+        climberAxis = lambda: self.operator.getRawAxis(self.translationAxis)
 
         self.s_Swerve.setDefaultCommand(
             TeleopSwerve(
@@ -229,9 +229,9 @@ class RobotContainer:
 
 
         # Climber Buttons
-        # self.s_Climber.setDefaultCommand(self.s_Climber.stopClimbers())
-        # self.climbUp.whileTrue(self.s_Climber.runClimbersUp())
-        # self.climbDown.whileTrue(self.s_Climber.runClimbersDown())
+        self.s_Climber.setDefaultCommand(self.s_Climber.setClimbersLambda(climberAxis))
+        self.climbUp.whileTrue(self.s_Climber.runClimbersUp())
+        self.climbDown.whileTrue(self.s_Climber.runClimbersDown())
 
     def toggleFieldOriented(self):
         self.robotCentric_value = not self.robotCentric_value
