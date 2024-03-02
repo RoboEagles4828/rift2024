@@ -65,6 +65,9 @@ class Shooter(Subsystem):
 
         self.currentShotVelocity = Conversions.MPSToRPS(velocity,  self.wheelCircumference)*self.gearRatio
 
+    def shootVelocity(self, velocity):
+        return self.run(lambda: self.setShooterVelocity(velocity)).withName("ShootVelocity")
+
     def neutralizeShooter(self):
         self.topShooterConfig.motor_output.neutral_mode = NeutralModeValue.COAST
         self.bottomShooterConfig.motor_output.neutral_mode = NeutralModeValue.COAST

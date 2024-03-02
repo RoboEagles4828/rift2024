@@ -1,20 +1,28 @@
-from commands2 import SequentialCommandGroup, ConditionalCommand
-from subsystems.indexer import Indexer
+from commands2 import ParallelCommandGroup, ConditionalCommand
+from commands.TurnInPlace import TurnInPlace
+from subsystems.Arm import Arm
+from subsystems.Shooter import Shooter
+from subsystems.Swerve import Swerve
+
 from robotState import RobotState
 
-class ExecuteCommand(SequentialCommandGroup):
-    def __init__(self, indexer: Indexer, robotState: RobotState):
+class ExecuteCommand(ParallelCommandGroup):
+    def __init__(self, arm : Arm, shooter : Shooter, swerve : Swerve, translationSupplier, strafeSupplier, rotationSupplier, robotCentricSupplier):
         super().__init__()
-        self.indexer = indexer
-        self.robotState = robotState
+        self.robotState = RobotState()
+        self.arm = arm
+        self.shooter = shooter
+        self.swerve = swerve
 
-        self.addRequirements(self.indexer)
+        self.arm_angle = self.robotState.m_gameState.getNextShot().m_armAngle
+        # self.shooter_velocity = self.robotState.m_gameState.getNextShot().m_shooterVelocity
+        self.robot_angle = self.robotState.m_gameState.getNextShotRobotAngle()
+
+        self.addRequirements(self.swerve, self.arm, self.shooter)
         self.setName(f"Execute {self.robotState.m_gameState.getNextShot().name}")
 
         self.addCommands(
-            ConditionalCommand(
-                self.indexer.indexerShoot(),
-                self.indexer.stopIndexer(),
-                lambda: self.robotState.isRobotReady()
-            )
+            self.arm.servoArmToTarget(self.arm_angle),
+            # self.shooter.shootVelocity(self.shooter_velocity),
+            TurnInPlace(self.swerve, lambda: self.robot_angle, translationSupplier, strafeSupplier, rotationSupplier, robotCentricSupplier)
         )

@@ -86,6 +86,8 @@ class RobotContainer:
         self.slowModeTurn = self.driver.rightTrigger()
         self.execute = self.driver.rightBumper()
 
+        self.shoot = self.driver.leftBumper()
+
         # self.armTest = self.driver.a()
         # self.shoot = self.driver.rightTrigger() #just for testing will be removed later
         # self.intake = self.driver.rightBumper()
@@ -189,7 +191,8 @@ class RobotContainer:
 
         #Shooter Buttons
         self.s_Shooter.setDefaultCommand(self.s_Shooter.stop())
-        self.flywheel.whileTrue(self.s_Shooter.shoot())
+        self.flywheel.whileTrue(self.s_Shooter.shootVelocity(self.m_robotState.m_gameState.getNextShot().m_shooterVelocity))
+        self.shoot.onTrue(self.s_Indexer.indexerShoot())
         
         self.beamBreakTrigger = Trigger(self.s_Indexer.getBeamBreakState)
         self.beamBreakTrigger.and_(self.intake.getAsBoolean).onTrue(WaitCommand(0.02).andThen(self.s_Intake.stopIntake().alongWith(self.s_Indexer.levelIndexer().withTimeout(1.0))))
@@ -198,47 +201,30 @@ class RobotContainer:
 
         #Que Buttons
         self.queSubFront.onTrue(QueueCommand(
-            Constants.NextShot.SPEAKER_CENTER,
-            self.s_Arm,
-            self.s_Shooter,
-            self.s_Swerve,
-            self.m_robotState,
-            [translation, strafe, rotation, robotcentric]
+            Constants.NextShot.SPEAKER_CENTER
         ))
         self.quePodium.onTrue(QueueCommand(
-            Constants.NextShot.PODIUM,
-            self.s_Arm,
-            self.s_Shooter,
-            self.s_Swerve,
-            self.m_robotState,
-            [translation, strafe, rotation, robotcentric]
+            Constants.NextShot.PODIUM
         ))
         self.queSubRight.onTrue(QueueCommand(
-            Constants.NextShot.SPEAKER_AMP,
-            self.s_Arm,
-            self.s_Shooter,
-            self.s_Swerve,
-            self.m_robotState,
-            [translation, strafe, rotation, robotcentric]
+            Constants.NextShot.SPEAKER_AMP
         ))
         self.queSubLeft.onTrue(QueueCommand(
-            Constants.NextShot.SPEAKER_PODIUM,
-            self.s_Arm,
-            self.s_Shooter,
-            self.s_Swerve,
-            self.m_robotState,
-            [translation, strafe, rotation, robotcentric]
+            Constants.NextShot.SPEAKER_PODIUM
         ))
         self.queAmp.onTrue(QueueCommand(
-            Constants.NextShot.AMP,
+            Constants.NextShot.AMP
+        ))
+
+        self.execute.onTrue(ExecuteCommand(
             self.s_Arm,
             self.s_Shooter,
             self.s_Swerve,
-            self.m_robotState,
-            [translation, strafe, rotation, robotcentric]
+            translation,
+            strafe,
+            rotation,
+            robotcentric
         ))
-
-        self.execute.onTrue(ExecuteCommand(self.intake, self.m_robotState))
 
 
 
