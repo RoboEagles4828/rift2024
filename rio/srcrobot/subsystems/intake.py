@@ -18,6 +18,9 @@ class Intake(Subsystem):
     
     def outtake(self):
         return self.run(lambda: self.intakeMotor.set(TalonSRXControlMode.PercentOutput, -1.0)).withName("Outtake")
+    
+    def instantStop(self):
+        return InstantCommand(lambda: self.intakeMotor.set(TalonSRXControlMode.PercentOutput, 0.0)).withName("InstantStop")
 
     def stopIntake(self):
-        return self.runOnce(lambda: self.intakeMotor.set(TalonSRXControlMode.Current, 0.0)).withName("StopIntake")
+        return self.run(lambda: self.intakeMotor.set(TalonSRXControlMode.PercentOutput, 0.0)).withName("StopIntake")

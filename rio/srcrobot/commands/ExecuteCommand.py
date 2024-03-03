@@ -17,13 +17,13 @@ class ExecuteCommand(ParallelCommandGroup):
         self.swerve = swerve
 
         self.arm_angle = self.robotState.m_gameState.getNextShot().m_armAngle
-        # self.shooter_velocity = self.robotState.m_gameState.getNextShot().m_shooterVelocity
+        self.shooter_velocity = self.robotState.m_gameState.getNextShot().m_shooterVelocity
         self.robot_angle = self.robotState.m_gameState.getNextShotRobotAngle()
 
         self.setName(f"Execute {self.robotState.m_gameState.getNextShot().name}")
 
         self.addCommands(
-            self.arm.servoArmToTarget(self.arm_angle),
-            # self.shooter.shootVelocity(self.shooter_velocity),
+            self.arm.servoArmToTarget(self.arm_angle).withTimeout(2.0),
+            self.shooter.shootVelocity(self.shooter_velocity),
             TurnInPlace(self.swerve, lambda: Rotation2d.fromDegrees(self.robot_angle), translationSupplier, strafeSupplier, rotationSupplier, robotCentricSupplier)
         )

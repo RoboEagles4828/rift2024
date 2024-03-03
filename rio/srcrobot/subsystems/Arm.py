@@ -6,7 +6,7 @@ from commands2 import cmd
 import wpimath.filter
 import wpimath
 import wpilib
-from wpilib import SmartDashboard
+from wpilib.shuffleboard import Shuffleboard
 import phoenix5
 from phoenix5 import TalonSRXControlMode, TalonSRXFeedbackDevice
 import math
@@ -67,7 +67,9 @@ class Arm(Subsystem):
         self.armMotor.config_kD(self.kVelocitySlot, 0.0)
         self.armMotor.config_kF(self.kVelocitySlot, self.kF)
 
-        SmartDashboard.putData("Arm", self)
+        Shuffleboard.getTab("Teleoperated").addDouble("Arm degrees", self.getDegrees)
+
+        # SmartDashboard.putData("Arm", self)
         
 
     #     
@@ -233,14 +235,13 @@ class Arm(Subsystem):
     #    Updates the dashboard with critical arm data.
     #    
   
-    def periodic(self) :
-        # TODO reduce this to essentials.
-        wpilib.SmartDashboard.putNumber("Arm degrees", self.getDegrees())
-        wpilib.SmartDashboard.putNumber("Arm current", self.armMotor.getStatorCurrent())
-        wpilib.SmartDashboard.putBoolean("Arm on target", self.isServoOnTarget())
-        currentCommand = self.getCurrentCommand()
-        wpilib.SmartDashboard.putString("Arm command", currentCommand.getName() if currentCommand is not None else "<null>")
-        wpilib.SmartDashboard.putNumber("Arm zeroing velocity", self.armMotor.getSelectedSensorVelocity(self.kVelocitySlot))
-        wpilib.SmartDashboard.putBoolean("Arm resting", self.kRestingAtZero)
-        wpilib.SmartDashboard.putBoolean("Servo control", self.isServoControl)
-        wpilib.SmartDashboard.putBoolean("Arm is near", self.isNear(self.lastServoTarget, self.getDegrees(), self.kServoToleranceDegrees))
+    # def periodic(self) :
+    #     # TODO reduce this to essentials.
+    #     # wpilib.SmartDashboard.putNumber("Arm current", self.armMotor.getStatorCurrent())
+    #     # wpilib.SmartDashboard.putBoolean("Arm on target", self.isServoOnTarget())
+    #     # currentCommand = self.getCurrentCommand()
+    #     # wpilib.SmartDashboard.putString("Arm command", currentCommand.getName() if currentCommand is not None else "<null>")
+    #     # wpilib.SmartDashboard.putNumber("Arm zeroing velocity", self.armMotor.getSelectedSensorVelocity(self.kVelocitySlot))
+    #     # wpilib.SmartDashboard.putBoolean("Arm resting", self.kRestingAtZero)
+    #     # wpilib.SmartDashboard.putBoolean("Servo control", self.isServoControl)
+    #     # wpilib.SmartDashboard.putBoolean("Arm is near", self.isNear(self.lastServoTarget, self.getDegrees(), self.kServoToleranceDegrees))
