@@ -21,6 +21,7 @@ from subsystems.indexer import Indexer
 from subsystems.Arm import Arm
 from subsystems.Climber import Climber
 from subsystems.Shooter import Shooter
+from subsystems.Led import LED
 # from subsystems.Climber import Climber
 from commands.TurnInPlace import TurnInPlace
 
@@ -57,6 +58,7 @@ class RobotContainer:
     s_Indexer : Indexer = Indexer()
     s_Shooter : Shooter = Shooter()
     s_Climber : Climber = Climber()
+    s_LED : LED = LED()
 
     # The container for the robot. Contains subsystems, OI devices, and commands.
     def __init__(self):
@@ -191,6 +193,14 @@ class RobotContainer:
             rotation,
             robotcentric
         ))
+
+        #LED Controls
+        self.s_LED.setDefaultCommand(self.s_LED.idle())
+        self.beamBreakTrigger.whileTrue(self.s_LED.noteDetected())
+        self.shooterReady = Trigger(self.s_Shooter.isShooterReady)
+        self.shooterReady.whileTrue(self.s_LED.readytoShoot())
+        # self.autonTrigger = Trigger(lambda: DriverStation.isAutonomous()) 
+        # self.autonTrigger.whileTrue(self.s_LED.autonomous())
 
         # Climber Buttons
         self.s_Climber.setDefaultCommand(self.s_Climber.runClimbersDown())
