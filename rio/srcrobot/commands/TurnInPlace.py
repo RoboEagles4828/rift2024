@@ -14,6 +14,7 @@ class TurnInPlace(TeleopSwerve):
         self.turnPID.enableContinuousInput(-math.pi, math.pi)
         self.angle = desiredRotationSup().radians()
         self.turnPID.setTolerance(math.radians(1))
+        self.currentRotation = rotationSup
 
 
     def initialize(self):
@@ -23,8 +24,12 @@ class TurnInPlace(TeleopSwerve):
         self.turnPID.setSetpoint(self.angle)
 
     def getRotationValue(self):
-        self.angularvelMRadiansPerSecond = self.turnPID.calculate(self.s_Swerve.getGyroYaw().radians())
-        return self.angularvelMRadiansPerSecond
+        rotationStick = self.currentRotation()
+        if abs(rotationStick) > 0.0:
+            return rotationStick
+        else:
+            self.angularvelMRadiansPerSecond = self.turnPID.calculate(self.s_Swerve.getGyroYaw().radians())
+            return self.angularvelMRadiansPerSecond
 
     def isFinished(self) -> bool:
         return self.turnPID.atSetpoint()

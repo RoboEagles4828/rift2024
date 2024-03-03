@@ -229,6 +229,9 @@ class Arm(Subsystem):
     #    
     def selectPIDSlot(self, slot):
         self.armMotor.selectProfileSlot(slot, 0)
+
+    def stop(self):
+        return self.run(lambda: self.armMotor.set(TalonSRXControlMode.Velocity, 0.0)).withName("ArmStop")
         
 
     #    

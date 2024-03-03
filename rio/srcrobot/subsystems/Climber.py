@@ -66,13 +66,13 @@ class Climber(Subsystem):
         # print(Conversions.MPSToRPS(velocity, self.wheelCircumference)*self.gearRatio)
 
     def setClimbersLambda(self, climberAxis):
-        return self.run(lambda: self.setClimbers(climberAxis()))
+        return self.run(lambda: self.setClimbers(climberAxis())).withName("Manual Climbers")
 
     def runClimbersUp(self):
-        return self.run(lambda: self.setClimbers(-Constants.ClimberConstants.kClimberSpeed))
+        return self.run(lambda: self.setClimbers(-Constants.ClimberConstants.kClimberSpeed)).withName("Climbers Up")
     
     def stopClimbers(self):
-        return self.run(lambda: self.setClimbers(0.0))
+        return self.run(lambda: self.setClimbers(0.0)).withName("Stop Climbers")
     
     def runClimbersDown(self):
-        return self.run(lambda: self.setClimbers(Constants.ClimberConstants.kClimberSpeed))
+        return self.run(lambda: self.setClimbers(Constants.ClimberConstants.kClimberSpeed)).withName("Climbers Down")
