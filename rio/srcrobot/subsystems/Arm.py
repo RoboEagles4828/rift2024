@@ -38,7 +38,7 @@ class Arm(Subsystem):
         self.kMaxAccel = 1000.0 # Accel to cruise in 1 sec
         self.kServoToleranceDegrees = 1.0 # +/- 1.0 for 2.0 degree window
         # Velocity for safely zeroing arm encoder in native units (ticks) per 100ms
-        self.kZeroEncoderVelocity = -self.kEncoderTicksPerDegreeOfArmMotion * 5.5
+        self.kZeroEncoderVelocity = -self.kEncoderTicksPerDegreeOfArmMotion * 6.5
         self.kZeroingWaitForMoveSec = 2.0
         self.ZeroingVelocityTolerance = 10.0
         

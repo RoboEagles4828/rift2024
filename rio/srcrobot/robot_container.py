@@ -19,13 +19,14 @@ from subsystems.indexer import Indexer
 from subsystems.Arm import Arm
 from subsystems.Climber import Climber
 from subsystems.Shooter import Shooter
+from subsystems.Led import LED
 # from subsystems.Climber import Climber
 from commands.TurnInPlace import TurnInPlace
 
 from commands.SysId import DriveSysId
 
 from wpilib.shuffleboard import Shuffleboard, BuiltInWidgets, BuiltInLayouts
-from wpilib import SendableChooser, SmartDashboard
+from wpilib import SendableChooser, SmartDashboard, DriverStation
 
 from autos.PathPlannerAutoRunner import PathPlannerAutoRunner
 from pathplannerlib.auto import NamedCommands
@@ -53,6 +54,7 @@ class RobotContainer:
     s_Indexer : Indexer = Indexer()
     s_Shooter : Shooter = Shooter()
     s_Climber : Climber = Climber()
+    s_LED : LED = LED()
 
     #SysId
     driveSysId = DriveSysId(s_Swerve)
@@ -78,8 +80,8 @@ class RobotContainer:
 
         self.zeroGyro = self.driver.back()
         self.robotCentric = self.driver.start()
-        self.faceForward = self.driver.y()
-        self.faceBack = self.driver.a()
+        self.faceForward = self.operator.y() # Does arm Stuff
+        self.faceBack = self.operator.a() #Does armm Stuff
         self.faceRight = self.driver.b()
         self.faceLeft = self.driver.x()
         self.shoot = self.driver.rightTrigger() #just for testing will be removed later
@@ -126,7 +128,9 @@ class RobotContainer:
         SmartDashboard.putData("Indexer Sub", self.s_Indexer)
         SmartDashboard.putData("Shooter Sub", self.s_Shooter)
         SmartDashboard.putNumber("FLYWHEEL TARGET", self.s_Shooter.getTargetVelocity())
-        SmartDashboard.putNumber("FLYWHEEL CURRENT", self.s_Shooter.getVelocity())
+
+        Shuffleboard.getTab("Teleop").addDouble("FLYWHEEL", self.s_Shooter.getVelocity)
+        # SmartDashboard.putNumber("FLYWHEEL CURRENT", self.s_Shooter.getVelocity())
         SmartDashboard.putNumber("ARM ANGLE", self.s_Arm.getDegrees())
 
         SmartDashboard.putBoolean("BEAM BREAK", self.s_Indexer.getBeamBreakState())
@@ -188,9 +192,17 @@ class RobotContainer:
         
         self.beamBreakTrigger = Trigger(self.s_Indexer.getBeamBreakState)
         # self.beamBreakTrigger.onTrue(InstantCommand(self.driver.getHID().setRumble(XboxController.RumbleType.kBothRumble, 0.5)).andThen(WaitCommand(0.5)).andThen(InstantCommand(self.driver.getHID().setRumble(XboxController.RumbleType.kBothRumble, 0.0))))
-        self.beamBreakTrigger.and_(self.intake.getAsBoolean).onTrue(WaitCommand(0.02).andThen(self.s_Intake.stopIntake().alongWith(self.s_Indexer.levelIndexer().withTimeout(1.0))))
+        self.beamBreakTrigger.and_(self.intake.getAsBoolean).onTrue(WaitCommand(0.02).andThen(self.s_Intake.stopIntake().alongWith(self.s_Indexer.levelIndexer())))
         # self.alwaysTrue = Trigger(lambda: True)
         # self.alwaysTrue.whileTrue(self.s_Arm.servoArmToTarget(self.armAngleSlider.getDouble()))
+
+        #LED Controls
+        self.s_LED.setDefaultCommand(self.s_LED.idle())
+        self.beamBreakTrigger.whileTrue(self.s_LED.noteDetected())
+        self.shooterReady = Trigger(self.s_Shooter.isShooterReady)
+        self.shooterReady.whileTrue(self.s_LED.readytoShoot())
+        # self.autonTrigger = Trigger(lambda: DriverStation.isAutonomous()) 
+        # self.autonTrigger.whileTrue(self.s_LED.autonomous())
 
         # Climber Buttons
         self.s_Climber.setDefaultCommand(self.s_Climber.setClimbersLambda(climberAxis))

@@ -3,6 +3,7 @@ from commands2 import Command
 from commands2 import CommandScheduler
 from CTREConfigs import CTREConfigs
 from robot_container import RobotContainer
+import wpilib
 
 from wpilib.shuffleboard import Shuffleboard, ShuffleboardTab
 
@@ -17,6 +18,7 @@ class Robot(TimedRobot):
   def robotInit(self):
     # Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     # autonomous chooser on the dashboard.
+    wpilib.CameraServer.launch()
     self.m_robotContainer = RobotContainer()
 
   def robotPeriodic(self):
