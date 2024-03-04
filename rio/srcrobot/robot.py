@@ -3,6 +3,7 @@ from commands2 import Command
 from commands2 import CommandScheduler
 from CTREConfigs import CTREConfigs
 from robot_container import RobotContainer
+import wpilib
 
 from wpilib.shuffleboard import Shuffleboard, ShuffleboardTab
 
@@ -17,10 +18,8 @@ class Robot(TimedRobot):
   def robotInit(self):
     # Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     # autonomous chooser on the dashboard.
+    wpilib.CameraServer.launch()
     self.m_robotContainer = RobotContainer()
-
-    self.auton_tab = Shuffleboard.getTab("Auton")
-    self.teleop_tab = Shuffleboard.getTab("Teleop")
 
   def robotPeriodic(self):
     # Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
@@ -50,6 +49,9 @@ class Robot(TimedRobot):
     # teleop starts running. If you want the autonomous to
     # continue until interrupted by another command, remove
     # this line or comment it out.
+
+    self.m_robotContainer.auto = False
+
     if self.m_autonomousCommand is not None:
       self.m_autonomousCommand.cancel()
 

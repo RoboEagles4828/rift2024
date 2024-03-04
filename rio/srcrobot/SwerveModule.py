@@ -34,14 +34,14 @@ class SwerveModule:
         self.moduleNumber = moduleNumber
         self.angleOffset = moduleConstants.angleOffset
 
-        self.angleEncoder = CANcoder(moduleConstants.cancoderID)
+        self.angleEncoder = CANcoder(moduleConstants.cancoderID, "canivore")
         self.angleEncoder.configurator.apply(self.ctreConfigs.swerveCANcoderConfig)
 
-        self.mAngleMotor = TalonFX(moduleConstants.angleMotorID)
+        self.mAngleMotor = TalonFX(moduleConstants.angleMotorID, "canivore")
         self.mAngleMotor.configurator.apply(self.ctreConfigs.swerveAngleFXConfig)
         self.resetToAbsolute()
 
-        self.mDriveMotor = TalonFX(moduleConstants.driveMotorID)
+        self.mDriveMotor = TalonFX(moduleConstants.driveMotorID, "canivore")
         if moduleNumber == 1:
             self.mDriveMotor.configurator.apply(self.ctreConfigs.swerveDriveFXConfigFR)
         else:

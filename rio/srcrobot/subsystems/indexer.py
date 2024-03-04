@@ -1,5 +1,6 @@
 from constants import Constants
 from commands2.subsystem import Subsystem
+from commands2.cmd import waitSeconds
 from phoenix5 import TalonSRX, TalonSRXConfiguration, TalonSRXControlMode, TalonSRXFeedbackDevice, NeutralMode
 from wpilib import DigitalInput
 from commands2 import InstantCommand
@@ -25,13 +26,31 @@ class Indexer(Subsystem):
         return not bool(self.beamBreak.get())
 
     def indexerIntake(self):
-        return self.run(lambda: self.indexerMotor.set(TalonSRXControlMode.Velocity, self.indexerIntakeVelocity))
+        return self.run(lambda: self.indexerMotor.set(TalonSRXControlMode.Velocity, self.indexerIntakeVelocity)).withName("Intake")
+    
+    def indexerIntakeOnce(self):
+        return self.run(lambda: self.indexerMotor.set(TalonSRXControlMode.Velocity, self.indexerIntakeVelocity)).until(self.getBeamBreakState)\
+            .andThen(self.indexerOuttake().withTimeout(0.15))\
+            .finallyDo(lambda interrupted: self.stopIndexer()).withName("IntakeOnce")
 
-    def indexerShoot(self):
-        return self.run(lambda: self.indexerMotor.set(TalonSRXControlMode.Velocity, self.indexerShootVelocity))
+    def indexerShoot(self): 
+        return self.run(lambda: self.indexerMotor.set(TalonSRXControlMode.Velocity, self.indexerShootVelocity)).withName("Shoot")
     
     def indexerOuttake(self):
-        return self.run(lambda: self.indexerMotor.set(TalonSRXControlMode.Velocity, -self.indexerIntakeVelocity))
+        return self.run(lambda: self.indexerMotor.set(TalonSRXControlMode.Velocity, -self.indexerIntakeVelocity)).withName("Outtake")
+    
+    def setIndexerVelocity(self, velocity):
+        return self.run(lambda: self.indexerMotor.set(TalonSRXControlMode.Velocity, -(velocity/(math.pi*self.indexerDiameter))*self.indexerEncoderCPR)).withName("SetIndexerVelocity")
+    
+    def levelIndexer(self):
+        return self.indexerIntake().withTimeout(0.01)\
+        .andThen(self.stopIndexer()).withName("LevelIndexer")
+        # .andThen(self.indexerOuttake().withTimeout(0.1))\
+        # .andThen(self.indexerIntake().until(self.getBeamBreakState))\
+        # .andThen(self.indexerOuttake().withTimeout(0.1))\
+
+    def instantStop(self):
+        return InstantCommand(lambda: self.indexerMotor.set(TalonSRXControlMode.PercentOutput, 0.0)).withName("InstantStop")
 
     def stopIndexer(self):
-        return self.run(lambda: self.indexerMotor.set(TalonSRXControlMode.PercentOutput, 0.0))
+        return self.runOnce(lambda: self.indexerMotor.set(TalonSRXControlMode.PercentOutput, 0.0)).withName("StopIndexer")

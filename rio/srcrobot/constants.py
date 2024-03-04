@@ -105,11 +105,11 @@ class Constants:
         driveNeutralMode = NeutralModeValue.BRAKE
 
         holonomicPathConfig = HolonomicPathFollowerConfig(
-            PIDConstants(10.0, 0.0, 0.0),
-            PIDConstants(10.0, 0.0, 0.0),
+            PIDConstants(5.0, 0.0, 0.0),
+            PIDConstants(0.0, 0.0, 0.0),
             maxAutoModuleSpeed,
             #distance from center to the furthest module
-            robotCenterLocation.distance(backLeftLocation),
+            Units.inchesToMeters(16),
             ReplanningConfig(),
         )
 
@@ -170,9 +170,9 @@ class Constants:
         kSubwooferPivotAngle = 0.0
         kPodiumPivotAngle = 45.0
         kAmpPivotAngle = 90.0
-        kSubwooferShootSpeed = 40.0
+        kSubwooferShootSpeed = 20.0
         kPodiumShootSpeed = 20.0
-        kAmpShootSpeed = 2.0
+        kAmpShootSpeed = 5.0
 
     class IntakeConstants:
         kIntakeMotorID = 0
@@ -181,8 +181,16 @@ class Constants:
     class IndexerConstants:
         kIndexerMotorID = 14
         kIndexerMaxSpeedMS = 10.0
-        kIndexerIntakeSpeedMS = 2.6
+        kIndexerIntakeSpeedMS = 2.0
         kBeamBreakerID = 0
+
+    class ClimberConstants:
+        kLeftMotorID = 14
+        kRightMotorID = 13
+        kLeftCANID = 4
+        kRightCANID = 15
+        maxClimbHeight = 0
+        kClimberSpeed = 0.75 # percent output
 
     # An enumeration of known shot locations and data critical to executing the
     # shot. TODO decide on shooter velocity units and tune angles.
