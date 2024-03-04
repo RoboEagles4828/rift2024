@@ -1,4 +1,5 @@
 from commands2.subsystem import Subsystem
+from commands2.cmd import waitSeconds, waitUntil
 import wpimath.filter
 import wpimath
 import wpilib
@@ -58,6 +59,8 @@ class Climber(Subsystem):
 
         self.leftClimbervelocitySupplier = self.leftClimber.get_velocity().as_supplier()
         self.rightClimbervelocitySupplier = self.rightClimber.get_velocity().as_supplier()
+
+        self.ZeroingVelocityTolerance = 100.0
         # Conversions.MPSToRPS(circumference=self.wheelCircumference, wheelMPS=velocity)*self.gearRatio)
 
     def setClimbers(self, percentOutput):
@@ -66,13 +69,42 @@ class Climber(Subsystem):
         # print(Conversions.MPSToRPS(velocity, self.wheelCircumference)*self.gearRatio)
 
     def setClimbersLambda(self, climberAxis):
-        return self.run(lambda: self.setClimbers(climberAxis()))
+        return self.run(lambda: self.setClimbers(climberAxis())).withName("Manual Climbers")
 
     def runClimbersUp(self):
-        return self.run(lambda: self.setClimbers(-Constants.ClimberConstants.kClimberSpeed))
+        return self.runOnce(lambda: self.setClimbers(-Constants.ClimberConstants.kClimberSpeed))\
+        .andThen(
+            self.detectStallAtHardStopLeft().alongWith(self.detectStallAtHardStopRight())
+        )\
+        .finallyDo(self.stopClimbers()).withName("Climbers Up")
     
     def stopClimbers(self):
-        return self.run(lambda: self.setClimbers(0.0))
+        return self.run(lambda: self.setClimbers(0.0)).withName("Stop Climbers")
     
     def runClimbersDown(self):
-        return self.run(lambda: self.setClimbers(Constants.ClimberConstants.kClimberSpeed))
+        return self.run(lambda: self.setClimbers(Constants.ClimberConstants.kClimberSpeed)).withName("Climbers Down")
+    
+    def isNear(self, a, b, tolerance):
+        # if abs(a - b) < tolerance:
+        #     return True
+        return abs(a - b) < tolerance
+    
+    def detectStallAtHardStopLeft(self):
+        stallDebouncer = wpimath.filter.Debouncer(1.0, wpimath.filter.Debouncer.DebounceType.kRising)  
+        return waitUntil(lambda: stallDebouncer
+            .calculate(self.isNear(
+                0.0,
+                self.leftClimber.get_velocity().value_as_double,
+                self.ZeroingVelocityTolerance)
+            )
+        ).finallyDo(lambda: self.leftClimber.set_control(self.VoltageControl.with_output(0.0)))
+    
+    def detectStallAtHardStopRight(self):
+        stallDebouncer = wpimath.filter.Debouncer(1.0, wpimath.filter.Debouncer.DebounceType.kRising)  
+        return waitUntil(lambda: stallDebouncer
+            .calculate(self.isNear(
+                0.0,
+                self.rightClimber.get_velocity(),
+                self.ZeroingVelocityTolerance)
+            )
+        ).finallyDo(lambda: self.rightClimber.set_control(self.VoltageControl.with_output(0.0)))

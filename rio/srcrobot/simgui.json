@@ -3,8 +3,13 @@
     "types": {
       "/FMSInfo": "FMSInfo",
       "/Shuffleboard/Auton/Auton Selector": "String Chooser",
+      "/Shuffleboard/Autonomous/Auton Selector": "String Chooser",
       "/Shuffleboard/Teleop/Gyro": "Gyro",
       "/Shuffleboard/Teleop/Swerve Subsystem": "Subsystem",
+      "/Shuffleboard/Teleoperated/Indexer Sub": "Subsystem",
+      "/Shuffleboard/Teleoperated/Intake Sub": "Subsystem",
+      "/Shuffleboard/Teleoperated/Shooter Sub": "Subsystem",
+      "/Shuffleboard/Teleoperated/Swerve Subsystem": "Subsystem",
       "/SmartDashboard/Auton Selector": "String Chooser",
       "/SmartDashboard/Indexer Sub": "Subsystem",
       "/SmartDashboard/Intake Sub": "Subsystem",
@@ -20,6 +25,15 @@
     }
   },
   "NetworkTables Info": {
+    "Server": {
+      "Subscribers": {
+        "open": true
+      },
+      "open": true
+    },
     "visible": true
+  },
+  "NetworkTables View": {
+    "visible": false
   }
 }
