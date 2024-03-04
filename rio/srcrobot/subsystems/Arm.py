@@ -29,7 +29,7 @@ class Arm(Subsystem):
         self.kMotionMagicSlot = 0
         self.kVelocitySlot = 1
         self.MaxGravityFF = 0.0 #0.26 # In percent output [1.0:1.0]
-        self.kF = 0.7
+        self.kF = 0.9
         self.kPMotionMagic = 2.5 #4.0
         self.kPVelocity = 3.0 #0.8
         self.kIMotionMagic = 0.0
@@ -82,7 +82,7 @@ class Arm(Subsystem):
     def seekArmZero(self):
         
         return self.runOnce(lambda: self.selectPIDSlot(self.kVelocitySlot))\
-            .andThen(self.servoArmToTarget(10.0))\
+            .andThen(self.servoArmToTarget(2.0).onlyIf(lambda : self.getDegrees() >= 15))\
             .andThen(self.run(lambda: self.armMotor.set(
             phoenix5.ControlMode.Velocity,
             self.kZeroEncoderVelocity)))\
@@ -164,6 +164,19 @@ class Arm(Subsystem):
             self.calculateGravityFeedForward()))) \
         .finallyDo(lambda interrupted: self.setServoControl(False)) \
         .withName("servoArmToTarget: " + str(degrees))
+    
+    def servoArmToTargetWithSupplier(self, degreesSup):
+        # if (degreesSup() <= 0.0):
+        #     return self.seekArmZero()
+        
+        return self.runOnce(lambda: self.initializeServoArmToTarget(degreesSup().m_armAngle)) \
+        .andThen(self.run(lambda: self.armMotor.set(
+            phoenix5.ControlMode.MotionMagic,
+            degreesSup().m_armAngle * self.kEncoderTicksPerDegreeOfArmMotion,
+            phoenix5.DemandType.ArbitraryFeedForward,
+            self.calculateGravityFeedForward()))) \
+        .finallyDo(lambda interrupted: self.setServoControl(False)) \
+        .withName("servoArmToTarget: " + str(degreesSup().m_armAngle))
   
     def initializeServoArmToTarget(self, degrees):
         self.lastServoTarget = degrees

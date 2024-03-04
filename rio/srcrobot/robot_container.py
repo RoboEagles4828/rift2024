@@ -74,25 +74,27 @@ class RobotContainer:
         self.zeroGyro = self.driver.back()
         self.robotCentric = self.driver.start()
 
-        self.slowModeMove = self.driver.leftTrigger()
-        self.slowModeTurn = self.driver.rightTrigger()
+        # self.slowModeMove = self.driver.leftTrigger()
+        # self.slowModeTurn = self.driver.rightTrigger()
         self.execute = self.driver.rightBumper()
 
         self.shoot = self.driver.leftBumper()
+
+        self.intake = self.driver.leftTrigger()
 
         # Operator Controls
         self.autoHome = self.operator.rightTrigger()
         self.flywheel = self.operator.rightBumper()
         self.systemReverse = self.operator.leftBumper()
-        self.intake = self.operator.leftBumper()
 
         # Que Controls
         self.queSubFront = self.operator.a()
         self.quePodium = self.operator.y()
         self.queSubRight = self.operator.b()
         self.queSubLeft = self.operator.x()
-        self.queAmp = self.operator.povRight()
-        self.climbUp = self.operator.povUp()
+        self.queAmp = self.operator.povUp()
+        self.climbUp = self.operator.povRight()
+        self.climbDown = self.operator.povLeft()
         self.configureButtonBindings()
 
         NamedCommands.registerCommand("RevShooter", self.s_Shooter.shoot().withTimeout(2.0).withName("AutoRevShooter"))
@@ -177,7 +179,7 @@ class RobotContainer:
             Constants.NextShot.AMP
         )).andThen(self.s_Arm.seekArmZero()))
 
-        #self.execute.onTrue(ExecuteCommand(
+        # self.execute.onTrue(ExecuteCommand(
         #    self.s_Arm,
         #    self.s_Shooter,
         #    self.s_Swerve,
@@ -185,19 +187,13 @@ class RobotContainer:
         #    strafe,
         #    rotation,
         #    robotcentric
-        #))
+        # ))
         self.execute.onTrue(
-            RunCommand(
-                lambda: self.s_Arm.servoArmToTarget(
-                    self.m_robotState.m_gameState.getNextShot().m_armAngle
-                ),
-                self.s_Arm,
+            self.s_Arm.servoArmToTargetWithSupplier(
+                lambda: self.m_robotState.m_gameState.getNextShot()
             ).alongWith(
-                RunCommand(
-                    lambda: self.s_Shooter.shootVelocity(
-                        self.m_robotState.m_gameState.getNextShot().m_shooterVelocity
-                    ),
-                    self.s_Shooter,
+                self.s_Shooter.shootVelocityWithSupplier(
+                    lambda: self.m_robotState.m_gameState.getNextShot().m_shooterVelocity
                 ),
                 TurnInPlace(
                     self.s_Swerve,
@@ -220,13 +216,14 @@ class RobotContainer:
         # self.autonTrigger.whileTrue(self.s_LED.autonomous())
 
         # Climber Buttons
-        self.s_Climber.setDefaultCommand(self.s_Climber.runClimbersDown())
+        self.s_Climber.setDefaultCommand(self.s_Climber.stopClimbers())
         self.climbUp.whileTrue(self.s_Climber.runClimbersUp())
+        self.climbDown.whileTrue(self.s_Climber.runClimbersDown())
 
         # Shooter Buttons
         self.s_Shooter.setDefaultCommand(self.s_Shooter.stop())
         self.flywheel.whileTrue(self.s_Shooter.shootVelocity(self.m_robotState.m_gameState.getNextShot().m_shooterVelocity))
-        self.shoot.onTrue(cmd.deadline(self.s_Indexer.indexerShoot(), self.s_Intake.intake()).andThen(WaitCommand(0.5).andThen(self.s_Arm.seekArmZero())))
+        self.shoot.onTrue(cmd.deadline(self.s_Indexer.indexerShoot(), self.s_Intake.intake()).andThen(self.s_Intake.instantStop()).andThen(WaitCommand(0.5).andThen(self.s_Arm.seekArmZero())))
 
         self.autoHome.onTrue(self.s_Arm.seekArmZero())
 

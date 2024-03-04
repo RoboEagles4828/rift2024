@@ -67,6 +67,9 @@ class Shooter(Subsystem):
 
     def shootVelocity(self, velocity) -> Command:
         return self.run(lambda: self.setShooterVelocity(velocity)).withName("ShootVelocity")
+    
+    def shootVelocityWithSupplier(self, velSup):
+        return self.run(lambda: self.setShooterVelocity(velSup())).withName("ShootVelocity")
 
     def neutralizeShooter(self):
         self.topShooterConfig.motor_output.neutral_mode = NeutralModeValue.COAST
