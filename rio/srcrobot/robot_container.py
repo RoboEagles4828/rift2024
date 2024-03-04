@@ -164,19 +164,19 @@ class RobotContainer:
         #Que Buttons
         self.queSubFront.onTrue(InstantCommand(lambda: self.m_robotState.m_gameState.setNextShot(
             Constants.NextShot.SPEAKER_CENTER
-        )))
+        )).andThen(self.s_Arm.seekArmZero()))
         self.quePodium.onTrue(InstantCommand(lambda: self.m_robotState.m_gameState.setNextShot(
             Constants.NextShot.PODIUM
-        )))
+        )).andThen(self.s_Arm.seekArmZero()))
         self.queSubRight.onTrue(InstantCommand(lambda: self.m_robotState.m_gameState.setNextShot(
             Constants.NextShot.SPEAKER_AMP
-        )))
+        )).andThen(self.s_Arm.seekArmZero()))
         self.queSubLeft.onTrue(InstantCommand(lambda: self.m_robotState.m_gameState.setNextShot(
             Constants.NextShot.SPEAKER_SOURCE
-        )))
+        )).andThen(self.s_Arm.seekArmZero()))
         self.queAmp.onTrue(InstantCommand(lambda: self.m_robotState.m_gameState.setNextShot(
             Constants.NextShot.AMP
-        )))
+        )).andThen(self.s_Arm.seekArmZero()))
 
         self.execute.onTrue(ExecuteCommand(
             self.s_Arm,
