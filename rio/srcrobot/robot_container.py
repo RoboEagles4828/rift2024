@@ -36,7 +36,6 @@ from pathplannerlib.auto import NamedCommands
 from robotState import RobotState
 
 
-
 class RobotContainer:
     ctreConfigs = CTREConfigs()
     # Drive Controls
@@ -87,7 +86,7 @@ class RobotContainer:
         self.systemReverse = self.operator.leftBumper()
         self.intake = self.operator.leftBumper()
 
-        #Que Controls
+        # Que Controls
         self.queSubFront = self.operator.a()
         self.quePodium = self.operator.y()
         self.queSubRight = self.operator.b()
@@ -150,18 +149,18 @@ class RobotContainer:
         self.zeroGyro.onTrue(InstantCommand(lambda: self.s_Swerve.zeroHeading()))
         self.robotCentric.onTrue(InstantCommand(lambda: self.toggleFieldOriented()))
 
-        #Intake Buttons
+        # Intake Buttons
         self.s_Indexer.setDefaultCommand(self.s_Indexer.stopIndexer())
         self.s_Intake.setDefaultCommand(self.s_Intake.stopIntake())
         self.intake.whileTrue(self.s_Intake.intake().alongWith(self.s_Indexer.indexerIntake()))
         self.systemReverse.whileTrue(self.s_Intake.outtake().alongWith(self.s_Indexer.indexerOuttake()))
-        
+
         self.beamBreakTrigger = Trigger(self.s_Indexer.getBeamBreakState)
         self.beamBreakTrigger.and_(self.intake.getAsBoolean).onTrue(self.s_Intake.instantStop().alongWith(self.s_Indexer.levelIndexer().withTimeout(1.0)))
 
         self.beamBreakTrigger.onTrue(InstantCommand(lambda: self.m_robotState.m_gameState.setHasNote(True)).andThen(self.rumbleDriver())).onFalse(InstantCommand(lambda: self.m_robotState.m_gameState.setHasNote(False))).whileTrue(self.s_LED.noteDetected())
 
-        #Que Buttons
+        # Que Buttons
         self.queSubFront.onTrue(InstantCommand(lambda: self.m_robotState.m_gameState.setNextShot(
             Constants.NextShot.SPEAKER_CENTER
         )).andThen(self.s_Arm.seekArmZero()))
@@ -178,28 +177,53 @@ class RobotContainer:
             Constants.NextShot.AMP
         )).andThen(self.s_Arm.seekArmZero()))
 
-        self.execute.onTrue(ExecuteCommand(
-            self.s_Arm,
-            self.s_Shooter,
-            self.s_Swerve,
-            translation,
-            strafe,
-            rotation,
-            robotcentric
-        ))
+        #self.execute.onTrue(ExecuteCommand(
+        #    self.s_Arm,
+        #    self.s_Shooter,
+        #    self.s_Swerve,
+        #    translation,
+        #    strafe,
+        #    rotation,
+        #    robotcentric
+        #))
+        self.execute.onTrue(
+            RunCommand(
+                lambda: self.s_Arm.servoArmToTarget(
+                    self.m_robotState.m_gameState.getNextShot().m_armAngle
+                ),
+                self.s_Arm,
+            ).alongWith(
+                RunCommand(
+                    lambda: self.s_Shooter.shootVelocity(
+                        self.m_robotState.m_gameState.getNextShot().m_shooterVelocity
+                    ),
+                    self.s_Shooter,
+                ),
+                TurnInPlace(
+                    self.s_Swerve,
+                    lambda: Rotation2d.fromDegrees(
+                        self.m_robotState.m_gameState.getNextShotRobotAngle()
+                    ),
+                    translation,
+                    strafe,
+                    rotation,
+                    robotcentric,
+                ).repeatedly(),
+            )
+        )
 
-        #LED Controls
+        # LED Controls
         self.s_LED.setDefaultCommand(self.s_LED.idle())
         self.shooterReady = Trigger(self.m_robotState.isShooterReady)
         self.shooterReady.whileTrue(self.s_LED.readytoShoot())
-        # self.autonTrigger = Trigger(lambda: DriverStation.isAutonomous()) 
+        # self.autonTrigger = Trigger(lambda: DriverStation.isAutonomous())
         # self.autonTrigger.whileTrue(self.s_LED.autonomous())
 
         # Climber Buttons
         self.s_Climber.setDefaultCommand(self.s_Climber.runClimbersDown())
         self.climbUp.whileTrue(self.s_Climber.runClimbersUp())
-    
-        #Shooter Buttons
+
+        # Shooter Buttons
         self.s_Shooter.setDefaultCommand(self.s_Shooter.stop())
         self.flywheel.whileTrue(self.s_Shooter.shootVelocity(self.m_robotState.m_gameState.getNextShot().m_shooterVelocity))
         self.shoot.onTrue(cmd.deadline(self.s_Indexer.indexerShoot(), self.s_Intake.intake()).andThen(WaitCommand(0.5).andThen(self.s_Arm.seekArmZero())))
@@ -211,15 +235,14 @@ class RobotContainer:
 
     def getFieldOriented(self):
         return not self.robotCentric_value
-    
+
     def getQueuedShot(self):
         return self.m_robotState.m_gameState.getNextShot().name
-        
+
     def rumbleDriver(self):
         return InstantCommand(
             lambda: self.driver.getHID().setRumble(XboxController.RumbleType.kLeftRumble, 1.0)
         ).andThen(WaitCommand(0.5)).andThen(InstantCommand(lambda: self.driver.getHID().setRumble(XboxController.RumbleType.kLeftRumble, 0.0))).withName("Rumble")
-
 
     """
      * Use this to pass the autonomous command to the main {@link Robot} class.
