@@ -72,7 +72,7 @@ class Climber(Subsystem):
         return self.run(lambda: self.setClimbers(climberAxis())).withName("Manual Climbers")
 
     def runClimbersUp(self):
-        return self.runOnce(lambda: self.setClimbers(-Constants.ClimberConstants.kClimberSpeed)).withName("Climbers Up")
+        return self.run(lambda: self.setClimbers(-Constants.ClimberConstants.kClimberSpeed)).withName("Climbers Up")
         # .andThen(
         #     self.detectStallAtHardStopLeft().alongWith(self.detectStallAtHardStopRight())
         # )\

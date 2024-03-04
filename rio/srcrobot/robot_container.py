@@ -92,9 +92,8 @@ class RobotContainer:
         self.quePodium = self.operator.y()
         self.queSubRight = self.operator.b()
         self.queSubLeft = self.operator.x()
-        self.queAmp = self.operator.povUp()
-        self.climbUp = self.operator.povLeft()
-        self.climbDown = self.operator.povRight()
+        self.queAmp = self.operator.povRight()
+        self.climbUp = self.operator.povUp()
         self.configureButtonBindings()
 
         NamedCommands.registerCommand("RevShooter", self.s_Shooter.shoot().withTimeout(2.0).withName("AutoRevShooter"))
@@ -157,9 +156,7 @@ class RobotContainer:
         self.intake.whileTrue(self.s_Intake.intake().alongWith(self.s_Indexer.indexerIntake()))
         self.systemReverse.whileTrue(self.s_Intake.outtake().alongWith(self.s_Indexer.indexerOuttake()))
         
-        # self.beamBreakTrigger = Trigger(self.s_Indexer.getBeamBreakState)
-        
-        self.beamBreakTrigger = Trigger(lambda: True)
+        self.beamBreakTrigger = Trigger(self.s_Indexer.getBeamBreakState)
         self.beamBreakTrigger.and_(self.intake.getAsBoolean).onTrue(self.s_Intake.instantStop().alongWith(self.s_Indexer.levelIndexer().withTimeout(1.0)))
 
         self.beamBreakTrigger.onTrue(InstantCommand(lambda: self.m_robotState.m_gameState.setHasNote(True)).andThen(self.rumbleDriver())).onFalse(InstantCommand(lambda: self.m_robotState.m_gameState.setHasNote(False))).whileTrue(self.s_LED.noteDetected())
@@ -201,7 +198,6 @@ class RobotContainer:
         # Climber Buttons
         self.s_Climber.setDefaultCommand(self.s_Climber.runClimbersDown())
         self.climbUp.whileTrue(self.s_Climber.runClimbersUp())
-        self.climbDown.whileTrue(self.s_Climber.runClimbersDown())
     
         #Shooter Buttons
         self.s_Shooter.setDefaultCommand(self.s_Shooter.stop())
