@@ -44,11 +44,11 @@ class Climber(Subsystem):
         self.rightClimberConfig.motor_output.inverted = InvertedValue.CLOCKWISE_POSITIVE
         self.leftClimberConfig.motor_output.inverted = InvertedValue.COUNTER_CLOCKWISE_POSITIVE
 
-        self.rightClimberConfig.software_limit_switch.forward_soft_limit_enable = True
-        self.rightClimberConfig.software_limit_switch.forward_soft_limit_threshold = 1000.0 # TODO: Change this value
+        self.rightClimberConfig.software_limit_switch.reverse_soft_limit_enable = True
+        self.rightClimberConfig.software_limit_switch.reverse_soft_limit_threshold = -1000.0 # TODO: Change this value
 
-        self.leftClimberConfig.software_limit_switch.forward_soft_limit_enable = True
-        self.leftClimberConfig.software_limit_switch.forward_soft_limit_threshold = 1000.0
+        self.leftClimberConfig.software_limit_switch.reverse_soft_limit_enable = True
+        self.leftClimberConfig.software_limit_switch.reverse_soft_limit_threshold = -1000.0
 
         self.leftClimber.configurator.apply(self.leftClimberConfig)
         self.rightClimber.configurator.apply(self.rightClimberConfig)
@@ -72,11 +72,11 @@ class Climber(Subsystem):
         return self.run(lambda: self.setClimbers(climberAxis())).withName("Manual Climbers")
 
     def runClimbersUp(self):
-        return self.runOnce(lambda: self.setClimbers(-Constants.ClimberConstants.kClimberSpeed))\
-        .andThen(
-            self.detectStallAtHardStopLeft().alongWith(self.detectStallAtHardStopRight())
-        )\
-        .finallyDo(self.stopClimbers()).withName("Climbers Up")
+        return self.runOnce(lambda: self.setClimbers(-Constants.ClimberConstants.kClimberSpeed)).withName("Climbers Up")
+        # .andThen(
+        #     self.detectStallAtHardStopLeft().alongWith(self.detectStallAtHardStopRight())
+        # )\
+        # .finallyDo(self.stopClimbers()).withName("Climbers Up")
     
     def stopClimbers(self):
         return self.run(lambda: self.setClimbers(0.0)).withName("Stop Climbers")

@@ -82,7 +82,7 @@ class Arm(Subsystem):
     def seekArmZero(self):
         
         return self.runOnce(lambda: self.selectPIDSlot(self.kVelocitySlot))\
-            .andThen(self.servoArmToTarget(1.0))\
+            .andThen(self.servoArmToTarget(10.0))\
             .andThen(self.run(lambda: self.armMotor.set(
             phoenix5.ControlMode.Velocity,
             self.kZeroEncoderVelocity)))\

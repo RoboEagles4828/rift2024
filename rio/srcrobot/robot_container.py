@@ -134,10 +134,6 @@ class RobotContainer:
         rotation = lambda: self.driver.getRawAxis(self.rotationAxis)
         robotcentric = lambda: self.robotCentric_value
 
-        climberAxis = lambda: self.operator.getRawAxis(self.translationAxis)
-
-        robotStateSupplier = lambda: self.m_robotState
-
         self.s_Swerve.setDefaultCommand(
             TeleopSwerve(
                 self.s_Swerve, 
@@ -162,10 +158,11 @@ class RobotContainer:
         self.systemReverse.whileTrue(self.s_Intake.outtake().alongWith(self.s_Indexer.indexerOuttake()))
         
         # self.beamBreakTrigger = Trigger(self.s_Indexer.getBeamBreakState)
+        
         self.beamBreakTrigger = Trigger(lambda: True)
         self.beamBreakTrigger.and_(self.intake.getAsBoolean).onTrue(self.s_Intake.instantStop().alongWith(self.s_Indexer.levelIndexer().withTimeout(1.0)))
 
-        self.beamBreakTrigger.onTrue(InstantCommand(lambda: self.m_robotState.m_gameState.setHasNote(True)).andThen(self.rumbleDriver())).onFalse(InstantCommand(lambda: self.m_robotState.m_gameState.setHasNote(False)))
+        self.beamBreakTrigger.onTrue(InstantCommand(lambda: self.m_robotState.m_gameState.setHasNote(True)).andThen(self.rumbleDriver())).onFalse(InstantCommand(lambda: self.m_robotState.m_gameState.setHasNote(False))).whileTrue(self.s_LED.noteDetected())
 
         #Que Buttons
         self.queSubFront.onTrue(InstantCommand(lambda: self.m_robotState.m_gameState.setNextShot(
@@ -178,7 +175,7 @@ class RobotContainer:
             Constants.NextShot.SPEAKER_AMP
         )))
         self.queSubLeft.onTrue(InstantCommand(lambda: self.m_robotState.m_gameState.setNextShot(
-            Constants.NextShot.SPEAKER_PODIUM
+            Constants.NextShot.SPEAKER_SOURCE
         )))
         self.queAmp.onTrue(InstantCommand(lambda: self.m_robotState.m_gameState.setNextShot(
             Constants.NextShot.AMP
@@ -196,8 +193,7 @@ class RobotContainer:
 
         #LED Controls
         self.s_LED.setDefaultCommand(self.s_LED.idle())
-        self.beamBreakTrigger.whileTrue(self.s_LED.noteDetected())
-        self.shooterReady = Trigger(self.s_Shooter.isShooterReady)
+        self.shooterReady = Trigger(self.m_robotState.isShooterReady)
         self.shooterReady.whileTrue(self.s_LED.readytoShoot())
         # self.autonTrigger = Trigger(lambda: DriverStation.isAutonomous()) 
         # self.autonTrigger.whileTrue(self.s_LED.autonomous())
@@ -210,7 +206,7 @@ class RobotContainer:
         #Shooter Buttons
         self.s_Shooter.setDefaultCommand(self.s_Shooter.stop())
         self.flywheel.whileTrue(self.s_Shooter.shootVelocity(self.m_robotState.m_gameState.getNextShot().m_shooterVelocity))
-        self.shoot.onTrue(cmd.deadline(self.s_Indexer.indexerShoot(), self.s_Intake.intake()).andThen(WaitCommand(1.0).andThen(self.s_Arm.seekArmZero())))
+        self.shoot.onTrue(cmd.deadline(self.s_Indexer.indexerShoot(), self.s_Intake.intake()).andThen(WaitCommand(0.5).andThen(self.s_Arm.seekArmZero())))
 
         self.autoHome.onTrue(self.s_Arm.seekArmZero())
 
