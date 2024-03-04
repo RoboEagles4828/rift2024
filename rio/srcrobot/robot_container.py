@@ -84,8 +84,8 @@ class RobotContainer:
         self.faceBack = self.operator.a() #Does armm Stuff
         self.faceRight = self.driver.b()
         self.faceLeft = self.driver.x()
-        self.shoot = self.driver.rightStick() # Just for testing will be removed later
-        self.intake = self.driver.rightBumper()
+        self.shoot = self.driver.rightBumper() # Just for testing will be removed later
+        self.intake = self.driver.leftTrigger()
         self.intakeReverse = self.driver.leftBumper()
 
         # Operator Controls
@@ -150,7 +150,7 @@ class RobotContainer:
         robotcentric = lambda: self.robotCentric_value
         slow = lambda: self.driver.getRightTriggerAxis()
 
-        climberAxis = lambda: self.operator.getRawAxis(self.translationAxis)
+        climberAxis = lambda: self.operator.getRawAxis(self.rotationAxis)
 
         self.s_Swerve.setDefaultCommand(
             TeleopSwerve(
