@@ -21,11 +21,11 @@ class LED(Subsystem):
         return self.run(lambda: self.blinkin.set(self.RED))
 # Purple Pattern will be used when a note is detected in the indexer
     def noteDetected(self):
-        return self.runOnce(lambda: self.blinkin.set(self.PURPLE))
+        return self.run(lambda: self.blinkin.set(self.PURPLE))
 # Green Pattern will be used when the flywheels begin to run
     def readytoShoot(self):
-        return self.runOnce(lambda: self.blinkin.set(self.GREEN))
+        return self.run(lambda: self.blinkin.set(self.GREEN))
 
 # Green Pattern will be used when the flywheels begin to run    
     def autonomous(self):
-        return self.runOnce(lambda: self.blinkin.set(self.GOLD))
+        return self.run(lambda: self.blinkin.set(self.GOLD))
