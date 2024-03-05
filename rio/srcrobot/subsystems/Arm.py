@@ -8,7 +8,7 @@ import wpimath
 import wpilib
 from wpilib.shuffleboard import Shuffleboard
 import phoenix5
-from phoenix5 import TalonSRXControlMode, TalonSRXFeedbackDevice
+from phoenix5 import TalonSRXControlMode, TalonSRXFeedbackDevice, SupplyCurrentLimitConfiguration, StatorCurrentLimitConfiguration
 import math
 
 class Arm(Subsystem):
@@ -66,6 +66,13 @@ class Arm(Subsystem):
         self.armMotor.config_kI(self.kVelocitySlot, 0.0)
         self.armMotor.config_kD(self.kVelocitySlot, 0.0)
         self.armMotor.config_kF(self.kVelocitySlot, self.kF)
+
+        current_limit = 20
+        current_threshold = 40
+        current_threshold_time = 0.1
+        supply_configs = SupplyCurrentLimitConfiguration(True, current_limit, current_threshold, current_threshold_time)
+
+        self.armMotor.configSupplyCurrentLimit(supply_configs)
 
         Shuffleboard.getTab("Teleoperated").addDouble("Arm degrees", self.getDegrees)
 

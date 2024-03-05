@@ -194,7 +194,7 @@ class Constants:
       SPEAKER_AMP = (1, 60.0, -60.0, 0.0, 25.0)
       SPEAKER_CENTER = (2, 0.0, 0.0, 0.0, 25.0)
       SPEAKER_SOURCE = (3, -60.0, 60.0, 0.0, 25.0)
-      PODIUM = (4, -30.0, 30.0, 43.5, 45.0)
+      PODIUM = (4, -30.0, 30.0, 25.0, 45.0)
 
       def __init__(self, value, blueSideBotHeading, redSideBotHeading, armAngle, shooterVelocity):
         self._value_ = value

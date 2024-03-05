@@ -156,13 +156,13 @@ class RobotContainer:
         # Intake Buttons
         self.s_Indexer.setDefaultCommand(self.s_Indexer.stopIndexer())
         self.s_Intake.setDefaultCommand(self.s_Intake.stopIntake())
-        self.intake.onTrue(self.s_Intake.intake().alongWith(self.s_Indexer.indexerIntake()).until(self.s_Indexer.getBeamBreakState).andThen(self.s_Indexer.instantStop()).andThen(self.s_Indexer.indexerOuttake().withTimeout(0.0005)))
-        self.systemReverse.whileTrue(self.s_Intake.outtake().alongWith(self.s_Indexer.indexerOuttake()))
+        self.intake.whileTrue(self.s_Intake.intake().alongWith(self.s_Indexer.indexerIntake()).until(self.s_Indexer.getBeamBreakState).andThen(self.s_Indexer.instantStop()).andThen(self.s_Indexer.indexerOuttake().withTimeout(0.0005)))
+        self.systemReverse.whileTrue(self.s_Intake.outtake().alongWith(self.s_Indexer.indexerOuttake(), self.s_Shooter.shootReverse()))
 
         self.beamBreakTrigger = Trigger(self.s_Indexer.getBeamBreakState)
         # self.beamBreakTrigger.and_(self.intake.getAsBoolean).onTrue(self.s_Intake.instantStop().alongWith(self.s_Indexer.instantStop().withTimeout(1.0)))
 
-        self.beamBreakTrigger.onTrue(InstantCommand(lambda: self.m_robotState.m_gameState.setHasNote(True))).onFalse(InstantCommand(lambda: self.m_robotState.m_gameState.setHasNote(False))).whileTrue(self.s_LED.noteDetected())
+        self.beamBreakTrigger.onTrue(InstantCommand(lambda: self.m_robotState.m_gameState.setHasNote(True)).alongWith(self.rumbleDriver())).onFalse(InstantCommand(lambda: self.m_robotState.m_gameState.setHasNote(False))).whileTrue(self.s_LED.noteDetected())
 
         # Que Buttons
         self.queSubFront.onTrue(InstantCommand(lambda: self.m_robotState.m_gameState.setNextShot(
@@ -211,9 +211,9 @@ class RobotContainer:
         )
 
         # LED Controls
-        self.s_LED.setDefaultCommand(self.s_LED.idle())
-        self.shooterReady = Trigger(self.m_robotState.isShooterReady)
-        self.shooterReady.whileTrue(self.s_LED.readytoShoot())
+        # self.s_LED.setDefaultCommand(self.s_LED.idle())
+        # self.shooterReady = Trigger(self.m_robotState.isShooterReady)
+        # self.shooterReady.whileTrue(self.s_LED.readytoShoot())
         # self.autonTrigger = Trigger(lambda: DriverStation.isAutonomous())
         # self.autonTrigger.whileTrue(self.s_LED.autonomous())
 
