@@ -39,8 +39,7 @@ class TeleopSwerve(Command):
 
         # TODO: REMOVE THIS IN PRODUCTION. THIS IS TO SAVE THE ROBOT DURING TESTING.
         if slow < 0:
-            print("SLOWMODE ERROR: SLOW OFFSET IS NEGATIVE")
-            print("OVERRIDING TO ZERO")
+            print("SLOWMODE ERROR: SLOW OFFSET IS NEGATIVE\nCheck that your controller axis mapping is correct and goes between [0, 1]!")
             slow = 0
 
         translationVal -= translationVal*slow*Constants.Swerve.slowMoveModifier
