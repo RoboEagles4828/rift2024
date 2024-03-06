@@ -12,7 +12,7 @@ import math
 from constants import Constants
 from phoenix6.configs.talon_fx_configs import TalonFXConfiguration
 from copy import deepcopy
-from commands2 import InstantCommand
+from commands2 import InstantCommand, Command
 class Shooter(Subsystem):
     def __init__(self):
         self.kBottomShooterCANID = 6 
@@ -65,6 +65,12 @@ class Shooter(Subsystem):
 
         self.currentShotVelocity = Conversions.MPSToRPS(velocity,  self.wheelCircumference)*self.gearRatio
 
+    def shootVelocity(self, velocity) -> Command:
+        return self.run(lambda: self.setShooterVelocity(velocity)).withName("ShootVelocity")
+    
+    def shootVelocityWithSupplier(self, velSup):
+        return self.run(lambda: self.setShooterVelocity(velSup())).withName("ShootVelocity")
+
     def neutralizeShooter(self):
         self.topShooterConfig.motor_output.neutral_mode = NeutralModeValue.COAST
         self.bottomShooterConfig.motor_output.neutral_mode = NeutralModeValue.COAST
@@ -95,6 +101,11 @@ class Shooter(Subsystem):
             bottomShooterReady = abs(self.bottomShooterVelocitySupplier() - self.currentShotVelocity) < 5
 
         return topShooterReady and bottomShooterReady
+    
+    def isShooterAtSubwooferSpeed(self):
+        if abs(self.topShooterVelocitySupplier() - Conversions.MPSToRPS(Constants.ShooterConstants.kSubwooferShootSpeed,  self.wheelCircumference)*self.gearRatio) < 5:
+            return True
+        return False
     
     def brake(self):
         self.topShooterConfig.motor_output.neutral_mode = NeutralModeValue.BRAKE

@@ -20,7 +20,7 @@ from wpimath.units import volts
 
 from pathplannerlib.auto import AutoBuilder
 
-from wpilib import DriverStation, SmartDashboard
+from wpilib import DriverStation
 from wpiutil import Sendable, SendableBuilder
 
 class Swerve(Subsystem):
@@ -76,22 +76,8 @@ class Swerve(Subsystem):
             self
         )
 
-        for mod in self.mSwerveMods:
-            Shuffleboard.getTab("Diagnostics").addDouble("Mod " + str(mod.moduleNumber) + " CANcoder", mod.getCANcoder().degrees)\
-                .withPosition(0, mod.moduleNumber)\
-                .withSize(2, 1)\
-                .withWidget(BuiltInWidgets.kDial)
-            Shuffleboard.getTab("Diagnostics").addDouble("Mod " + str(mod.moduleNumber) + " Angle", mod.getPosition().angle.degrees)\
-                .withPosition(2, mod.moduleNumber)\
-                .withSize(2, 1)\
-                .withWidget(BuiltInWidgets.kDial)
-            Shuffleboard.getTab("Diagnostics").addDouble("Mod " + str(mod.moduleNumber) + " Velocity", lambda: mod.getState().speed)\
-                .withPosition(4, mod.moduleNumber)\
-                .withSize(2, 1)\
-                .withWidget(BuiltInWidgets.kNumberBar)
-            Shuffleboard.update()
 
-        SmartDashboard.putData("Swerve Drive", self.SwerveSendable(self, self.mSwerveMods))
+        Shuffleboard.getTab("Teleoperated").add("Swerve Drive", self.SwerveSendable(self, self.mSwerveMods))
 
     def drive(self, translation: Translation2d, rotation, fieldRelative, isOpenLoop):
         discreteSpeeds = ChassisSpeeds.discretize(translation.X(), translation.Y(), rotation, 0.02)
@@ -107,8 +93,10 @@ class Swerve(Subsystem):
         )
         SwerveDrive4Kinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.maxSpeed)
 
-        for mod in self.mSwerveMods:
-            mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop)    
+        self.mSwerveMods[0].setDesiredState(swerveModuleStates[0], isOpenLoop)
+        self.mSwerveMods[1].setDesiredState(swerveModuleStates[1], isOpenLoop)
+        self.mSwerveMods[2].setDesiredState(swerveModuleStates[2], isOpenLoop)
+        self.mSwerveMods[3].setDesiredState(swerveModuleStates[3], isOpenLoop)
     
     def driveRobotRelative(self, speeds: ChassisSpeeds):
         self.drive(Translation2d(speeds.vx, speeds.vy), speeds.omega, False, False)
@@ -120,19 +108,25 @@ class Swerve(Subsystem):
     def setModuleStates(self, desiredStates):
         SwerveDrive4Kinematics.desaturateWheelSpeeds(desiredStates, Constants.Swerve.maxSpeed)
         
-        for mod in self.mSwerveMods:
-            mod.setDesiredState(desiredStates[mod.moduleNumber], False)
+        self.mSwerveMods[0].setDesiredState(desiredStates[0], False)
+        self.mSwerveMods[1].setDesiredState(desiredStates[1], False)
+        self.mSwerveMods[2].setDesiredState(desiredStates[2], False)
+        self.mSwerveMods[3].setDesiredState(desiredStates[3], False)
 
     def getModuleStates(self):
-        states = [SwerveModuleState]*4
-        for mod in self.mSwerveMods:
-            states[mod.moduleNumber] = mod.getState()
+        states = list()
+        states.append(self.mSwerveMods[0].getState())
+        states.append(self.mSwerveMods[1].getState())
+        states.append(self.mSwerveMods[2].getState())
+        states.append(self.mSwerveMods[3].getState())
         return states
 
     def getModulePositions(self):
-        positions = [SwerveModulePosition]*4
-        for mod in self.mSwerveMods:
-            positions[mod.moduleNumber] = mod.getPosition()
+        positions = list()
+        positions.append(self.mSwerveMods[0].getPosition())
+        positions.append(self.mSwerveMods[1].getPosition())
+        positions.append(self.mSwerveMods[2].getPosition())
+        positions.append(self.mSwerveMods[3].getPosition())
         return positions
 
     def getModules(self):
@@ -160,19 +154,25 @@ class Swerve(Subsystem):
         return Rotation2d.fromDegrees(self.gyro.getYaw()).__mul__(-1)
 
     def resetModulesToAbsolute(self):
-        for mod in self.mSwerveMods:
-            mod.resetToAbsolute()
+        self.mSwerveMods[0].resetToAbsolute()
+        self.mSwerveMods[1].resetToAbsolute()
+        self.mSwerveMods[2].resetToAbsolute()
+        self.mSwerveMods[3].resetToAbsolute()
 
     def resetModuleZero(self):
-        for mod in self.mSwerveMods:
-            mod.setDesiredStateNoOptimize(SwerveModuleState(0, Rotation2d(0)), False)
+        self.mSwerveMods[0].setDesiredStateNoOptimize(SwerveModuleState(0, Rotation2d(0)), False)
+        self.mSwerveMods[1].setDesiredStateNoOptimize(SwerveModuleState(0, Rotation2d(0)), False)
+        self.mSwerveMods[2].setDesiredStateNoOptimize(SwerveModuleState(0, Rotation2d(0)), False)
+        self.mSwerveMods[3].setDesiredStateNoOptimize(SwerveModuleState(0, Rotation2d(0)), False)
 
     def getRobotRelativeSpeeds(self):
         return Constants.Swerve.swerveKinematics.toChassisSpeeds(tuple(self.getModuleStates()))
 
     def driveMotorsVoltage(self, volts):
-        for mod in self.mSwerveMods:
-            mod.driveMotorVoltage(volts)
+        self.mSwerveMods[0].driveMotorVoltage(volts)
+        self.mSwerveMods[1].driveMotorVoltage(volts)
+        self.mSwerveMods[2].driveMotorVoltage(volts)
+        self.mSwerveMods[3].driveMotorVoltage(volts)
 
     def logDriveMotors(self, routineLog: SysIdRoutineLog):
         for mod in self.mSwerveMods:
@@ -187,5 +187,3 @@ class Swerve(Subsystem):
 
     def periodic(self):
         self.swerveOdometry.update(self.getGyroYaw(), tuple(self.getModulePositions()))
-
-        SmartDashboard.putNumber("Gyro", self.getHeading().degrees())

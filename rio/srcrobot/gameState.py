@@ -51,7 +51,7 @@ class GameState:
         """
         alliance = DriverStation.getAlliance()
         nextShot = self.getNextShot()
-        if nextShot == DriverStation.Alliance.kRed:
+        if alliance == DriverStation.Alliance.kRed:
             return nextShot.m_redSideBotHeading
         return nextShot.m_blueSideBotHeading
 
