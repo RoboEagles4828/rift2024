@@ -41,7 +41,7 @@ class Climber(Subsystem):
 
         self.rightClimberConfig = deepcopy(self.leftClimberConfig)
 
-        self.rightClimberConfig.motor_output.inverted = InvertedValue.CLOCKWISE_POSITIVE
+        self.rightClimberConfig.motor_output.inverted = InvertedValue.COUNTER_CLOCKWISE_POSITIVE
         self.leftClimberConfig.motor_output.inverted = InvertedValue.COUNTER_CLOCKWISE_POSITIVE
 
         self.rightClimberConfig.software_limit_switch.reverse_soft_limit_enable = True

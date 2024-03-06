@@ -94,6 +94,7 @@ class RobotContainer:
         self.queAmp = self.operator.povUp()
         self.climbUp = self.operator.povRight()
         self.climbDown = self.operator.povLeft()
+        self.manualClimb  = self.operator.back()
         self.configureButtonBindings()
 
         NamedCommands.registerCommand("RevShooter", self.s_Shooter.shoot().withTimeout(2.0).withName("AutoRevShooter"))
@@ -111,17 +112,19 @@ class RobotContainer:
         NamedCommands.registerCommand("All Off", self.s_Intake.instantStop().alongWith(self.s_Indexer.instantStop(), self.s_Shooter.brake()).withName("AutoAllOff"))
 
         self.auton_selector = SendableChooser()
-        self.auton_selector.setDefaultOption("Straight Auto", PathPlannerAutoRunner("StraightAuto", self.s_Swerve).getCommand())
+        # self.auton_selector.setDefaultOption("Straight Auto", PathPlannerAutoRunner("StraightAuto", self.s_Swerve).getCommand())
         self.auton_selector.addOption("RightSubwooferTaxiAuto", PathPlannerAutoRunner("RightSubwooferTaxiAuto", self.s_Swerve).getCommand())
-        self.auton_selector.addOption("CenterSubwoofer2PieceAuto", PathPlannerAutoRunner("CenterSubwoofer2Piece", self.s_Swerve).getCommand())
+        self.auton_selector.setDefaultOption("CenterSubwoofer2PieceAuto", PathPlannerAutoRunner("CenterSubwoofer2Piece", self.s_Swerve).getCommand())
         self.auton_selector.addOption("CenterSubwoofer3PieceAuto", PathPlannerAutoRunner("CenterSubwoofer3Piece", self.s_Swerve).getCommand())
+        self.auton_selector.addOption("CenterSubwoofer4PieceAuto", PathPlannerAutoRunner("CenterSubwoofer4Piece", self.s_Swerve).getCommand())
+        self.auton_selector.addOption("CenterSubwoofer4_5PieceAuto", PathPlannerAutoRunner("CenterSubwoofer4_5Piece", self.s_Swerve).getCommand())
 
         Shuffleboard.getTab("Autonomous").add("Auton Selector", self.auton_selector)
-        Shuffleboard.getTab("Teleoperated").add("Swerve Subsystem", self.s_Swerve)
-        Shuffleboard.getTab("Teleoperated").add("Intake Sub", self.s_Intake)
-        Shuffleboard.getTab("Teleoperated").add("Indexer Sub", self.s_Indexer)
-        Shuffleboard.getTab("Teleoperated").add("Shooter Sub", self.s_Shooter)
-        Shuffleboard.getTab("Teleoperated").add("Arm Sub", self.s_Arm)
+        # Shuffleboard.getTab("Teleoperated").add("Swerve Subsystem", self.s_Swerve)
+        # Shuffleboard.getTab("Teleoperated").add("Intake Sub", self.s_Intake)
+        # Shuffleboard.getTab("Teleoperated").add("Indexer Sub", self.s_Indexer)
+        # Shuffleboard.getTab("Teleoperated").add("Shooter Sub", self.s_Shooter)
+        # Shuffleboard.getTab("Teleoperated").add("Arm Sub", self.s_Arm)
         Shuffleboard.getTab("Teleoperated").add("Climber Sub", self.s_Climber)
         Shuffleboard.getTab("Teleoperated").addString("QUEUED SHOT", self.getQueuedShot)
 
@@ -140,6 +143,7 @@ class RobotContainer:
         rotation = lambda: self.driver.getRawAxis(self.rotationAxis)
         robotcentric = lambda: self.robotCentric_value
         slow = lambda: self.driver.getRawAxis(self.slowAxis)
+        climberaxis = lambda: self.operator.getRawAxis(XboxController.Axis.kLeftY)
 
         self.s_Swerve.setDefaultCommand(
             TeleopSwerve(
@@ -227,6 +231,7 @@ class RobotContainer:
         self.s_Climber.setDefaultCommand(self.s_Climber.stopClimbers())
         self.climbUp.whileTrue(self.s_Climber.runClimbersUp())
         self.climbDown.whileTrue(self.s_Climber.runClimbersDown())
+        self.manualClimb.whileTrue(self.s_Climber.setClimbersLambda(climberaxis))
 
         # Shooter Buttons
         self.s_Shooter.setDefaultCommand(self.s_Shooter.stop())

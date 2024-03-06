@@ -72,10 +72,10 @@ class Shooter(Subsystem):
         return self.run(lambda: self.setShooterVelocity(velSup())).withName("ShootVelocity")
 
     def neutralizeShooter(self):
-        self.topShooterConfig.motor_output.neutral_mode = NeutralModeValue.COAST
-        self.bottomShooterConfig.motor_output.neutral_mode = NeutralModeValue.COAST
-        self.topShooter.configurator.apply(self.topShooterConfig)
-        self.bottomShooter.configurator.apply(self.bottomShooterConfig)
+        # self.topShooterConfig.motor_output.neutral_mode = NeutralModeValue.COAST
+        # self.bottomShooterConfig.motor_output.neutral_mode = NeutralModeValue.COAST
+        # self.topShooter.configurator.apply(self.topShooterConfig)
+        # self.bottomShooter.configurator.apply(self.bottomShooterConfig)
 
         self.topShooter.set_control(self.VoltageControl.with_output(0))
         self.bottomShooter.set_control(self.VoltageControl.with_output(0))
@@ -108,13 +108,13 @@ class Shooter(Subsystem):
         return False
     
     def brake(self):
-        self.topShooterConfig.motor_output.neutral_mode = NeutralModeValue.BRAKE
-        self.topShooter.configurator.apply(self.topShooterConfig)
-        self.topShooter.set_control(self.VoltageControl.with_output(0))
+        # self.topShooterConfig.motor_output.neutral_mode = NeutralModeValue.BRAKE
+        # self.topShooter.configurator.apply(self.topShooterConfig)
+        self.topShooter.set_control(self.VoltageControl.with_output(0).with_override_brake_dur_neutral(True))
 
-        self.bottomShooterConfig.motor_output.neutral_mode = NeutralModeValue.BRAKE
-        self.bottomShooter.configurator.apply(self.bottomShooterConfig)
-        self.bottomShooter.set_control(self.VoltageControl.with_output(0))
+        # self.bottomShooterConfig.motor_output.neutral_mode = NeutralModeValue.BRAKE
+        # self.bottomShooter.configurator.apply(self.bottomShooterConfig)
+        self.bottomShooter.set_control(self.VoltageControl.with_output(0).with_override_brake_dur_neutral(True))
 
     def stop(self):
         return self.run(lambda: self.neutralizeShooter()).withName("StopShooter")

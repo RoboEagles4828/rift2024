@@ -1,0 +1,131 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.74,
+      "y": 4.39
+    },
+    "rotation": -60.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Full Shooter Rev"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Full Shoot"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Full Intake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LeftSubwoofertoRightestPiece"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RightestPiecetoLeftSubwoofer"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Full Shoot"
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Full Intake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LeftSubwoofertoRightMidlinePiece"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Full Shoot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Full Intake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LeftSubwoofertoRightMidlinePiece"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RightMidlinePiecetoLeftSubwoofer"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Full Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "All Off"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}
