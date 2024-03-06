@@ -42,6 +42,7 @@ class RobotContainer:
     translationAxis = XboxController.Axis.kLeftY
     strafeAxis = XboxController.Axis.kLeftX
     rotationAxis = XboxController.Axis.kRightX
+    slowAxis = XboxController.Axis.kRightTrigger # This causes issues on certain controllers, where kRightTrigger is for some reason mapped to [5] instead of [3]
 
     driver = CommandXboxController(0)
     operator = CommandXboxController(1)
@@ -73,14 +74,10 @@ class RobotContainer:
         # Driver Controls
         self.zeroGyro = self.driver.back()
         self.robotCentric = self.driver.start()
-
-        # self.slowModeMove = self.driver.leftTrigger()
-        # self.slowModeTurn = self.driver.rightTrigger()
         self.execute = self.driver.leftBumper()
-
         self.shoot = self.driver.rightBumper()
-
         self.intake = self.driver.leftTrigger()
+        # Slowmode is defined with the other Axis objects
 
         # Operator Controls
         self.autoHome = self.operator.rightTrigger()
@@ -138,10 +135,11 @@ class RobotContainer:
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
     """
     def configureButtonBindings(self):
-        translation = lambda: -self.driver.getRawAxis(self.translationAxis) 
+        translation = lambda: -self.driver.getRawAxis(self.translationAxis)
         strafe = lambda: -self.driver.getRawAxis(self.strafeAxis)
         rotation = lambda: self.driver.getRawAxis(self.rotationAxis)
         robotcentric = lambda: self.robotCentric_value
+        slow = lambda: self.driver.getRawAxis(self.slowAxis)
 
         self.s_Swerve.setDefaultCommand(
             TeleopSwerve(
@@ -149,7 +147,8 @@ class RobotContainer:
                 translation,
                 strafe,
                 rotation,
-                robotcentric
+                robotcentric,
+                slow
             )
         )
 
