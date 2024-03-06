@@ -13,3 +13,4 @@ src/rift_description/urdf/rift.urdf
 isaac/Eaglegym/eaglegym/runs/SwerveK/summaries/
 .rsyncmetadata
 .devcontainer/devcontainer.json
+rio/srcrobot/ctre_sim

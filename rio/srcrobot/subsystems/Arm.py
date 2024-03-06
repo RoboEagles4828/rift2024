@@ -6,9 +6,9 @@ from commands2 import cmd
 import wpimath.filter
 import wpimath
 import wpilib
-from wpilib import SmartDashboard
+from wpilib.shuffleboard import Shuffleboard
 import phoenix5
-from phoenix5 import TalonSRXControlMode, TalonSRXFeedbackDevice
+from phoenix5 import TalonSRXControlMode, TalonSRXFeedbackDevice, SupplyCurrentLimitConfiguration, StatorCurrentLimitConfiguration
 import math
 
 class Arm(Subsystem):
@@ -29,7 +29,7 @@ class Arm(Subsystem):
         self.kMotionMagicSlot = 0
         self.kVelocitySlot = 1
         self.MaxGravityFF = 0.0 #0.26 # In percent output [1.0:1.0]
-        self.kF = 0.7
+        self.kF = 0.9
         self.kPMotionMagic = 2.5 #4.0
         self.kPVelocity = 3.0 #0.8
         self.kIMotionMagic = 0.0
@@ -67,7 +67,16 @@ class Arm(Subsystem):
         self.armMotor.config_kD(self.kVelocitySlot, 0.0)
         self.armMotor.config_kF(self.kVelocitySlot, self.kF)
 
-        SmartDashboard.putData("Arm", self)
+        current_limit = 20
+        current_threshold = 40
+        current_threshold_time = 0.1
+        supply_configs = SupplyCurrentLimitConfiguration(True, current_limit, current_threshold, current_threshold_time)
+
+        self.armMotor.configSupplyCurrentLimit(supply_configs)
+
+        Shuffleboard.getTab("Teleoperated").addDouble("Arm degrees", self.getDegrees)
+
+        # SmartDashboard.putData("Arm", self)
         
 
     #     
@@ -79,7 +88,9 @@ class Arm(Subsystem):
     #    
     def seekArmZero(self):
         
-        return self.runOnce(lambda: self.selectPIDSlot(self.kVelocitySlot)).andThen(self.run(lambda: self.armMotor.set(
+        return self.runOnce(lambda: self.selectPIDSlot(self.kVelocitySlot))\
+            .andThen(self.servoArmToTarget(0.5).onlyIf(lambda: self.getDegrees() >= 15))\
+            .andThen(self.run(lambda: self.armMotor.set(
             phoenix5.ControlMode.Velocity,
             self.kZeroEncoderVelocity)))\
             .raceWith(cmd.waitSeconds(self.kZeroingWaitForMoveSec) \
@@ -160,6 +171,19 @@ class Arm(Subsystem):
             self.calculateGravityFeedForward()))) \
         .finallyDo(lambda interrupted: self.setServoControl(False)) \
         .withName("servoArmToTarget: " + str(degrees))
+    
+    def servoArmToTargetWithSupplier(self, degreesSup):
+        # if (degreesSup() <= 0.0):
+        #     return self.seekArmZero()
+        
+        return self.runOnce(lambda: self.initializeServoArmToTarget(degreesSup().m_armAngle)) \
+        .andThen(self.run(lambda: self.armMotor.set(
+            phoenix5.ControlMode.MotionMagic,
+            degreesSup().m_armAngle * self.kEncoderTicksPerDegreeOfArmMotion,
+            phoenix5.DemandType.ArbitraryFeedForward,
+            self.calculateGravityFeedForward()))) \
+        .finallyDo(lambda interrupted: self.setServoControl(False)) \
+        .withName("servoArmToTarget: " + str(degreesSup().m_armAngle))
   
     def initializeServoArmToTarget(self, degrees):
         self.lastServoTarget = degrees
@@ -227,20 +251,22 @@ class Arm(Subsystem):
     #    
     def selectPIDSlot(self, slot):
         self.armMotor.selectProfileSlot(slot, 0)
+
+    def stop(self):
+        return self.run(lambda: self.armMotor.set(TalonSRXControlMode.Velocity, 0.0)).withName("ArmStop")
         
 
     #    
     #    Updates the dashboard with critical arm data.
     #    
   
-    def periodic(self) :
-        # TODO reduce this to essentials.
-        wpilib.SmartDashboard.putNumber("Arm degrees", self.getDegrees())
-        wpilib.SmartDashboard.putNumber("Arm current", self.armMotor.getStatorCurrent())
-        wpilib.SmartDashboard.putBoolean("Arm on target", self.isServoOnTarget())
-        currentCommand = self.getCurrentCommand()
-        wpilib.SmartDashboard.putString("Arm command", currentCommand.getName() if currentCommand is not None else "<null>")
-        wpilib.SmartDashboard.putNumber("Arm zeroing velocity", self.armMotor.getSelectedSensorVelocity(self.kVelocitySlot))
-        wpilib.SmartDashboard.putBoolean("Arm resting", self.kRestingAtZero)
-        wpilib.SmartDashboard.putBoolean("Servo control", self.isServoControl)
-        wpilib.SmartDashboard.putBoolean("Arm is near", self.isNear(self.lastServoTarget, self.getDegrees(), self.kServoToleranceDegrees))
+    # def periodic(self) :
+    #     # TODO reduce this to essentials.
+    #     # wpilib.SmartDashboard.putNumber("Arm current", self.armMotor.getStatorCurrent())
+    #     # wpilib.SmartDashboard.putBoolean("Arm on target", self.isServoOnTarget())
+    #     # currentCommand = self.getCurrentCommand()
+    #     # wpilib.SmartDashboard.putString("Arm command", currentCommand.getName() if currentCommand is not None else "<null>")
+    #     # wpilib.SmartDashboard.putNumber("Arm zeroing velocity", self.armMotor.getSelectedSensorVelocity(self.kVelocitySlot))
+    #     # wpilib.SmartDashboard.putBoolean("Arm resting", self.kRestingAtZero)
+    #     # wpilib.SmartDashboard.putBoolean("Servo control", self.isServoControl)
+    #     # wpilib.SmartDashboard.putBoolean("Arm is near", self.isNear(self.lastServoTarget, self.getDegrees(), self.kServoToleranceDegrees))
