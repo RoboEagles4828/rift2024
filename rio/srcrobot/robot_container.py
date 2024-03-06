@@ -141,8 +141,6 @@ class RobotContainer:
         robotcentric = lambda: self.robotCentric_value
         slow = lambda: self.driver.getRawAxis(self.slowAxis)
 
-        climberAxis = lambda: self.operator.getRawAxis(self.rotationAxis)
-
         self.s_Swerve.setDefaultCommand(
             TeleopSwerve(
                 self.s_Swerve, 
