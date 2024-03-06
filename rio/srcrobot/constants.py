@@ -165,7 +165,7 @@ class Constants:
         kSubwooferPivotAngle = 0.0
         kPodiumPivotAngle = 45.0
         kAmpPivotAngle = 90.0
-        kSubwooferShootSpeed = 20.0
+        kSubwooferShootSpeed = 25.0
         kPodiumShootSpeed = 20.0
         kAmpShootSpeed = 5.0
 

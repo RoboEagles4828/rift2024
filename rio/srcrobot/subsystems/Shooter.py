@@ -102,6 +102,11 @@ class Shooter(Subsystem):
 
         return topShooterReady and bottomShooterReady
     
+    def isShooterAtSubwooferSpeed(self):
+        if abs(self.topShooterVelocitySupplier() - Conversions.MPSToRPS(Constants.ShooterConstants.kSubwooferShootSpeed,  self.wheelCircumference)*self.gearRatio) < 5:
+            return True
+        return False
+    
     def brake(self):
         self.topShooterConfig.motor_output.neutral_mode = NeutralModeValue.BRAKE
         self.topShooter.configurator.apply(self.topShooterConfig)

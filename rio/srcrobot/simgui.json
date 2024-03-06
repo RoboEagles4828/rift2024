@@ -6,6 +6,8 @@
       "/Shuffleboard/Autonomous/Auton Selector": "String Chooser",
       "/Shuffleboard/Teleop/Gyro": "Gyro",
       "/Shuffleboard/Teleop/Swerve Subsystem": "Subsystem",
+      "/Shuffleboard/Teleoperated/Arm Sub": "Subsystem",
+      "/Shuffleboard/Teleoperated/Climber Sub": "Subsystem",
       "/Shuffleboard/Teleoperated/Indexer Sub": "Subsystem",
       "/Shuffleboard/Teleoperated/Intake Sub": "Subsystem",
       "/Shuffleboard/Teleoperated/Shooter Sub": "Subsystem",
