@@ -10,13 +10,13 @@ class Intake(Subsystem):
         self.intakeMotor = TalonSRX(Constants.IntakeConstants.kIntakeMotorID)
         self.intakeMotor.configFactoryDefault()
 
-        current_limit = 10
-        current_threshold = 20
+        current_limit = 30
+        current_threshold = 50
         current_threshold_time = 0.1
         supply_configs = SupplyCurrentLimitConfiguration(True, current_limit, current_threshold, current_threshold_time)
 
         self.intakeMotor.configSupplyCurrentLimit(supply_configs)
-        self.intakeMotor.configContinuousCurrentLimit(10)
+        self.intakeMotor.configContinuousCurrentLimit(30)
         self.intakeMotor.enableCurrentLimit(True)
 
     def intake(self):

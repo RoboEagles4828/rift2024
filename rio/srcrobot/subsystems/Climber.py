@@ -45,10 +45,16 @@ class Climber(Subsystem):
         self.leftClimberConfig.motor_output.inverted = InvertedValue.COUNTER_CLOCKWISE_POSITIVE
 
         self.rightClimberConfig.software_limit_switch.reverse_soft_limit_enable = True
-        self.rightClimberConfig.software_limit_switch.reverse_soft_limit_threshold = -1000.0 # TODO: Change this value
+        self.rightClimberConfig.software_limit_switch.reverse_soft_limit_threshold = -97 # TODO: Change this value
+
+        self.rightClimberConfig.software_limit_switch.forward_soft_limit_enable = True
+        self.rightClimberConfig.software_limit_switch.forward_soft_limit_threshold = 0.0
 
         self.leftClimberConfig.software_limit_switch.reverse_soft_limit_enable = True
-        self.leftClimberConfig.software_limit_switch.reverse_soft_limit_threshold = -1000.0
+        self.leftClimberConfig.software_limit_switch.reverse_soft_limit_threshold = -97 # TODO: leftClimberConfig
+        
+        self.leftClimberConfig.software_limit_switch.forward_soft_limit_enable = True
+        self.leftClimberConfig.software_limit_switch.forward_soft_limit_threshold = 0.0
 
         self.leftClimber.configurator.apply(self.leftClimberConfig)
         self.rightClimber.configurator.apply(self.rightClimberConfig)
