@@ -108,8 +108,8 @@ class RobotContainer:
         # Compiled Commands
         NamedCommands.registerCommand("Full Shooter Rev", self.s_Shooter.shoot())
         NamedCommands.registerCommand("Full Intake", self.s_Intake.intake().alongWith(self.s_Indexer.indexerIntake()).until(self.s_Indexer.getBeamBreakState).andThen(self.s_Indexer.instantStop()).andThen(self.s_Indexer.indexerOuttake().withTimeout(0.0005)).withName("AutoIntake").withTimeout(5.0))
-        NamedCommands.registerCommand("Full Shoot", cmd.deadline(self.s_Indexer.indexerShoot(), self.s_Intake.intake()).unless(self.s_Shooter.isShooterAtSubwooferSpeed))
-        NamedCommands.registerCommand("All Off", self.s_Intake.instantStop().alongWith(self.s_Indexer.instantStop(), self.s_Shooter.brake()).withName("AutoAllOff"))
+        NamedCommands.registerCommand("Full Shoot", cmd.deadline(self.s_Indexer.indexerShoot(), self.s_Intake.intake()).unless(self.s_Shooter.isShooterAtSubwooferSpeed).withTimeout(5.0).withName("AutoShoot"))
+        NamedCommands.registerCommand("All Off", self.s_Intake.instantStop().alongWith(self.s_Indexer.instantStop(), self.s_Shooter.brake()).withName("AutoAllOff").withTimeout(5.0))
 
         self.auton_selector = SendableChooser()
         # self.auton_selector.setDefaultOption("Straight Auto", PathPlannerAutoRunner("StraightAuto", self.s_Swerve).getCommand())
@@ -221,7 +221,7 @@ class RobotContainer:
         )
 
         # LED Controls
-        # self.s_LED.setDefaultCommand(self.s_LED.idle())
+        self.s_LED.setDefaultCommand(self.s_LED.idle())
         # self.shooterReady = Trigger(self.m_robotState.isShooterReady)
         # self.shooterReady.whileTrue(self.s_LED.readytoShoot())
         # self.autonTrigger = Trigger(lambda: DriverStation.isAutonomous())
