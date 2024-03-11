@@ -19,8 +19,7 @@ class Robot(TimedRobot):
   def robotInit(self):
     # Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     # autonomous chooser on the dashboard.
-    CommandScheduler.getInstance().setPeriod(0.02)
-    wpilib.CameraServer.launch()
+    # wpilib.CameraServer.launch()
     self.m_robotContainer = RobotContainer()
 
   def robotPeriodic(self):
