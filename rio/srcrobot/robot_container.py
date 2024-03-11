@@ -257,7 +257,7 @@ class RobotContainer:
         )
 
         # LED Controls
-        # self.s_LED.setDefaultCommand(self.s_LED.idle())
+        self.s_LED.setDefaultCommand(self.s_LED.idle())
         # self.shooterReady = Trigger(self.m_robotState.isShooterReady)
         # self.shooterReady.whileTrue(self.s_LED.readytoShoot())
         # self.autonTrigger = Trigger(lambda: DriverStation.isAutonomous())
