@@ -113,6 +113,11 @@ class Constants:
             ReplanningConfig(),
         )
 
+        # Slowdown speed
+        ## The speed is multiplied by this value when the trigger is fully held down
+        slowMoveModifier = 0.5
+        slowTurnModifier = 0.5
+
         # Module Specific Constants
         # Front Left Module - Module 0
         class Mod0:
@@ -165,7 +170,7 @@ class Constants:
         kSubwooferPivotAngle = 0.0
         kPodiumPivotAngle = 45.0
         kAmpPivotAngle = 90.0
-        kSubwooferShootSpeed = 20.0
+        kSubwooferShootSpeed = 25.0
         kPodiumShootSpeed = 20.0
         kAmpShootSpeed = 5.0
 
@@ -185,20 +190,32 @@ class Constants:
         kLeftCANID = 4
         kRightCANID = 15
         maxClimbHeight = 0
-        kClimberSpeed = 0.5
+        kClimberSpeed = 0.75 # percent output
 
     # An enumeration of known shot locations and data critical to executing the
     # shot. TODO decide on shooter velocity units and tune angles.
     class NextShot(Enum):
-      AMP = (0, -90.0, 90.0, 90.0, 100.0)
-      SPEAKER_AMP = (1, 45.0, -45.0, 0.0, 1000.0)
-      SPEAKER_CENTER = (2, 0.0, 0.0, 0.0, 1000.0)
-      SPEAKER_PODIUM = (3, -45.0, 45.0, 0.0, 1000.0)
-      PODIUM = (4, -30.0, 30.0, 45.0, 2000.00)
+      AMP = (0, -90.0, 90.0, 90.0, 5.0, 5, 6)
+      SPEAKER_AMP = (1, 60.0, -60.0, 5.0, 25.0, 4, 7)
+      SPEAKER_CENTER = (2, 0.0, 0.0, 5.0, 25.0, 4, 7)
+      SPEAKER_SOURCE = (3, -60.0, 60.0, 5.0, 25.0, 4, 7)
+      PODIUM = (4, -30.0, 30.0, 25.0, 45.0, 4, 7)
 
-      def __init__(self, value, blueSideBotHeading, redSideBotHeading, armAngle, shooterVelocity):
+      def __init__(self, value, blueSideBotHeading, redSideBotHeading, armAngle, shooterVelocity, red_tagID, blue_tagID):
         self._value_ = value
         self.m_blueSideBotHeading = blueSideBotHeading
         self.m_redSideBotHeading = redSideBotHeading
         self.m_armAngle = armAngle
         self.m_shooterVelocity = shooterVelocity
+        self.m_redTagID = red_tagID
+        self.m_blueTagID = blue_tagID
+
+      def calculate(self, distance):
+        shooterRegressionEquation = lambda x: (0.178571*(x**2)) + (0.107143*x) + 24.9286
+        armRegressionEquation = lambda x: (0.175*(x**2)) + (1.605*x) + 8.88
+
+        shooterSpeed = shooterRegressionEquation(distance)
+        armAngle = armRegressionEquation(distance)
+
+        return (shooterSpeed, armAngle)
+    

@@ -20,6 +20,12 @@
         {
           "type": "named",
           "data": {
+            "name": "ArmUp"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "Shoot"
           }
         },
@@ -27,6 +33,12 @@
           "type": "named",
           "data": {
             "name": "ShooterOff"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ArmDown"
           }
         },
         {
@@ -114,9 +126,28 @@
                 }
               },
               {
-                "type": "named",
+                "type": "sequential",
                 "data": {
-                  "name": "Shoot"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "ArmUp"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Shoot"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "ArmDown"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -143,6 +174,6 @@
       ]
     }
   },
-  "folder": null,
+  "folder": "2 Piece Autons",
   "choreoAuto": false
 }

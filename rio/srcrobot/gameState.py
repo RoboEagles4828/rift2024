@@ -51,9 +51,20 @@ class GameState:
         """
         alliance = DriverStation.getAlliance()
         nextShot = self.getNextShot()
-        if nextShot == DriverStation.Alliance.kRed:
+        if alliance == DriverStation.Alliance.kRed:
             return nextShot.m_redSideBotHeading
         return nextShot.m_blueSideBotHeading
+    
+    def getNextShotTagID(self) -> int:
+        """
+        Return the tag ID for the next shot. This value is alliance adjusted. If
+        the FMS is misbehaving, we assume blue.
+        """
+        alliance = DriverStation.getAlliance()
+        nextShot = self.getNextShot()
+        if alliance == DriverStation.Alliance.kRed:
+            return nextShot.m_redTagID
+        return nextShot.m_blueTagID
 
     def setHasNote(self, hasNote):
         """

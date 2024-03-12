@@ -44,7 +44,7 @@ class Vision(Subsystem):
             cls.instance = Vision()
         return cls.instance
 
-    def getEstimatedGlobalPose(self, prevEstimatedPose):
+    def getEstimatedGlobalPose(self):
         return self.photonPoseEstimator.update()
     
     def getDistanceToSpeakerFieldToCameraInches(self, fieldToCamera: Transform3d):
@@ -78,8 +78,25 @@ class Vision(Subsystem):
         targets.sort(key=lambda target: target.area, reverse=True)
 
         return targets[0]
-
     
+    def isTargetSeen(self, tagID):
+        result = self.camera.getLatestResult()
+        best_target = self.getBestTarget(result)
+        return best_target.getFiducialId() == tagID
+    
+    def isTargetSeenLambda(self, tagIDSupplier):
+        result = self.camera.getLatestResult()
+        best_target = self.getBestTarget(result)
+        return best_target.getFiducialId() == tagIDSupplier()
+    
+    def getAngleToTag(self, tagIDSupplier):
+        if self.isTargetSeenLambda(tagIDSupplier):
+            result = self.camera.getLatestResult()
+            best_target = self.getBestTarget(result)
+            return best_target.getYaw()
+        else:
+            return 0.0
+
     def periodic(self):
         result = self.camera.getLatestResult()
 

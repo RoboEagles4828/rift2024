@@ -6,25 +6,32 @@ from commands.TeleopSwerve import TeleopSwerve
 from wpimath.geometry import Translation2d, Rotation2d
 from wpimath.trajectory import TrapezoidProfile
 import math
+from typing import Callable
 
 class TurnInPlace(TeleopSwerve):
-    def __init__(self, s_Swerve, desiredRotationSup, translationSup, strafeSup, rotationSup, robotCentricSup):
+    def __init__(self, s_Swerve, desiredRotationSup: Callable[[], Rotation2d], translationSup, strafeSup, rotationSup, robotCentricSup):
         super().__init__(s_Swerve, translationSup, strafeSup, rotationSup, robotCentricSup)
-        self.turnPID = PIDController(1.0, 0.0, 0.0)
+        self.turnPID = PIDController(2.0, 0.0, 0.0)
         self.turnPID.enableContinuousInput(-math.pi, math.pi)
+        self.desiredRotationSupplier = desiredRotationSup
         self.angle = desiredRotationSup().radians()
-        self.turnPID.setTolerance(math.radians(1))
+        self.turnPID.setTolerance(math.radians(1)) # 1 degree tolerance
+        self.currentRotation = rotationSup
 
 
     def initialize(self):
         super().initialize()
-        self.start_angle = self.s_Swerve.getGyroYaw().radians()
+        self.start_angle = self.s_Swerve.getHeading().radians()
         self.turnPID.reset()
         self.turnPID.setSetpoint(self.angle)
 
     def getRotationValue(self):
-        self.angularvelMRadiansPerSecond = self.turnPID.calculate(self.s_Swerve.getGyroYaw().radians())
-        return self.angularvelMRadiansPerSecond
+        rotationStick = self.currentRotation()
+        if abs(rotationStick) > 0.0:
+            return rotationStick*Constants.Swerve.maxAngularVelocity
+        else:
+            self.angularvelMRadiansPerSecond = self.turnPID.calculate(self.s_Swerve.getHeading().radians(), self.desiredRotationSupplier().radians())
+            return self.angularvelMRadiansPerSecond
 
     def isFinished(self) -> bool:
         return self.turnPID.atSetpoint()

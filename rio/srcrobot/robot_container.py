@@ -3,8 +3,9 @@ from wpilib import Joystick
 from wpilib import XboxController
 from commands2.button import CommandXboxController, Trigger
 from commands2 import Command, Subsystem
-from commands2 import InstantCommand, ConditionalCommand, WaitCommand, PrintCommand
+from commands2 import InstantCommand, ConditionalCommand, WaitCommand, PrintCommand, RunCommand, SequentialCommandGroup, ParallelCommandGroup, WaitUntilCommand
 from commands2.button import JoystickButton
+import commands2.cmd as cmd
 from CTREConfigs import CTREConfigs
 from commands2 import CommandScheduler
 
@@ -15,23 +16,30 @@ from autos.exampleAuto import exampleAuto
 from commands.TeleopSwerve import TeleopSwerve
 from commands.PathFindToTag import PathFindToTag
 
+from commands.ExecuteCommand import ExecuteCommand
 from subsystems.Swerve import Swerve
 from subsystems.intake import Intake
 from subsystems.indexer import Indexer
 from subsystems.Arm import Arm
+from subsystems.Climber import Climber
 from subsystems.Shooter import Shooter
 from subsystems.Vision import Vision
+from subsystems.Led import LED
 # from subsystems.Climber import Climber
 from commands.TurnInPlace import TurnInPlace
+from commands.TurnToTag import TurnToTag
 
 from commands.SysId import DriveSysId
 
 from wpilib.shuffleboard import Shuffleboard, BuiltInWidgets, BuiltInLayouts
-from wpilib import SendableChooser, SmartDashboard
+from wpilib import SendableChooser
+
+from wpimath import applyDeadband
 
 from autos.PathPlannerAutoRunner import PathPlannerAutoRunner
 from pathplannerlib.auto import NamedCommands
 
+from robotState import RobotState
 
 
 class RobotContainer:
@@ -40,13 +48,14 @@ class RobotContainer:
     translationAxis = XboxController.Axis.kLeftY
     strafeAxis = XboxController.Axis.kLeftX
     rotationAxis = XboxController.Axis.kRightX
+    slowAxis = XboxController.Axis.kRightTrigger # This causes issues on certain controllers, where kRightTrigger is for some reason mapped to [5] instead of [3]
 
     driver = CommandXboxController(0)
     operator = CommandXboxController(1)
 
     sysId = JoystickButton(driver, XboxController.Button.kY)
 
-    robotCentric_value = True
+    robotCentric_value = False
 
     # Subsystems
     s_Swerve : Swerve = Swerve()
@@ -60,79 +69,115 @@ class RobotContainer:
     #SysId
     driveSysId = DriveSysId(s_Swerve)
 
+    s_Climber : Climber = Climber()
+    s_LED : LED = LED()
 
     # The container for the robot. Contains subsystems, OI devices, and commands.
     def __init__(self):
+        self.m_robotState : RobotState = RobotState()
+        self.m_robotState.initialize(
+            lambda: self.s_Swerve.getHeading().degrees(),
+            self.s_Arm.getDegrees,
+            self.s_Shooter.getVelocity
+        )
 
         self.currentArmAngle = self.s_Arm.getDegrees()
 
-        translation = lambda: 0.0
-        strafe = lambda: 0.0
-        rotation = lambda: 0.0
-        robotcentric = lambda: False
-
-        self.auto = False
-
-        # NamedCommands.registerCommand("FaceForward", TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(180)), translation, strafe, rotation, robotcentric))
-        # NamedCommands.registerCommand("FaceBackward", TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(0)), translation, strafe, rotation, robotcentric))
-        # NamedCommands.registerCommand("FaceLeft", TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(90)), translation, strafe, rotation, robotcentric))
-        # NamedCommands.registerCommand("FaceRight", TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(-90)), translation, strafe, rotation, robotcentric))
         # Driver Controls
-
         self.zeroGyro = self.driver.back()
         self.robotCentric = self.driver.start()
-        self.pathfind = self.driver.y()
-        self.faceBack = self.driver.a()
-        self.faceRight = self.driver.b()
-        self.faceLeft = self.driver.x()
-        self.shoot = self.driver.rightTrigger() #just for testing will be removed later
-        self.intake = self.driver.rightBumper()
-        self.intakeReverse = self.driver.leftBumper()
+        self.execute = self.driver.leftBumper()
+        self.shoot = self.driver.rightBumper()
+        self.intake = self.driver.leftTrigger()
+        # Slowmode is defined with the other Axis objects
+
         # Operator Controls
-        self.manualArm = self.operator.leftBumper() 
-        self.armHome = self.operator.rightBumper()
-        self.shooterRev = self.operator.rightTrigger()
-        self.shooterAmpRev = self.operator.leftTrigger()
-        # self.queSubFront = self.operator.a()
-        # self.quePodium = self.operator.y()
-        # self.queSubRight = self.operator.b()
-        # self.queSubLeft = self.operator.x()
-        # self.queAmp = self.operator.povUp()
-        # self.queClimbFront = self.operator.povDown()
-        # self.queClimbRight = self.operator.povRight()
-        # self.queClimbLeft = self.operator.povLeft()
-        self.climbUp = self.operator.povLeft()
-        self.climbDown = self.operator.povRight()
+        self.autoHome = self.operator.rightTrigger()
+        # self.flywheel = self.operator.rightBumper()
+        self.systemReverse = self.operator.leftBumper()
+        self.opExec = self.operator.leftTrigger()
+        self.opShoot = self.operator.rightBumper()
+
+        # Que Controls
+        self.queSubFront = self.operator.a()
+        self.quePodium = self.operator.y()
+        self.queSubRight = self.operator.b()
+        self.queSubLeft = self.operator.x()
+        self.queAmp = self.operator.povUp()
+        self.climbUp = self.operator.povRight()
+        self.climbDown = self.operator.povLeft()
+        self.manualClimb  = self.operator.back()
         self.configureButtonBindings()
 
-        NamedCommands.registerCommand("RevShooter", self.s_Shooter.shoot().withTimeout(2.0).withName("AutoRevShooter"))
+        NamedCommands.registerCommand("RevShooter", self.s_Shooter.shoot().withTimeout(1.0).withName("AutoRevShooter"))
         NamedCommands.registerCommand("Shoot", self.s_Indexer.indexerShoot().withTimeout(1.0).withName("AutoShoot"))
         NamedCommands.registerCommand("ShooterOff", InstantCommand(self.s_Shooter.brake, self.s_Shooter).withName("AutoShooterBrake"))
         NamedCommands.registerCommand("IndexerIntake", self.s_Indexer.indexerIntakeOnce().withName("AutoIndexerIntake"))
-        NamedCommands.registerCommand("IndexerOff", self.s_Indexer.stopIndexer().withName("AutoIndexerOff"))
+        NamedCommands.registerCommand("ArmUp", self.s_Arm.servoArmToTarget(5.0).withTimeout(0.5))
+        NamedCommands.registerCommand("ArmDown", self.s_Arm.seekArmZero().withTimeout(1.0))
+        NamedCommands.registerCommand("IndexerOff", self.s_Indexer.instantStop().withName("AutoIndexerOff"))
         NamedCommands.registerCommand("IntakeOn", self.s_Intake.intakeOnce().withName("AutoIntakeOn"))
-        NamedCommands.registerCommand("IntakeOff", self.s_Intake.stopIntake().withName("AutoIntakeOff"))
-        # NamedCommands.registerCommand("Command ")
+        NamedCommands.registerCommand("IntakeOff", self.s_Intake.instantStop().withName("AutoIntakeOff"))
+        NamedCommands.registerCommand("IndexerOut", self.s_Indexer.indexerOuttake().withTimeout(4.0))
+
+        NamedCommands.registerCommand("IntakeUntilBeamBreak", SequentialCommandGroup(
+            self.s_Indexer.indexerIntakeOnce(),
+            # self.s_Intake.intakeOnce(),
+            WaitUntilCommand(lambda: self.s_Indexer.getBeamBreakState()).withTimeout(4.0),
+            self.s_Indexer.instantStop(),
+            self.s_Indexer.indexerOuttake().withTimeout(0.05),
+            # self.s_Intake.instantStop()
+        ).withTimeout(5.0))
+
+        # Compiled Commands
+        NamedCommands.registerCommand("Full Shooter Rev", self.s_Shooter.shoot())
+        NamedCommands.registerCommand("Full Intake", self.s_Intake.intake().alongWith(self.s_Indexer.indexerIntake()).until(self.s_Indexer.getBeamBreakState).andThen(self.s_Indexer.instantStop()).andThen(self.s_Indexer.indexerOuttake().withTimeout(0.0005)).withName("AutoIntake").withTimeout(5.0))
+        NamedCommands.registerCommand("Full Shoot", self.s_Arm.servoArmToTarget(4.0).withTimeout(0.5).andThen(WaitCommand(0.7)).andThen(self.s_Indexer.indexerShoot().withTimeout(0.5).alongWith(self.s_Intake.intake().withTimeout(0.5)).withTimeout(1.0)).andThen(self.s_Arm.seekArmZero()))
+        NamedCommands.registerCommand("All Off", self.s_Intake.instantStop().alongWith(self.s_Indexer.instantStop(), self.s_Shooter.brake()).withName("AutoAllOff"))
+
+        NamedCommands.registerCommand("Combo Shot", SequentialCommandGroup(
+            self.s_Shooter.shoot().withTimeout(1.0).withName("AutoRevShooter"),
+            self.s_Arm.servoArmToTarget(5.0).withTimeout(0.5),
+            self.s_Indexer.indexerShoot().withTimeout(1.0).withName("AutoShoot"),
+            InstantCommand(self.s_Shooter.brake, self.s_Shooter).withName("AutoShooterBrake"),
+            self.s_Arm.seekArmZero().withTimeout(1.0),
+            self.s_Indexer.instantStop().withName("AutoIndexerOff")
+        ))
 
         self.auton_selector = SendableChooser()
-        self.auton_selector.setDefaultOption("Straight Auto", PathPlannerAutoRunner("StraightAuto", self.s_Swerve).getCommand())
+        self.auton_selector.addOption("Straight Auto No Shoot", PathPlannerAutoRunner("StraightAutoNoShoot", self.s_Swerve).getCommand())
         self.auton_selector.addOption("RightSubwooferTaxiAuto", PathPlannerAutoRunner("RightSubwooferTaxiAuto", self.s_Swerve).getCommand())
-        self.auton_selector.addOption("CenterSubwoofer2PieceAuto", PathPlannerAutoRunner("CenterSubwoofer2Piece", self.s_Swerve).getCommand())
+        self.auton_selector.setDefaultOption("CenterSubwoofer2PieceAuto", PathPlannerAutoRunner("CenterSubwoofer2Piece", self.s_Swerve).getCommand())
+        self.auton_selector.addOption("CenterSubwoofer3PieceAuto", PathPlannerAutoRunner("CenterSubwoofer3Piece", self.s_Swerve).getCommand())
+        self.auton_selector.addOption("CenterSubwoofer4PieceAuto", PathPlannerAutoRunner("CenterSubwoofer4Piece", self.s_Swerve).getCommand())
+        self.auton_selector.addOption("CenterSubwoofer4_5PieceAuto", PathPlannerAutoRunner("CenterSubwoofer4_5Piece", self.s_Swerve).getCommand())
+        self.auton_selector.addOption("Do Nothing", InstantCommand())
+        self.auton_selector.addOption("2 Piece Podium Note", PathPlannerAutoRunner("CenterSubwoofer2PiecePodium", self.s_Swerve).getCommand())
+        self.auton_selector.addOption("ShootOnlyAuto", SequentialCommandGroup(
+            # self.s_Swerve.setHeading(Rotation2d(60.0)),
+            self.s_Shooter.shoot().withTimeout(1.0).withName("AutoRevShooter"),
+            self.s_Arm.servoArmToTarget(5.0).withTimeout(0.5),
+            self.s_Indexer.indexerShoot().withTimeout(1.0).withName("AutoShoot"),
+            InstantCommand(self.s_Shooter.brake, self.s_Shooter).withName("AutoShooterBrake"),
+            self.s_Arm.seekArmZero().withTimeout(1.0),
+            self.s_Indexer.instantStop().withName("AutoIndexerOff"),
+            self.s_Intake.instantStop(),
+            self.s_Shooter.brake()
+        ))
 
-        SmartDashboard.putData("Auton Selector", self.auton_selector)
+        Shuffleboard.getTab("Autonomous").add("Auton Selector", self.auton_selector)
+        # Shuffleboard.getTab("Teleoperated").add("Swerve Subsystem", self.s_Swerve)
+        # Shuffleboard.getTab("Teleoperated").add("Intake Sub", self.s_Intake)
+        # Shuffleboard.getTab("Teleoperated").add("Indexer Sub", self.s_Indexer)
+        # Shuffleboard.getTab("Teleoperated").add("Shooter Sub", self.s_Shooter)
+        # Shuffleboard.getTab("Teleoperated").add("Arm Sub", self.s_Arm)
+        Shuffleboard.getTab("Teleoperated").add("Climber Sub", self.s_Climber)
+        Shuffleboard.getTab("Teleoperated").addString("QUEUED SHOT", self.getQueuedShot)
 
-        SmartDashboard.putBoolean("Field Centric", self.getFieldOriented())
-        SmartDashboard.putBoolean("Zero Gyro", self.zeroGyro.getAsBoolean())
-        SmartDashboard.putData("Swerve Subsystem", self.s_Swerve)
-        SmartDashboard.putData("Intake Sub", self.s_Intake)
-        SmartDashboard.putData("Indexer Sub", self.s_Indexer)
-        SmartDashboard.putData("Shooter Sub", self.s_Shooter)
-        SmartDashboard.putNumber("FLYWHEEL TARGET", self.s_Shooter.getTargetVelocity())
-        SmartDashboard.putNumber("FLYWHEEL CURRENT", self.s_Shooter.getVelocity())
-        SmartDashboard.putNumber("ARM ANGLE", self.s_Arm.getDegrees())
+        Shuffleboard.getTab("Teleoperated").addBoolean("Field Oriented", self.getFieldOriented)
+        Shuffleboard.getTab("Teleoperated").addBoolean("Zero Gyro", self.zeroGyro.getAsBoolean)
+        Shuffleboard.getTab("Teleoperated").addBoolean("Beam Break", self.s_Indexer.getBeamBreakState)
 
-        SmartDashboard.putBoolean("BEAM BREAK", self.s_Indexer.getBeamBreakState())
-        SmartDashboard.updateValues()
 
     """
      * Use this method to define your button->command mappings. Buttons can be created by
@@ -141,10 +186,12 @@ class RobotContainer:
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
     """
     def configureButtonBindings(self):
-        translation = lambda: -self.driver.getRawAxis(self.translationAxis) 
-        strafe = lambda: -self.driver.getRawAxis(self.strafeAxis)
-        rotation = lambda: self.driver.getRawAxis(self.rotationAxis)
-        robotcentric = lambda: self.robotCentric_value
+        translation = lambda: -applyDeadband(self.driver.getRawAxis(self.translationAxis), 0.1)
+        strafe = lambda: -applyDeadband(self.driver.getRawAxis(self.strafeAxis), 0.1)
+        rotation = lambda: applyDeadband(self.driver.getRawAxis(self.rotationAxis), 0.1)
+        robotcentric = lambda: applyDeadband(self.robotCentric_value, 0.1)
+        slow = lambda: applyDeadband(self.driver.getRawAxis(self.slowAxis), 0.1)
+        climberaxis = lambda: applyDeadband(self.operator.getRawAxis(XboxController.Axis.kLeftY), 0.1)
 
         self.s_Swerve.setDefaultCommand(
             TeleopSwerve(
@@ -152,50 +199,108 @@ class RobotContainer:
                 translation,
                 strafe,
                 rotation,
-                robotcentric
+                robotcentric,
+                slow
             )
         )
 
         # Arm Buttons
-        self.s_Arm.setDefaultCommand(self.s_Arm.seekArmZero())
-        self.manualArm.whileTrue(self.s_Arm.moveArm(lambda: self.operator.getLeftY()))
-        self.armHome.onTrue(self.s_Arm.seekArmZero().andThen(InstantCommand(lambda: self.s_Arm.hardSetEncoderToZero())))
-        # self.queAmp.onTrue(self.s_Arm.servoArmToTarget(Constants.ShooterConstants.kAmpPivotAngle))
-        # self.quePodium.onTrue(self.s_Arm.servoArmToTarget(Constants.ShooterConstants.kPodiumPivotAngle))
-        # self.queSubFront.onTrue(self.s_Arm.servoArmToTarget(Constants.ShooterConstants.kSubwooferPivotAngle))
+        self.s_Arm.setDefaultCommand(self.s_Arm.stop())
 
         # Driver Buttons
         self.zeroGyro.onTrue(InstantCommand(lambda: self.s_Swerve.zeroHeading()))
         self.robotCentric.onTrue(InstantCommand(lambda: self.toggleFieldOriented()))
 
-        # self.faceForward.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(180)), translation, strafe, rotation, robotcentric))
-        # self.faceBack.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(0)), translation, strafe, rotation, robotcentric))
-        self.faceBack.onTrue(self.s_Arm.servoArmToTarget(90))
-        self.pathfind.whileTrue(PathFindToTag(self.s_Swerve, self.s_Vision, 7, 39))
-        # self.faceRight.onTrue(TurnInPlace(self.s_Swerve, lambda: (Rotation2d.fromDegrees(-90)), translation, strafe, rotation, robotcentric))
-
-        #Intake Buttons
+        # Intake Buttons
         self.s_Indexer.setDefaultCommand(self.s_Indexer.stopIndexer())
         self.s_Intake.setDefaultCommand(self.s_Intake.stopIntake())
-        self.intake.whileTrue(self.s_Intake.intake().alongWith(self.s_Indexer.indexerIntake()))
-        self.intakeReverse.whileTrue(self.s_Intake.outtake().alongWith(self.s_Indexer.indexerOuttake()))
+        self.intake.whileTrue(self.s_Intake.intake().alongWith(self.s_Indexer.indexerIntake()).until(self.s_Indexer.getBeamBreakState).andThen(self.s_Indexer.instantStop()).andThen(self.s_Indexer.indexerOuttake().withTimeout(0.0005)))
+        self.systemReverse.whileTrue(self.s_Intake.outtake().alongWith(self.s_Indexer.indexerOuttake(), self.s_Shooter.shootReverse()))
 
-        #Shooter Buttons
-        self.s_Shooter.setDefaultCommand(self.s_Shooter.stop())
-        self.shooterRev.whileTrue(self.s_Shooter.shoot())
-        self.shooterAmpRev.whileTrue(self.s_Shooter.amp())
-        self.shoot.and_(self.s_Shooter.isShooterReady).whileTrue(self.s_Indexer.indexerShoot())
-        
         self.beamBreakTrigger = Trigger(self.s_Indexer.getBeamBreakState)
-        # self.beamBreakTrigger.onTrue(InstantCommand(self.driver.getHID().setRumble(XboxController.RumbleType.kBothRumble, 0.5)).andThen(WaitCommand(0.5)).andThen(InstantCommand(self.driver.getHID().setRumble(XboxController.RumbleType.kBothRumble, 0.0))))
-        self.beamBreakTrigger.and_(self.intake.getAsBoolean).onTrue(WaitCommand(0.02).andThen(self.s_Intake.stopIntake().alongWith(self.s_Indexer.levelIndexer().withTimeout(1.0))))
-        # self.alwaysTrue = Trigger(lambda: True)
-        # self.alwaysTrue.whileTrue(self.s_Arm.servoArmToTarget(self.armAngleSlider.getDouble()))
+        # self.beamBreakTrigger.and_(self.intake.getAsBoolean).onTrue(self.s_Intake.instantStop().alongWith(self.s_Indexer.instantStop().withTimeout(1.0)))
+
+        self.beamBreakTrigger.onTrue(InstantCommand(lambda: self.m_robotState.m_gameState.setHasNote(True)).alongWith(self.rumbleDriver())).onFalse(InstantCommand(lambda: self.m_robotState.m_gameState.setHasNote(False)))
+
+        # Que Buttons
+        self.queSubFront.onTrue(InstantCommand(lambda: self.m_robotState.m_gameState.setNextShot(
+            Constants.NextShot.SPEAKER_CENTER
+        )).andThen(self.s_Arm.seekArmZero()))
+        self.quePodium.onTrue(InstantCommand(lambda: self.m_robotState.m_gameState.setNextShot(
+            Constants.NextShot.PODIUM
+        )).andThen(self.s_Arm.seekArmZero()))
+        self.queSubRight.onTrue(InstantCommand(lambda: self.m_robotState.m_gameState.setNextShot(
+            Constants.NextShot.SPEAKER_AMP
+        )).andThen(self.s_Arm.seekArmZero()))
+        self.queSubLeft.onTrue(InstantCommand(lambda: self.m_robotState.m_gameState.setNextShot(
+            Constants.NextShot.SPEAKER_SOURCE
+        )).andThen(self.s_Arm.seekArmZero()))
+        self.queAmp.onTrue(InstantCommand(lambda: self.m_robotState.m_gameState.setNextShot(
+            Constants.NextShot.AMP
+        )).andThen(self.s_Arm.seekArmZero()))
+
+        # self.execute.onTrue(ExecuteCommand(
+        #    self.s_Arm,
+        #    self.s_Shooter,
+        #    self.s_Swerve,
+        #    translation,
+        #    strafe,
+        #    rotation,
+        #    robotcentric
+        # ))
+        self.execute.or_(self.opExec.getAsBoolean).onTrue(
+            self.s_Arm.servoArmToTargetWithSupplier(
+                lambda: self.m_robotState.m_gameState.getNextShot()
+            ).alongWith(
+                self.s_Shooter.shootVelocityWithSupplier(
+                    lambda: self.m_robotState.m_gameState.getNextShot().m_shooterVelocity
+                ),
+                ConditionalCommand(
+                    TurnToTag(
+                        self.s_Swerve,
+                        self.s_Vision,
+                        lambda: self.m_robotState.m_gameState.getNextShotTagID(),
+                        translation,
+                        strafe,
+                        rotation,
+                        robotcentric
+                    ),
+                    TurnInPlace(
+                        self.s_Swerve,
+                        lambda: Rotation2d.fromDegrees(
+                            self.m_robotState.m_gameState.getNextShotRobotAngle()
+                        ),
+                        translation,
+                        strafe,
+                        rotation,
+                        robotcentric,
+                    ),
+                    lambda: self.s_Vision.isTargetSeenLambda(lambda: self.m_robotState.m_gameState.getNextShotTagID())
+                ).repeatedly()
+            )
+        )
+
+        # LED Controls
+        self.s_LED.setDefaultCommand(self.s_LED.idle())
+        # self.shooterReady = Trigger(self.m_robotState.isShooterReady)
+        # self.shooterReady.whileTrue(self.s_LED.readytoShoot())
+        # self.autonTrigger = Trigger(lambda: DriverStation.isAutonomous())
+        # self.autonTrigger.whileTrue(self.s_LED.autonomous())
 
         # Climber Buttons
-        # self.s_Climber.setDefaultCommand(self.s_Climber.stopClimbers())
-        # self.climbUp.whileTrue(self.s_Climber.runClimbersUp())
-        # self.climbDown.whileTrue(self.s_Climber.runClimbersDown())
+        self.s_Climber.setDefaultCommand(self.s_Climber.stopClimbers())
+        self.climbUp.whileTrue(self.s_Climber.runClimbersUp())
+        self.climbDown.whileTrue(self.s_Climber.runClimbersDown())
+        self.manualClimb.whileTrue(self.s_Climber.setClimbersLambda(climberaxis))
+
+        # Shooter Buttons
+        self.s_Shooter.setDefaultCommand(self.s_Shooter.stop())
+        # self.flywheel.whileTrue(self.s_Shooter.shootVelocity(self.m_robotState.m_gameState.getNextShot().m_shooterVelocity))
+        self.shoot.or_(self.opShoot.getAsBoolean).onTrue(cmd.deadline(self.s_Indexer.indexerShoot(), self.s_Intake.intake(), self.s_Shooter.shootVelocityWithSupplier(lambda: self.m_robotState.m_gameState.getNextShot().m_shooterVelocity)).andThen(self.s_Intake.instantStop()).andThen(self.s_Arm.seekArmZero()).andThen(self.s_Shooter.stop()))
+
+        self.autoHome.onTrue(self.s_Arm.seekArmZero())
+
+        #Vision Buttons
 
     def toggleFieldOriented(self):
         self.robotCentric_value = not self.robotCentric_value
@@ -203,6 +308,13 @@ class RobotContainer:
     def getFieldOriented(self):
         return not self.robotCentric_value
 
+    def getQueuedShot(self):
+        return self.m_robotState.m_gameState.getNextShot().name
+
+    def rumbleDriver(self):
+        return InstantCommand(
+            lambda: self.driver.getHID().setRumble(XboxController.RumbleType.kLeftRumble, 1.0)
+        ).andThen(WaitCommand(0.5)).andThen(InstantCommand(lambda: self.driver.getHID().setRumble(XboxController.RumbleType.kLeftRumble, 0.0))).withName("Rumble")
 
     """
      * Use this to pass the autonomous command to the main {@link Robot} class.
