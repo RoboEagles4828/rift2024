@@ -13,4 +13,4 @@ class PathPlannerAutoRunner:
             InstantCommand(lambda: self.swerve.setPose(self.auto.getStartingPoseFromAutoFile(self.pathplannerauto)), self.swerve),
             self.auto,
             InstantCommand(lambda: self.swerve.stop(), self.swerve)
-        )
+        ).withName(self.pathplannerauto)

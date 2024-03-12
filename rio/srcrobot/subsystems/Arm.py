@@ -2,10 +2,13 @@ from commands2.subsystem import Subsystem
 # from commands2.subsystem import Command
 from commands2 import WaitCommand
 from commands2 import WaitUntilCommand
+from commands2 import cmd
 import wpimath.filter
 import wpimath
 import wpilib
+from wpilib.shuffleboard import Shuffleboard
 import phoenix5
+from phoenix5 import TalonSRXControlMode, TalonSRXFeedbackDevice, SupplyCurrentLimitConfiguration, StatorCurrentLimitConfiguration
 import math
 
 class Arm(Subsystem):
@@ -19,23 +22,23 @@ class Arm(Subsystem):
     def __init__(self):
         self.kArmMotorCANId = 5
         self.kMeasuredTicksWhenHorizontal = 0
-        self.kEncoderTickPerEncoderRotation = 4096
+        self.kEncoderTickPerEncoderRotation = 4096*2
         self.kEncoderToArmGearRatio = 1.0
         self.kEncoderTicksPerArmRotation = self.kEncoderTickPerEncoderRotation * self.kEncoderToArmGearRatio
         self.kEncoderTicksPerDegreeOfArmMotion = self.kEncoderTicksPerArmRotation / 360.0
         self.kMotionMagicSlot = 0
         self.kVelocitySlot = 1
-        self.MaxGravityFF = 0.26 # In percent output [1.0:1.0]
-        self.kF = 0.2
-        self.kPMotionMagic = 4.0
-        self.kPVelocity = 0.8
+        self.MaxGravityFF = 0.0 #0.26 # In percent output [1.0:1.0]
+        self.kF = 0.9
+        self.kPMotionMagic = 2.5 #4.0
+        self.kPVelocity = 3.0 #0.8
         self.kIMotionMagic = 0.0
         self.kDMotionMagic = 0.0
         self.kCruiseVelocity = 1000.0 # ticks per 100ms
         self.kMaxAccel = 1000.0 # Accel to cruise in 1 sec
         self.kServoToleranceDegrees = 1.0 # +/- 1.0 for 2.0 degree window
         # Velocity for safely zeroing arm encoder in native units (ticks) per 100ms
-        self.kZeroEncoderVelocity = -self.kEncoderTicksPerDegreeOfArmMotion * 5.0
+        self.kZeroEncoderVelocity = -self.kEncoderTicksPerDegreeOfArmMotion * 6.5
         self.kZeroingWaitForMoveSec = 2.0
         self.ZeroingVelocityTolerance = 10.0
         
@@ -48,7 +51,10 @@ class Arm(Subsystem):
         self.lastServoTarget = 0.0
         self.kRestingAtZero = False
 
+        # Configure REV Through Bore Encoder as the arm's remote sensor
+        self.armMotor.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.QuadEncoder)
         self.armMotor.setSensorPhase(True)
+        self.armMotor.setInverted(False)
         self.armMotor.config_kP(self.kMotionMagicSlot, self.kPMotionMagic)
         self.armMotor.config_kI(self.kMotionMagicSlot, self.kIMotionMagic)
         self.armMotor.config_kD(self.kMotionMagicSlot, self.kDMotionMagic)
@@ -60,6 +66,17 @@ class Arm(Subsystem):
         self.armMotor.config_kI(self.kVelocitySlot, 0.0)
         self.armMotor.config_kD(self.kVelocitySlot, 0.0)
         self.armMotor.config_kF(self.kVelocitySlot, self.kF)
+
+        current_limit = 20
+        current_threshold = 40
+        current_threshold_time = 0.1
+        supply_configs = SupplyCurrentLimitConfiguration(True, current_limit, current_threshold, current_threshold_time)
+
+        self.armMotor.configSupplyCurrentLimit(supply_configs)
+
+        Shuffleboard.getTab("Teleoperated").addDouble("Arm degrees", self.getDegrees)
+
+        # SmartDashboard.putData("Arm", self)
         
 
     #     
@@ -71,15 +88,24 @@ class Arm(Subsystem):
     #    
     def seekArmZero(self):
         
-        return self.runOnce(lambda: self.selectPIDSlot(self.kVelocitySlot)).andThen(self.armMotor.set(
+        return self.runOnce(lambda: self.selectPIDSlot(self.kVelocitySlot))\
+            .andThen(self.servoArmToTarget(0.5).onlyIf(lambda: self.getDegrees() >= 15))\
+            .andThen(self.run(lambda: self.armMotor.set(
             phoenix5.ControlMode.Velocity,
-            self.kZeroEncoderVelocity,
-            phoenix5.DemandType.ArbitraryFeedForward,
-            self.calculateGravityFeedForward())) \
-            .raceWith(WaitCommand(self.kZeroingWaitForMoveSec) \
+            self.kZeroEncoderVelocity)))\
+            .raceWith(cmd.waitSeconds(self.kZeroingWaitForMoveSec) \
             .andThen(self.detectStallAtHardStop())) \
             .andThen(self.restingAtZero()) \
             .withName("seekArmZero")
+    
+            # phoenix5.DemandType.ArbitraryFeedForward,
+            # self.calculateGravityFeedForward()))) \
+
+    
+    def isNear(self, a, b, tolerance):
+        # if abs(a - b) < tolerance:
+        #     return True
+        return abs(a - b) < tolerance
 
     #     
     #     Creates a command to detect stall at the hard stop during
@@ -89,7 +115,13 @@ class Arm(Subsystem):
     #    
     def detectStallAtHardStop(self):
         stallDebouncer = wpimath.filter.Debouncer(1.0, wpimath.filter.Debouncer.DebounceType.kRising)  
-        return WaitUntilCommand(lambda: abs(self.armMotor.getSelectedSensorVelocity(self.kVelocitySlot) - 0.0) < self.ZeroingVelocityTolerance)
+        return cmd.waitUntil(lambda: stallDebouncer
+            .calculate(self.isNear(
+                0.0,
+                self.armMotor.getSelectedSensorVelocity(self.kVelocitySlot),
+                self.ZeroingVelocityTolerance)
+            )
+        )
         
 
     #     
@@ -132,13 +164,26 @@ class Arm(Subsystem):
 
         targetSensorUnits = degrees * self.kEncoderTicksPerDegreeOfArmMotion
         return self.runOnce(lambda: self.initializeServoArmToTarget(degrees)) \
-        .andThen(lambda: self.run(self.armMotor.set(
+        .andThen(self.run(lambda: self.armMotor.set(
             phoenix5.ControlMode.MotionMagic,
             targetSensorUnits,
             phoenix5.DemandType.ArbitraryFeedForward,
             self.calculateGravityFeedForward()))) \
-        .finallyDo(lambda: self.setServoControl(False)) \
+        .finallyDo(lambda interrupted: self.setServoControl(False)) \
         .withName("servoArmToTarget: " + str(degrees))
+    
+    def servoArmToTargetWithSupplier(self, degreesSup):
+        # if (degreesSup() <= 0.0):
+        #     return self.seekArmZero()
+        
+        return self.runOnce(lambda: self.initializeServoArmToTarget(degreesSup().m_armAngle)) \
+        .andThen(self.run(lambda: self.armMotor.set(
+            phoenix5.ControlMode.MotionMagic,
+            degreesSup().m_armAngle * self.kEncoderTicksPerDegreeOfArmMotion,
+            phoenix5.DemandType.ArbitraryFeedForward,
+            self.calculateGravityFeedForward()))) \
+        .finallyDo(lambda interrupted: self.setServoControl(False)) \
+        .withName("servoArmToTarget: " + str(degreesSup().m_armAngle))
   
     def initializeServoArmToTarget(self, degrees):
         self.lastServoTarget = degrees
@@ -157,7 +202,7 @@ class Arm(Subsystem):
     #     @return a command that drives the arm via double supplier.
     #    
     def moveArm(self, percentOutput):
-        return self.run(lambda: self.armMotor.set(percentOutput() * 0.4)) \
+        return self.run(lambda: self.armMotor.set(TalonSRXControlMode.PercentOutput, -percentOutput() * 0.4)) \
         .withName("moveArm")
   
 
@@ -194,7 +239,7 @@ class Arm(Subsystem):
     def isServoOnTarget(self):
         return self.kRestingAtZero \
             or (self.isServoControl \
-                and abs(self.lastServoTarget - self.getDegrees()) > self.kServoToleranceDegrees)
+                and self.isNear(self.lastServoTarget, self.getDegrees(), self.kServoToleranceDegrees))
 
 
 
@@ -206,19 +251,22 @@ class Arm(Subsystem):
     #    
     def selectPIDSlot(self, slot):
         self.armMotor.selectProfileSlot(slot, 0)
+
+    def stop(self):
+        return self.run(lambda: self.armMotor.set(TalonSRXControlMode.Velocity, 0.0)).withName("ArmStop")
         
 
     #    
     #    Updates the dashboard with critical arm data.
     #    
   
-    def periodic(self) :
-        # TODO reduce this to essentials.
-        wpilib.SmartDashboard.putNumber("Arm degrees", self.getDegrees())
-        wpilib.SmartDashboard.putNumber("Arm current", self.armMotor.getStatorCurrent())
-        wpilib.SmartDashboard.putBoolean("Arm on target", self.isServoOnTarget())
-        currentCommand = self.getCurrentCommand()
-        wpilib.SmartDashboard.putString("Arm command", currentCommand.getName() if currentCommand is not None else "<null>")
-        wpilib.SmartDashboard.putNumber("Arm zeroing velocity", self.armMotor.getSelectedSensorVelocity(self.kVelocitySlot))
-        wpilib.SmartDashboard.putBoolean("Arm resting", self.kRestingAtZero)
-        wpilib.SmartDashboard.putBoolean("Servo control", self.isServoControl)
+    # def periodic(self) :
+    #     # TODO reduce this to essentials.
+    #     # wpilib.SmartDashboard.putNumber("Arm current", self.armMotor.getStatorCurrent())
+    #     # wpilib.SmartDashboard.putBoolean("Arm on target", self.isServoOnTarget())
+    #     # currentCommand = self.getCurrentCommand()
+    #     # wpilib.SmartDashboard.putString("Arm command", currentCommand.getName() if currentCommand is not None else "<null>")
+    #     # wpilib.SmartDashboard.putNumber("Arm zeroing velocity", self.armMotor.getSelectedSensorVelocity(self.kVelocitySlot))
+    #     # wpilib.SmartDashboard.putBoolean("Arm resting", self.kRestingAtZero)
+    #     # wpilib.SmartDashboard.putBoolean("Servo control", self.isServoControl)
+    #     # wpilib.SmartDashboard.putBoolean("Arm is near", self.isNear(self.lastServoTarget, self.getDegrees(), self.kServoToleranceDegrees))
