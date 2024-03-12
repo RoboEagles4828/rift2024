@@ -2,7 +2,12 @@
   "robotWidth": 0.66,
   "robotLength": 0.7906,
   "holonomicMode": true,
-  "pathFolders": [],
+  "pathFolders": [
+    "CenterSubwoofer",
+    "LeftSubwoofer",
+    "Test Paths",
+    "RightSubwoofer"
+  ],
   "autoFolders": [
     "1 Piece Auton",
     "2 Piece Autons",
