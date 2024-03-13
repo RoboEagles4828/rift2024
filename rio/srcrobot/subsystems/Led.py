@@ -1,8 +1,8 @@
 from commands2 import Command, FunctionalCommand, Subsystem
 from wpilib import Spark
 
-from rio.srcrobot.gameState import GameState
-from rio.srcrobot.robotState import RobotState
+from gameState import GameState
+from robotState import RobotState
 
 
 # This subsystem will continued to be developed as the season progresses
@@ -56,7 +56,7 @@ class LED(Subsystem):
             self.empty()
         # elif self.gameState.mayHaveTooManyNotes():
         #     self.suspectTwoNotes()
-        elif self.robotState.isShooterReady:
+        elif self.robotState.isShooterReady():
             self.readytoShoot()
         else:
             self.noteDetected()
