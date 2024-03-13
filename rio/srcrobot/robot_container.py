@@ -167,6 +167,8 @@ class RobotContainer:
         Shuffleboard.getTab("Teleoperated").addBoolean("Field Oriented", self.getFieldOriented)
         Shuffleboard.getTab("Teleoperated").addBoolean("Zero Gyro", self.zeroGyro.getAsBoolean)
         Shuffleboard.getTab("Teleoperated").addBoolean("Beam Break", self.s_Indexer.getBeamBreakState)
+        Shuffleboard.getTab("Teleoperated").addDouble("Shooter Speed", self.s_Shooter.getVelocity)
+        Shuffleboard.getTab("Teleoperated").addBoolean("Shooter Ready", self.m_robotState.isShooterReady)
 
 
     """
