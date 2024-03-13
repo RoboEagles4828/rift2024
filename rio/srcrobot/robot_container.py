@@ -167,6 +167,8 @@ class RobotContainer:
         Shuffleboard.getTab("Teleoperated").addBoolean("Field Oriented", self.getFieldOriented)
         Shuffleboard.getTab("Teleoperated").addBoolean("Zero Gyro", self.zeroGyro.getAsBoolean)
         Shuffleboard.getTab("Teleoperated").addBoolean("Beam Break", self.s_Indexer.getBeamBreakState)
+        Shuffleboard.getTab("Teleoperated").addDouble("Shooter Speed", self.s_Shooter.getVelocity)
+        Shuffleboard.getTab("Teleoperated").addBoolean("Shooter Ready", self.m_robotState.isShooterReady)
 
 
     """
@@ -259,11 +261,7 @@ class RobotContainer:
         )
 
         # LED Controls
-        self.s_LED.setDefaultCommand(self.s_LED.idle())
-        # self.shooterReady = Trigger(self.m_robotState.isShooterReady)
-        # self.shooterReady.whileTrue(self.s_LED.readytoShoot())
-        # self.autonTrigger = Trigger(lambda: DriverStation.isAutonomous())
-        # self.autonTrigger.whileTrue(self.s_LED.autonomous())
+        self.s_LED.setDefaultCommand(self.s_LED.getStateCommand())
 
         # Climber Buttons
         self.s_Climber.setDefaultCommand(self.s_Climber.stopClimbers())
