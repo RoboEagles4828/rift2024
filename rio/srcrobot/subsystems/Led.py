@@ -1,11 +1,16 @@
-from commands2 import Subsystem
+from commands2 import Subsystem, Command, FunctionalCommand
 import wpilib
 from wpilib import PneumaticsControlModule, Solenoid
 from constants import Constants
 
-# This subsystem will continued to be developed as the season progresses
+from gameState import GameState
+from robotState import RobotState
 
+
+# This subsystem will continued to be developed as the season progresses
 class LED(Subsystem):
+    gameState = GameState()
+    robotState = RobotState()
 
     def __init__(self):
         self.kLedPort = 22
@@ -61,16 +66,47 @@ class LED(Subsystem):
             self.blueChan.set(True)
 
 
-# Red will be used when robot is on
-    def idle(self):
-        return self.run(lambda: self.blinkin.set(self.RED))
-# Purple Pattern will be used when a note is detected in the indexer
-    def noteDetected(self):
-        return self.run(lambda: self.blinkin.set(self.PURPLE))
-# Green Pattern will be used when the flywheels begin to run
-    def readytoShoot(self):
-        return self.run(lambda: self.blinkin.set(self.GREEN))
+        self.last = None
 
-# Green Pattern will be used when the flywheels begin to run    
-    def autonomous(self):
-        return self.run(lambda: self.blinkin.set(self.GOLD))
+    # The robot is empty, that is, it has no note.
+    def empty(self):
+        self.last = self.RED
+        self.refreshLast()
+
+    # The robot may have just gotten two notes!!!
+    def suspectTwoNotes(self):
+        self.last = self.YELLOW
+        self.refreshLast()
+
+    # A note has been detected in the indexer.
+    def noteDetected(self):
+        self.last = self.PURPLE
+        self.refreshLast()
+
+    # The shooter and arm are ready for the selected shot.
+    def readytoShoot(self):
+        self.last = self.GREEN
+        self.refreshLast()
+
+    def getStateCommand(self) -> Command:
+        """
+        Return the default command for the LED subsystem. It initializes to empty
+        and executes evaluating the game and robot states to set the LEDs for the
+        rest of the match.
+        """
+        return FunctionalCommand(
+            self.empty, self.setNextLED, lambda _: None, lambda: False, self
+        )
+
+    def setNextLED(self):
+        if not self.gameState.hasNote():
+            self.empty()
+        # elif self.gameState.mayHaveTooManyNotes():
+        #     self.suspectTwoNotes()
+        elif self.robotState.isShooterReady():
+            self.readytoShoot()
+        else:
+            self.noteDetected()
+
+    def refreshLast(self):
+        self.set(self.last)
