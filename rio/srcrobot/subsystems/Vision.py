@@ -12,6 +12,8 @@ import wpimath.units as Units
 
 from wpilib import SmartDashboard
 
+from typing import Callable
+
 class Vision(Subsystem):
     instance = None
 
@@ -79,17 +81,21 @@ class Vision(Subsystem):
 
         return targets[0]
     
-    def isTargetSeen(self, tagID):
+    def isTargetSeen(self, tagID) -> bool:
         result = self.camera.getLatestResult()
+        if result.hasTargets() == False:
+            return False
         best_target = self.getBestTarget(result)
         return best_target.getFiducialId() == tagID
     
-    def isTargetSeenLambda(self, tagIDSupplier):
+    def isTargetSeenLambda(self, tagIDSupplier: Callable[[], int]) -> bool:
         result = self.camera.getLatestResult()
+        if result.hasTargets() == False:
+            return False
         best_target = self.getBestTarget(result)
         return best_target.getFiducialId() == tagIDSupplier()
     
-    def getAngleToTag(self, tagIDSupplier):
+    def getAngleToTag(self, tagIDSupplier: Callable[[], int]):
         if self.isTargetSeenLambda(tagIDSupplier):
             result = self.camera.getLatestResult()
             best_target = self.getBestTarget(result)
