@@ -1,16 +1,25 @@
 {
-  "robotWidth": 0.7366,
-  "robotLength": 0.7366,
+  "robotWidth": 0.66,
+  "robotLength": 0.7906,
   "holonomicMode": true,
   "pathFolders": [
-    "Testing"
+    "CenterSubwoofer",
+    "LeftSubwoofer",
+    "Test Paths",
+    "RightSubwoofer"
   ],
   "autoFolders": [
-    "Testing"
+    "1 Piece Auton",
+    "2 Piece Autons",
+    "3 Piece Auton",
+    "4 Piece Auton",
+    "5 Piece",
+    "Test Autons",
+    "Taxi Autons"
   ],
-  "defaultMaxVel": 1.0,
-  "defaultMaxAccel": 1.0,
-  "defaultMaxAngVel": 180.0,
-  "defaultMaxAngAccel": 180.0,
-  "maxModuleSpeed": 2.0
+  "defaultMaxVel": 4.0,
+  "defaultMaxAccel": 4.0,
+  "defaultMaxAngVel": 540.0,
+  "defaultMaxAngAccel": 720.0,
+  "maxModuleSpeed": 4.5
 }

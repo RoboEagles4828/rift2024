@@ -1,4 +1,9 @@
 {
+  "System Joysticks": {
+    "window": {
+      "visible": false
+    }
+  },
   "keyboardJoysticks": [
     {
       "axisConfig": [
@@ -91,7 +96,10 @@
   ],
   "robotJoysticks": [
     {
-      "guid": "030000004c050000cc09000011810000",
+      "guid": "030000005e040000120b000011050000"
+    },
+    {
+      "guid": "030000004c050000c405000011010000",
       "useGamepad": true
     }
   ]
