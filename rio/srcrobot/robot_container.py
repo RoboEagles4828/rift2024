@@ -9,7 +9,8 @@ import commands2.cmd as cmd
 from CTREConfigs import CTREConfigs
 from commands2 import CommandScheduler
 
-from wpimath.geometry import Rotation2d
+from wpimath.geometry import *
+import wpimath.units as Units
 from constants import Constants
 
 from autos.exampleAuto import exampleAuto
@@ -37,7 +38,7 @@ from wpilib import SendableChooser
 from wpimath import applyDeadband
 
 from autos.PathPlannerAutoRunner import PathPlannerAutoRunner
-from pathplannerlib.auto import NamedCommands
+from pathplannerlib.auto import NamedCommands, PathConstraints
 
 from robotState import RobotState
 
@@ -89,6 +90,7 @@ class RobotContainer:
         self.execute = self.driver.leftBumper()
         self.shoot = self.driver.rightBumper()
         self.intake = self.driver.leftTrigger()
+        self.goToTag = self.driver.a()
         # Slowmode is defined with the other Axis objects
 
         # Operator Controls
@@ -279,6 +281,14 @@ class RobotContainer:
                     ),
                     lambda: self.s_Vision.isTargetSeenLambda(lambda: self.m_robotState.m_gameState.getNextShotTagID())
                 ).repeatedly()
+            )
+        )
+
+        self.goToTag.whileTrue(
+            self.s_Swerve.pathFindToPose(
+                Pose2d(2.4, 4.5, Rotation2d(Units.degreesToRadians(-30))),
+                PathConstraints(3, 2, Units.degreesToRadians(540), Units.degreesToRadians(720)),
+                0.0
             )
         )
 

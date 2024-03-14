@@ -21,7 +21,7 @@ from commands2.subsystem import Subsystem
 from wpilib.sysid import SysIdRoutineLog
 from wpimath.units import volts
 
-from pathplannerlib.auto import AutoBuilder
+from pathplannerlib.auto import AutoBuilder, PathConstraints
 
 from wpilib import DriverStation
 from wpiutil import Sendable, SendableBuilder
@@ -166,6 +166,9 @@ class Swerve(Subsystem):
                 .voltage(mod.mDriveMotor.get_motor_voltage().value_as_double)\
                 .position(mod.getPosition().distance)\
                 .velocity(mod.getState().speed)
+            
+    def pathFindToPose(self, pose: Pose2d, constraints: PathConstraints, goalEndVel: float):
+        return AutoBuilder.pathfindToPose(pose, constraints, goalEndVel)
             
     def stop(self):
         self.drive(Translation2d(), 0, False, True)

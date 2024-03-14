@@ -3,6 +3,7 @@ from commands2 import Subsystem
 from photonlibpy.photonCamera import PhotonCamera, VisionLEDMode
 from photonlibpy.photonPoseEstimator import PhotonPoseEstimator, PoseStrategy
 from photonlibpy.photonPipelineResult import PhotonPipelineResult
+from lib.util.PhotonUtils import PhotonUtils
 
 from robotpy_apriltag import AprilTagFieldLayout, AprilTagField, loadAprilTagLayoutField
 
@@ -38,6 +39,11 @@ class Vision(Subsystem):
         )
         self.photonPoseEstimator.multiTagFallbackStrategy = PoseStrategy.LOWEST_AMBIGUITY
 
+        self.CAMERA_HEIGHT_METERS = Units.inchesToMeters(24.0)
+        self.TARGET_HEIGHT_METERS = Units.feetToMeters(5.0)
+
+        self.CAMERA_PITCH_RADIANS = Rotation2d.fromDegrees(0.0)
+
         self.instance : Vision = None
 
     @classmethod
@@ -56,7 +62,10 @@ class Vision(Subsystem):
 
         pose = Pose2d(x, y, theta)
 
-        return Units.metersToInches(pose.translation().distance(self.speakerPosition.translation()))
+        distanceToSpeakerFieldToCamera = Units.metersToInches(
+            PhotonUtils.getDistanceToPose(pose, Pose2d(-0.0381, 5.547868, Rotation2d()))
+        )
+        return distanceToSpeakerFieldToCamera
     
     def getCamera(self):
         return self.camera
@@ -100,6 +109,20 @@ class Vision(Subsystem):
             result = self.camera.getLatestResult()
             best_target = self.getBestTarget(result)
             return best_target.getYaw()
+        else:
+            return 0.0
+        
+    def getDistanceToTag(self, tagIDSupplier: Callable[[], int]):
+        if self.isTargetSeenLambda(tagIDSupplier):
+            result = self.camera.getLatestResult()
+            best_target = self.getBestTarget(result)
+            dist = PhotonUtils.calculateDistanceToTargetMeters(
+                self.CAMERA_HEIGHT_METERS,
+                self.TARGET_HEIGHT_METERS,
+                self.CAMERA_PITCH_RADIANS.radians(),
+                Units.degreesToRadians(best_target.getPitch())
+            )
+            return dist
         else:
             return 0.0
 
