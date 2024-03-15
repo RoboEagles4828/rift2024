@@ -28,30 +28,6 @@ class Swerve(Subsystem):
     mSwerveMods: list[SwerveModule, SwerveModule, SwerveModule, SwerveModule]
     gyro: AHRS
 
-    class SwerveSendable(Sendable):
-        def __init__(self, swerve, swerveMods):
-            self.mSwerveMods = swerveMods
-            self.swerve = swerve
-            super().__init__()
-
-        def initSendable(self, builder: SendableBuilder):
-            builder.setSmartDashboardType("SwerveDrive")
-
-            builder.addDoubleProperty("Front Left Angle", lambda: self.mSwerveMods[0].getState().angle.radians(), lambda val: None)
-            builder.addDoubleProperty("Front Left Velocity", lambda: self.mSwerveMods[0].getState().speed, lambda val: None)
-
-            builder.addDoubleProperty("Front Right Angle", lambda: self.mSwerveMods[1].getState().angle.radians(), lambda val: None)
-            builder.addDoubleProperty("Front Right Velocity", lambda: self.mSwerveMods[1].getState().speed, lambda val: None)
-
-            builder.addDoubleProperty("Back Left Angle", lambda: self.mSwerveMods[2].getState().angle.radians(), lambda val: None)
-            builder.addDoubleProperty("Back Left Velocity", lambda: self.mSwerveMods[2].getState().speed, lambda val: None)
-
-            builder.addDoubleProperty("Back Right Angle", lambda: self.mSwerveMods[3].getState().angle.radians(), lambda val: None)
-            builder.addDoubleProperty("Back Right Velocity", lambda: self.mSwerveMods[3].getState().speed, lambda val: None)
-
-            builder.addDoubleProperty("Robot Angle", lambda: self.swerve.getHeading().radians(), lambda val: None)
-        
-
     def __init__(self):
         self.gyro = AHRS.create_spi()
         self.gyro.calibrate()
@@ -75,9 +51,6 @@ class Swerve(Subsystem):
             self.shouldFlipPath,
             self
         )
-
-
-        Shuffleboard.getTab("Teleoperated").add("Swerve Drive", self.SwerveSendable(self, self.mSwerveMods))
 
     def drive(self, translation: Translation2d, rotation, fieldRelative, isOpenLoop):
         discreteSpeeds = ChassisSpeeds.discretize(translation.X(), translation.Y(), rotation, 0.02)
