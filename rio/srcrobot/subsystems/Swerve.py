@@ -31,13 +31,6 @@ class Swerve(Subsystem):
     mSwerveMods: list[SwerveModule, SwerveModule, SwerveModule, SwerveModule]
     gyro: AHRS
 
-    class SwerveSendable(Sendable):
-        def __init__(self, swerve, swerveMods):
-            self.mSwerveMods = swerveMods
-            self.swerve = swerve
-            super().__init__()
-        
-
     def __init__(self):
         self.gyro = AHRS.create_spi()
         self.gyro.calibrate()
