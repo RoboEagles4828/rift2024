@@ -2,7 +2,7 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
 from zed_interfaces.msg import ObjectsStamped
-
+import math
 class ZedConversion(Node):
     def __init__(self):
         super().__init__('zed_conversion')
@@ -26,9 +26,14 @@ class ZedConversion(Node):
                 empty.data = "0.0|0.0|0.0"
                 self.pose_publisher.publish(empty)
             else:
-                x = objects.objects[0].position[0]
-                y = objects.objects[0].position[1]
-                z = objects.objects[0].position[2]
+                best_notes = []
+                for i in objects.objects:
+                    if i.confidence > 0.5:
+                        best_notes.append(i)
+                best_notes.sort(key = lambda x: math.sqrt(math.pow(x.position[0], 2) + math.pow(x.position[1], 2) + math.pow(x.position[2], 2)))
+                x = best_notes[0].position[0]
+                y = best_notes[0].position[1]
+                z = best_notes[0].position[2]
                 self.pose.data = f"{float(x)}|{float(y)}|{float(z)}"
                 print(self.pose)
                 self.pose_publisher.publish(self.pose)
