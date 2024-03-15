@@ -15,14 +15,13 @@ class TurnInPlace(TeleopSwerve):
         self.turnPID.enableContinuousInput(-math.pi, math.pi)
         self.desiredRotationSupplier = desiredRotationSup
         self.angle = desiredRotationSup().radians()
-        self.turnPID.setTolerance(math.radians(1)) # 1 degree tolerance
         self.currentRotation = rotationSup
 
     def initialize(self):
         super().initialize()
         self.start_angle = self.s_Swerve.getHeading().radians()
         self.turnPID.reset()
-        self.turnPID.setTolerance(math.radians(2))
+        self.turnPID.setTolerance(math.radians(1))
         self.turnPID.setSetpoint(self.angle)
 
     def getRotationValue(self):
