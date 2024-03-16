@@ -30,7 +30,7 @@ class Robot(TimedRobot):
     CommandScheduler.getInstance().run()
 
   def autonomousInit(self):
-    self.m_robotContainer.s_Shooter.setDefaultCommand(self.m_robotContainer.s_Shooter.idle())
+    # self.m_robotContainer.s_Shooter.setDefaultCommand(self.m_robotContainer.s_Shooter.idle())
 
     m_autonomousCommand: Command = self.m_robotContainer.getAutonomousCommand()
 

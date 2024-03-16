@@ -125,6 +125,7 @@ class RobotContainer:
         NamedCommands.registerCommand("IntakeUntilBeamBreak", SequentialCommandGroup(
             self.s_Indexer.indexerIntakeOnce(),
             WaitUntilCommand(self.s_Indexer.getBeamBreakState).withTimeout(4.0).finallyDo(lambda interrupted: self.s_Indexer.stopMotor()),
+            self.s_Indexer.instantStop()
         ).withTimeout(5.0))
 
         # Compiled Commands
@@ -134,8 +135,11 @@ class RobotContainer:
         NamedCommands.registerCommand("All Off", self.s_Intake.instantStop().alongWith(self.s_Indexer.instantStop(), self.s_Shooter.brake()).withName("AutoAllOff"))
 
         NamedCommands.registerCommand("Combo Shot", SequentialCommandGroup(
-            self.s_Shooter.shoot().withTimeout(0.5).withName("AutoRevShooter"),
-            self.s_Arm.servoArmToTarget(5.0).withTimeout(1.0),
+            self.s_Indexer.instantStop(),
+            InstantCommand(lambda: self.s_Shooter.setShooterVelocity(Constants.NextShot.SPEAKER_CENTER.m_shooterVelocity), self.s_Shooter).alongWith(
+                self.s_Arm.servoArmToTarget(5.0).withTimeout(1.5)
+            ),
+            WaitUntilCommand(lambda: self.m_robotState.isArmAndShooterReady(shot=Constants.NextShot.SPEAKER_CENTER)).withTimeout(1.0),
             self.s_Indexer.indexerShoot().withTimeout(3.0).withName("AutoShoot"),
             #InstantCommand(lambda: self.s_Shooter.brake, self.s_Shooter).withName("AutoShooterBrake"),
             self.s_Arm.seekArmZero().withTimeout(1.0),
@@ -143,9 +147,11 @@ class RobotContainer:
         ))
 
         NamedCommands.registerCommand("Combo Podium Shot", SequentialCommandGroup(
-            InstantCommand(lambda: self.s_Shooter.setShooterVelocity(Constants.NextShot.PODIUM.m_shooterVelocity)).alongWith(
-                self.s_Arm.servoArmToTarget(30).withTimeout(1.5)
+            self.s_Indexer.instantStop(),
+            InstantCommand(lambda: self.s_Shooter.setShooterVelocity(Constants.NextShot.CENTER_AUTO.m_shooterVelocity), self.s_Shooter).alongWith(
+                self.s_Arm.servoArmToTarget(35.0).withTimeout(2.0)
             ),
+            WaitUntilCommand(lambda: self.m_robotState.isArmAndShooterReady(shot=Constants.NextShot.CENTER_AUTO)).withTimeout(1.0),
             self.s_Indexer.indexerShoot().withTimeout(3.0).withName("AutoShoot"),
             #InstantCommand(lambda: self.s_Shooter.brake, self.s_Shooter).withName("AutoShooterBrake"),
             self.s_Arm.seekArmZero().withTimeout(1.0),
@@ -187,7 +193,9 @@ class RobotContainer:
         Shuffleboard.getTab("Teleoperated").addBoolean("Zero Gyro", self.zeroGyro.getAsBoolean)
         Shuffleboard.getTab("Teleoperated").addBoolean("Beam Break", self.s_Indexer.getBeamBreakState)
         Shuffleboard.getTab("Teleoperated").addDouble("Shooter Speed", self.s_Shooter.getVelocity)
-        Shuffleboard.getTab("Teleoperated").addBoolean("Shooter Ready", self.m_robotState.isShooterReady)
+        Shuffleboard.getTab("Teleoperated").addBoolean("Shooter Ready", lambda: self.m_robotState.isShooterReady(Constants.NextShot.CENTER_AUTO))
+        Shuffleboard.getTab("Teleoperated").addBoolean("Arm Ready", lambda: self.m_robotState.isArmReady(Constants.NextShot.CENTER_AUTO))
+        Shuffleboard.getTab("Teleoperated").addBoolean("Arm + Shooter Ready", lambda: self.m_robotState.isArmAndShooterReady(shot=Constants.NextShot.CENTER_AUTO))
         Shuffleboard.getTab("Teleoperated").addDouble("Target Angle", lambda: self.m_robotState.m_gameState.getNextShotRobotAngle())
         Shuffleboard.getTab("Teleoperated").addDouble("Swerve Heading", lambda: self.s_Swerve.getHeading().degrees())
 

@@ -60,7 +60,7 @@ class Indexer(Subsystem):
         self.indexerMotor.set(TalonSRXControlMode.PercentOutput, 0.0)
 
     def instantStop(self):
-        return InstantCommand(lambda: self.indexerMotor.set(TalonSRXControlMode.Velocity, 0.0)).withName("InstantStop")
+        return InstantCommand(lambda: self.indexerMotor.set(TalonSRXControlMode.PercentOutput, 0.0)).withName("InstantStop")
 
     def stopIndexer(self):
         return self.run(lambda: self.indexerMotor.set(TalonSRXControlMode.PercentOutput, 0.0)).withName("StopIndexer")
