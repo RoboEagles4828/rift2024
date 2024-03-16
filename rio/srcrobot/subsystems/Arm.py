@@ -31,7 +31,7 @@ class Arm(Subsystem):
         self.MaxGravityFF = 0.1 #0.26 # In percent output [1.0:1.0]
         self.kF = 0.9
         self.kPMotionMagic = 1.5 #4.0
-        self.kPVelocity = 1.5 #0.8
+        self.kPVelocity = 3.0 #0.8
         self.kIMotionMagic = 0.0
         self.kDMotionMagic = 0.1
         self.kCruiseVelocity = 1000.0 # ticks per 100ms
@@ -40,7 +40,7 @@ class Arm(Subsystem):
         # Velocity for safely zeroing arm encoder in native units (ticks) per 100ms
         self.kZeroEncoderVelocity = -self.kEncoderTicksPerDegreeOfArmMotion * 6.5
         self.kZeroingWaitForMoveSec = 2.0
-        self.ZeroingVelocityTolerance = 10.0
+        self.ZeroingVelocityTolerance = 2.0
         
 
         self.armMotor = phoenix5.TalonSRX(self.kArmMotorCANId)

@@ -124,11 +124,7 @@ class RobotContainer:
 
         NamedCommands.registerCommand("IntakeUntilBeamBreak", SequentialCommandGroup(
             self.s_Indexer.indexerIntakeOnce(),
-            # self.s_Intake.intakeOnce(),
-            WaitUntilCommand(lambda: self.s_Indexer.getBeamBreakState()).withTimeout(4.0),
-            self.s_Indexer.instantStop(),
-            self.s_Indexer.indexerOuttake().withTimeout(0.05),
-            # self.s_Intake.instantStop()
+            WaitUntilCommand(self.s_Indexer.getBeamBreakState).withTimeout(4.0).finallyDo(lambda interrupted: self.s_Indexer.stopMotor()),
         ).withTimeout(5.0))
 
         # Compiled Commands
@@ -138,10 +134,20 @@ class RobotContainer:
         NamedCommands.registerCommand("All Off", self.s_Intake.instantStop().alongWith(self.s_Indexer.instantStop(), self.s_Shooter.brake()).withName("AutoAllOff"))
 
         NamedCommands.registerCommand("Combo Shot", SequentialCommandGroup(
-            self.s_Shooter.shoot().withTimeout(1.0).withName("AutoRevShooter"),
-            self.s_Arm.servoArmToTarget(5.0).withTimeout(0.5),
-            self.s_Indexer.indexerShoot().withTimeout(1.0).withName("AutoShoot"),
-            InstantCommand(self.s_Shooter.brake, self.s_Shooter).withName("AutoShooterBrake"),
+            self.s_Shooter.shoot().withTimeout(0.5).withName("AutoRevShooter"),
+            self.s_Arm.servoArmToTarget(5.0).withTimeout(1.0),
+            self.s_Indexer.indexerShoot().withTimeout(3.0).withName("AutoShoot"),
+            #InstantCommand(lambda: self.s_Shooter.brake, self.s_Shooter).withName("AutoShooterBrake"),
+            self.s_Arm.seekArmZero().withTimeout(1.0),
+            self.s_Indexer.instantStop().withName("AutoIndexerOff")
+        ))
+
+        NamedCommands.registerCommand("Combo Podium Shot", SequentialCommandGroup(
+            InstantCommand(lambda: self.s_Shooter.setShooterVelocity(Constants.NextShot.PODIUM.m_shooterVelocity)).alongWith(
+                self.s_Arm.servoArmToTarget(30).withTimeout(1.5)
+            ),
+            self.s_Indexer.indexerShoot().withTimeout(3.0).withName("AutoShoot"),
+            #InstantCommand(lambda: self.s_Shooter.brake, self.s_Shooter).withName("AutoShooterBrake"),
             self.s_Arm.seekArmZero().withTimeout(1.0),
             self.s_Indexer.instantStop().withName("AutoIndexerOff")
         ))
@@ -166,6 +172,7 @@ class RobotContainer:
             self.s_Intake.instantStop(),
             self.s_Shooter.brake()
         ))
+        self.auton_selector.addOption("RightSubwooferTurn", PathPlannerAutoRunner("RightSubwooferTurn", self.s_Swerve).getCommand())
 
         Shuffleboard.getTab("Autonomous").add("Auton Selector", self.auton_selector)
         # Shuffleboard.getTab("Teleoperated").add("Swerve Subsystem", self.s_Swerve)
@@ -183,6 +190,15 @@ class RobotContainer:
         Shuffleboard.getTab("Teleoperated").addBoolean("Shooter Ready", self.m_robotState.isShooterReady)
         Shuffleboard.getTab("Teleoperated").addDouble("Target Angle", lambda: self.m_robotState.m_gameState.getNextShotRobotAngle())
         Shuffleboard.getTab("Teleoperated").addDouble("Swerve Heading", lambda: self.s_Swerve.getHeading().degrees())
+
+        Shuffleboard.getTab("Teleoperated").addInteger("Tag ID", lambda: self.m_robotState.m_gameState.getNextShotTagID())
+        Shuffleboard.getTab("Teleoperated").addDouble("Target Yaw", lambda: self.s_Vision.getAngleToTag(lambda: self.m_robotState.m_gameState.getNextShotTagID()))
+        Shuffleboard.getTab("Teleoperated").addBoolean("Tag Seen", lambda: self.s_Vision.isTargetSeenLambda(lambda: self.m_robotState.m_gameState.getNextShotTagID()))
+        # Shuffleboard.getTab("Teleoperated").addDouble("Tag Distance", lambda: self.s_Vision.getDistanceToTag(lambda: self.m_robotState.m_gameState.getNextShotTagID()))
+
+        Shuffleboard.getTab("Teleoperated").addDouble("Swerve Pose X", lambda: self.s_Swerve.getPose().X())
+        Shuffleboard.getTab("Teleoperated").addDouble("Swerve Pose Y", lambda: self.s_Swerve.getPose().Y())
+        Shuffleboard.getTab("Teleoperated").addDouble("Swerve Pose Theta", lambda: self.s_Swerve.getPose().rotation().degrees())
 
 
     """
@@ -261,38 +277,58 @@ class RobotContainer:
                 self.s_Shooter.shootVelocityWithSupplier(
                     lambda: self.m_robotState.m_gameState.getNextShot().m_shooterVelocity
                 ),
-                ConditionalCommand(
-                    TurnToTag(
-                        self.s_Swerve,
-                        self.s_Vision,
-                        lambda: self.m_robotState.m_gameState.getNextShotTagID(),
-                        translation,
-                        strafe,
-                        rotation,
-                        robotcentric
+                TurnInPlace(
+                    self.s_Swerve,
+                    lambda: Rotation2d.fromDegrees(
+                        self.m_robotState.m_gameState.getNextShotRobotAngle()
                     ),
-                    TurnInPlace(
-                        self.s_Swerve,
-                        lambda: Rotation2d.fromDegrees(
-                            self.m_robotState.m_gameState.getNextShotRobotAngle()
-                        ),
-                        translation,
-                        strafe,
-                        rotation,
-                        robotcentric,
-                    ),
-                    lambda: self.s_Vision.isTargetSeenLambda(lambda: self.m_robotState.m_gameState.getNextShotTagID())
+                    translation,
+                    strafe,
+                    rotation,
+                    robotcentric
                 ).repeatedly()
+                # ConditionalCommand(
+                #     TurnToTag(
+                #         self.s_Swerve,
+                #         self.s_Vision,
+                #         lambda: self.m_robotState.m_gameState.getNextShotTagID(),
+                #         translation,
+                #         strafe,
+                #         rotation,
+                #         robotcentric
+                #     ),
+                #     TurnInPlace(
+                #         self.s_Swerve,
+                #         lambda: Rotation2d.fromDegrees(
+                #             self.m_robotState.m_gameState.getNextShotRobotAngle()
+                #         ),
+                #         translation,
+                #         strafe,
+                #         rotation,
+                #         robotcentric,
+                #     ),
+                #     lambda: self.s_Vision.isTargetSeenLambda(lambda: self.m_robotState.m_gameState.getNextShotTagID())
+                # ).repeatedly()
             )
         )
 
-        self.goToTag.whileTrue(
-            self.s_Swerve.pathFindToPose(
-                Pose2d(2.4, 4.5, Rotation2d(Units.degreesToRadians(-30))),
-                PathConstraints(3, 2, Units.degreesToRadians(540), Units.degreesToRadians(720)),
-                0.0
-            )
-        )
+        # self.goToTag.whileTrue(
+        #     self.s_Swerve.pathFindToPose(
+        #         Pose2d(2.4, 4.5, Rotation2d(Units.degreesToRadians(-30))),
+        #         PathConstraints(3, 2, Units.degreesToRadians(540), Units.degreesToRadians(720)),
+        #         0.0
+        #     )
+        # )
+
+        self.goToTag.whileTrue(TurnToTag(
+            self.s_Swerve,
+            self.s_Vision,
+            lambda: self.m_robotState.m_gameState.getNextShotTagID(),
+            translation,
+            strafe,
+            rotation,
+            robotcentric
+        ))
 
         # LED Controls
         self.s_LED.setDefaultCommand(self.s_LED.getStateCommand())

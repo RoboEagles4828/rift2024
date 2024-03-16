@@ -49,8 +49,6 @@ class RobotState:
         """
         shot = self.m_gameState.getNextShot()
         return math.isclose(
-            shot.m_armAngle, self.m_armAngleSupplier(), abs_tol=self.kArmAngleTolerance
-        ) and math.isclose(
             shot.m_shooterVelocity,
             self.m_shooterVelocitySupplier(),
             abs_tol=self.kShooterVelocityTolerance,

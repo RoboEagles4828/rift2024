@@ -14,37 +14,13 @@
         {
           "type": "named",
           "data": {
-            "name": "RevShooter"
+            "name": "Combo Shot"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ArmUp"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShooterOff"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ArmDown"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "IndexerOff"
+            "name": "IntakeOn"
           }
         },
         {
@@ -60,32 +36,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "IntakeOn"
-                }
-              },
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "IndexerIntake"
-                      }
-                    },
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 3.0
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "IndexerOff"
-                      }
-                    }
-                  ]
+                  "name": "IntakeUntilBeamBreak"
                 }
               }
             ]
@@ -106,69 +57,7 @@
         {
           "type": "named",
           "data": {
-            "name": "IndexerOff"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "RevShooter"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeOn"
-                }
-              },
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "ArmUp"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Shoot"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "ArmDown"
-                      }
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShooterOff"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "IndexerOff"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "IntakeOff"
+            "name": "Combo Shot"
           }
         }
       ]

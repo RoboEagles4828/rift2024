@@ -167,10 +167,9 @@ class Swerve(Subsystem):
         self.drive(Translation2d(), 0, False, True)
 
     def periodic(self):
+        self.swerveOdometry.update(self.getGyroYaw(), tuple(self.getModulePositions()))
         optestimatedPose = self.vision.getEstimatedGlobalPose()
 
         if optestimatedPose is not None:
             estimatedPose = optestimatedPose
-            self.swerveOdometry.addVisionMeasurement(estimatedPose.estimatedPose.toPose2d(), estimatedPose.timestampSeconds)
-
-        self.swerveOdometry.update(self.getGyroYaw(), tuple(self.getModulePositions()))
+            self.swerveOdometry.addVisionMeasurement(Pose2d(estimatedPose.estimatedPose.toPose2d().X(), estimatedPose.estimatedPose.toPose2d().Y(), self.getHeading()), estimatedPose.timestampSeconds)

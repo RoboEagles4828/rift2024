@@ -2,15 +2,22 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 2,
-      "y": 2
+      "x": 1.2837538932257664,
+      "y": 5.5275947625852675
     },
     "rotation": 0
   },
   "command": {
     "type": "sequential",
     "data": {
-      "commands": []
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "TurnthenMove"
+          }
+        }
+      ]
     }
   },
   "folder": "Test Autons",
