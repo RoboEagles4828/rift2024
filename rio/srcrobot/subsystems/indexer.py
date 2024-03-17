@@ -38,9 +38,7 @@ class Indexer(Subsystem):
         return self.run(lambda: self.indexerMotor.set(TalonSRXControlMode.Velocity, self.indexerIntakeVelocity)).withName("Intake")
     
     def indexerIntakeOnce(self):
-        return self.run(lambda: self.indexerMotor.set(TalonSRXControlMode.Velocity, self.indexerIntakeVelocity)).until(self.getBeamBreakState)\
-            .andThen(self.indexerOuttake().withTimeout(0.15))\
-            .finallyDo(lambda interrupted: self.instantStop()).withName("IntakeOnce")
+        return self.runOnce(lambda: self.indexerMotor.set(TalonSRXControlMode.Velocity, self.indexerIntakeVelocity))
 
     def indexerShoot(self): 
         return self.run(lambda: self.indexerMotor.set(TalonSRXControlMode.Velocity, self.indexerShootVelocity)).until(lambda: not self.getBeamBreakState()).withTimeout(1.0).andThen(waitSeconds(0.5)).finallyDo(lambda interrupted: self.stopMotor()).withName("Shoot")

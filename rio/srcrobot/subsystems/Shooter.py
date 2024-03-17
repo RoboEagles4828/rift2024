@@ -21,7 +21,7 @@ class Shooter(Subsystem):
         self.bottomShooter = TalonFX(self.kBottomShooterCANID)
         self.topShooter = TalonFX(self.kTopShooterCANID)
 
-        self.gearRatio = 3.0/4.0
+        self.gearRatio = 1.0
 
         self.wheelCircumference = 0.101*math.pi
 

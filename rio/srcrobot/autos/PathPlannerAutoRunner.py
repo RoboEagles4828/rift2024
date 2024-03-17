@@ -1,4 +1,4 @@
-from commands2 import SequentialCommandGroup, InstantCommand
+from commands2 import SequentialCommandGroup, InstantCommand, WaitCommand
 from pathplannerlib.auto import PathPlannerAuto
 from subsystems.Swerve import Swerve
 

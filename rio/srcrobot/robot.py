@@ -30,6 +30,8 @@ class Robot(TimedRobot):
     CommandScheduler.getInstance().run()
 
   def autonomousInit(self):
+    # self.m_robotContainer.s_Shooter.setDefaultCommand(self.m_robotContainer.s_Shooter.idle())
+
     m_autonomousCommand: Command = self.m_robotContainer.getAutonomousCommand()
 
     # schedule the autonomous command (example)
@@ -41,6 +43,7 @@ class Robot(TimedRobot):
     # teleop starts running. If you want the autonomous to
     # continue until interrupted by another command, remove
     # this line or comment it out.
+    self.m_robotContainer.s_Shooter.setDefaultCommand(self.m_robotContainer.s_Shooter.stop())
 
     if self.m_autonomousCommand is not None:
       self.m_autonomousCommand.cancel()
