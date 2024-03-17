@@ -134,29 +134,9 @@ class RobotContainer:
         NamedCommands.registerCommand("Full Shoot", self.s_Arm.servoArmToTarget(4.0).withTimeout(0.5).andThen(WaitCommand(0.7)).andThen(self.s_Indexer.indexerShoot().withTimeout(0.5).alongWith(self.s_Intake.intake().withTimeout(0.5)).withTimeout(1.0)).andThen(self.s_Arm.seekArmZero()))
         NamedCommands.registerCommand("All Off", self.s_Intake.instantStop().alongWith(self.s_Indexer.instantStop(), self.s_Shooter.brake()).withName("AutoAllOff"))
 
-        NamedCommands.registerCommand("Combo Shot", SequentialCommandGroup(
-            self.s_Indexer.instantStop(),
-            InstantCommand(lambda: self.s_Shooter.setShooterVelocity(Constants.NextShot.SPEAKER_CENTER.m_shooterVelocity), self.s_Shooter).alongWith(
-                self.s_Arm.servoArmToTarget(5.0).withTimeout(1.5)
-            ),
-            WaitUntilCommand(lambda: self.m_robotState.isArmAndShooterReady(shot=Constants.NextShot.SPEAKER_CENTER)).withTimeout(1.0),
-            self.s_Indexer.indexerShoot().withTimeout(3.0).withName("AutoShoot"),
-            #InstantCommand(lambda: self.s_Shooter.brake, self.s_Shooter).withName("AutoShooterBrake"),
-            self.s_Arm.seekArmZero().withTimeout(1.0),
-            self.s_Indexer.instantStop().withName("AutoIndexerOff")
-        ))
+        NamedCommands.registerCommand("Combo Shot", self.autoModeShot(Constants.NextShot.SPEAKER_CENTER))
 
-        NamedCommands.registerCommand("Combo Podium Shot", SequentialCommandGroup(
-            self.s_Indexer.instantStop(),
-            InstantCommand(lambda: self.s_Shooter.setShooterVelocity(Constants.NextShot.CENTER_AUTO.m_shooterVelocity), self.s_Shooter).alongWith(
-                self.s_Arm.servoArmToTarget(35.0).withTimeout(2.0)
-            ),
-            WaitUntilCommand(lambda: self.m_robotState.isArmAndShooterReady(shot=Constants.NextShot.CENTER_AUTO)).withTimeout(1.0),
-            self.s_Indexer.indexerShoot().withTimeout(3.0).withName("AutoShoot"),
-            #InstantCommand(lambda: self.s_Shooter.brake, self.s_Shooter).withName("AutoShooterBrake"),
-            self.s_Arm.seekArmZero().withTimeout(1.0),
-            self.s_Indexer.instantStop().withName("AutoIndexerOff")
-        ))
+        NamedCommands.registerCommand("Combo Podium Shot", self.autoModeShot(Constants.NextShot.CENTER_AUTO))
 
         self.auton_selector = SendableChooser()
         self.auton_selector.addOption("Straight Auto No Shoot", PathPlannerAutoRunner("StraightAutoNoShoot", self.s_Swerve).getCommand())
@@ -208,6 +188,29 @@ class RobotContainer:
         Shuffleboard.getTab("Teleoperated").addDouble("Swerve Pose Y", lambda: self.s_Swerve.getPose().Y())
         Shuffleboard.getTab("Teleoperated").addDouble("Swerve Pose Theta", lambda: self.s_Swerve.getPose().rotation().degrees())
 
+    def autoModeShot(self, autoShot: Constants.NextShot) -> Command:
+        """
+        Used during automode commands to shoot any Constants.NextShot.
+        """
+        armTimeoutSec = (autoShot.m_armAngle / 45.0) + 1.0
+        return SequentialCommandGroup(
+            self.s_Indexer.instantStop(),
+            InstantCommand(
+                lambda: self.s_Shooter.setShooterVelocity(autoShot.m_shooterVelocity),
+                self.s_Shooter,
+            ).alongWith(
+                self.s_Arm.servoArmToTarget(autoShot.m_armAngle).withTimeout(
+                    armTimeoutSec
+                )
+            ),
+            WaitUntilCommand(
+                lambda: self.m_robotState.isArmAndShooterReady(shot=autoShot)
+            ).withTimeout(1.0),
+            self.s_Indexer.indexerShoot().withTimeout(3.0).withName("AutoShoot"),
+            # InstantCommand(lambda: self.s_Shooter.brake, self.s_Shooter).withName("AutoShooterBrake"),
+            self.s_Arm.seekArmZero().withTimeout(1.0),
+            self.s_Indexer.instantStop().withName("AutoIndexerOff"),
+        )
 
     """
      * Use this method to define your button->command mappings. Buttons can be created by
