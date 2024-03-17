@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.75,
-      "y": 6.63
+      "x": 0.73,
+      "y": 6.61
     },
     "rotation": 60.0
   },
@@ -20,7 +20,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RightSubwooferTaxiPath"
+            "pathName": "RightSubwooferToPodiumPiece"
           }
         }
       ]
