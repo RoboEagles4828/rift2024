@@ -6,7 +6,7 @@
     "GLOBAL": {
       "fps": "120",
       "height": "720",
-      "maximized": "0",
+      "maximized": "1",
       "style": "0",
       "userScale": "2",
       "width": "1280",
@@ -28,15 +28,20 @@
     }
   },
   "Window": {
+    "###/Shuffleboard/Field/Field": {
+      "Collapsed": "0",
+      "Pos": "85,38",
+      "Size": "1779,947"
+    },
     "###FMS": {
       "Collapsed": "0",
       "Pos": "61,477",
-      "Size": "283,140"
+      "Size": "169,184"
     },
     "###Joysticks": {
       "Collapsed": "0",
       "Pos": "216,263",
-      "Size": "796,240"
+      "Size": "796,217"
     },
     "###NetworkTables": {
       "Collapsed": "0",
@@ -61,7 +66,7 @@
     "###Timing": {
       "Collapsed": "0",
       "Pos": "5,150",
-      "Size": "135,150"
+      "Size": "135,127"
     },
     "Debug##Default": {
       "Collapsed": "0",

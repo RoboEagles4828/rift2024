@@ -139,6 +139,7 @@ class RobotContainer:
         NamedCommands.registerCommand("Combo Podium Shot", self.autoModeShot(Constants.NextShot.CENTER_AUTO))
 
         self.auton_selector = SendableChooser()
+        self.auton_selector.addOption("ToMidLinePiece", PathPlannerAutoRunner("TurnandthenMoveAuton", self.s_Swerve).getCommand())
         self.auton_selector.addOption("Straight Auto No Shoot", PathPlannerAutoRunner("StraightAutoNoShoot", self.s_Swerve).getCommand())
         self.auton_selector.addOption("RightSubwooferTaxiAuto", PathPlannerAutoRunner("RightSubwooferTaxiAuto", self.s_Swerve).getCommand())
         self.auton_selector.setDefaultOption("CenterSubwoofer2PieceAuto", PathPlannerAutoRunner("CenterSubwoofer2Piece", self.s_Swerve).getCommand())
@@ -323,23 +324,23 @@ class RobotContainer:
             )
         )
 
-        # self.goToTag.whileTrue(
-        #     self.s_Swerve.pathFindToPose(
-        #         Pose2d(2.4, 4.5, Rotation2d(Units.degreesToRadians(-30))),
-        #         PathConstraints(3, 2, Units.degreesToRadians(540), Units.degreesToRadians(720)),
-        #         0.0
-        #     )
-        # )
+        self.goToTag.whileTrue(
+            self.s_Swerve.pathFindToPose(
+                Pose2d(1.83, 7.75, Rotation2d(Units.degreesToRadians(-90))),
+                PathConstraints(5, 7, Units.degreesToRadians(540), Units.degreesToRadians(720)),
+                0.0
+            )
+        )
 
-        self.goToTag.whileTrue(TurnToTag(
-            self.s_Swerve,
-            self.s_Vision,
-            lambda: self.m_robotState.m_gameState.getNextShotTagID(),
-            translation,
-            strafe,
-            rotation,
-            robotcentric
-        ))
+        # self.goToTag.whileTrue(TurnToTag(
+        #     self.s_Swerve,
+        #     self.s_Vision,
+        #     lambda: self.m_robotState.m_gameState.getNextShotTagID(),
+        #     translation,
+        #     strafe,
+        #     rotation,
+        #     robotcentric
+        # ))
 
         # LED Controls
         self.s_LED.setDefaultCommand(self.s_LED.getStateCommand())
