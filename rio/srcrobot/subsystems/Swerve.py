@@ -1,9 +1,12 @@
 from SwerveModule import SwerveModule
 from constants import Constants
 
+from subsystems.Vision import Vision
+
 from wpimath.kinematics import ChassisSpeeds
 from wpimath.kinematics import SwerveDrive4Kinematics
 from wpimath.kinematics import SwerveDrive4Odometry
+from wpimath.estimator import SwerveDrive4PoseEstimator
 from wpimath.kinematics import SwerveModulePosition
 
 from navx import AHRS
@@ -18,39 +21,15 @@ from commands2.subsystem import Subsystem
 from wpilib.sysid import SysIdRoutineLog
 from wpimath.units import volts
 
-from pathplannerlib.auto import AutoBuilder
+from pathplannerlib.auto import AutoBuilder, PathConstraints
 
 from wpilib import DriverStation
 from wpiutil import Sendable, SendableBuilder
 
 class Swerve(Subsystem):
-    swerveOdometry: SwerveDrive4Odometry
+    swerveOdometry: SwerveDrive4PoseEstimator
     mSwerveMods: list[SwerveModule, SwerveModule, SwerveModule, SwerveModule]
     gyro: AHRS
-
-    class SwerveSendable(Sendable):
-        def __init__(self, swerve, swerveMods):
-            self.mSwerveMods = swerveMods
-            self.swerve = swerve
-            super().__init__()
-
-        def initSendable(self, builder: SendableBuilder):
-            builder.setSmartDashboardType("SwerveDrive")
-
-            builder.addDoubleProperty("Front Left Angle", lambda: self.mSwerveMods[0].getState().angle.radians(), lambda val: None)
-            builder.addDoubleProperty("Front Left Velocity", lambda: self.mSwerveMods[0].getState().speed, lambda val: None)
-
-            builder.addDoubleProperty("Front Right Angle", lambda: self.mSwerveMods[1].getState().angle.radians(), lambda val: None)
-            builder.addDoubleProperty("Front Right Velocity", lambda: self.mSwerveMods[1].getState().speed, lambda val: None)
-
-            builder.addDoubleProperty("Back Left Angle", lambda: self.mSwerveMods[2].getState().angle.radians(), lambda val: None)
-            builder.addDoubleProperty("Back Left Velocity", lambda: self.mSwerveMods[2].getState().speed, lambda val: None)
-
-            builder.addDoubleProperty("Back Right Angle", lambda: self.mSwerveMods[3].getState().angle.radians(), lambda val: None)
-            builder.addDoubleProperty("Back Right Velocity", lambda: self.mSwerveMods[3].getState().speed, lambda val: None)
-
-            builder.addDoubleProperty("Robot Angle", lambda: self.swerve.getHeading().radians(), lambda val: None)
-        
 
     def __init__(self):
         self.gyro = AHRS.create_spi()
@@ -64,7 +43,9 @@ class Swerve(Subsystem):
             SwerveModule(3, Constants.Swerve.Mod3.constants)
         ]
 
-        self.swerveOdometry = SwerveDrive4Odometry(Constants.Swerve.swerveKinematics, self.getGyroYaw(), self.getModulePositions())
+        # self.swerveOdometry = SwerveDrive4Odometry(Constants.Swerve.swerveKinematics, self.getGyroYaw(), self.getModulePositions())
+        self.swerveOdometry = SwerveDrive4PoseEstimator(Constants.Swerve.swerveKinematics, self.getGyroYaw(), self.getModulePositions(), Pose2d(0, 0, Rotation2d()))
+        self.vision : Vision = Vision.getInstance()
 
         AutoBuilder.configureHolonomic(
             self.getPose,
@@ -75,9 +56,6 @@ class Swerve(Subsystem):
             self.shouldFlipPath,
             self
         )
-
-
-        Shuffleboard.getTab("Teleoperated").add("Swerve Drive", self.SwerveSendable(self, self.mSwerveMods))
 
     def drive(self, translation: Translation2d, rotation, fieldRelative, isOpenLoop):
         discreteSpeeds = ChassisSpeeds.discretize(translation.X(), translation.Y(), rotation, 0.02)
@@ -133,7 +111,7 @@ class Swerve(Subsystem):
         return self.mSwerveMods
 
     def getPose(self):
-        return self.swerveOdometry.getPose()
+        return self.swerveOdometry.getEstimatedPosition()
 
     def setPose(self, pose):
         self.swerveOdometry.resetPosition(self.getGyroYaw(), tuple(self.getModulePositions()), pose)
@@ -182,8 +160,16 @@ class Swerve(Subsystem):
                 .position(mod.getPosition().distance)\
                 .velocity(mod.getState().speed)
             
+    def pathFindToPose(self, pose: Pose2d, constraints: PathConstraints, goalEndVel: float):
+        return AutoBuilder.pathfindToPose(pose, constraints, goalEndVel)
+            
     def stop(self):
         self.drive(Translation2d(), 0, False, True)
 
     def periodic(self):
         self.swerveOdometry.update(self.getGyroYaw(), tuple(self.getModulePositions()))
+        optestimatedPose = self.vision.getEstimatedGlobalPose()
+
+        if optestimatedPose is not None:
+            estimatedPose = optestimatedPose
+            self.swerveOdometry.addVisionMeasurement(Pose2d(estimatedPose.estimatedPose.toPose2d().X(), estimatedPose.estimatedPose.toPose2d().Y(), self.getHeading()), estimatedPose.timestampSeconds)

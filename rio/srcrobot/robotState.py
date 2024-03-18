@@ -10,7 +10,7 @@ class RobotState:
     """
 
     kRobotHeadingTolerance = 2.0
-    kArmAngleTolerance = 1.0
+    kArmAngleTolerance = 2.0
     kShooterVelocityTolerance = 10.0
 
     m_gameState = GameState()
@@ -42,19 +42,33 @@ class RobotState:
         self.m_armAngleSupplier = armAngleSupplier
         self.m_shooterVelocitySupplier = shooterVelocitySupplier
 
-    def isShooterReady(self) -> bool:
+    def isShooterReady(self, shot=None) -> bool:
         """
         Return true if the current arm angle and shooter velocity are both within
         tolerance for the needs of the next desired shot.
         """
-        shot = self.m_gameState.getNextShot()
+        if shot is None:
+            shot = self.m_gameState.getNextShot()
         return math.isclose(
-            shot.m_armAngle, self.m_armAngleSupplier(), abs_tol=self.kArmAngleTolerance
-        ) and math.isclose(
             shot.m_shooterVelocity,
             self.m_shooterVelocitySupplier(),
             abs_tol=self.kShooterVelocityTolerance,
         )
+    
+    def isArmReady(self, shot=None) -> bool:
+        if shot is None:
+            shot = self.m_gameState.getNextShot()
+        return math.isclose(
+            shot.m_armAngle,
+            self.m_armAngleSupplier(),
+            abs_tol=self.kArmAngleTolerance
+        )
+    
+    def isArmAndShooterReady(self, shot=None) -> bool:
+        next = shot
+        if next is None:
+            next = self.m_gameState.getNextShot()
+        return self.isShooterReady(shot=next) and self.isArmReady(shot=next)
 
     def isRobotReady(self) -> bool:
         """

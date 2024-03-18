@@ -2,27 +2,30 @@ from commands2 import Command
 from constants import Constants
 from wpimath.controller import ProfiledPIDControllerRadians, PIDController
 from subsystems.Swerve import Swerve
+from subsystems.Vision import Vision
 from commands.TeleopSwerve import TeleopSwerve
 from wpimath.geometry import Translation2d, Rotation2d
 from wpimath.trajectory import TrapezoidProfile
 import math
 from typing import Callable
 
-class TurnInPlace(TeleopSwerve):
-    def __init__(self, s_Swerve, desiredRotationSup: Callable[[], Rotation2d], translationSup, strafeSup, rotationSup, robotCentricSup):
+class TurnToTag(TeleopSwerve):
+    def __init__(self, s_Swerve, s_Vision: Vision, desiredTagSup: Callable[[], int], translationSup, strafeSup, rotationSup, robotCentricSup):
         super().__init__(s_Swerve, translationSup, strafeSup, rotationSup, robotCentricSup)
         self.turnPID = PIDController(4.0, 0.0, 0.0)
         self.turnPID.enableContinuousInput(-math.pi, math.pi)
-        self.desiredRotationSupplier = desiredRotationSup
-        self.angle = desiredRotationSup().radians()
+        self.desiredTagSupplier = desiredTagSup
+        self.tag = desiredTagSup()
         self.currentRotation = rotationSup
+        self.s_Vision = s_Vision
+
 
     def initialize(self):
         super().initialize()
         self.start_angle = self.s_Swerve.getHeading().radians()
         self.turnPID.reset()
         self.turnPID.setTolerance(math.radians(1))
-        self.turnPID.setSetpoint(self.angle)
+        self.turnPID.setSetpoint(0.0)
 
     def getRotationValue(self):
         rotationStick = self.currentRotation()
@@ -31,7 +34,7 @@ class TurnInPlace(TeleopSwerve):
         elif self.turnPID.atSetpoint():
             return 0.0
         else:
-            self.angularvelMRadiansPerSecond = -self.turnPID.calculate(self.s_Swerve.getHeading().radians(), self.desiredRotationSupplier().radians())
+            self.angularvelMRadiansPerSecond = -self.turnPID.calculate(self.s_Vision.getAngleToTag(self.desiredTagSupplier()), 0.0)
             return self.angularvelMRadiansPerSecond
 
     def isFinished(self) -> bool:

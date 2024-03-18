@@ -2,30 +2,24 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.75,
-      "y": 6.63
+      "x": 0.4683923532373905,
+      "y": 2.844896108110613
     },
-    "rotation": 60.0
+    "rotation": 0.0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "Combo Shot"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "RightSubwooferTaxiPath"
+            "pathName": "StraightPathNoShoot"
           }
         }
       ]
     }
   },
-  "folder": "1 Piece Auton",
+  "folder": "Taxi Autons",
   "choreoAuto": false
 }

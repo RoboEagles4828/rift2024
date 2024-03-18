@@ -8,20 +8,36 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.1290711587099802,
-        "y": 6.557015159745193
+        "x": 2.087572447113653,
+        "y": 5.481233024254505
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.03,
-        "y": 6.97
+        "x": 1.7218028926426574,
+        "y": 6.440588553805808
       },
       "prevControl": {
-        "x": 1.8925271199743854,
-        "y": 7.087180083876799
+        "x": 1.6839355333686856,
+        "y": 5.930842457964065
+      },
+      "nextControl": {
+        "x": 1.7523332877182607,
+        "y": 6.8515691448129
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.253675575702732,
+        "y": 7.15
+      },
+      "prevControl": {
+        "x": 1.8652809511179087,
+        "y": 7.191429010447773
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,8 +48,8 @@
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
@@ -43,7 +59,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "CenterSubwoofer",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0
