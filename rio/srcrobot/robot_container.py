@@ -210,7 +210,7 @@ class RobotContainer:
             # InstantCommand(lambda: self.s_Shooter.brake, self.s_Shooter).withName("AutoShooterBrake"),
             self.s_Arm.seekArmZero().withTimeout(1.0),
             self.s_Indexer.instantStop().withName("AutoIndexerOff"),
-        )
+        ).onlyIf(lambda: self.m_robotState.m_gameState.hasNote())
 
     """
      * Use this method to define your button->command mappings. Buttons can be created by
