@@ -33,7 +33,7 @@ from commands.TurnToTag import TurnToTag
 from commands.SysId import DriveSysId
 
 from wpilib.shuffleboard import Shuffleboard, BuiltInWidgets, BuiltInLayouts
-from wpilib import SendableChooser
+from wpilib import SendableChooser, RobotBase
 
 from wpimath import applyDeadband
 
@@ -180,8 +180,10 @@ class RobotContainer:
         Shuffleboard.getTab("Teleoperated").addDouble("Swerve Heading", lambda: self.s_Swerve.getHeading().degrees())
 
         Shuffleboard.getTab("Teleoperated").addInteger("Tag ID", lambda: self.m_robotState.m_gameState.getNextShotTagID())
-        Shuffleboard.getTab("Teleoperated").addDouble("Target Yaw", lambda: self.s_Vision.getAngleToTag(lambda: self.m_robotState.m_gameState.getNextShotTagID()))
-        Shuffleboard.getTab("Teleoperated").addBoolean("Tag Seen", lambda: self.s_Vision.isTargetSeenLambda(lambda: self.m_robotState.m_gameState.getNextShotTagID()))
+
+        if not RobotBase.isSimulation():
+            Shuffleboard.getTab("Teleoperated").addDouble("Target Yaw", lambda: self.s_Vision.getAngleToTag(lambda: self.m_robotState.m_gameState.getNextShotTagID()))
+            Shuffleboard.getTab("Teleoperated").addBoolean("Tag Seen", lambda: self.s_Vision.isTargetSeenLambda(lambda: self.m_robotState.m_gameState.getNextShotTagID()))
         # Shuffleboard.getTab("Teleoperated").addDouble("Tag Distance", lambda: self.s_Vision.getDistanceToTag(lambda: self.m_robotState.m_gameState.getNextShotTagID()))
 
         Shuffleboard.getTab("Teleoperated").addDouble("Swerve Pose X", lambda: self.s_Swerve.getPose().X())

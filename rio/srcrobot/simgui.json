@@ -13,6 +13,7 @@
       "/Shuffleboard/Teleoperated/Shooter Sub": "Subsystem",
       "/Shuffleboard/Teleoperated/Swerve Subsystem": "Subsystem",
       "/SmartDashboard/Auton Selector": "String Chooser",
+      "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/Indexer Sub": "Subsystem",
       "/SmartDashboard/Intake Sub": "Subsystem",
       "/SmartDashboard/Shooter Sub": "Subsystem",

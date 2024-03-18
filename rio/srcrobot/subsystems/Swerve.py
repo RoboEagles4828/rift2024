@@ -23,7 +23,7 @@ from wpimath.units import volts
 
 from pathplannerlib.auto import AutoBuilder, PathConstraints
 
-from wpilib import DriverStation
+from wpilib import DriverStation, RobotBase
 from wpiutil import Sendable, SendableBuilder
 
 class Swerve(Subsystem):
@@ -168,8 +168,9 @@ class Swerve(Subsystem):
 
     def periodic(self):
         self.swerveOdometry.update(self.getGyroYaw(), tuple(self.getModulePositions()))
-        optestimatedPose = self.vision.getEstimatedGlobalPose()
+        if not RobotBase.isSimulation():
+            optestimatedPose = self.vision.getEstimatedGlobalPose()
 
-        if optestimatedPose is not None:
-            estimatedPose = optestimatedPose
-            self.swerveOdometry.addVisionMeasurement(Pose2d(estimatedPose.estimatedPose.toPose2d().X(), estimatedPose.estimatedPose.toPose2d().Y(), self.getHeading()), estimatedPose.timestampSeconds)
+            if optestimatedPose is not None:
+                estimatedPose = optestimatedPose
+                self.swerveOdometry.addVisionMeasurement(Pose2d(estimatedPose.estimatedPose.toPose2d().X(), estimatedPose.estimatedPose.toPose2d().Y(), self.getHeading()), estimatedPose.timestampSeconds)
