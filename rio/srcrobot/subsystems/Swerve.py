@@ -135,7 +135,7 @@ class Swerve(Subsystem):
         self.gyro.zeroYaw()
 
     def getGyroYaw(self):
-        return Rotation2d.fromDegrees(self.gyro.getYaw())
+        return Rotation2d.fromDegrees(self.gyro.getYaw()).__mul__(-1)
 
     def resetModulesToAbsolute(self):
         self.mSwerveMods[0].resetToAbsolute()

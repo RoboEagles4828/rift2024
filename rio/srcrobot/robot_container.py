@@ -324,13 +324,13 @@ class RobotContainer:
             )
         )
 
-        self.goToTag.whileTrue(
-            self.s_Swerve.pathFindToPose(
-                Pose2d(1.83, 7.75, Rotation2d(Units.degreesToRadians(-90))),
-                PathConstraints(5, 7, Units.degreesToRadians(540), Units.degreesToRadians(720)),
-                0.0
-            )
-        )
+        # self.goToTag.whileTrue(
+        #     self.s_Swerve.pathFindToPose(
+        #         Pose2d(1.83, 7.75, Rotation2d(Units.degreesToRadians(-90))),
+        #         PathConstraints(5, 7, Units.degreesToRadians(540), Units.degreesToRadians(720)),
+        #         0.0
+        #     )
+        # )
 
         # self.goToTag.whileTrue(TurnToTag(
         #     self.s_Swerve,
