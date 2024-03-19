@@ -10,7 +10,7 @@ class RobotState:
     """
 
     kRobotHeadingTolerance = 2.0
-    kArmAngleTolerance = 0.5
+    kArmAngleTolerance = 1.0
     kShooterVelocityTolerance = 10.0
 
     m_gameState = GameState()

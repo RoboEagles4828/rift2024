@@ -195,7 +195,6 @@ class RobotContainer:
         """
         armTimeoutSec = (autoShot.m_armAngle / 45.0) + 1.0
         return SequentialCommandGroup(
-            self.s_Indexer.instantStop(),
             InstantCommand(
                 lambda: self.s_Shooter.setShooterVelocity(autoShot.m_shooterVelocity),
                 self.s_Shooter,

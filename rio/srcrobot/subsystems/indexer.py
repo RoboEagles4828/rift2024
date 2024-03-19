@@ -17,9 +17,9 @@ class Indexer(Subsystem):
         self.indexerMotor.config_kP(0, 2.0)
         self.indexerMotor.setNeutralMode(NeutralMode.Brake)
 
-        current_limit = 30
-        current_threshold = 40
-        current_threshold_time = 2.0
+        current_limit = 40
+        current_threshold = 60
+        current_threshold_time = 3.0
         supply_configs = SupplyCurrentLimitConfiguration(True, current_limit, current_threshold, current_threshold_time)
 
         self.indexerMotor.configSupplyCurrentLimit(supply_configs)

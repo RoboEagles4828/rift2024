@@ -14,13 +14,13 @@
         {
           "type": "named",
           "data": {
-            "name": "Combo Shot"
+            "name": "IntakeOn"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "IntakeOn"
+            "name": "Combo Shot"
           }
         },
         {
@@ -51,13 +51,13 @@
         {
           "type": "named",
           "data": {
-            "name": "IntakeOff"
+            "name": "Combo Shot"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Combo Shot"
+            "name": "IntakeOff"
           }
         }
       ]
