@@ -174,9 +174,9 @@ class RobotContainer:
         Shuffleboard.getTab("Teleoperated").addBoolean("Zero Gyro", self.zeroGyro.getAsBoolean)
         Shuffleboard.getTab("Teleoperated").addBoolean("Beam Break", self.s_Indexer.getBeamBreakState)
         Shuffleboard.getTab("Teleoperated").addDouble("Shooter Speed", self.s_Shooter.getVelocity)
-        Shuffleboard.getTab("Teleoperated").addBoolean("Shooter Ready", lambda: self.m_robotState.isShooterReady(Constants.NextShot.CENTER_AUTO))
-        Shuffleboard.getTab("Teleoperated").addBoolean("Arm Ready", lambda: self.m_robotState.isArmReady(Constants.NextShot.CENTER_AUTO))
-        Shuffleboard.getTab("Teleoperated").addBoolean("Arm + Shooter Ready", lambda: self.m_robotState.isArmAndShooterReady(shot=Constants.NextShot.CENTER_AUTO))
+        Shuffleboard.getTab("Teleoperated").addBoolean("Shooter Ready", lambda: self.m_robotState.isShooterReady())
+        Shuffleboard.getTab("Teleoperated").addBoolean("Arm Ready", lambda: self.m_robotState.isArmReady())
+        Shuffleboard.getTab("Teleoperated").addBoolean("Arm + Shooter Ready", lambda: self.m_robotState.isArmAndShooterReady())
         Shuffleboard.getTab("Teleoperated").addDouble("Target Angle", lambda: self.m_robotState.m_gameState.getNextShotRobotAngle())
         Shuffleboard.getTab("Teleoperated").addDouble("Swerve Heading", lambda: self.s_Swerve.getHeading().degrees())
 
@@ -193,6 +193,7 @@ class RobotContainer:
         """
         Used during automode commands to shoot any Constants.NextShot.
         """
+        self.m_robotState.m_gameState.setNextShot(autoShot)
         armTimeoutSec = (autoShot.m_armAngle / 45.0) + 1.0
         return SequentialCommandGroup(
             InstantCommand(
@@ -204,7 +205,7 @@ class RobotContainer:
                 )
             ),
             WaitUntilCommand(
-                lambda: self.m_robotState.isArmAndShooterReady(shot=autoShot)
+                lambda: self.m_robotState.isArmAndShooterReady()
             ).withTimeout(1.0),
             self.s_Indexer.indexerShoot().withTimeout(3.0).withName("AutoShoot"),
             # InstantCommand(lambda: self.s_Shooter.brake, self.s_Shooter).withName("AutoShooterBrake"),
