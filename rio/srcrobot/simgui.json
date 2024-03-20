@@ -1,4 +1,11 @@
 {
+  "HALProvider": {
+    "Other Devices": {
+      "window": {
+        "visible": false
+      }
+    }
+  },
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
@@ -21,6 +28,11 @@
       "/SmartDashboard/Swerve Subsystem": "Subsystem"
     },
     "windows": {
+      "/Shuffleboard/Autonomous/Auton Selector": {
+        "window": {
+          "visible": true
+        }
+      },
       "/Shuffleboard/Field/Field": {
         "bottom": 1476,
         "height": 8.210550308227539,
@@ -47,8 +59,7 @@
         "open": true
       },
       "open": true
-    },
-    "visible": true
+    }
   },
   "NetworkTables View": {
     "visible": false

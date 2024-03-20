@@ -3,38 +3,32 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.27,
-        "y": 2.43
+        "x": 8.27325061941138,
+        "y": 2.428775379461004
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.592521477940942,
-        "y": 0.9503329555830671
+        "x": 6.595772097352322,
+        "y": 0.9491083350440708
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "MidlinePiece2"
     },
     {
       "anchor": {
-        "x": 0.6226452740777357,
-        "y": 4.465559540113485
+        "x": 0.6980042945681595,
+        "y": 4.4680573742251
       },
       "prevControl": {
-        "x": 0.8570240895933751,
-        "y": 3.9070162301423106
+        "x": 1.2741831071430698,
+        "y": 1.633044672339346
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "LeftSubwooferPos"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.05,
-      "rotationDegrees": 60.0,
-      "rotateFast": false
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -46,7 +40,7 @@
   "goalEndState": {
     "velocity": 0,
     "rotation": -60.0,
-    "rotateFast": false
+    "rotateFast": true
   },
   "reversed": false,
   "folder": "LeftSubwoofer",

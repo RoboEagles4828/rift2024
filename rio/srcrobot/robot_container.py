@@ -139,7 +139,8 @@ class RobotContainer:
         NamedCommands.registerCommand("Combo Podium Shot", self.autoModeShot(Constants.NextShot.CENTER_AUTO))
 
         self.auton_selector = SendableChooser()
-        self.auton_selector.addOption("ToMidLinePiece", PathPlannerAutoRunner("TurnandthenMoveAuton", self.s_Swerve).getCommand())
+        self.auton_selector.addOption("LeftSubwoofer2PieceMidline", PathPlannerAutoRunner("LeftSubwoofer2MidlinePiece", self.s_Swerve).getCommand())
+        self.auton_selector.addOption("RightSubwoofer2PieceMidline", PathPlannerAutoRunner("RightSubwoofer2MidlinePiece", self.s_Swerve).getCommand())
         self.auton_selector.addOption("Straight Auto No Shoot", PathPlannerAutoRunner("StraightAutoNoShoot", self.s_Swerve).getCommand())
         self.auton_selector.addOption("RightSubwooferTaxiAuto", PathPlannerAutoRunner("RightSubwooferTaxiAuto", self.s_Swerve).getCommand())
         self.auton_selector.setDefaultOption("CenterSubwoofer2PieceAuto", PathPlannerAutoRunner("CenterSubwoofer2Piece", self.s_Swerve).getCommand())
@@ -147,19 +148,21 @@ class RobotContainer:
         self.auton_selector.addOption("CenterSubwoofer4PieceAuto", PathPlannerAutoRunner("CenterSubwoofer4Piece", self.s_Swerve).getCommand())
         self.auton_selector.addOption("CenterSubwoofer4_5PieceAuto", PathPlannerAutoRunner("CenterSubwoofer4_5Piece", self.s_Swerve).getCommand())
         self.auton_selector.addOption("Do Nothing", InstantCommand())
-        self.auton_selector.addOption("2 Piece Podium Note", PathPlannerAutoRunner("CenterSubwoofer2PiecePodium", self.s_Swerve).getCommand())
-        self.auton_selector.addOption("ShootOnlyAuto", SequentialCommandGroup(
-            # self.s_Swerve.setHeading(Rotation2d(60.0)),
-            self.s_Shooter.shoot().withTimeout(1.0).withName("AutoRevShooter"),
-            self.s_Arm.servoArmToTarget(5.0).withTimeout(0.5),
-            self.s_Indexer.indexerShoot().withTimeout(1.0).withName("AutoShoot"),
-            InstantCommand(self.s_Shooter.brake, self.s_Shooter).withName("AutoShooterBrake"),
-            self.s_Arm.seekArmZero().withTimeout(1.0),
-            self.s_Indexer.instantStop().withName("AutoIndexerOff"),
-            self.s_Intake.instantStop(),
-            self.s_Shooter.brake()
-        ))
+        self.auton_selector.addOption("Test Turn", PathPlannerAutoRunner("TestTurnAuton", self.s_Swerve).getCommand())
         self.auton_selector.addOption("RightSubwooferTurn", PathPlannerAutoRunner("RightSubwooferTurn", self.s_Swerve).getCommand())
+        # self.auton_selector.addOption("ShootOnlyAuto", SequentialCommandGroup(
+        #     # self.s_Swerve.setHeading(Rotation2d(60.0)),
+        #     self.s_Shooter.shoot().withTimeout(1.0).withName("AutoRevShooter"),
+        #     self.s_Arm.servoArmToTarget(5.0).withTimeout(0.5),
+        #     self.s_Indexer.indexerShoot().withTimeout(1.0).withName("AutoShoot"),
+        #     InstantCommand(self.s_Shooter.brake, self.s_Shooter).withName("AutoShooterBrake"),
+        #     self.s_Arm.seekArmZero().withTimeout(1.0),
+        #     self.s_Indexer.instantStop().withName("AutoIndexerOff"),
+        #     self.s_Intake.instantStop(),
+        #     self.s_Shooter.brake()
+        # ))
+        self.auton_selector.addOption("ShootOnlyAuto", self.autoModeShot(Constants.NextShot.SPEAKER_CENTER))
+
 
         Shuffleboard.getTab("Autonomous").add("Auton Selector", self.auton_selector)
         # Shuffleboard.getTab("Teleoperated").add("Swerve Subsystem", self.s_Swerve)
@@ -179,6 +182,7 @@ class RobotContainer:
         Shuffleboard.getTab("Teleoperated").addBoolean("Arm + Shooter Ready", lambda: self.m_robotState.isArmAndShooterReady())
         Shuffleboard.getTab("Teleoperated").addDouble("Target Angle", lambda: self.m_robotState.m_gameState.getNextShotRobotAngle())
         Shuffleboard.getTab("Teleoperated").addDouble("Swerve Heading", lambda: self.s_Swerve.getHeading().degrees())
+        Shuffleboard.getTab("Teleoperated").addDouble("Beam Break Graph", lambda: int(self.s_Indexer.getBeamBreakState()))
 
         Shuffleboard.getTab("Teleoperated").addInteger("Tag ID", lambda: self.m_robotState.m_gameState.getNextShotTagID())
         Shuffleboard.getTab("Teleoperated").addDouble("Target Yaw", lambda: self.s_Vision.getAngleToTag(lambda: self.m_robotState.m_gameState.getNextShotTagID()))
@@ -207,7 +211,7 @@ class RobotContainer:
             WaitUntilCommand(
                 lambda: self.m_robotState.isArmAndShooterReady()
             ).withTimeout(1.0),
-            self.s_Indexer.indexerShoot().withTimeout(3.0).withName("AutoShoot"),
+            self.s_Indexer.indexerShoot().withTimeout(4.0).withName("AutoShoot"),
             # InstantCommand(lambda: self.s_Shooter.brake, self.s_Shooter).withName("AutoShooterBrake"),
             self.s_Arm.seekArmZero().withTimeout(1.0),
             self.s_Indexer.instantStop().withName("AutoIndexerOff"),
@@ -324,13 +328,13 @@ class RobotContainer:
             )
         )
 
-        # self.goToTag.whileTrue(
-        #     self.s_Swerve.pathFindToPose(
-        #         Pose2d(1.83, 7.75, Rotation2d(Units.degreesToRadians(-90))),
-        #         PathConstraints(5, 7, Units.degreesToRadians(540), Units.degreesToRadians(720)),
-        #         0.0
-        #     )
-        # )
+        self.goToTag.whileTrue(
+            self.s_Swerve.pathFindToPose(
+                Pose2d(1.30, 5.50, Rotation2d(Units.degreesToRadians(0.0))),
+                PathConstraints(5, 7, Units.degreesToRadians(540), Units.degreesToRadians(720)),
+                0.0
+            )
+        )
 
         # self.goToTag.whileTrue(TurnToTag(
         #     self.s_Swerve,

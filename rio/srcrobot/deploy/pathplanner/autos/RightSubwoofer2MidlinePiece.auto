@@ -24,7 +24,7 @@
           }
         },
         {
-          "type": "deadline",
+          "type": "parallel",
           "data": {
             "commands": [
               {
@@ -46,6 +46,37 @@
           "type": "path",
           "data": {
             "pathName": "RightPieceToRightSubwoofer"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Combo Shot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeUntilBeamBreak"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "RightSubwooferToMidlinePiece"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MidlinePieceToRightSubwoofer"
           }
         },
         {

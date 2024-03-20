@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.99,
-        "y": 7.04
+        "x": 1.3,
+        "y": 5.5
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.99,
-        "y": 7.04
+        "x": 2.299999999999999,
+        "y": 5.5
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "CenterSubwooferPos"
     },
     {
       "anchor": {
-        "x": 3.494101956479551,
-        "y": 7.04
+        "x": 3.0045638545866935,
+        "y": 5.5
       },
       "prevControl": {
-        "x": 2.494101956479551,
-        "y": 7.04
+        "x": 2.0045638545866935,
+        "y": 5.5
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,11 +39,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": -90.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "RightSubwoofer",
+  "folder": "Test Paths",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

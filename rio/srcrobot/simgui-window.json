@@ -6,12 +6,12 @@
     "GLOBAL": {
       "fps": "120",
       "height": "720",
-      "maximized": "1",
+      "maximized": "0",
       "style": "0",
       "userScale": "2",
       "width": "1280",
-      "xpos": "427",
-      "ypos": "322"
+      "xpos": "640",
+      "ypos": "258"
     }
   },
   "Table": {
@@ -28,20 +28,25 @@
     }
   },
   "Window": {
+    "###/Shuffleboard/Autonomous/Auton Selector": {
+      "Collapsed": "0",
+      "Pos": "60,60",
+      "Size": "254,54"
+    },
     "###/Shuffleboard/Field/Field": {
       "Collapsed": "0",
-      "Pos": "85,38",
-      "Size": "1779,947"
+      "Pos": "191,19",
+      "Size": "1773,947"
     },
     "###FMS": {
       "Collapsed": "0",
-      "Pos": "61,477",
+      "Pos": "8,442",
       "Size": "169,184"
     },
     "###Joysticks": {
       "Collapsed": "0",
-      "Pos": "216,263",
-      "Size": "796,240"
+      "Pos": "166,52",
+      "Size": "796,73"
     },
     "###NetworkTables": {
       "Collapsed": "0",

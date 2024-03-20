@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.75,
-        "y": 6.63
+        "x": 0.56,
+        "y": 6.69
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.330365542325387,
-        "y": 6.989852841091711
+        "x": 1.1403655423253873,
+        "y": 7.049852841091711
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "RightSubwooferPos"
     },
     {
       "anchor": {

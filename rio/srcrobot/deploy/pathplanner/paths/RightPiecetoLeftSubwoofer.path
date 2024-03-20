@@ -12,20 +12,20 @@
         "y": 4.187413966204945
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "podiumPiece"
     },
     {
       "anchor": {
-        "x": 0.74,
-        "y": 4.39
+        "x": 0.7,
+        "y": 4.4680573742251
       },
       "prevControl": {
-        "x": 1.4087048486260703,
-        "y": 4.244777476803917
+        "x": 1.3687048486260702,
+        "y": 4.322834851029017
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "LeftSubwooferPos"
     }
   ],
   "rotationTargets": [
