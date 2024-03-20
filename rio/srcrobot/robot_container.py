@@ -3,7 +3,7 @@ from wpilib import Joystick
 from wpilib import XboxController
 from commands2.button import CommandXboxController, Trigger
 from commands2 import Command, Subsystem
-from commands2 import InstantCommand, ConditionalCommand, WaitCommand, PrintCommand, RunCommand, SequentialCommandGroup, ParallelCommandGroup, WaitUntilCommand
+from commands2 import InstantCommand, ConditionalCommand, WaitCommand, PrintCommand, RunCommand, SequentialCommandGroup, ParallelCommandGroup, WaitUntilCommand, StartEndCommand
 from commands2.button import JoystickButton
 import commands2.cmd as cmd
 from CTREConfigs import CTREConfigs
@@ -99,6 +99,7 @@ class RobotContainer:
         self.systemReverse = self.operator.leftBumper()
         self.opExec = self.operator.leftTrigger()
         self.opShoot = self.operator.rightBumper()
+        self.emergencyArmUp = self.operator.povDown()
 
         # Que Controls
         self.queSubFront = self.operator.a()
@@ -361,6 +362,14 @@ class RobotContainer:
         self.shoot.or_(self.opShoot.getAsBoolean).onTrue(cmd.deadline(self.s_Indexer.indexerShoot(), self.s_Intake.intake(), self.s_Shooter.shootVelocityWithSupplier(lambda: self.m_robotState.m_gameState.getNextShot().m_shooterVelocity)).andThen(self.s_Intake.instantStop()).andThen(self.s_Arm.seekArmZero()).andThen(self.s_Shooter.stop()))
 
         self.autoHome.onTrue(self.s_Arm.seekArmZero())
+
+        self.emergencyArmUp.toggleOnTrue(
+            ConditionalCommand(
+                self.s_Arm.seekArmZero(),
+                self.s_Arm.servoArmToTarget(90.0),
+                lambda: self.s_Arm.getDegrees() > 45.0
+            )
+        )
 
         #Vision Buttons
 
