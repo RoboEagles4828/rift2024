@@ -28,7 +28,8 @@ sync() {
         $1 lvuser@$IP_ADDRESS:/home/lvuser/py/)
     
     if [[ $RSYNC_RESULT == *"Updated File"* ]]; then
-        sshCommand touch /home/lvuser/py/robot.py
+        sshCommand find /home/lvuser/py/ -type f -exec touch {} + # Untested change to update ALL files on modify
+        # It would be much more efficient / effective to only touch the rsynced files, but idk how to do that...
         echo $RSYNC_RESULT
         # restart-code
     else
@@ -38,11 +39,25 @@ sync() {
 
 }
 
-install-fastdeploy() {
-    # Untested currently, but should work if the RIO has internet
-    # Do note: the RIO NEEDS INTERNET for this to work
-    sshCommand "opkg update"
-    sshCommand "opkg install rsync"
+install-fastdeploy() { # UNTESTED!!!
+    # Download opkg packages from NI
+    mkdir .rio-packages && cd .rio-packages
+    curl "http://download.ni.com/ni-linux-rt/feeds/academic/2023/arm/main/cortexa9-vfpv3/libacl1_2.2.52-r0.310_cortexa9-vfpv3.ipk" -o libacl--downloaded.ipk
+    curl "http://download.ni.com/ni-linux-rt/feeds/academic/2023/arm/extra/cortexa9-vfpv3/rsync-lic_3.1.3-r0.23_cortexa9-vfpv3.ipk" -o rsync-lic--downloaded.ipk
+    curl "http://download.ni.com/ni-linux-rt/feeds/academic/2023/arm/extra/cortexa9-vfpv3/rsync_3.1.3-r0.23_cortexa9-vfpv3.ipk" -o rsync--downloaded.ipk
+    scp *.ipk admin@$IP_ADDRESS:/
+
+    # Install packages onto RIO as admin
+    ssh -t admin@$IP_ADDRESS "cd / && opkg install ./libacl--downloaded.ipk && opkg install rsync-lic--downloaded.ipk && opkg install rsync--downloaded.ipk"
+
+    # Delete packages from local computer
+    cd .. && rm -r .rio-packages
+}
+
+install-jurigged() { # UNTESTED !!!
+    # Install modified jurigged & watchdog pip packages
+
+
 }
 
 help() {
@@ -71,8 +86,9 @@ case $1 in
         sshCommand
     ;;
 
-    "install-fastdeploy")
+    "install")
         install-fastdeploy
+        install-jurigged
     ;;
 
     "help")
