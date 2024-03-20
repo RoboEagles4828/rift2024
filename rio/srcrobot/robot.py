@@ -2,8 +2,8 @@ from wpilib import TimedRobot
 from commands2 import Command
 from commands2 import CommandScheduler
 from CTREConfigs import CTREConfigs
-from rio.srcrobot.constants import Constants
-from rio.srcrobot.gameState import GameState
+from constants import Constants
+from gameState import GameState
 from robot_container import RobotContainer
 import wpilib
 
