@@ -28,15 +28,16 @@ class Arm(Subsystem):
         self.kEncoderTicksPerDegreeOfArmMotion = self.kEncoderTicksPerArmRotation / 360.0
         self.kMotionMagicSlot = 0
         self.kVelocitySlot = 1
-        self.MaxGravityFF = 0.2 #0.26 # In percent output [1.0:1.0]
+        self.MaxGravityFF = 0.15 #0.26 # In percent output [1.0:1.0]
         self.kF = 0.9
-        self.kPMotionMagic = 1.5 #4.0
+        self.kPMotionMagic = 1.0 #4.0
         self.kPVelocity = 3.0 #0.8
-        self.kIMotionMagic = 0.0
-        self.kDMotionMagic = 0.1
+        self.kIMotionMagic = 0.008
+        self.kIZoneMotionMagic = 5.0*self.kEncoderTicksPerDegreeOfArmMotion
+        self.kDMotionMagic = 0.4
         self.kCruiseVelocity = 1000.0 # ticks per 100ms
         self.kMaxAccel = 1000.0 # Accel to cruise in 1 sec
-        self.kServoToleranceDegrees = 1.0 # +/- 1.0 for 2.0 degree window
+        self.kServoToleranceDegrees = 0.5 # +/- 1.0 for 2.0 degree window
         # Velocity for safely zeroing arm encoder in native units (ticks) per 100ms
         self.kZeroEncoderVelocity = -self.kEncoderTicksPerDegreeOfArmMotion * 6.5
         self.kZeroingWaitForMoveSec = 2.0
@@ -57,8 +58,10 @@ class Arm(Subsystem):
         self.armMotor.setInverted(False)
         self.armMotor.config_kP(self.kMotionMagicSlot, self.kPMotionMagic)
         self.armMotor.config_kI(self.kMotionMagicSlot, self.kIMotionMagic)
+        self.armMotor.config_IntegralZone(self.kMotionMagicSlot, self.kIZoneMotionMagic)
         self.armMotor.config_kD(self.kMotionMagicSlot, self.kDMotionMagic)
         self.armMotor.config_kF(self.kMotionMagicSlot, self.kF)
+        self.armMotor.configAllowableClosedloopError(self.kMotionMagicSlot, self.kServoToleranceDegrees*self.kEncoderTicksPerDegreeOfArmMotion)
         self.armMotor.configMotionCruiseVelocity(self.kCruiseVelocity)
         self.armMotor.configMotionAcceleration(self.kMaxAccel)
 

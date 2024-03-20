@@ -2,6 +2,8 @@ from wpilib import TimedRobot
 from commands2 import Command
 from commands2 import CommandScheduler
 from CTREConfigs import CTREConfigs
+from rio.srcrobot.constants import Constants
+from rio.srcrobot.gameState import GameState
 from robot_container import RobotContainer
 import wpilib
 
@@ -43,6 +45,7 @@ class Robot(TimedRobot):
     # teleop starts running. If you want the autonomous to
     # continue until interrupted by another command, remove
     # this line or comment it out.
+    GameState().setNextShot(Constants.NextShot.SPEAKER_CENTER)
     self.m_robotContainer.s_Shooter.setDefaultCommand(self.m_robotContainer.s_Shooter.stop())
 
     if self.m_autonomousCommand is not None:
