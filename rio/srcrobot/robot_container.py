@@ -2,7 +2,7 @@ from wpilib.interfaces import GenericHID
 from wpilib import Joystick
 from wpilib import XboxController
 from commands2.button import CommandXboxController, Trigger
-from commands2 import Command, Subsystem
+from commands2 import Command, ParallelDeadlineGroup, Subsystem
 from commands2 import InstantCommand, ConditionalCommand, WaitCommand, PrintCommand, RunCommand, SequentialCommandGroup, ParallelCommandGroup, WaitUntilCommand, StartEndCommand
 from commands2.button import JoystickButton
 import commands2.cmd as cmd
@@ -198,22 +198,20 @@ class RobotContainer:
         """
         Used during automode commands to shoot any Constants.NextShot.
         """
-        self.m_robotState.m_gameState.setNextShot(autoShot)
-        shotTimeoutSec = (autoShot.m_armAngle / 45.0) + 1.0
+        shotTimeoutSec = (autoShot.m_armAngle / 45.0) + 1.5
         return SequentialCommandGroup(
-            InstantCommand(
-                lambda: self.s_Shooter.setShooterVelocity(autoShot.m_shooterVelocity),
-                self.s_Shooter,
-            ).alongWith(
+            InstantCommand(lambda: self.m_robotState.m_gameState.setNextShot(autoShot)),
+            ParallelDeadlineGroup(
+                WaitUntilCommand(lambda: self.m_robotState.isArmAndShooterReady()),
+                InstantCommand(
+                    lambda: self.s_Shooter.setShooterVelocity(
+                        autoShot.m_shooterVelocity
+                    ),
+                    self.s_Shooter,
+                ),
                 self.s_Arm.servoArmToTarget(autoShot.m_armAngle),
-                WaitCommand(0.1)
-                .andThen(
-                    WaitUntilCommand(
-                        lambda: self.m_robotState.isArmAndShooterReady()
-                    ).withTimeout(shotTimeoutSec)
-                )
-                .andThen(self.s_Indexer.indexerShoot()),
-            ),
+            ).withTimeout(shotTimeoutSec),
+            self.s_Indexer.indexerShoot(),
             self.s_Indexer.instantStop(),
             self.s_Arm.seekArmZero().withTimeout(1.0),
         )
