@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.74,
-      "y": 4.39
+      "x": 0.7,
+      "y": 4.47
     },
     "rotation": -60.0
   },
@@ -12,94 +12,31 @@
     "data": {
       "commands": [
         {
-          "type": "parallel",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Full Shooter Rev"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Full Shoot"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Full Intake"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "LeftSubwoofertoRightestPiece"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "RightestPiecetoLeftSubwoofer"
+            "name": "IntakeOn"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Full Shoot"
+            "name": "Combo Shot"
           }
         },
         {
-          "type": "sequential",
+          "type": "deadline",
           "data": {
             "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Full Intake"
-                }
-              },
               {
                 "type": "path",
                 "data": {
                   "pathName": "LeftSubwoofertoRightMidlinePiece"
                 }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Full Shoot"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
+              },
               {
                 "type": "named",
                 "data": {
-                  "name": "Full Intake"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "LeftSubwoofertoRightMidlinePiece"
+                  "name": "IntakeUntilBeamBreak"
                 }
               }
             ]
@@ -114,13 +51,13 @@
         {
           "type": "named",
           "data": {
-            "name": "Full Shoot"
+            "name": "Combo Shot"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "All Off"
+            "name": "IntakeOff"
           }
         }
       ]

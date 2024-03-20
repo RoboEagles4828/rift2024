@@ -106,7 +106,7 @@ class Constants:
 
         holonomicPathConfig = HolonomicPathFollowerConfig(
             PIDConstants(5.0, 0.0, 0.0),
-            PIDConstants(-3.0, 0.0, 0.0),
+            PIDConstants(4.0, 0.0, 0.0),
             maxAutoModuleSpeed,
             #distance from center to the furthest module
             Units.inchesToMeters(16),
@@ -195,12 +195,12 @@ class Constants:
     # An enumeration of known shot locations and data critical to executing the
     # shot. TODO decide on shooter velocity units and tune angles.
     class NextShot(Enum):
-      AMP = (0, -90.0, 90.0, 90.0, 10.0, 5, 6)
+      AMP = (0, -90.0, 90.0, 90.0, 15.0, 5, 6)
       SPEAKER_AMP = (1, -60.0, -60.0, 5.0, 25.0, 4, 7)
       SPEAKER_CENTER = (2, 0.0, 0.0, 5.0, 25.0, 4, 7)
       SPEAKER_SOURCE = (3, 60.0, 60.0, 5.0, 25.0, 4, 7)
-      PODIUM = (4, -30.0, 30.0, 28.0, 45.0, 4, 7)
-      CENTER_AUTO = (4, -30.0, 30.0, 40.0, 45.0, 4, 7)
+      PODIUM = (4, -30.0, 30.0, 26.5, 45.0, 4, 7)
+      CENTER_AUTO = (4, -30.0, 30.0, 45.0, 45.0, 4, 7)
 
       def __init__(self, value, blueSideBotHeading, redSideBotHeading, armAngle, shooterVelocity, red_tagID, blue_tagID):
         self._value_ = value

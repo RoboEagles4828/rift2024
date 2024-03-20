@@ -83,7 +83,7 @@ class Swerve(Subsystem):
         self.mSwerveMods[3].setDesiredState(swerveModuleStates[3], isOpenLoop)
     
     def driveRobotRelative(self, speeds: ChassisSpeeds):
-        self.drive(Translation2d(speeds.vx, speeds.vy), speeds.omega, False, False)
+        self.drive(Translation2d(speeds.vx, speeds.vy), -speeds.omega, False, False)
 
     def shouldFlipPath(self):
         return False
@@ -136,7 +136,7 @@ class Swerve(Subsystem):
 
     def getGyroYaw(self):
         return Rotation2d.fromDegrees(self.gyro.getYaw()).__mul__(-1)
-
+    
     def resetModulesToAbsolute(self):
         self.mSwerveMods[0].resetToAbsolute()
         self.mSwerveMods[1].resetToAbsolute()

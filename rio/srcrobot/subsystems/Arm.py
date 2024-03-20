@@ -28,7 +28,7 @@ class Arm(Subsystem):
         self.kEncoderTicksPerDegreeOfArmMotion = self.kEncoderTicksPerArmRotation / 360.0
         self.kMotionMagicSlot = 0
         self.kVelocitySlot = 1
-        self.MaxGravityFF = 0.15 #0.26 # In percent output [1.0:1.0]
+        self.MaxGravityFF = 0.2 #0.26 # In percent output [1.0:1.0]
         self.kF = 0.9
         self.kPMotionMagic = 1.0 #4.0
         self.kPVelocity = 3.0 #0.8
