@@ -28,8 +28,9 @@ sync() {
         $1 lvuser@$IP_ADDRESS:/home/lvuser/py/)
     
     if [[ $RSYNC_RESULT == *"Updated File"* ]]; then
+        sshCommand touch /home/lvuser/py/robot.py
         echo $RSYNC_RESULT
-        restart-code
+        # restart-code
     else
         echo "No changes made to files"
         echo "Not restarting robot!"

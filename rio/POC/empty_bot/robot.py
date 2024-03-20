@@ -9,7 +9,7 @@ class Robot(TimedRobot):
 
   def robotInit(self):
     import jurigged;
-    jurigged.watch()
+    jurigged.watch("/home/lvuser/py/*.py")
     # Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     # autonomous chooser on the dashboard.
 
