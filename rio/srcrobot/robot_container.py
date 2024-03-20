@@ -199,23 +199,23 @@ class RobotContainer:
         Used during automode commands to shoot any Constants.NextShot.
         """
         self.m_robotState.m_gameState.setNextShot(autoShot)
-        armTimeoutSec = (autoShot.m_armAngle / 45.0) + 1.0
+        shotTimeoutSec = (autoShot.m_armAngle / 45.0) + 1.0
         return SequentialCommandGroup(
             InstantCommand(
                 lambda: self.s_Shooter.setShooterVelocity(autoShot.m_shooterVelocity),
                 self.s_Shooter,
             ).alongWith(
-                self.s_Arm.servoArmToTarget(autoShot.m_armAngle).withTimeout(
-                    armTimeoutSec
+                self.s_Arm.servoArmToTarget(autoShot.m_armAngle),
+                WaitCommand(0.1)
+                .andThen(
+                    WaitUntilCommand(
+                        lambda: self.m_robotState.isArmAndShooterReady()
+                    ).withTimeout(shotTimeoutSec)
                 )
+                .andThen(self.s_Indexer.indexerShoot()),
             ),
-            WaitUntilCommand(
-                lambda: self.m_robotState.isArmAndShooterReady()
-            ).withTimeout(1.0),
-            self.s_Indexer.indexerShoot().withTimeout(4.0).withName("AutoShoot"),
-            # InstantCommand(lambda: self.s_Shooter.brake, self.s_Shooter).withName("AutoShooterBrake"),
             self.s_Arm.seekArmZero().withTimeout(1.0),
-            self.s_Indexer.instantStop().withName("AutoIndexerOff"),
+            self.s_Indexer.instantStop(),
         )
 
     """
