@@ -33,7 +33,7 @@ from commands.TurnToTag import TurnToTag
 from commands.SysId import DriveSysId
 
 from wpilib.shuffleboard import Shuffleboard, BuiltInWidgets, BuiltInLayouts
-from wpilib import SendableChooser
+from wpilib import SendableChooser, RobotBase
 
 from wpimath import applyDeadband
 
@@ -139,6 +139,7 @@ class RobotContainer:
         NamedCommands.registerCommand("Combo Podium Shot", self.autoModeShot(Constants.NextShot.CENTER_AUTO))
 
         self.auton_selector = SendableChooser()
+        self.auton_selector.addOption("ToMidLinePiece", PathPlannerAutoRunner("TurnandthenMoveAuton", self.s_Swerve).getCommand())
         self.auton_selector.addOption("Straight Auto No Shoot", PathPlannerAutoRunner("StraightAutoNoShoot", self.s_Swerve).getCommand())
         self.auton_selector.addOption("RightSubwooferTaxiAuto", PathPlannerAutoRunner("RightSubwooferTaxiAuto", self.s_Swerve).getCommand())
         self.auton_selector.setDefaultOption("CenterSubwoofer2PieceAuto", PathPlannerAutoRunner("CenterSubwoofer2Piece", self.s_Swerve).getCommand())
@@ -173,9 +174,9 @@ class RobotContainer:
         Shuffleboard.getTab("Teleoperated").addBoolean("Zero Gyro", self.zeroGyro.getAsBoolean)
         Shuffleboard.getTab("Teleoperated").addBoolean("Beam Break", self.s_Indexer.getBeamBreakState)
         Shuffleboard.getTab("Teleoperated").addDouble("Shooter Speed", self.s_Shooter.getVelocity)
-        Shuffleboard.getTab("Teleoperated").addBoolean("Shooter Ready", lambda: self.m_robotState.isShooterReady(Constants.NextShot.CENTER_AUTO))
-        Shuffleboard.getTab("Teleoperated").addBoolean("Arm Ready", lambda: self.m_robotState.isArmReady(Constants.NextShot.CENTER_AUTO))
-        Shuffleboard.getTab("Teleoperated").addBoolean("Arm + Shooter Ready", lambda: self.m_robotState.isArmAndShooterReady(shot=Constants.NextShot.CENTER_AUTO))
+        Shuffleboard.getTab("Teleoperated").addBoolean("Shooter Ready", lambda: self.m_robotState.isShooterReady())
+        Shuffleboard.getTab("Teleoperated").addBoolean("Arm Ready", lambda: self.m_robotState.isArmReady())
+        Shuffleboard.getTab("Teleoperated").addBoolean("Arm + Shooter Ready", lambda: self.m_robotState.isArmAndShooterReady())
         Shuffleboard.getTab("Teleoperated").addDouble("Target Angle", lambda: self.m_robotState.m_gameState.getNextShotRobotAngle())
         Shuffleboard.getTab("Teleoperated").addDouble("Swerve Heading", lambda: self.s_Swerve.getHeading().degrees())
 
@@ -192,9 +193,9 @@ class RobotContainer:
         """
         Used during automode commands to shoot any Constants.NextShot.
         """
+        self.m_robotState.m_gameState.setNextShot(autoShot)
         armTimeoutSec = (autoShot.m_armAngle / 45.0) + 1.0
         return SequentialCommandGroup(
-            self.s_Indexer.instantStop(),
             InstantCommand(
                 lambda: self.s_Shooter.setShooterVelocity(autoShot.m_shooterVelocity),
                 self.s_Shooter,
@@ -204,7 +205,7 @@ class RobotContainer:
                 )
             ),
             WaitUntilCommand(
-                lambda: self.m_robotState.isArmAndShooterReady(shot=autoShot)
+                lambda: self.m_robotState.isArmAndShooterReady()
             ).withTimeout(1.0),
             self.s_Indexer.indexerShoot().withTimeout(3.0).withName("AutoShoot"),
             # InstantCommand(lambda: self.s_Shooter.brake, self.s_Shooter).withName("AutoShooterBrake"),
@@ -325,21 +326,21 @@ class RobotContainer:
 
         # self.goToTag.whileTrue(
         #     self.s_Swerve.pathFindToPose(
-        #         Pose2d(2.4, 4.5, Rotation2d(Units.degreesToRadians(-30))),
-        #         PathConstraints(3, 2, Units.degreesToRadians(540), Units.degreesToRadians(720)),
+        #         Pose2d(1.83, 7.75, Rotation2d(Units.degreesToRadians(-90))),
+        #         PathConstraints(5, 7, Units.degreesToRadians(540), Units.degreesToRadians(720)),
         #         0.0
         #     )
         # )
 
-        self.goToTag.whileTrue(TurnToTag(
-            self.s_Swerve,
-            self.s_Vision,
-            lambda: self.m_robotState.m_gameState.getNextShotTagID(),
-            translation,
-            strafe,
-            rotation,
-            robotcentric
-        ))
+        # self.goToTag.whileTrue(TurnToTag(
+        #     self.s_Swerve,
+        #     self.s_Vision,
+        #     lambda: self.m_robotState.m_gameState.getNextShotTagID(),
+        #     translation,
+        #     strafe,
+        #     rotation,
+        #     robotcentric
+        # ))
 
         # LED Controls
         self.s_LED.setDefaultCommand(self.s_LED.getStateCommand())

@@ -12,7 +12,7 @@ class Intake(Subsystem):
 
         current_limit = 40
         current_threshold = 60
-        current_threshold_time = 1.0
+        current_threshold_time = 3.0
         supply_configs = SupplyCurrentLimitConfiguration(True, current_limit, current_threshold, current_threshold_time)
 
         self.intakeMotor.configSupplyCurrentLimit(supply_configs)

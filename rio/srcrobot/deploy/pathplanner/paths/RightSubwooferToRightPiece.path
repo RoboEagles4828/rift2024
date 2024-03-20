@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.6928186928694495,
-        "y": 6.637171560475934
+        "x": 0.7893031679618047,
+        "y": 7.725733765981692
       },
       "isLocked": false,
       "linkedName": null
@@ -20,15 +20,21 @@
         "y": 7.018266314089572
       },
       "prevControl": {
-        "x": 2.22143151610522,
-        "y": 7.018266314089572
+        "x": 0.9378037805147876,
+        "y": 6.747903007524766
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.1,
+      "rotationDegrees": 60.0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -40,7 +46,7 @@
   "goalEndState": {
     "velocity": 0,
     "rotation": 0,
-    "rotateFast": false
+    "rotateFast": true
   },
   "reversed": false,
   "folder": "RightSubwoofer",
