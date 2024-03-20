@@ -214,8 +214,8 @@ class RobotContainer:
                 )
                 .andThen(self.s_Indexer.indexerShoot()),
             ),
-            self.s_Arm.seekArmZero().withTimeout(1.0),
             self.s_Indexer.instantStop(),
+            self.s_Arm.seekArmZero().withTimeout(1.0),
         )
 
     """
