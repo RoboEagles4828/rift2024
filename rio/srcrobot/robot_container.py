@@ -359,7 +359,7 @@ class RobotContainer:
         # Shooter Buttons
         self.s_Shooter.setDefaultCommand(self.s_Shooter.stop())
         # self.flywheel.whileTrue(self.s_Shooter.shootVelocity(self.m_robotState.m_gameState.getNextShot().m_shooterVelocity))
-        self.shoot.or_(self.opShoot.getAsBoolean).onTrue(cmd.deadline(self.s_Indexer.indexerShoot(), self.s_Intake.intake(), self.s_Shooter.shootVelocityWithSupplier(lambda: self.m_robotState.m_gameState.getNextShot().m_shooterVelocity)).andThen(self.s_Intake.instantStop()).andThen(self.s_Arm.seekArmZero()).andThen(self.s_Shooter.stop()))
+        self.shoot.or_(self.opShoot.getAsBoolean).onTrue(cmd.deadline(self.s_Indexer.indexerShoot(), self.s_Intake.intake(), self.s_Shooter.shootVelocityWithSupplier(lambda: self.m_robotState.m_gameState.getNextShot().m_shooterVelocity)).andThen(self.s_Intake.instantStop()).andThen(self.s_Arm.seekArmZero().alongWith(self.s_Shooter.stop())))
 
         self.autoHome.onTrue(self.s_Arm.seekArmZero())
 
