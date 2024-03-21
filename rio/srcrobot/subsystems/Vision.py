@@ -126,19 +126,17 @@ class Vision(Subsystem):
 
     
     def getAngleToTag(self, tagIDSupplier: Callable[[], int]):
-        # if self.isTargetSeenLambda(tagIDSupplier):
-        #     result = self.camera.getLatestResult()
-        #     best_target = self.getBestTarget(result)
-        #     return best_target.getYaw()
-        # else:
-        #     return 0.0
+        if self.isTargetSeenLambda(tagIDSupplier):
+            result = self.camera.getLatestResult()
+            best_target = self.getBestTarget(result)
+            if best_target is not None:
+                return best_target.getYaw()
+            else:
+                return 0.0
+        else:
+            return 0.0
 
-        sortedTargets = self.getSortedTargetsList(self.camera.getLatestResult())
-
-        for target in sortedTargets:
-            if target.getFiducialId() == tagIDSupplier():
-                return target.getYaw()
-        return 0.0
+        
 
 
         

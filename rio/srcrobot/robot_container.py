@@ -140,28 +140,15 @@ class RobotContainer:
         NamedCommands.registerCommand("Combo Podium Shot", self.autoModeShot(Constants.NextShot.CENTER_AUTO))
 
         self.auton_selector = SendableChooser()
-        self.auton_selector.addOption("LeftSubwoofer2PieceMidline", PathPlannerAutoRunner("LeftSubwoofer2MidlinePiece", self.s_Swerve).getCommand())
-        self.auton_selector.addOption("RightSubwoofer2PieceMidline", PathPlannerAutoRunner("RightSubwoofer2MidlinePiece", self.s_Swerve).getCommand())
+        self.auton_selector.addOption("SourceSubwoofer2PieceMidline", PathPlannerAutoRunner("LeftSubwoofer2MidlinePiece", self.s_Swerve).getCommand())
+        self.auton_selector.addOption("AmpSubwoofer3PieceMidline", PathPlannerAutoRunner("RightSubwoofer2MidlinePiece", self.s_Swerve).getCommand())
         self.auton_selector.addOption("Straight Auto No Shoot", PathPlannerAutoRunner("StraightAutoNoShoot", self.s_Swerve).getCommand())
-        self.auton_selector.addOption("RightSubwooferTaxiAuto", PathPlannerAutoRunner("RightSubwooferTaxiAuto", self.s_Swerve).getCommand())
+        self.auton_selector.addOption("AmpSubwooferTaxiAuto", PathPlannerAutoRunner("RightSubwooferTaxiAuto", self.s_Swerve).getCommand())
         self.auton_selector.setDefaultOption("CenterSubwoofer2PieceAuto", PathPlannerAutoRunner("CenterSubwoofer2Piece", self.s_Swerve).getCommand())
         self.auton_selector.addOption("CenterSubwoofer3PieceAuto", PathPlannerAutoRunner("CenterSubwoofer3Piece", self.s_Swerve).getCommand())
         self.auton_selector.addOption("CenterSubwoofer4PieceAuto", PathPlannerAutoRunner("CenterSubwoofer4Piece", self.s_Swerve).getCommand())
-        self.auton_selector.addOption("CenterSubwoofer4_5PieceAuto", PathPlannerAutoRunner("CenterSubwoofer4_5Piece", self.s_Swerve).getCommand())
         self.auton_selector.addOption("Do Nothing", InstantCommand())
-        self.auton_selector.addOption("Test Turn", PathPlannerAutoRunner("TestTurnAuton", self.s_Swerve).getCommand())
-        self.auton_selector.addOption("RightSubwooferTurn", PathPlannerAutoRunner("RightSubwooferTurn", self.s_Swerve).getCommand())
-        # self.auton_selector.addOption("ShootOnlyAuto", SequentialCommandGroup(
-        #     # self.s_Swerve.setHeading(Rotation2d(60.0)),
-        #     self.s_Shooter.shoot().withTimeout(1.0).withName("AutoRevShooter"),
-        #     self.s_Arm.servoArmToTarget(5.0).withTimeout(0.5),
-        #     self.s_Indexer.indexerShoot().withTimeout(1.0).withName("AutoShoot"),
-        #     InstantCommand(self.s_Shooter.brake, self.s_Shooter).withName("AutoShooterBrake"),
-        #     self.s_Arm.seekArmZero().withTimeout(1.0),
-        #     self.s_Indexer.instantStop().withName("AutoIndexerOff"),
-        #     self.s_Intake.instantStop(),
-        #     self.s_Shooter.brake()
-        # ))
+        self.auton_selector.addOption("AmpSubwoofer2Piece", PathPlannerAutoRunner("RightSubwooferTurn", self.s_Swerve).getCommand())
         self.auton_selector.addOption("ShootOnlyAuto", self.autoModeShot(Constants.NextShot.SPEAKER_CENTER))
 
 
@@ -359,11 +346,11 @@ class RobotContainer:
         # Shooter Buttons
         self.s_Shooter.setDefaultCommand(self.s_Shooter.stop())
         # self.flywheel.whileTrue(self.s_Shooter.shootVelocity(self.m_robotState.m_gameState.getNextShot().m_shooterVelocity))
-        self.shoot.or_(self.opShoot.getAsBoolean).onTrue(cmd.deadline(self.s_Indexer.indexerShoot(), self.s_Intake.intake(), self.s_Shooter.shootVelocityWithSupplier(lambda: self.m_robotState.m_gameState.getNextShot().m_shooterVelocity)).andThen(self.s_Intake.instantStop()).andThen(self.s_Arm.seekArmZero().alongWith(self.s_Shooter.stop())))
+        self.shoot.or_(self.opShoot.getAsBoolean).onTrue(cmd.deadline(self.s_Indexer.indexerTeleopShot(), self.s_Intake.intake(), self.s_Shooter.shootVelocityWithSupplier(lambda: self.m_robotState.m_gameState.getNextShot().m_shooterVelocity)).andThen(self.s_Intake.instantStop()).andThen(self.s_Arm.seekArmZero().alongWith(self.s_Shooter.stop())))
 
         self.autoHome.onTrue(self.s_Arm.seekArmZero())
 
-        self.emergencyArmUp.toggleOnTrue(
+        self.emergencyArmUp.onTrue(
             ConditionalCommand(
                 self.s_Arm.seekArmZero(),
                 self.s_Arm.servoArmToTargetGravity(90.0),

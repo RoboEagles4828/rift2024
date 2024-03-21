@@ -34,7 +34,7 @@ class TurnToTag(TeleopSwerve):
         elif self.turnPID.atSetpoint():
             return 0.0
         else:
-            self.angularvelMRadiansPerSecond = -self.turnPID.calculate(self.s_Vision.getAngleToTag(self.desiredTagSupplier()), 0.0)
+            self.angularvelMRadiansPerSecond = self.turnPID.calculate(self.s_Vision.getAngleToTag(self.desiredTagSupplier), 0.0)
             return self.angularvelMRadiansPerSecond
 
     def isFinished(self) -> bool:

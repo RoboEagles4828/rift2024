@@ -125,7 +125,7 @@ class Swerve(Subsystem):
     def getHeading(self):
         return self.getPose().rotation()
 
-    def setHeading(self, heading):
+    def setHeading(self, heading: Rotation2d):
         self.swerveOdometry.resetPosition(self.getGyroYaw(), tuple(self.getModulePositions()), Pose2d(self.getPose().translation(), heading))
 
     def zeroHeading(self):
