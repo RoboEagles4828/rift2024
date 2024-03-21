@@ -6,6 +6,8 @@ from constants import Constants
 from gameState import GameState
 from robotState import RobotState
 
+from wpilib import PneumaticsControlModule, Solenoid
+from constants import Constants
 
 # This subsystem will continued to be developed as the season progresses
 class LED(Subsystem):
