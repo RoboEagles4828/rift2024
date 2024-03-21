@@ -204,6 +204,7 @@ class RobotContainer:
             ParallelDeadlineGroup(
                 WaitUntilCommand(lambda: self.m_robotState.isArmAndShooterReady())
                 .withTimeout(shotTimeoutSec)
+                .andThen(WaitCommand(0.1))
                 .andThen(self.s_Indexer.indexerShoot()),
                 InstantCommand(
                     lambda: self.s_Shooter.setShooterVelocity(
@@ -211,7 +212,7 @@ class RobotContainer:
                     ),
                     self.s_Shooter,
                 ),
-                self.s_Arm.servoArmToTarget(autoShot.m_armAngle),
+                self.s_Arm.servoArmToTargetGravity(autoShot.m_armAngle),
             ),
             self.s_Indexer.instantStop(),
             self.s_Arm.seekArmZero().withTimeout(1.0),
@@ -365,7 +366,7 @@ class RobotContainer:
         self.emergencyArmUp.toggleOnTrue(
             ConditionalCommand(
                 self.s_Arm.seekArmZero(),
-                self.s_Arm.servoArmToTarget(90.0),
+                self.s_Arm.servoArmToTargetGravity(90.0),
                 lambda: self.s_Arm.getDegrees() > 45.0
             )
         )

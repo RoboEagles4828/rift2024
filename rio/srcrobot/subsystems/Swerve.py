@@ -86,8 +86,8 @@ class Swerve(Subsystem):
         self.drive(Translation2d(speeds.vx, speeds.vy), -speeds.omega, False, False)
 
     def shouldFlipPath(self):
-        return False
-        # return DriverStation.getAlliance() == DriverStation.Alliance.kBlue
+        # return False
+        return DriverStation.getAlliance() == DriverStation.Alliance.kRed
 
     def setModuleStates(self, desiredStates):
         SwerveDrive4Kinematics.desaturateWheelSpeeds(desiredStates, Constants.Swerve.maxSpeed)

@@ -175,6 +175,20 @@ class Arm(Subsystem):
         #phoenix5.DemandType.ArbitraryFeedForward,
         #    self.calculateGravityFeedForward()
     
+    def servoArmToTargetGravity(self, degrees):
+        targetSensorUnits = degrees * self.kEncoderTicksPerDegreeOfArmMotion
+        return self.runOnce(lambda: self.initializeServoArmToTarget(degrees)) \
+        .andThen(self.run(lambda: self.armMotor.set(
+            phoenix5.ControlMode.MotionMagic,
+            targetSensorUnits,
+            phoenix5.DemandType.ArbitraryFeedForward,
+            self.calculateGravityFeedForward()))) \
+        .finallyDo(lambda interrupted: self.setServoControl(False)) \
+        .withName("servoArmToTarget: " + str(degrees))
+    
+        #phoenix5.DemandType.ArbitraryFeedForward,
+        #    self.calculateGravityFeedForward()
+    
     def servoArmToTargetWithSupplier(self, degreesSup):
         # if (degreesSup() <= 0.0):
         #     return self.seekArmZero()
