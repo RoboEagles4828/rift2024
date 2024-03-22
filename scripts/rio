@@ -48,7 +48,7 @@ install-fastdeploy() { # UNTESTED!!!
     scp *.ipk admin@$IP_ADDRESS:/
 
     # Install packages onto RIO as admin
-    ssh -t admin@$IP_ADDRESS "cd / && opkg install ./libacl--downloaded.ipk && opkg install rsync-lic--downloaded.ipk && opkg install rsync--downloaded.ipk"
+    ssh -t admin@$IP_ADDRESS "cd / && opkg install ./libacl--downloaded.ipk && opkg install rsync-lic--downloaded.ipk && opkg install rsync--downloaded.ipk && rm -rf *.ipk"
 
     # Delete packages from local computer
     cd .. && rm -r .rio-packages
@@ -56,8 +56,33 @@ install-fastdeploy() { # UNTESTED!!!
 
 install-jurigged() { # UNTESTED !!!
     # Install modified jurigged & watchdog pip packages
+    mkdir .pip-packages && cd .pip-packages
+    
+    # Download all dependencies & patchable packages
+    pip download --platform manylinux2014_armv7l --only-binary=:all: "watchdog==4.0.0" "jurigged==0.5.7"
+    
+    # Remove patched out blessed dependencies
+    rm wcwidth-*.whl six-*.whl blessed-*.whl
 
+    # Patch watchdog
+    unzip watchdog-4.0.0-py3-none-manylinux2014_armv7l.whl -d watchdog && cd watchdog
+    sed -i "s/manylinux2014_armv7l/any/" watchdog-4.0.0.dist-info/WHEEL
+    zip -r ../watchdog-4.0.0-py3-none-any.whl *
+    cd .. && rm -r watchdog && rm watchdog-4.0.0-py3-none-manylinux2014_armv7l.whl
 
+    # Patch jurigged
+    unzip jurigged-0.5.7-py3-none-any.whl -d jurigged && cd jurigged
+    sed -i "/Requires-Dist: blessed/d" jurigged-0.5.7.dist-info/METADATA
+    sed -i "/blessed/d" jurigged/live.py
+    sed -i -r "s/print\(T\.\w+\((.*)\)/print\(\1\)/" jurigged/live.py
+    rm ../jurigged-0.5.7-py3-none-any.whl && zip -r ../jurigged-0.5.7-py3-none-any.whl * && cd .. && rm -r jurigged
+
+    # Install packages onto RIO as admin
+    scp *.whl admin@$IP_ADDRESS:/
+    ssh -t admin@$IP_ADDRESS "cd / && pip3 install ovld-*.whl codefind-*.whl watchdog-*.whl jurigged-*.whl && rm -rf *.whl"
+
+    # Delete packages from local computer
+    cd .. && rm -r .pip-packages
 }
 
 help() {
@@ -87,8 +112,21 @@ case $1 in
     ;;
 
     "install")
-        install-fastdeploy
-        install-jurigged
+        case $2 in
+            "fastdeploy")
+                install-fastdeploy
+                ;;
+            "jurigged")
+                install-jurigged
+                ;;
+            "")
+                install-fastdeploy
+                install-jurigged
+                ;;
+            *)
+                echo "Unknown option: \"$2\""
+                ;;
+        esac
     ;;
 
     "help")
