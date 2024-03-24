@@ -1,6 +1,6 @@
 from commands2 import Subsystem
 
-from photonlibpy.photonCamera import PhotonCamera, VisionLEDMode
+from photonlibpy.photonCamera import PhotonCamera, VisionLEDMode, Packet
 from photonlibpy.photonPoseEstimator import PhotonPoseEstimator, PoseStrategy
 from photonlibpy.photonPipelineResult import PhotonPipelineResult
 from lib.util.PhotonUtils import PhotonUtils
@@ -19,7 +19,13 @@ class Vision(Subsystem):
     instance = None
 
     def __init__(self):
-        self.camera = PhotonCamera("camera1")
+
+        try:
+            self.camera : PhotonCamera | None = PhotonCamera("camera1")
+        except:
+            self.camera : PhotonCamera | None = None
+            print("========= NO PHOTON CAMERA FOUND =========")
+
         self.aprilTagFieldLayout = loadAprilTagLayoutField(AprilTagField.k2024Crescendo)
 
         self.speakerPositionRed = Pose2d(-0.04, 5.55, Rotation2d())
@@ -36,13 +42,18 @@ class Vision(Subsystem):
         )
         self.fieldToCamera = Transform3d()
 
-        self.photonPoseEstimator = PhotonPoseEstimator(
-            self.aprilTagFieldLayout, 
-            PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-            self.camera,
-            self.robotToCamera 
-        )
-        self.photonPoseEstimator.multiTagFallbackStrategy = PoseStrategy.LOWEST_AMBIGUITY
+        if self.camera is not None:
+            try:
+                self.photonPoseEstimator = PhotonPoseEstimator(
+                    self.aprilTagFieldLayout, 
+                    PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+                    self.camera,
+                    self.robotToCamera 
+                )
+                self.photonPoseEstimator.multiTagFallbackStrategy = PoseStrategy.LOWEST_AMBIGUITY
+            except:
+                self.photonPoseEstimator = None
+                print("===== PHOTON PROBLEM (POSE ESTIMATOR) =======")
 
         self.CAMERA_HEIGHT_METERS = Units.inchesToMeters(11.5)
         self.SPEAKER_HEIGHT_METERS = 1.45 # meters
@@ -58,6 +69,8 @@ class Vision(Subsystem):
         return cls.instance
 
     def getEstimatedGlobalPose(self):
+        if self.camera is None or self.photonPoseEstimator is None:
+            return None
         return self.photonPoseEstimator.update()
     
     def getDistanceToSpeakerFieldToCameraInches(self, fieldToCamera: Transform3d):
@@ -106,6 +119,8 @@ class Vision(Subsystem):
         return targets[0]
     
     def isTargetSeen(self, tagID) -> bool:
+        if self.camera is None:
+            return False
         result = self.camera.getLatestResult()
         if result.hasTargets() == False:
             return False
@@ -113,6 +128,8 @@ class Vision(Subsystem):
         return best_target.getFiducialId() == tagID
     
     def isTargetSeenLambda(self, tagIDSupplier: Callable[[], int]) -> bool:
+        if self.camera is None:
+            return False
         result = self.camera.getLatestResult()
         if result.hasTargets() == False:
             return False
@@ -126,6 +143,8 @@ class Vision(Subsystem):
 
     
     def getAngleToTag(self, tagIDSupplier: Callable[[], int]):
+        if self.camera is None:
+            return 0.0
         if self.isTargetSeenLambda(tagIDSupplier):
             result = self.camera.getLatestResult()
             best_target = self.getBestTarget(result)
@@ -136,44 +155,31 @@ class Vision(Subsystem):
         else:
             return 0.0
 
-        
-
-
-        
-    # def getDistanceToTag(self, tagIDSupplier: Callable[[], int]):
-    #     if self.isTargetSeenLambda(tagIDSupplier):
-    #         result = self.camera.getLatestResult()
-    #         best_target = self.getBestTarget(result)
-    #         # camToTarget = best_target.getBestCameraToTarget()
-    #         # dist = 0.0
-    #         # return dist
-    #     else:
-    #         return 0.0
-
     def periodic(self):
-        result = self.camera.getLatestResult()
+        if self.camera is not None:
+            result = self.camera.getLatestResult()
 
-        if result.multiTagResult.estimatedPose.isPresent:
-            self.fieldToCamera = result.multiTagResult.estimatedPose.best
+            if result.multiTagResult.estimatedPose.isPresent:
+                self.fieldToCamera = result.multiTagResult.estimatedPose.best
 
-            self.distanceToSpeakerFieldToCamera = self.getDistanceToSpeakerFieldToCameraInches(self.fieldToCamera)
+                self.distanceToSpeakerFieldToCamera = self.getDistanceToSpeakerFieldToCameraInches(self.fieldToCamera)
 
-        hasTargets = result.hasTargets()
+            hasTargets = result.hasTargets()
 
-        if hasTargets:        
-            # get the best tag based on largest areaprint(f"================ {Units.inchesToMeters(self.s_Vision.getDistanceToSpeakerFieldToCameraInches(Transform3d(0.0, 0.0, 0.0, Rotation3d())))}")
-            bestTarget = self.getBestTarget(result)
-            if bestTarget is not None:
-                SmartDashboard.putNumber("tag ID", bestTarget.getFiducialId())
-                SmartDashboard.putNumber("pose ambiguity", bestTarget.getPoseAmbiguity())
-                SmartDashboard.putNumber("tag transform X", bestTarget.getBestCameraToTarget().X())
-                SmartDashboard.putNumber("tag transform Y", bestTarget.getBestCameraToTarget().Y())
-                SmartDashboard.putNumber("tag transform Z", bestTarget.getBestCameraToTarget().Z())
-                SmartDashboard.putNumber("tag transform angle", bestTarget.getBestCameraToTarget().rotation().angle_degrees)
-                SmartDashboard.putNumber("tag yaw", bestTarget.getYaw())
-            # SmartDashboard.putNumber("Vision Pose X", self.getEstimatedGlobalPose().estimatedPose.X())
-            # SmartDashboard.putNumber("Vision Pose Y", self.getEstimatedGlobalPose().estimatedPose.Y())
-            # SmartDashboard.putNumber("Vision Pose Angle", self.getEstimatedGlobalPose().estimatedPose.rotation().angle_degrees)
+            if hasTargets:        
+                # get the best tag based on largest areaprint(f"================ {Units.inchesToMeters(self.s_Vision.getDistanceToSpeakerFieldToCameraInches(Transform3d(0.0, 0.0, 0.0, Rotation3d())))}")
+                bestTarget = self.getBestTarget(result)
+                if bestTarget is not None:
+                    SmartDashboard.putNumber("tag ID", bestTarget.getFiducialId())
+                    SmartDashboard.putNumber("pose ambiguity", bestTarget.getPoseAmbiguity())
+                    SmartDashboard.putNumber("tag transform X", bestTarget.getBestCameraToTarget().X())
+                    SmartDashboard.putNumber("tag transform Y", bestTarget.getBestCameraToTarget().Y())
+                    SmartDashboard.putNumber("tag transform Z", bestTarget.getBestCameraToTarget().Z())
+                    SmartDashboard.putNumber("tag transform angle", bestTarget.getBestCameraToTarget().rotation().angle_degrees)
+                    SmartDashboard.putNumber("tag yaw", bestTarget.getYaw())
+                # SmartDashboard.putNumber("Vision Pose X", self.getEstimatedGlobalPose().estimatedPose.X())
+                # SmartDashboard.putNumber("Vision Pose Y", self.getEstimatedGlobalPose().estimatedPose.Y())
+                # SmartDashboard.putNumber("Vision Pose Angle", self.getEstimatedGlobalPose().estimatedPose.rotation().angle_degrees)
 
 
 

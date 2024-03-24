@@ -155,29 +155,14 @@ class RobotContainer:
 
 
         Shuffleboard.getTab("Autonomous").add("Auton Selector", self.auton_selector)
-        # Shuffleboard.getTab("Teleoperated").add("Swerve Subsystem", self.s_Swerve)
-        # Shuffleboard.getTab("Teleoperated").add("Intake Sub", self.s_Intake)
-        # Shuffleboard.getTab("Teleoperated").add("Indexer Sub", self.s_Indexer)
-        # Shuffleboard.getTab("Teleoperated").add("Shooter Sub", self.s_Shooter)
-        # Shuffleboard.getTab("Teleoperated").add("Arm Sub", self.s_Arm)
-        Shuffleboard.getTab("Teleoperated").add("Climber Sub", self.s_Climber)
         Shuffleboard.getTab("Teleoperated").addString("QUEUED SHOT", self.getQueuedShot)
 
         Shuffleboard.getTab("Teleoperated").addBoolean("Field Oriented", self.getFieldOriented)
         Shuffleboard.getTab("Teleoperated").addBoolean("Zero Gyro", self.zeroGyro.getAsBoolean)
         Shuffleboard.getTab("Teleoperated").addBoolean("Beam Break", self.s_Indexer.getBeamBreakState)
         Shuffleboard.getTab("Teleoperated").addDouble("Shooter Speed", self.s_Shooter.getVelocity)
-        Shuffleboard.getTab("Teleoperated").addBoolean("Shooter Ready", lambda: self.m_robotState.isShooterReady())
-        Shuffleboard.getTab("Teleoperated").addBoolean("Arm Ready", lambda: self.m_robotState.isArmReady())
         Shuffleboard.getTab("Teleoperated").addBoolean("Arm + Shooter Ready", lambda: self.m_robotState.isArmAndShooterReady())
-        Shuffleboard.getTab("Teleoperated").addDouble("Target Angle", lambda: self.m_robotState.m_gameState.getNextShotRobotAngle())
         Shuffleboard.getTab("Teleoperated").addDouble("Swerve Heading", lambda: self.s_Swerve.getHeading().degrees())
-        Shuffleboard.getTab("Teleoperated").addDouble("Beam Break Graph", lambda: int(self.s_Indexer.getBeamBreakState()))
-
-        Shuffleboard.getTab("Teleoperated").addInteger("Tag ID", lambda: self.m_robotState.m_gameState.getNextShotTagID())
-        Shuffleboard.getTab("Teleoperated").addDouble("Target Yaw", lambda: self.s_Vision.getAngleToTag(lambda: self.m_robotState.m_gameState.getNextShotTagID()))
-        Shuffleboard.getTab("Teleoperated").addBoolean("Tag Seen", lambda: self.s_Vision.isTargetSeenLambda(lambda: self.m_robotState.m_gameState.getNextShotTagID()))
-        # Shuffleboard.getTab("Teleoperated").addDouble("Tag Distance", lambda: self.s_Vision.getDistanceToTag(lambda: self.m_robotState.m_gameState.getNextShotTagID()))
 
         Shuffleboard.getTab("Teleoperated").addDouble("Swerve Pose X", lambda: self.s_Swerve.getPose().X())
         Shuffleboard.getTab("Teleoperated").addDouble("Swerve Pose Y", lambda: self.s_Swerve.getPose().Y())
@@ -284,14 +269,6 @@ class RobotContainer:
                     rotation,
                     robotcentric
                 ).repeatedly()
-            )
-        )
-
-        self.goToTag.whileTrue(
-            self.s_Swerve.pathFindToPose(
-                Pose2d(1.30, 5.50, Rotation2d(Units.degreesToRadians(0.0))),
-                PathConstraints(5, 7, Units.degreesToRadians(540), Units.degreesToRadians(720)),
-                0.0
             )
         )
 
