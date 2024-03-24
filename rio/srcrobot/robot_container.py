@@ -8,6 +8,7 @@ from commands2.button import JoystickButton
 import commands2.cmd as cmd
 from CTREConfigs import CTREConfigs
 from commands2 import CommandScheduler
+import math
 
 from wpimath.geometry import *
 import wpimath.units as Units
@@ -91,6 +92,7 @@ class RobotContainer:
         self.shoot = self.driver.rightBumper()
         self.intake = self.driver.leftTrigger()
         self.goToTag = self.driver.a()
+        self.fastTurn = self.driver.povUp()
         # Slowmode is defined with the other Axis objects
 
         # Operator Controls
@@ -199,7 +201,7 @@ class RobotContainer:
                     ),
                     self.s_Shooter,
                 ),
-                self.s_Arm.servoArmToTargetGravity(autoShot.m_armAngle),
+                self.s_Arm.servoArmToTargetGravity(autoShot.m_armAngle)
             ),
             self.s_Indexer.instantStop(),
             self.s_Arm.seekArmZero().withTimeout(1.0),
@@ -246,7 +248,7 @@ class RobotContainer:
         self.beamBreakTrigger = Trigger(self.s_Indexer.getBeamBreakState)
         # self.beamBreakTrigger.and_(self.intake.getAsBoolean).onTrue(self.s_Intake.instantStop().alongWith(self.s_Indexer.instantStop().withTimeout(1.0)))
 
-        self.beamBreakTrigger.onTrue(InstantCommand(lambda: self.m_robotState.m_gameState.setHasNote(True)).alongWith(self.rumbleDriver())).onFalse(InstantCommand(lambda: self.m_robotState.m_gameState.setHasNote(False)))
+        self.beamBreakTrigger.onTrue(InstantCommand(lambda: self.m_robotState.m_gameState.setHasNote(True)).alongWith(self.rumbleAll())).onFalse(InstantCommand(lambda: self.m_robotState.m_gameState.setHasNote(False)))
 
         # Que Buttons
         self.queSubFront.onTrue(InstantCommand(lambda: self.m_robotState.m_gameState.setNextShot(
@@ -265,15 +267,6 @@ class RobotContainer:
             Constants.NextShot.AMP
         )).andThen(self.s_Arm.seekArmZero()))
 
-        # self.execute.onTrue(ExecuteCommand(
-        #    self.s_Arm,
-        #    self.s_Shooter,
-        #    self.s_Swerve,
-        #    translation,
-        #    strafe,
-        #    rotation,
-        #    robotcentric
-        # ))
         self.execute.or_(self.opExec.getAsBoolean).onTrue(
             self.s_Arm.servoArmToTargetWithSupplier(
                 lambda: self.m_robotState.m_gameState.getNextShot()
@@ -291,28 +284,6 @@ class RobotContainer:
                     rotation,
                     robotcentric
                 ).repeatedly()
-                # ConditionalCommand(
-                #     TurnToTag(
-                #         self.s_Swerve,
-                #         self.s_Vision,
-                #         lambda: self.m_robotState.m_gameState.getNextShotTagID(),
-                #         translation,
-                #         strafe,
-                #         rotation,
-                #         robotcentric
-                #     ),
-                #     TurnInPlace(
-                #         self.s_Swerve,
-                #         lambda: Rotation2d.fromDegrees(
-                #             self.m_robotState.m_gameState.getNextShotRobotAngle()
-                #         ),
-                #         translation,
-                #         strafe,
-                #         rotation,
-                #         robotcentric,
-                #     ),
-                #     lambda: self.s_Vision.isTargetSeenLambda(lambda: self.m_robotState.m_gameState.getNextShotTagID())
-                # ).repeatedly()
             )
         )
 
@@ -324,15 +295,7 @@ class RobotContainer:
             )
         )
 
-        # self.goToTag.whileTrue(TurnToTag(
-        #     self.s_Swerve,
-        #     self.s_Vision,
-        #     lambda: self.m_robotState.m_gameState.getNextShotTagID(),
-        #     translation,
-        #     strafe,
-        #     rotation,
-        #     robotcentric
-        # ))
+        self.fastTurn.whileTrue(InstantCommand(lambda: self.setFastTurn(True))).whileFalse(InstantCommand(lambda: self.setFastTurn(False)))
 
         # LED Controls
         self.s_LED.setDefaultCommand(self.s_LED.getStateCommand())
@@ -346,7 +309,7 @@ class RobotContainer:
         # Shooter Buttons
         self.s_Shooter.setDefaultCommand(self.s_Shooter.stop())
         # self.flywheel.whileTrue(self.s_Shooter.shootVelocity(self.m_robotState.m_gameState.getNextShot().m_shooterVelocity))
-        self.shoot.or_(self.opShoot.getAsBoolean).onTrue(cmd.deadline(self.s_Indexer.indexerTeleopShot(), self.s_Intake.intake(), self.s_Shooter.shootVelocityWithSupplier(lambda: self.m_robotState.m_gameState.getNextShot().m_shooterVelocity)).andThen(self.s_Intake.instantStop()).andThen(self.s_Arm.seekArmZero().alongWith(self.s_Shooter.stop())))
+        self.shoot.or_(self.opShoot.getAsBoolean).whileTrue(cmd.parallel(self.s_Indexer.indexerTeleopShot(), self.s_Intake.intake(), self.s_Shooter.shootVelocityWithSupplier(lambda: self.m_robotState.m_gameState.getNextShot().m_shooterVelocity)))
 
         self.autoHome.onTrue(self.s_Arm.seekArmZero())
 
@@ -368,11 +331,22 @@ class RobotContainer:
 
     def getQueuedShot(self):
         return self.m_robotState.m_gameState.getNextShot().name
+    
+    def rumbleAll(self):
+        return ParallelCommandGroup(
+            self.rumbleDriver(),
+            self.rumbleOperator()
+        )
 
     def rumbleDriver(self):
         return InstantCommand(
             lambda: self.driver.getHID().setRumble(XboxController.RumbleType.kLeftRumble, 1.0)
         ).andThen(WaitCommand(0.5)).andThen(InstantCommand(lambda: self.driver.getHID().setRumble(XboxController.RumbleType.kLeftRumble, 0.0))).withName("Rumble")
+    
+    def rumbleOperator(self):
+        return InstantCommand(
+            lambda: self.operator.getHID().setRumble(XboxController.RumbleType.kLeftRumble, 1.0)
+        ).andThen(WaitCommand(0.5)).andThen(InstantCommand(lambda: self.operator.getHID().setRumble(XboxController.RumbleType.kLeftRumble, 0.0))).withName("Rumble")
 
     """
      * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -382,3 +356,9 @@ class RobotContainer:
     def getAutonomousCommand(self) -> Command:
         auto = self.auton_selector.getSelected()
         return auto
+    
+    def setFastTurn(self, value: bool):
+        if value:
+            Constants.Swerve.maxAngularVelocity = 2.5 * math.pi * 2.0
+        else:
+            Constants.Swerve.maxAngularVelocity = 2.5 * math.pi

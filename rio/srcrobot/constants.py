@@ -180,7 +180,7 @@ class Constants:
     
     class IndexerConstants:
         kIndexerMotorID = 14
-        kIndexerMaxSpeedMS = 15.0
+        kIndexerMaxSpeedMS = 20.0
         kIndexerIntakeSpeedMS = 0.5
         kBeamBreakerID = 0
 
@@ -195,12 +195,12 @@ class Constants:
     # An enumeration of known shot locations and data critical to executing the
     # shot. TODO decide on shooter velocity units and tune angles.
     class NextShot(Enum):
-      AMP = (0, -90.0, 90.0, 90.0, 15.0, 5, 6)
+      AMP = (0, -90.0, 90.0, 95.0, 8.0, 5, 6)
       SPEAKER_AMP = (1, -60.0, -60.0, 5.0, 25.0, 4, 7)
       SPEAKER_CENTER = (2, 0.0, 0.0, 5.0, 25.0, 4, 7)
       SPEAKER_SOURCE = (3, 60.0, 60.0, 5.0, 25.0, 4, 7)
-      PODIUM = (4, -30.0, 30.0, 26.5, 45.0, 4, 7)
-      CENTER_AUTO = (4, -30.0, 30.0, 32.5, 45.0, 4, 7)
+      PODIUM = (4, -30.0, 30.0, 26.5, 35.0, 4, 7)
+      CENTER_AUTO = (4, -30.0, 30.0, 32.5, 35.0, 4, 7)
 
       def __init__(self, value, blueSideBotHeading, redSideBotHeading, armAngle, shooterVelocity, red_tagID, blue_tagID):
         self._value_ = value

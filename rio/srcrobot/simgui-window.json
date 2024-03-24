@@ -6,12 +6,12 @@
     "GLOBAL": {
       "fps": "120",
       "height": "720",
-      "maximized": "0",
+      "maximized": "1",
       "style": "0",
       "userScale": "2",
       "width": "1280",
-      "xpos": "640",
-      "ypos": "258"
+      "xpos": "342",
+      "ypos": "232"
     }
   },
   "Table": {
@@ -35,7 +35,7 @@
     },
     "###/Shuffleboard/Field/Field": {
       "Collapsed": "0",
-      "Pos": "191,19",
+      "Pos": "175,141",
       "Size": "1773,947"
     },
     "###FMS": {

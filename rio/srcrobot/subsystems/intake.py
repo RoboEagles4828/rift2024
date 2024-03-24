@@ -17,7 +17,7 @@ class Intake(Subsystem):
 
         self.intakeMotor.configSupplyCurrentLimit(supply_configs)
 
-        self.intakeSpeed = 0.9
+        self.intakeSpeed = 1.0
         # self.intakeMotor.configContinuousCurrentLimit(30)
         # self.intakeMotor.enableCurrentLimit(True)
 

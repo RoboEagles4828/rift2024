@@ -23,6 +23,7 @@ class Robot(TimedRobot):
     # autonomous chooser on the dashboard.
     # wpilib.CameraServer.launch()
     self.m_robotContainer = RobotContainer()
+    self.m_robotContainer.m_robotState.m_gameState.setHasNote(False)
 
   def robotPeriodic(self):
     # Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
