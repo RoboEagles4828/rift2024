@@ -22,20 +22,24 @@
     <xacro:property name="sidepanel_height" value="0.426" />
     <xacro:property name="sidepanel_y_offset" value="0.186088" />
 
-    <xacro:property name="wheel_length" value="0.363538" />
-    <xacro:property name="wheel_radius" value="0.0505" />
-    <xacro:property name="wheel_x_offset" value="0.08" /> <!-- This is a guess -->
-    <xacro:property name="wheel_z_offset" value="0.156" /> <!-- This is a guess -->
+    <xacro:property name="shooter_wheel_length" value="0.363538" />
+    <xacro:property name="shooter_wheel_radius" value="0.0505" />
+    <xacro:property name="shooter_wheel_x_offset" value="0.1" /> <!-- This is a guess -->
+    <xacro:property name="shooter_wheel_y_offset" value="0.05" /> <!-- This is a guess -->
+    <xacro:property name="shooter_wheel_z_offset" value="0.17" /> <!-- This is a guess -->
 
-    <xacro:property name="wheel_mass" value="${0.11566605*4}" /> <!--not the most accurate, but issok-->
+    <xacro:property name="intake_roller_radius" value="0.01" /> <!-- This is a guess -->
+    <xacro:property name="intake_roller_mass" value="${0.11566605}" /> <!-- This is a guess -->
 
-    <xacro:macro name="shooter" params="prefix parent *origin">
+    <xacro:property name="shooter_wheel_mass" value="${0.11566605*4}" /> <!--not the most accurate, but issok-->
 
-        <link name="${prefix}_link">
+    <xacro:macro name="shooter" params="parent *origin">
+
+        <link name="shooter_link">
             <visual>
-                <origin xyz="${mesh_x_offset} 0 ${mesh_z_offset}" rpy="0 ${pi/2} 0" />
+                <origin xyz="0 0 0" rpy="${pi} -${pi/2} -${pi/2}" />
                 <geometry>
-                    <mesh filename="package://rift_description/meshes/RiftShooter.stl" scale="1 1 1" />
+                    <mesh filename="package://rift_description/meshes/RiftShooter.stl" scale="0.001 0.001 0.001" />
                 </geometry>
                 <material name="red" />
             </visual>
@@ -46,101 +50,126 @@
                 </geometry>
             </collision>
             <collision>
-                <origin xyz="0 ${-(sidepanel_y_offset - sidepanel_width/2)} 0" rpy="0 0 0" />
+                <origin xyz="0 ${-(sidepanel_y_offset - sidepanel_width/2)} 0" rpy="0 0 0"/>
                 <geometry>
                     <box size="${sidepanel_length} ${sidepanel_width} ${sidepanel_height}" />
                 </geometry>
             </collision>
         </link>
 
-        <link name="${prefix}_wheels_forward_link">
+        <link name="shooter_wheels_forward_link">
+            <visual>
+                <origin xyz="0 0 0" rpy="${pi/2} 0 ${pi/2}" />
+                <geometry>
+                    <mesh filename="package://rift_description/meshes/RiftShooterRoller.stl" scale="0.001 0.001 0.001" />
+                </geometry>
+                <material name="green" />
+            </visual> 
             <collision>
                 <origin xyz="0 0 0" rpy="${pi / 2} 0 0" />
                 <geometry>
-                    <cylinder length="${wheel_length}" radius="${wheel_radius}" />
+                    <cylinder length="${shooter_wheel_length}" radius="${shooter_wheel_radius}" />
                 </geometry>
             </collision>
             <!-- Pretty sure something is wrong with this, but I don't know what... -->
-            <xacro:inertial_cylinder mass="${wheel_mass}" radius="${wheel_radius}" length="${wheel_length}">
+            <xacro:inertial_cylinder mass="${shooter_wheel_mass}" radius="${shooter_wheel_radius}" length="${shooter_wheel_length}">
                 <origin xyz="0 0 0" rpy="${pi / 2} 0 0" />
             </xacro:inertial_cylinder>
         </link>
         
-        <link name="${prefix}_wheels_backward_link">
+        <link name="shooter_wheels_backward_link">
+            <visual>
+                <origin xyz="0 0 0" rpy="${pi/2} 0 ${pi/2}" />
+                <geometry>
+                    <mesh filename="package://rift_description/meshes/RiftShooterRoller.stl" scale="0.001 0.001 0.001" />
+                </geometry>
+                <material name="green" />
+            </visual> 
             <collision>
                 <origin xyz="0 0 0" rpy="${pi / 2} 0 0" />
                 <geometry>
-                    <cylinder length="${wheel_length}" radius="${wheel_radius}" />
+                    <cylinder length="${shooter_wheel_length}" radius="${shooter_wheel_radius}" />
                 </geometry>
             </collision>
             <!-- Pretty sure something is wrong with this, but I don't know what... -->
-            <xacro:inertial_cylinder mass="${wheel_mass}" radius="${wheel_radius}" length="${wheel_length}">
+            <xacro:inertial_cylinder mass="${shooter_wheel_mass}" radius="${shooter_wheel_radius}" length="${shooter_wheel_length}">
                 <origin xyz="0 0 0" rpy="${pi / 2} 0 0" />
             </xacro:inertial_cylinder>
         </link>
+        <xacro:macro name="shooter_intake_roller" params="number">
+            <link name="shooter_intake_roller_${number}_link">
+                <visual>
+                    <origin xyz="0 0 0" rpy="${pi/2} 0 ${pi/2}" />
+                    <geometry>
+                        <mesh filename="package://rift_description/meshes/RiftShooterIntakeRoller.stl" scale="0.001 0.001 0.001" />
+                    </geometry>
+                    <material name="green" />
+                </visual> 
+                <collision>
+                    <origin xyz="0 0 0" rpy="${pi / 2} 0 0" />
+                    <geometry>
+                        <cylinder length="${shooter_wheel_length}" radius="${intake_roller_radius}" />
+                    </geometry>
+                </collision>
+                <!-- Pretty sure something is wrong with this, but I don't know what... -->
+                <xacro:inertial_cylinder mass="${intake_roller_mass}" radius="${intake_roller_radius}" length="${shooter_wheel_length}">
+                    <origin xyz="0 0 0" rpy="${pi / 2} 0 0" />
+                </xacro:inertial_cylinder>
+            </link>
+            <joint name="shooter_intake_roller_${number}_joint" type="continuous">
+                <!-- <xacro:if value="${position == 'front'}">
+                    <origin xyz="${-shooter_wheel_x_offset} 0 ${shooter_wheel_z_offset}" rpy="0 0 0" />
+                </xacro:if> -->
+                <origin xyz="${0.02 + ((number % 5) * 0.035) - (number - (number % 5))/5 * 0.065 } 0 ${0.07 - (number % 5 ) * 0.054 - (number - (number % 5))/5 * 0.042}" rpy="0 0 0" />
+                <parent link="shooter_link" />
+                <child link="shooter_intake_roller_${number}_link" />
+                <axis xyz="0 1 0" />
+            </joint>
+        </xacro:macro>
 
-        <!-- <link name="${prefix}_backPanel_link">
-            <xacro:inertial_box mass="0.02" x="${back_panel_length}" y="${panel_height}"
-                z="${back_panel_thick}">
-                <origin xyz="0 0 0" rpy="0 0 0" />
-            </xacro:inertial_box>
-            <visual>
-                <origin xyz="0 0 0" rpy="0 0 0" />
-                <geometry>
-                    <box size="${back_panel_width} ${panel_height} ${back_panel_thick}" />
-                </geometry>
-                <material name="red" />
-            </visual>
-            <collision>
-                <origin xyz="0 0 0" rpy="0 0 0" />
-                <geometry>
-                    <box size="${back_panel_width} ${panel_height} ${back_panel_thick}" />
-                </geometry>
-            </collision>
-        </link>
+        
 
-        <link name="${prefix}_frontPanel_link">
-            <xacro:inertial_box mass="0.02" x="${back_panel_length}" y="${panel_height}"
-                z="${back_panel_thick}">
-                <origin xyz="0 0 0" rpy="0 0 0" />
-            </xacro:inertial_box>
-            <visual>
-                <origin xyz="0 0 0" rpy="0 0 0" />
-                <geometry>
-                    <box size="${back_panel_width} ${panel_height} ${back_panel_thick}" />
-                </geometry>
-                <material name="red" />
-            </visual>
-            <collision>
-                <origin xyz="0 0 0" rpy="0 0 0" />
-                <geometry>
-                    <box size="${back_panel_width} ${panel_height} ${back_panel_thick}" />
-                </geometry>
-            </collision>
-        </link> -->
-
-
-        <joint name="${prefix}_joint" type="fixed">
+        <joint name="shooter_joint" type="fixed">
             <parent link="${parent}" />
-            <child link="${prefix}_link" />
+            <child link="shooter_link" />
             <xacro:insert_block name="origin" />
         </joint>
 
-        <joint name="${prefix}_wheels_forward_joint" type="fixed">
-            <origin xyz="${wheel_x_offset} 0 ${wheel_z_offset}" rpy="0 0 0" />
-            <parent link="${prefix}_link" />
-            <child link="${prefix}_wheels_forward_link" />
+        <joint name="shooter_wheels_forward_joint" type="continuous">
+            <origin xyz="-0.008 ${shooter_wheel_y_offset} ${shooter_wheel_z_offset-0.012}" rpy="0 0 0" />
+            <parent link="shooter_link" />
+            <child link="shooter_wheels_forward_link" />
             <axis xyz="0 1 0" />
             <limit effort="100" lower="-1" upper="1" velocity="2" />
         </joint>
 
-        <joint name="${prefix}_wheels_backward_joint" type="fixed">
-            <origin xyz="${-(wheel_x_offset - wheel_radius/2)} 0 ${wheel_z_offset}" rpy="0 0 0" />
-            <parent link="${prefix}_link" />
-            <child link="${prefix}_wheels_backward_link" />
+        <joint name="shooter_wheels_backward_joint" type="continuous">
+            <origin xyz="${-(shooter_wheel_x_offset) - shooter_wheel_radius/2} ${shooter_wheel_y_offset} ${shooter_wheel_z_offset/2}" rpy="0 0 0" />
+            <parent link="shooter_link" />
+            <child link="shooter_wheels_backward_link" />
             <axis xyz="0 1 0" />
             <limit effort="100" lower="-1" upper="1" velocity="2" />
         </joint>
+        <xacro:shooter_intake_roller number="1"/>
+        <xacro:shooter_intake_roller number="2"/>
+        <xacro:shooter_intake_roller number="3"/>
+        <xacro:shooter_intake_roller number="4"/>
+        <xacro:shooter_intake_roller number="5"/>
+        <xacro:shooter_intake_roller number="6"/>
+        <xacro:shooter_intake_roller number="7"/>
+        <xacro:shooter_intake_roller number="8"/>
+        <xacro:shooter_intake_roller number="9"/>
+        <xacro:shooter_intake_roller number="10"/>
+
+
+
+        <!-- <joint>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <parent link="shooter_link" />
+            <child link="shooter_intake_roller_link" />
+            <axis xyz="0 1 0" />
+            <limit effort="100" lower="-1" upper="1" velocity="2" />
+        </joint> -->
 
     </xacro:macro>
 </robot>
