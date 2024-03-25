@@ -44,9 +44,6 @@ from pathplannerlib.auto import NamedCommands, PathConstraints
 from robotState import RobotState
 
 
-from robotState import RobotState
-
-
 class RobotContainer:
     ctreConfigs = CTREConfigs()
     # Drive Controls
