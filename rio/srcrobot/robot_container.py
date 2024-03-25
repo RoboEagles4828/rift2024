@@ -203,7 +203,8 @@ class RobotContainer:
         strafe = lambda: -applyDeadband(self.driver.getRawAxis(self.strafeAxis), 0.1)
         rotation = lambda: applyDeadband(self.driver.getRawAxis(self.rotationAxis), 0.1)
         robotcentric = lambda: applyDeadband(self.robotCentric_value, 0.1)
-        slow = lambda: applyDeadband(self.driver.getRawAxis(self.slowAxis), 0.1)
+        # slow = lambda: applyDeadband(self.driver.getRawAxis(self.slowAxis), 0.1)
+        slow = lambda: 0.0
         climberaxis = lambda: applyDeadband(self.operator.getRawAxis(XboxController.Axis.kLeftY), 0.1)
 
         self.s_Swerve.setDefaultCommand(
