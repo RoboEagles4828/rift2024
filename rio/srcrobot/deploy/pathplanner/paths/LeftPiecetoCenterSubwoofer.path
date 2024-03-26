@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.03,
-        "y": 6.97
+        "x": 3.25,
+        "y": 7.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.7236191233857077,
-        "y": 6.587474494529068
+        "x": 2.943619123385708,
+        "y": 6.617474494529068
       },
       "isLocked": false,
       "linkedName": null
@@ -17,11 +17,11 @@
     {
       "anchor": {
         "x": 1.3,
-        "y": 5.5
+        "y": 5.55
       },
       "prevControl": {
-        "x": 2.0196854114411353,
-        "y": 5.787928287892709
+        "x": 2.658544848683558,
+        "y": 5.481837704226135
       },
       "nextControl": null,
       "isLocked": false,
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "CenterSubwoofer",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

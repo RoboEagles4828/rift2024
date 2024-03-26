@@ -2,11 +2,14 @@ from wpilib import TimedRobot
 from commands2 import Command
 from commands2 import CommandScheduler
 from CTREConfigs import CTREConfigs
+from constants import Constants
+from gameState import GameState
 from robot_container import RobotContainer
+from wpimath.geometry import Rotation2d
 import wpilib
 
 from wpilib.shuffleboard import Shuffleboard, ShuffleboardTab
-from wpilib import SmartDashboard
+from wpilib import SmartDashboard, DriverStation
 
 class Robot(TimedRobot):
   m_autonomousCommand: Command = None
@@ -21,6 +24,7 @@ class Robot(TimedRobot):
     # autonomous chooser on the dashboard.
     # wpilib.CameraServer.launch()
     self.m_robotContainer = RobotContainer()
+    self.m_robotContainer.m_robotState.m_gameState.setHasNote(False)
 
   def robotPeriodic(self):
     # Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
@@ -30,6 +34,8 @@ class Robot(TimedRobot):
     CommandScheduler.getInstance().run()
 
   def autonomousInit(self):
+    # self.m_robotContainer.s_Shooter.setDefaultCommand(self.m_robotContainer.s_Shooter.idle())
+
     m_autonomousCommand: Command = self.m_robotContainer.getAutonomousCommand()
 
     # schedule the autonomous command (example)
@@ -41,6 +47,16 @@ class Robot(TimedRobot):
     # teleop starts running. If you want the autonomous to
     # continue until interrupted by another command, remove
     # this line or comment it out.
+    GameState().setNextShot(Constants.NextShot.SPEAKER_CENTER)
+    self.m_robotContainer.s_Shooter.setDefaultCommand(self.m_robotContainer.s_Shooter.stop())
+
+    # flip gyro on red alliance
+
+    if DriverStation.getAlliance() == DriverStation.Alliance.kRed:
+      currentHeading = self.m_robotContainer.s_Swerve.getHeading().degrees()
+      newHeading = Rotation2d.fromDegrees(currentHeading + 180)
+
+      self.m_robotContainer.s_Swerve.setHeading(newHeading)
 
     if self.m_autonomousCommand is not None:
       self.m_autonomousCommand.cancel()

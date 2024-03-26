@@ -6,12 +6,12 @@
     "GLOBAL": {
       "fps": "120",
       "height": "720",
-      "maximized": "0",
+      "maximized": "1",
       "style": "0",
       "userScale": "2",
       "width": "1280",
-      "xpos": "640",
-      "ypos": "84"
+      "xpos": "342",
+      "ypos": "232"
     }
   },
   "Table": {
@@ -28,14 +28,24 @@
     }
   },
   "Window": {
+    "###/Shuffleboard/Autonomous/Auton Selector": {
+      "Collapsed": "0",
+      "Pos": "60,60",
+      "Size": "254,54"
+    },
+    "###/Shuffleboard/Field/Field": {
+      "Collapsed": "0",
+      "Pos": "175,141",
+      "Size": "1773,947"
+    },
     "###FMS": {
       "Collapsed": "0",
-      "Pos": "5,540",
+      "Pos": "8,442",
       "Size": "169,184"
     },
     "###Joysticks": {
       "Collapsed": "0",
-      "Pos": "216,263",
+      "Pos": "166,52",
       "Size": "796,73"
     },
     "###NetworkTables": {
@@ -55,13 +65,13 @@
     },
     "###System Joysticks": {
       "Collapsed": "0",
-      "Pos": "-13,345",
-      "Size": "330,218"
+      "Pos": "22,351",
+      "Size": "192,218"
     },
     "###Timing": {
       "Collapsed": "0",
       "Pos": "5,150",
-      "Size": "135,150"
+      "Size": "135,127"
     },
     "Debug##Default": {
       "Collapsed": "0",

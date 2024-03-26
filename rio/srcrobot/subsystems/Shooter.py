@@ -21,7 +21,7 @@ class Shooter(Subsystem):
         self.bottomShooter = TalonFX(self.kBottomShooterCANID)
         self.topShooter = TalonFX(self.kTopShooterCANID)
 
-        self.gearRatio = 3.0/4.0
+        self.gearRatio = 1.0
 
         self.wheelCircumference = 0.101*math.pi
 
@@ -40,7 +40,7 @@ class Shooter(Subsystem):
         self.topShooterConfig.current_limits.supply_time_threshold = Constants.Swerve.driveCurrentThresholdTime
 
         self.topShooterConfig.current_limits.stator_current_limit_enable = True
-        self.topShooterConfig.current_limits.stator_current_limit = 30
+        self.topShooterConfig.current_limits.stator_current_limit = 40
 
         self.bottomShooterConfig = deepcopy(self.topShooterConfig)
 

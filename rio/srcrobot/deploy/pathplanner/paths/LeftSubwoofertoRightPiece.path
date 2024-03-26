@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.74,
-        "y": 4.39
+        "x": 0.7,
+        "y": 4.4680573742251
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.9616390202781494,
-        "y": 3.8971521599721566
+        "x": 0.9701956923833023,
+        "y": 4.000064707030969
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "LeftSubwooferPos"
     },
     {
       "anchor": {
@@ -25,7 +25,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "podiumPiece"
     }
   ],
   "rotationTargets": [],
@@ -43,9 +43,9 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "LeftSubwoofer",
   "previewStartingState": {
-    "rotation": 0,
+    "rotation": -58.48134101712992,
     "velocity": 0
   },
   "useDefaultConstraints": true

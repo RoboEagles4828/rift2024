@@ -14,25 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "RevShooter"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShooterOff"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "IndexerOff"
+            "name": "Combo Shot"
           }
         },
         {
@@ -44,6 +26,6 @@
       ]
     }
   },
-  "folder": null,
+  "folder": "1 Piece Auton",
   "choreoAuto": false
 }
