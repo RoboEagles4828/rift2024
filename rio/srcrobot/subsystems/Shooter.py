@@ -50,9 +50,9 @@ class Shooter(Subsystem):
         self.topShooter.configurator.apply(self.topShooterConfig)
         self.bottomShooter.configurator.apply(self.bottomShooterConfig)
 
-        self.VelocityControl = VelocityVoltage(0)
-        self.VoltageControl = VoltageOut(0)
-        self.percentOutput = DutyCycleOut(0)
+        self.VelocityControl = VelocityVoltage(0).with_enable_foc(True)
+        self.VoltageControl = VoltageOut(0).with_enable_foc(True)
+        self.percentOutput = DutyCycleOut(0).with_enable_foc(True)
 
         self.currentShotVelocity = 0.0
 

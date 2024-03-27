@@ -59,9 +59,9 @@ class Climber(Subsystem):
         self.leftClimber.configurator.apply(self.leftClimberConfig)
         self.rightClimber.configurator.apply(self.rightClimberConfig)
 
-        self.dutyCycleControl = DutyCycleOut(0)
-        self.velocityControl = VelocityVoltage(0)
-        self.VoltageControl = VoltageOut(0)
+        self.dutyCycleControl = DutyCycleOut(0).with_enable_foc(True)
+        self.velocityControl = VelocityVoltage(0).with_enable_foc(True)
+        self.VoltageControl = VoltageOut(0).with_enable_foc(True)
 
         self.leftClimbervelocitySupplier = self.leftClimber.get_velocity().as_supplier()
         self.rightClimbervelocitySupplier = self.rightClimber.get_velocity().as_supplier()

@@ -29,10 +29,10 @@ class SwerveModule:
 
     driveFeedForward = SimpleMotorFeedforwardMeters(Constants.Swerve.driveKS, Constants.Swerve.driveKV, Constants.Swerve.driveKA)
 
-    driveDutyCycle: DutyCycleOut = DutyCycleOut(0)
-    driveVelocity: VelocityVoltage = VelocityVoltage(0)
+    driveDutyCycle: DutyCycleOut = DutyCycleOut(0).with_enable_foc(True)
+    driveVelocity: VelocityVoltage = VelocityVoltage(0).with_enable_foc(True)
 
-    anglePosition: PositionVoltage = PositionVoltage(0)
+    anglePosition: PositionVoltage = PositionVoltage(0).with_enable_foc(True)
 
     def __init__(self, moduleNumber: int, moduleConstants: SwerveModuleConstants):
         self.moduleNumber = moduleNumber

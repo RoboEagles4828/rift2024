@@ -5,6 +5,7 @@ from wpimath.geometry import Translation2d
 from commands2 import Command
 
 from typing import Callable
+import math
 
 from wpimath import applyDeadband
 
@@ -30,8 +31,8 @@ class TeleopSwerve(Command):
 
     def execute(self):
         # Get Values, Deadband
-        translationVal = applyDeadband(self.translationSup(), Constants.stickDeadband)**3
-        strafeVal = applyDeadband(self.strafeSup(), Constants.stickDeadband)**3
+        translationVal = math.copysign(self.translationSup()**2, self.translationSup())
+        strafeVal = math.copysign(self.strafeSup()**2, self.strafeSup())
         rotationVal = self.getRotationValue()
 
         # Apply slowmode
@@ -55,4 +56,4 @@ class TeleopSwerve(Command):
         )
 
     def getRotationValue(self):
-        return (applyDeadband(self.rotationSup(), Constants.stickDeadband)**3) * Constants.Swerve.maxAngularVelocity
+        return (math.copysign(self.rotationSup()**2, self.rotationSup())) * Constants.Swerve.maxAngularVelocity

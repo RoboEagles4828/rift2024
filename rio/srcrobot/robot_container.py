@@ -138,8 +138,11 @@ class RobotContainer:
         NamedCommands.registerCommand("All Off", self.s_Intake.instantStop().alongWith(self.s_Indexer.instantStop(), self.s_Shooter.brake()).withName("AutoAllOff"))
 
         NamedCommands.registerCommand("Combo Shot", self.autoModeShot(Constants.NextShot.SPEAKER_CENTER))
-
         NamedCommands.registerCommand("Combo Podium Shot", self.autoModeShot(Constants.NextShot.CENTER_AUTO))
+
+        NamedCommands.registerCommand("Queue Speaker", self.autoExecuteShot(Constants.NextShot.SPEAKER_CENTER))
+        NamedCommands.registerCommand("Queue Podium", self.autoExecuteShot(Constants.NextShot.CENTER_AUTO))
+        NamedCommands.registerCommand("Execute Shot", self.autoShootWhenReady())
 
         self.auton_selector = SendableChooser()
         self.auton_selector.addOption("SourceSubwoofer2PieceMidline", PathPlannerAutoRunner("LeftSubwoofer2MidlinePiece", self.s_Swerve).getCommand())
@@ -152,6 +155,8 @@ class RobotContainer:
         self.auton_selector.addOption("Do Nothing", InstantCommand())
         self.auton_selector.addOption("AmpSubwoofer2Piece", PathPlannerAutoRunner("RightSubwooferTurn", self.s_Swerve).getCommand())
         self.auton_selector.addOption("ShootOnlyAuto", self.autoModeShot(Constants.NextShot.SPEAKER_CENTER))
+        self.auton_selector.addOption("Event Markers", PathPlannerAutoRunner("CenterSubwoofer2PieceEventMarkerAuton", self.s_Swerve).getCommand())
+
 
 
         Shuffleboard.getTab("Autonomous").add("Auton Selector", self.auton_selector)
@@ -163,6 +168,7 @@ class RobotContainer:
         Shuffleboard.getTab("Teleoperated").addDouble("Shooter Speed", self.s_Shooter.getVelocity)
         Shuffleboard.getTab("Teleoperated").addBoolean("Arm + Shooter Ready", lambda: self.m_robotState.isArmAndShooterReady())
         Shuffleboard.getTab("Teleoperated").addDouble("Swerve Heading", lambda: self.s_Swerve.getHeading().degrees())
+        Shuffleboard.getTab("Teleoperated").addDouble("Front Right Module Speed", lambda: self.s_Swerve.mSwerveMods[1].getState().speed)
 
         Shuffleboard.getTab("Teleoperated").addDouble("Swerve Pose X", lambda: self.s_Swerve.getPose().X())
         Shuffleboard.getTab("Teleoperated").addDouble("Swerve Pose Y", lambda: self.s_Swerve.getPose().Y())
@@ -190,6 +196,25 @@ class RobotContainer:
             ),
             self.s_Indexer.instantStop(),
             self.s_Arm.seekArmZero().withTimeout(1.0),
+        )
+    
+    def autoShootWhenReady(self) -> Command:
+        return SequentialCommandGroup(
+            WaitUntilCommand(lambda: self.m_robotState.isArmAndShooterReady())
+            .andThen(self.s_Indexer.indexerShoot()),
+            self.s_Indexer.instantStop(),
+            self.s_Arm.seekArmZero().withTimeout(1.0),
+        )
+    
+    def autoExecuteShot(self, autoShot: Constants.NextShot) -> Command:
+        return ParallelCommandGroup(
+            InstantCommand(
+                lambda: self.s_Shooter.setShooterVelocity(
+                    autoShot.m_shooterVelocity
+                ),
+                self.s_Shooter,
+            ),
+            self.s_Arm.servoArmToTargetGravity(autoShot.m_armAngle)
         )
 
     """
