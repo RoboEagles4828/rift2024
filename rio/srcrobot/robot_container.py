@@ -3,7 +3,7 @@ from wpilib import Joystick
 from wpilib import XboxController
 from commands2.button import CommandXboxController, Trigger
 from commands2 import Command, ParallelDeadlineGroup, Subsystem
-from commands2 import InstantCommand, ConditionalCommand, WaitCommand, PrintCommand, RunCommand, SequentialCommandGroup, ParallelCommandGroup, WaitUntilCommand, StartEndCommand
+from commands2 import InstantCommand, ConditionalCommand, WaitCommand, PrintCommand, RunCommand, SequentialCommandGroup, ParallelCommandGroup, WaitUntilCommand, StartEndCommand, DeferredCommand
 from commands2.button import JoystickButton
 import commands2.cmd as cmd
 from CTREConfigs import CTREConfigs
@@ -174,6 +174,8 @@ class RobotContainer:
         Shuffleboard.getTab("Teleoperated").addDouble("Swerve Pose Y", lambda: self.s_Swerve.getPose().Y())
         Shuffleboard.getTab("Teleoperated").addDouble("Swerve Pose Theta", lambda: self.s_Swerve.getPose().rotation().degrees())
 
+        self.desiredSpeed = Shuffleboard.getTab("Teleoperated").add("Set Shooter Speed", 0.0).getEntry()
+
     def autoModeShot(self, autoShot: Constants.NextShot) -> Command:
         """
         Used during automode commands to shoot any Constants.NextShot.
@@ -312,15 +314,25 @@ class RobotContainer:
         # Shooter Buttons
         self.s_Shooter.setDefaultCommand(self.s_Shooter.stop())
         # self.flywheel.whileTrue(self.s_Shooter.shootVelocity(self.m_robotState.m_gameState.getNextShot().m_shooterVelocity))
-        self.shoot.or_(self.opShoot.getAsBoolean).whileTrue(cmd.parallel(self.s_Indexer.indexerTeleopShot(), self.s_Intake.intake(), self.s_Shooter.shootVelocityWithSupplier(lambda: self.m_robotState.m_gameState.getNextShot().m_shooterVelocity)))
+        # self.shoot.or_(self.opShoot.getAsBoolean).whileTrue(cmd.parallel(self.s_Indexer.indexerTeleopShot(), self.s_Intake.intake(), self.s_Shooter.shootVelocityWithSupplier(lambda: self.m_robotState.m_gameState.getNextShot().m_shooterVelocity)))
+
+        self.opShoot.whileTrue(self.s_Indexer.indexerTeleopShot())
 
         self.autoHome.onTrue(self.s_Arm.seekArmZero())
 
-        self.emergencyArmUp.onTrue(
-            ConditionalCommand(
-                self.s_Arm.seekArmZero(),
-                self.s_Arm.servoArmToTargetGravity(90.0),
-                lambda: self.s_Arm.getDegrees() > 45.0
+        # self.autoHome.whileTrue(self.s_Indexer.indexerTeleopShot())
+
+        # self.emergencyArmUp.onTrue(
+        #     ConditionalCommand(
+        #         self.s_Arm.seekArmZero(),
+        #         self.s_Arm.servoArmToTargetGravity(90.0),
+        #         lambda: self.s_Arm.getDegrees() > 45.0
+        #     )
+        # )
+
+        self.emergencyArmUp.whileTrue(
+            DeferredCommand(
+                lambda: self.s_Shooter.shootVelocity(self.desiredSpeed.getDouble(0.0))
             )
         )
 
