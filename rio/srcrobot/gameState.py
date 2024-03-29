@@ -15,6 +15,7 @@ class GameState:
         return cls.instance
 
     m_hasNote = True
+    m_noteInIntake = True
     """ Do we have a note onboard? Start auto holding a note. """
 
     m_nextShot = Constants.NextShot.SPEAKER_CENTER
@@ -79,3 +80,12 @@ class GameState:
         Return true if the robot is currently holding a note. False, otherwise.
         """
         return self.m_hasNote
+    
+    def setNoteInIntake(self, m_noteInIntake):
+
+        self.m_noteInIntake = m_noteInIntake
+    
+    def getNoteInIntake(self) -> bool:
+
+        return self.m_noteInIntake
+

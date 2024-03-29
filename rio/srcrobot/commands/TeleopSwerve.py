@@ -8,6 +8,7 @@ from typing import Callable
 import math
 
 from wpimath import applyDeadband
+from wpimath.controller import PIDController
 
 
 class TeleopSwerve(Command):    
@@ -19,7 +20,7 @@ class TeleopSwerve(Command):
     slowSup: Callable[[], list[float]]
 
     def __init__(self, s_Swerve, translationSup, strafeSup, rotationSup, robotCentricSup, slowSup=lambda: 0.0):
-        self.s_Swerve = s_Swerve
+        self.s_Swerve: Swerve = s_Swerve
         self.addRequirements(s_Swerve)
 
         self.translationSup = translationSup
@@ -28,11 +29,23 @@ class TeleopSwerve(Command):
         self.robotCentricSup = robotCentricSup
         self.slowSup = slowSup
 
+        self.lastHeading = self.s_Swerve.getHeading().radians()
+
+        self.headingPID = PIDController(4.0, 0.0, 0.0)
+        self.headingPID.enableContinuousInput(-math.pi, math.pi)
+        self.headingPID.reset()
+        self.headingPID.setTolerance(math.radians(1))
+
+    def initialize(self):
+        super().initialize()
+        self.lastHeading = self.s_Swerve.getHeading().radians()
 
     def execute(self):
         # Get Values, Deadband
-        translationVal = math.copysign(self.translationSup()**2, self.translationSup())
-        strafeVal = math.copysign(self.strafeSup()**2, self.strafeSup())
+        # translationVal = math.copysign(self.translationSup()**2, self.translationSup())
+        # strafeVal = math.copysign(self.strafeSup()**2, self.strafeSup())
+        translationVal = self.translationSup()
+        strafeVal = self.strafeSup()
         rotationVal = self.getRotationValue()
 
         # Apply slowmode
@@ -56,4 +69,18 @@ class TeleopSwerve(Command):
         )
 
     def getRotationValue(self):
-        return (math.copysign(self.rotationSup()**2, self.rotationSup())) * Constants.Swerve.maxAngularVelocity
+        # return (math.copysign(self.rotationSup()**2, self.rotationSup())) * Constants.Swerve.maxAngularVelocity
+
+        rotation = 0.0
+
+        #heading correction
+        if abs(self.rotationSup()) > 0.0:
+            # heading correction is disabled, record last heading
+            self.lastHeading = self.s_Swerve.getHeading().radians()
+            rotation = self.rotationSup() * Constants.Swerve.maxAngularVelocity
+        elif abs(self.translationSup()) > 0.0 or abs(self.strafeSup()) > 0.0:
+            # heading correction is enabled, calculate correction
+            rotation = -self.headingPID.calculate(self.s_Swerve.getHeading().radians(), self.lastHeading)
+            
+
+        return rotation

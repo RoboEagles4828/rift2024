@@ -92,6 +92,10 @@ class LED(Subsystem):
     def readytoShoot(self):
         self.last = self.GREEN
         self.refreshLast()
+    
+    def noteInIntake(self):
+        self.last = self.BLUE
+        self.refreshLast()
 
     def getStateCommand(self) -> Command:
         """
@@ -105,13 +109,17 @@ class LED(Subsystem):
 
     def setNextLED(self):
         if not self.gameState.hasNote():
-            self.empty()
-        # elif self.gameState.mayHaveTooManyNotes():
-        #     self.suspectTwoNotes()
+            if not self.gameState.getNoteInIntake():
+                self.empty()
+            else:
+                self.noteInIntake()
+        elif self.gameState.getNoteInIntake():
+            self.suspectTwoNotes()
         elif self.robotState.isShooterReady():
             self.readytoShoot()
         else:
             self.noteDetected()
+        
 
     def refreshLast(self):
         self.set(self.last)

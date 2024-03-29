@@ -2,6 +2,7 @@ from constants import Constants
 from commands2.subsystem import Subsystem
 from phoenix5 import TalonSRX, TalonSRXConfiguration, TalonSRXControlMode, SupplyCurrentLimitConfiguration
 from commands2 import InstantCommand
+from wpilib import DigitalInput
 import math
 
 class Intake(Subsystem):
@@ -18,8 +19,13 @@ class Intake(Subsystem):
         self.intakeMotor.configSupplyCurrentLimit(supply_configs)
 
         self.intakeSpeed = 1.0
+
+        self.intakeBeam = DigitalInput(1)
         # self.intakeMotor.configContinuousCurrentLimit(30)
         # self.intakeMotor.enableCurrentLimit(True)
+
+    def getIntakeBeamBreakState(self):
+        return not bool(self.intakeBeam.get())
 
     def intake(self):
         return self.run(lambda: self.intakeMotor.set(TalonSRXControlMode.PercentOutput, self.intakeSpeed)).withName("Intake")

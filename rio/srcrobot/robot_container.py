@@ -259,9 +259,11 @@ class RobotContainer:
         self.systemReverse.whileTrue(self.s_Intake.outtake().alongWith(self.s_Indexer.indexerOuttake(), self.s_Shooter.shootReverse()))
 
         self.beamBreakTrigger = Trigger(self.s_Indexer.getBeamBreakState)
-        # self.beamBreakTrigger.and_(self.intake.getAsBoolean).onTrue(self.s_Intake.instantStop().alongWith(self.s_Indexer.instantStop().withTimeout(1.0)))
+        self.intakeBeamBreakTrigger = Trigger(self.s_Intake.getIntakeBeamBreakState)
 
-        self.beamBreakTrigger.onTrue(InstantCommand(lambda: self.m_robotState.m_gameState.setHasNote(True)).alongWith(self.rumbleAll())).onFalse(InstantCommand(lambda: self.m_robotState.m_gameState.setHasNote(False)))
+        self.beamBreakTrigger.onTrue(InstantCommand(lambda: self.m_robotState.m_gameState.setHasNote(True))).onFalse(InstantCommand(lambda: self.m_robotState.m_gameState.setHasNote(False)))
+        self.intakeBeamBreakTrigger.onTrue(InstantCommand(lambda: self.m_robotState.m_gameState.setNoteInIntake(True)).alongWith(self.rumbleAll())).onFalse(InstantCommand(lambda: self.m_robotState.m_gameState.setNoteInIntake(False)))
+
 
         # Que Buttons
         self.queSubFront.onTrue(InstantCommand(lambda: self.m_robotState.m_gameState.setNextShot(
@@ -313,30 +315,17 @@ class RobotContainer:
 
         # Shooter Buttons
         self.s_Shooter.setDefaultCommand(self.s_Shooter.stop())
-        # self.flywheel.whileTrue(self.s_Shooter.shootVelocity(self.m_robotState.m_gameState.getNextShot().m_shooterVelocity))
-        # self.shoot.or_(self.opShoot.getAsBoolean).whileTrue(cmd.parallel(self.s_Indexer.indexerTeleopShot(), self.s_Intake.intake(), self.s_Shooter.shootVelocityWithSupplier(lambda: self.m_robotState.m_gameState.getNextShot().m_shooterVelocity)))
-
-        self.opShoot.whileTrue(self.s_Indexer.indexerTeleopShot())
+        self.shoot.or_(self.opShoot.getAsBoolean).whileTrue(cmd.parallel(self.s_Indexer.indexerTeleopShot(), self.s_Intake.intake(), self.s_Shooter.shootVelocityWithSupplier(lambda: self.m_robotState.m_gameState.getNextShot().m_shooterVelocity)))
 
         self.autoHome.onTrue(self.s_Arm.seekArmZero())
 
-        # self.autoHome.whileTrue(self.s_Indexer.indexerTeleopShot())
-
-        # self.emergencyArmUp.onTrue(
-        #     ConditionalCommand(
-        #         self.s_Arm.seekArmZero(),
-        #         self.s_Arm.servoArmToTargetGravity(90.0),
-        #         lambda: self.s_Arm.getDegrees() > 45.0
-        #     )
-        # )
-
-        self.emergencyArmUp.whileTrue(
-            DeferredCommand(
-                lambda: self.s_Shooter.shootVelocity(self.desiredSpeed.getDouble(0.0))
+        self.emergencyArmUp.onTrue(
+            ConditionalCommand(
+                self.s_Arm.seekArmZero(),
+                self.s_Arm.servoArmToTargetGravity(90.0),
+                lambda: self.s_Arm.getDegrees() > 45.0
             )
         )
-
-        #Vision Buttons
 
     def toggleFieldOriented(self):
         self.robotCentric_value = not self.robotCentric_value
