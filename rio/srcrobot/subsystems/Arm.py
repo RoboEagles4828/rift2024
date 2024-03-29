@@ -201,6 +201,16 @@ class Arm(Subsystem):
             self.calculateGravityFeedForward()))) \
         .finallyDo(lambda interrupted: self.setServoControl(False)) \
         .withName("servoArmToTarget: " + str(degreesSup().m_armAngle))
+    
+    def servoArmToTargetDynamic(self, degreesSup):
+        return self.runOnce(lambda: self.initializeServoArmToTarget(degreesSup())) \
+        .andThen(self.run(lambda: self.armMotor.set(
+            phoenix5.ControlMode.MotionMagic,
+            degreesSup() * self.kEncoderTicksPerDegreeOfArmMotion,
+            phoenix5.DemandType.ArbitraryFeedForward,
+            self.calculateGravityFeedForward()))) \
+        .finallyDo(lambda interrupted: self.setServoControl(False)) \
+        .withName("servoArmToTarget: " + str(degreesSup()))
   
     def initializeServoArmToTarget(self, degrees):
         self.lastServoTarget = degrees

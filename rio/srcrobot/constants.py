@@ -29,6 +29,10 @@ class Constants:
         trackWidth = Units.inchesToMeters(20.75)
         wheelBase = Units.inchesToMeters(20.75)
         rotationBase = Units.inchesToMeters(31.125 - 5.25)
+
+        robotWidth = 26.0
+        robotLength = 31.125
+
         frontOffset = rotationBase - wheelBase
 
         wheelCircumference = chosenModule.wheelCircumference
@@ -200,7 +204,8 @@ class Constants:
       SPEAKER_CENTER = (2, 0.0, 0.0, 5.0, 25.0, 4, 7)
       SPEAKER_SOURCE = (3, 60.0, 60.0, 5.0, 25.0, 4, 7)
       PODIUM = (4, -30.0, 30.0, 26.5, 35.0, 4, 7)
-      CENTER_AUTO = (4, -30.0, 30.0, 31.0, 35.0, 4, 7)
+      CENTER_AUTO = (5, -30.0, 30.0, 31.0, 35.0, 4, 7)
+      DYNAMIC = (6, 0.0, 0.0, 0.0, 30.0, 4, 7)
 
       def __init__(self, value, blueSideBotHeading, redSideBotHeading, armAngle, shooterVelocity, red_tagID, blue_tagID):
         self._value_ = value
@@ -211,12 +216,19 @@ class Constants:
         self.m_redTagID = red_tagID
         self.m_blueTagID = blue_tagID
 
-      def calculate(self, distance):
-        shooterRegressionEquation = lambda x: (0.178571*(x**2)) + (0.107143*x) + 24.9286
-        armRegressionEquation = lambda x: (0.175*(x**2)) + (1.605*x) + 8.88
+      def calculateArmAngle(self, distance: float) -> float:
+        a = -0.0694444
+        b = 0.755952
+        c = 0.968254
+        d = 5.0
+        armRegressionEquation = lambda x: a * (x**3) + b * (x**2) + c * x + d
 
-        shooterSpeed = shooterRegressionEquation(distance)
-        armAngle = armRegressionEquation(distance)
+        if distance <= 0.0:
+            armAngle = armRegressionEquation(0)
+        elif distance >= 7.0:
+            armAngle = 0.0
+        else:
+            armAngle = armRegressionEquation(distance)
 
-        return (shooterSpeed, armAngle)
+        return armAngle
     

@@ -10,14 +10,13 @@ import math
 from typing import Callable
 
 class TurnToTag(TeleopSwerve):
-    def __init__(self, s_Swerve, s_Vision: Vision, desiredTagSup: Callable[[], int], translationSup, strafeSup, rotationSup, robotCentricSup):
+    def __init__(self, s_Swerve, s_Vision: Vision, translationSup, strafeSup, rotationSup, robotCentricSup):
         super().__init__(s_Swerve, translationSup, strafeSup, rotationSup, robotCentricSup)
-        self.turnPID = PIDController(4.0, 0.0, 0.0)
+        self.turnPID = PIDController(1.0, 0.0, 0.0)
         self.turnPID.enableContinuousInput(-math.pi, math.pi)
-        self.desiredTagSupplier = desiredTagSup
-        self.tag = desiredTagSup()
         self.currentRotation = rotationSup
         self.s_Vision = s_Vision
+        self.s_Swerve = s_Swerve
 
 
     def initialize(self):
@@ -34,7 +33,7 @@ class TurnToTag(TeleopSwerve):
         elif self.turnPID.atSetpoint():
             return 0.0
         else:
-            self.angularvelMRadiansPerSecond = self.turnPID.calculate(self.s_Vision.getAngleToTag(self.desiredTagSupplier), 0.0)
+            self.angularvelMRadiansPerSecond = -self.turnPID.calculate(self.s_Vision.getAngleToSpeakerFieldToCamera(self.s_Swerve.getPose()).radians(), 0.0)
             return self.angularvelMRadiansPerSecond
 
     def isFinished(self) -> bool:

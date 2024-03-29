@@ -12,6 +12,7 @@ import math
 
 from wpimath.geometry import *
 import wpimath.units as Units
+import lib.mathlib.units as CustomUnits
 from constants import Constants
 
 from autos.exampleAuto import exampleAuto
@@ -91,7 +92,7 @@ class RobotContainer:
         self.execute = self.driver.leftBumper()
         self.shoot = self.driver.rightBumper()
         self.intake = self.driver.leftTrigger()
-        self.goToTag = self.driver.a()
+        self.executeDynamic = self.driver.a()
         self.fastTurn = self.driver.povUp()
         # Slowmode is defined with the other Axis objects
 
@@ -111,7 +112,6 @@ class RobotContainer:
         self.queAmp = self.operator.povUp()
         self.climbUp = self.operator.povRight()
         self.climbDown = self.operator.povLeft()
-        self.manualClimb  = self.operator.back()
         self.configureButtonBindings()
 
         NamedCommands.registerCommand("RevShooter", self.s_Shooter.shoot().withTimeout(1.0).withName("AutoRevShooter"))
@@ -174,7 +174,11 @@ class RobotContainer:
         Shuffleboard.getTab("Teleoperated").addDouble("Swerve Pose Y", lambda: self.s_Swerve.getPose().Y())
         Shuffleboard.getTab("Teleoperated").addDouble("Swerve Pose Theta", lambda: self.s_Swerve.getPose().rotation().degrees())
 
-        self.desiredSpeed = Shuffleboard.getTab("Teleoperated").add("Set Shooter Speed", 0.0).getEntry()
+        Shuffleboard.getTab("Teleoperated").addDouble("Target Distance", lambda: self.s_Vision.getDistanceToSpeakerFieldToCameraFeet(self.s_Swerve.getPose()))
+        Shuffleboard.getTab("Teleoperated").addDouble("Target Arm Angle", lambda: Constants.NextShot.DYNAMIC.calculateArmAngle(self.s_Vision.getDistanceToSpeakerFieldToCameraFeet(self.s_Swerve.getPose())))
+        Shuffleboard.getTab("Teleoperated").addDouble("Target Angle", lambda: self.s_Vision.getAngleToSpeakerFieldToCamera(self.s_Swerve.getPose()).degrees())
+
+        self.waitTime = Shuffleboard.getTab("Autonomous").add("Wait Time", 0.0).getEntry()
 
     def autoModeShot(self, autoShot: Constants.NextShot) -> Command:
         """
@@ -198,6 +202,24 @@ class RobotContainer:
             ),
             self.s_Indexer.instantStop(),
             self.s_Arm.seekArmZero().withTimeout(1.0),
+        )
+    
+    def getDynamicShotCommand(self, translation, strafe, rotation, robotcentric) -> ParallelCommandGroup:
+        return self.s_Arm.servoArmToTargetDynamic(
+            lambda: Constants.NextShot.DYNAMIC.calculateArmAngle(self.s_Vision.getDistanceToSpeakerFieldToCameraFeet(self.s_Swerve.getPose()))
+        ).alongWith(
+            InstantCommand(lambda: self.m_robotState.m_gameState.setNextShot(Constants.NextShot.DYNAMIC)),
+            self.s_Shooter.shootVelocityWithSupplier(
+                lambda: Constants.NextShot.DYNAMIC.m_shooterVelocity
+            ),
+            TurnToTag(
+                self.s_Swerve,
+                self.s_Vision,
+                translation,
+                strafe,
+                rotation,
+                robotcentric
+            ).repeatedly()
         )
     
     def autoShootWhenReady(self) -> Command:
@@ -302,6 +324,10 @@ class RobotContainer:
             )
         )
 
+        self.executeDynamic.onTrue(
+            self.getDynamicShotCommand(translation, strafe, rotation, robotcentric)
+        )
+
         self.fastTurn.whileTrue(InstantCommand(lambda: self.setFastTurn(True))).whileFalse(InstantCommand(lambda: self.setFastTurn(False)))
 
         # LED Controls
@@ -311,7 +337,6 @@ class RobotContainer:
         self.s_Climber.setDefaultCommand(self.s_Climber.stopClimbers())
         self.climbUp.whileTrue(self.s_Climber.runClimbersUp())
         self.climbDown.whileTrue(self.s_Climber.runClimbersDown())
-        self.manualClimb.whileTrue(self.s_Climber.setClimbersLambda(climberaxis))
 
         # Shooter Buttons
         self.s_Shooter.setDefaultCommand(self.s_Shooter.stop())
@@ -358,7 +383,12 @@ class RobotContainer:
      * @return the command to run in autonomous
     """
     def getAutonomousCommand(self) -> Command:
-        auto = self.auton_selector.getSelected()
+        auto = SequentialCommandGroup(
+            DeferredCommand(
+                lambda: WaitCommand(self.waitTime.getDouble(0.0))
+            ),
+            self.auton_selector.getSelected()
+        )
         return auto
     
     def setFastTurn(self, value: bool):

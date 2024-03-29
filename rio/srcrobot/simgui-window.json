@@ -10,8 +10,8 @@
       "style": "0",
       "userScale": "2",
       "width": "1280",
-      "xpos": "342",
-      "ypos": "232"
+      "xpos": "2187",
+      "ypos": "37"
     }
   },
   "Table": {
@@ -30,12 +30,12 @@
   "Window": {
     "###/Shuffleboard/Autonomous/Auton Selector": {
       "Collapsed": "0",
-      "Pos": "60,60",
+      "Pos": "112,53",
       "Size": "254,54"
     },
     "###/Shuffleboard/Field/Field": {
       "Collapsed": "0",
-      "Pos": "175,141",
+      "Pos": "15,122",
       "Size": "1773,947"
     },
     "###FMS": {
@@ -45,8 +45,8 @@
     },
     "###Joysticks": {
       "Collapsed": "0",
-      "Pos": "166,52",
-      "Size": "796,73"
+      "Pos": "479,72",
+      "Size": "796,240"
     },
     "###NetworkTables": {
       "Collapsed": "0",
@@ -66,7 +66,7 @@
     "###System Joysticks": {
       "Collapsed": "0",
       "Pos": "22,351",
-      "Size": "192,218"
+      "Size": "261,218"
     },
     "###Timing": {
       "Collapsed": "0",

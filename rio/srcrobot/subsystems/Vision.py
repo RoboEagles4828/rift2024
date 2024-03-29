@@ -11,6 +11,8 @@ from wpimath.geometry import Pose2d, Transform2d, Transform3d, Pose3d, Rotation2
 
 import wpimath.units as Units
 
+from constants import Constants
+
 from wpilib import SmartDashboard, DriverStation
 
 from typing import Callable
@@ -28,8 +30,8 @@ class Vision(Subsystem):
 
         self.aprilTagFieldLayout = loadAprilTagLayoutField(AprilTagField.k2024Crescendo)
 
-        self.speakerPositionRed = Pose2d(-0.04, 5.55, Rotation2d())
-        self.speakerPositionBlue = Pose2d(Units.inchesToMeters(652.73), Units.inchesToMeters(218.42), Rotation2d())
+        self.speakerPositionBlue = Pose2d(-0.04, 5.55, Rotation2d())
+        self.speakerPositionRed = Pose2d(Units.inchesToMeters(652.73), Units.inchesToMeters(218.42), Rotation2d.fromDegrees(180.0))
         self.distanceSpeakerFieldToCamera = 0.0
 
         # Right = 6.5 in
@@ -73,12 +75,8 @@ class Vision(Subsystem):
             return None
         return self.photonPoseEstimator.update()
     
-    def getDistanceToSpeakerFieldToCameraInches(self, fieldToCamera: Transform3d):
-        x = fieldToCamera.X()
-        y = fieldToCamera.Y()
-        theta = fieldToCamera.rotation().toRotation2d()
-
-        pose = Pose2d(x, y, theta)
+    def getDistanceToSpeakerFieldToCameraFeet(self, fieldToCamera: Pose2d):
+        pose = fieldToCamera
 
         speakerPos = self.speakerPositionBlue
 
@@ -87,10 +85,23 @@ class Vision(Subsystem):
         else:
             speakerPos = self.speakerPositionBlue
 
-        distanceToSpeakerFieldToCamera = Units.metersToInches(
+        distanceToSpeakerFieldToCamera = Units.metersToFeet(
             PhotonUtils.getDistanceToPose(pose, speakerPos)
         )
-        return distanceToSpeakerFieldToCamera
+        return distanceToSpeakerFieldToCamera - (36.37 / 12.0) - ((Constants.Swerve.robotLength / 2.0) / 12.0)
+    
+    def getAngleToSpeakerFieldToCamera(self, fieldToCamera: Pose2d):
+        pose = fieldToCamera
+
+        speakerPos = self.speakerPositionBlue
+
+        if DriverStation.getAlliance() == DriverStation.Alliance.kRed:
+            speakerPos = self.speakerPositionRed
+        else:
+            speakerPos = self.speakerPositionBlue
+
+        angleToSpeakerFieldToCamera = PhotonUtils.getYawToPose(pose, speakerPos)
+        return angleToSpeakerFieldToCamera
     
     def getCamera(self):
         return self.camera
@@ -162,7 +173,7 @@ class Vision(Subsystem):
             if result.multiTagResult.estimatedPose.isPresent:
                 self.fieldToCamera = result.multiTagResult.estimatedPose.best
 
-                self.distanceToSpeakerFieldToCamera = self.getDistanceToSpeakerFieldToCameraInches(self.fieldToCamera)
+                self.distanceToSpeakerFieldToCamera = self.getDistanceToSpeakerFieldToCameraFeet(self.fieldToCamera)
 
             hasTargets = result.hasTargets()
 

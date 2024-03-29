@@ -34,6 +34,10 @@
         }
       },
       "/Shuffleboard/Field/Field": {
+        "XModules": {
+          "arrows": false,
+          "style": "Hidden"
+        },
         "bottom": 1476,
         "height": 8.210550308227539,
         "left": 150,
@@ -59,8 +63,7 @@
         "open": true
       },
       "open": true
-    },
-    "visible": true
+    }
   },
   "NetworkTables View": {
     "visible": false
