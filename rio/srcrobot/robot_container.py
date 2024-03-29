@@ -13,6 +13,7 @@ import math
 from wpimath.geometry import *
 import wpimath.units as Units
 import lib.mathlib.units as CustomUnits
+from lib.mathlib.conversions import Conversions
 from constants import Constants
 
 from autos.exampleAuto import exampleAuto
@@ -177,6 +178,8 @@ class RobotContainer:
         Shuffleboard.getTab("Teleoperated").addDouble("Target Distance", lambda: self.s_Vision.getDistanceToSpeakerFieldToCameraFeet(self.s_Swerve.getPose()))
         Shuffleboard.getTab("Teleoperated").addDouble("Target Arm Angle", lambda: Constants.NextShot.DYNAMIC.calculateArmAngle(self.s_Vision.getDistanceToSpeakerFieldToCameraFeet(self.s_Swerve.getPose())))
         Shuffleboard.getTab("Teleoperated").addDouble("Target Angle", lambda: self.s_Vision.getAngleToSpeakerFieldToCamera(self.s_Swerve.getPose()).degrees())
+
+        Shuffleboard.getTab("Teleoperated").addDouble("Shooter Speed RPM", lambda: Conversions.MPSToRPS(self.s_Shooter.getVelocity(), self.s_Shooter.wheelCircumference) * 60.0)
 
         self.waitTime = Shuffleboard.getTab("Autonomous").add("Wait Time", 0.0).getEntry()
 
