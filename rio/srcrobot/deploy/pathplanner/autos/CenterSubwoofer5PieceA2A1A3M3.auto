@@ -3,7 +3,7 @@
   "startingPose": {
     "position": {
       "x": 1.3,
-      "y": 5.5
+      "y": 5.55
     },
     "rotation": 0
   },
@@ -12,51 +12,39 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "CentereSubwoofertoRightPiece"
+            "name": "IntakeOn"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Combo Shot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "RightPiecetoCenterSubwoofer"
+            "pathName": "CenterSubwoofertoA2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "CenterSubwoofertoCenterPiece"
+            "pathName": "CenterSubwoofertoA1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "CenterPiecetoCenterSubwoofer"
+            "pathName": "CenterSubwoofertoA3"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "CenterSubwoofertoLeftPiece"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "LeftPiecetoCenterSubwoofer"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "CenterSubwoofertoMidlinePiece"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "MidlinePiecetoCenterSubwoofer"
+            "pathName": "CenterSubwoofertoM3"
           }
         }
       ]

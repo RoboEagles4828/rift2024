@@ -1,0 +1,55 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.2491139025728148,
+      "y": 4.80050672476358
+    },
+    "rotation": -34.53419269128245
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeOn"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Combo Shot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "StartPostoA3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CenterSubwoofertoA2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CenterSubwoofertoA1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CenterSubwoofertoM2"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "5 Piece",
+  "choreoAuto": false
+}

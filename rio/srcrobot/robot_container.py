@@ -146,7 +146,7 @@ class RobotContainer:
 
         self.auton_selector = SendableChooser()
         self.auton_selector.addOption("SourceSubwoofer2PieceMidline", PathPlannerAutoRunner("LeftSubwoofer2MidlinePiece", self.s_Swerve).getCommand())
-        self.auton_selector.addOption("AmpSubwoofer3PieceMidline", PathPlannerAutoRunner("RightSubwoofer2MidlinePiece", self.s_Swerve).getCommand())
+        self.auton_selector.addOption("AmpSubwoofer3PieceMidline", PathPlannerAutoRunner("RightSubwoofer3MidlinePiece", self.s_Swerve).getCommand())
         self.auton_selector.addOption("Straight Auto No Shoot", PathPlannerAutoRunner("StraightAutoNoShoot", self.s_Swerve).getCommand())
         self.auton_selector.addOption("AmpSubwooferTaxiAuto", PathPlannerAutoRunner("RightSubwooferTaxiAuto", self.s_Swerve).getCommand())
         self.auton_selector.setDefaultOption("CenterSubwoofer2PieceAuto", PathPlannerAutoRunner("CenterSubwoofer2Piece", self.s_Swerve).getCommand())

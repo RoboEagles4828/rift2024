@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7,
-      "y": 4.47
+      "x": 1.3,
+      "y": 5.55
     },
-    "rotation": -60.0
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -24,34 +24,15 @@
           }
         },
         {
-          "type": "deadline",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeUntilBeamBreak"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "LeftSubwoofertoRightPiece"
-                }
-              }
-            ]
+            "pathName": "CenterSubwoofertoA2PodiumEdition"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "RightPiecetoLeftSubwoofer"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Combo Shot"
+            "pathName": "CenterSubwoofertoM2"
           }
         },
         {
@@ -63,6 +44,6 @@
       ]
     }
   },
-  "folder": "2 Piece Autons",
+  "folder": "3 Piece Auton",
   "choreoAuto": false
 }

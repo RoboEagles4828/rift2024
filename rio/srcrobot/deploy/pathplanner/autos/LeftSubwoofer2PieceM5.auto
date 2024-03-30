@@ -24,34 +24,9 @@
           }
         },
         {
-          "type": "deadline",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "LeftSubwoofertoRightMidlinePiece"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeUntilBeamBreak"
-                }
-              }
-            ]
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "RightMidlinePiecetoLeftSubwoofer"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Combo Shot"
+            "pathName": "LeftSubwoofertoM5"
           }
         },
         {

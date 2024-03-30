@@ -4,7 +4,9 @@
   "holonomicMode": true,
   "pathFolders": [
     "CenterSubwoofer",
+    "Greedy Paths",
     "LeftSubwoofer",
+    "The Wrangler Paths",
     "RightSubwoofer",
     "Test Paths"
   ],
