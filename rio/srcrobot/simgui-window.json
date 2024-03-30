@@ -10,8 +10,8 @@
       "style": "0",
       "userScale": "2",
       "width": "1280",
-      "xpos": "2187",
-      "ypos": "37"
+      "xpos": "548",
+      "ypos": "64"
     }
   },
   "Table": {
@@ -35,13 +35,13 @@
     },
     "###/Shuffleboard/Field/Field": {
       "Collapsed": "0",
-      "Pos": "15,122",
+      "Pos": "-149,109",
       "Size": "1773,947"
     },
     "###FMS": {
       "Collapsed": "0",
       "Pos": "8,442",
-      "Size": "169,184"
+      "Size": "283,140"
     },
     "###Joysticks": {
       "Collapsed": "0",
