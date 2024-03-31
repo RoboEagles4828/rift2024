@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7,
-      "y": 6.5378068842075185
+      "x": 0.74,
+      "y": 6.59
     },
-    "rotation": -60.0
+    "rotation": 60.0
   },
   "command": {
     "type": "sequential",
@@ -26,7 +26,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "LeftSubwoofertoA3"
+            "pathName": "RightSubwoofertoA1"
           }
         },
         {

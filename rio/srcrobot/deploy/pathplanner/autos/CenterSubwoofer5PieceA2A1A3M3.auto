@@ -30,9 +30,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Execute Shot"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "CenterSubwoofertoA1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Execute Shot"
           }
         },
         {
@@ -42,9 +54,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Execute Shot"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "CenterSubwoofertoM3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Execute Shot"
           }
         }
       ]

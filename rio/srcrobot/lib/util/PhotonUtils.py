@@ -55,8 +55,10 @@ class PhotonUtils:
     @staticmethod
     def getYawToPose(robotPose: Pose2d, targetPose: Pose2d):
         relativeTrl = targetPose.relativeTo(robotPose).translation()
-        return Rotation2d(relativeTrl.X(), relativeTrl.Y())
+        angle = math.atan2(relativeTrl.Y(), relativeTrl.X())
+        return Rotation2d(angle)
 
     @staticmethod
     def getDistanceToPose(robotPose: Pose2d, targetPose: Pose2d):
-        return robotPose.translation().distance(targetPose.translation());
+        robotTranslation = robotPose.translation()
+        return robotTranslation.distance(targetPose.translation())

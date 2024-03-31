@@ -42,6 +42,13 @@ class Robot(TimedRobot):
     if m_autonomousCommand != None:
       m_autonomousCommand.schedule()
 
+  def autonomousExit(self) -> None:
+      if DriverStation.getAlliance() == DriverStation.Alliance.kRed:
+        currentHeading = self.m_robotContainer.s_Swerve.getHeading().degrees()
+        newHeading = Rotation2d.fromDegrees(currentHeading + 180)
+
+      self.m_robotContainer.s_Swerve.setHeading(newHeading)
+
   def teleopInit(self):
     # This makes sure that the autonomous stops running when
     # teleop starts running. If you want the autonomous to
@@ -49,14 +56,6 @@ class Robot(TimedRobot):
     # this line or comment it out.
     GameState().setNextShot(Constants.NextShot.SPEAKER_CENTER)
     self.m_robotContainer.s_Shooter.setDefaultCommand(self.m_robotContainer.s_Shooter.stop())
-
-    # flip gyro on red alliance
-
-    if DriverStation.getAlliance() == DriverStation.Alliance.kRed:
-      currentHeading = self.m_robotContainer.s_Swerve.getHeading().degrees()
-      newHeading = Rotation2d.fromDegrees(currentHeading + 180)
-
-      self.m_robotContainer.s_Swerve.setHeading(newHeading)
 
     if self.m_autonomousCommand is not None:
       self.m_autonomousCommand.cancel()

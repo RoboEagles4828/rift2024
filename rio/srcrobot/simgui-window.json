@@ -10,8 +10,8 @@
       "style": "0",
       "userScale": "2",
       "width": "1280",
-      "xpos": "548",
-      "ypos": "64"
+      "xpos": "257",
+      "ypos": "127"
     }
   },
   "Table": {
@@ -35,7 +35,7 @@
     },
     "###/Shuffleboard/Field/Field": {
       "Collapsed": "0",
-      "Pos": "-149,109",
+      "Pos": "76,24",
       "Size": "1773,947"
     },
     "###FMS": {

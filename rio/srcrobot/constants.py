@@ -199,7 +199,7 @@ class Constants:
     # An enumeration of known shot locations and data critical to executing the
     # shot. TODO decide on shooter velocity units and tune angles.
     class NextShot(Enum):
-      AMP = (0, -90.0, 90.0, 95.0, 8.0, 5, 6)
+      AMP = (0, -90.0, 90.0, 80.0, 8.0, 5, 6)
       SPEAKER_AMP = (1, -60.0, -60.0, 5.0, 25.0, 4, 7)
       SPEAKER_CENTER = (2, 0.0, 0.0, 5.0, 25.0, 4, 7)
       SPEAKER_SOURCE = (3, 60.0, 60.0, 5.0, 25.0, 4, 7)
@@ -217,18 +217,29 @@ class Constants:
         self.m_blueTagID = blue_tagID
 
       def calculateArmAngle(self, distance: float) -> float:
-        a = -0.0694444
-        b = 0.755952
-        c = 0.968254
-        d = 5.0
-        armRegressionEquation = lambda x: a * (x**3) + b * (x**2) + c * x + d
+        # a = -0.0694444
+        # b = 0.755952
+        # c = 0.968254
+        # d = 5.0
+        # armRegressionEquation = lambda x: a * (x**3) + b * (x**2) + c * x + d
 
-        if distance <= 0.0:
+        a = 0.130952
+        b = 2.35714
+        c = 4.58333
+        armRegressionEquation = lambda x: a * (x**2) + b * x + c
+
+        if distance <= 0.5:
             armAngle = armRegressionEquation(0)
-        elif distance >= 7.0:
-            armAngle = 0.0
         else:
-            armAngle = armRegressionEquation(distance)
+            armAngle = armRegressionEquation(distance) + 2.0
 
         return armAngle
+      
+      def calculateShooterVelocity(self, distance: float) -> float:
+            if distance <= 0.5:
+                shooterVelocity = 25.0
+            else:
+                shooterVelocity = 35.0
+            
+            return shooterVelocity
     

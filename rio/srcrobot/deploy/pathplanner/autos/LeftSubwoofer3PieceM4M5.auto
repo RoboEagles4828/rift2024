@@ -30,9 +30,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Execute Shot"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "LeftSubwoofertoM5"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Execute Shot"
           }
         },
         {

@@ -17,6 +17,8 @@ from wpilib import SmartDashboard, DriverStation
 
 from typing import Callable
 
+import math
+
 class Vision(Subsystem):
     instance = None
 
@@ -30,7 +32,7 @@ class Vision(Subsystem):
 
         self.aprilTagFieldLayout = loadAprilTagLayoutField(AprilTagField.k2024Crescendo)
 
-        self.speakerPositionBlue = Pose2d(-0.04, 5.55, Rotation2d())
+        self.speakerPositionBlue = Pose2d(Units.inchesToMeters(-1.50), Units.inchesToMeters(218.42), Rotation2d())
         self.speakerPositionRed = Pose2d(Units.inchesToMeters(652.73), Units.inchesToMeters(218.42), Rotation2d.fromDegrees(180.0))
         self.distanceSpeakerFieldToCamera = 0.0
 
@@ -88,7 +90,7 @@ class Vision(Subsystem):
         distanceToSpeakerFieldToCamera = Units.metersToFeet(
             PhotonUtils.getDistanceToPose(pose, speakerPos)
         )
-        return distanceToSpeakerFieldToCamera - (36.37 / 12.0) - ((Constants.Swerve.robotLength / 2.0) / 12.0)
+        return distanceToSpeakerFieldToCamera - (36.37 / 12.0)
     
     def getAngleToSpeakerFieldToCamera(self, fieldToCamera: Pose2d):
         pose = fieldToCamera
@@ -100,7 +102,11 @@ class Vision(Subsystem):
         else:
             speakerPos = self.speakerPositionBlue
 
-        angleToSpeakerFieldToCamera = PhotonUtils.getYawToPose(pose, speakerPos)
+        dx = speakerPos.X() - pose.X()
+        dy = speakerPos.Y() - pose.Y()
+
+        angleToSpeakerFieldToCamera = Rotation2d(math.atan2(dy, dx))
+
         return angleToSpeakerFieldToCamera
     
     def getCamera(self):
@@ -172,8 +178,6 @@ class Vision(Subsystem):
 
             if result.multiTagResult.estimatedPose.isPresent:
                 self.fieldToCamera = result.multiTagResult.estimatedPose.best
-
-                self.distanceToSpeakerFieldToCamera = self.getDistanceToSpeakerFieldToCameraFeet(self.fieldToCamera)
 
             hasTargets = result.hasTargets()
 

@@ -93,8 +93,9 @@ class RobotContainer:
         self.execute = self.driver.leftBumper()
         self.shoot = self.driver.rightBumper()
         self.intake = self.driver.leftTrigger()
-        self.executeDynamic = self.driver.a()
         self.fastTurn = self.driver.povUp()
+        self.climbUp = self.driver.y()
+        self.climbDown = self.driver.a()
         # Slowmode is defined with the other Axis objects
 
         # Operator Controls
@@ -111,8 +112,7 @@ class RobotContainer:
         self.queSubRight = self.operator.b()
         self.queSubLeft = self.operator.x()
         self.queAmp = self.operator.povUp()
-        self.climbUp = self.operator.povRight()
-        self.climbDown = self.operator.povLeft()
+        self.queDynamic = self.operator.povRight()
         self.configureButtonBindings()
 
         NamedCommands.registerCommand("RevShooter", self.s_Shooter.shoot().withTimeout(1.0).withName("AutoRevShooter"))
@@ -146,17 +146,22 @@ class RobotContainer:
         NamedCommands.registerCommand("Execute Shot", self.autoShootWhenReady())
 
         self.auton_selector = SendableChooser()
-        self.auton_selector.addOption("SourceSubwoofer2PieceMidline", PathPlannerAutoRunner("LeftSubwoofer2MidlinePiece", self.s_Swerve).getCommand())
+        # self.auton_selector.addOption("SourceSubwoofer2PieceMidline", PathPlannerAutoRunner("LeftSubwoofer2MidlinePiece", self.s_Swerve).getCommand())
         self.auton_selector.addOption("AmpSubwoofer3PieceMidline", PathPlannerAutoRunner("RightSubwoofer3MidlinePiece", self.s_Swerve).getCommand())
-        self.auton_selector.addOption("Straight Auto No Shoot", PathPlannerAutoRunner("StraightAutoNoShoot", self.s_Swerve).getCommand())
-        self.auton_selector.addOption("AmpSubwooferTaxiAuto", PathPlannerAutoRunner("RightSubwooferTaxiAuto", self.s_Swerve).getCommand())
+        # self.auton_selector.addOption("Straight Auto No Shoot", PathPlannerAutoRunner("StraightAutoNoShoot", self.s_Swerve).getCommand())
+        # self.auton_selector.addOption("AmpSubwooferTaxiAuto", PathPlannerAutoRunner("RightSubwooferTaxiAuto", self.s_Swerve).getCommand())
         self.auton_selector.setDefaultOption("CenterSubwoofer2PieceAuto", PathPlannerAutoRunner("CenterSubwoofer2Piece", self.s_Swerve).getCommand())
         self.auton_selector.addOption("CenterSubwoofer3PieceAuto", PathPlannerAutoRunner("CenterSubwoofer3Piece", self.s_Swerve).getCommand())
-        self.auton_selector.addOption("CenterSubwoofer4PieceAuto", PathPlannerAutoRunner("CenterSubwoofer4Piece", self.s_Swerve).getCommand())
-        self.auton_selector.addOption("Do Nothing", InstantCommand())
-        self.auton_selector.addOption("AmpSubwoofer2Piece", PathPlannerAutoRunner("RightSubwooferTurn", self.s_Swerve).getCommand())
-        self.auton_selector.addOption("ShootOnlyAuto", self.autoModeShot(Constants.NextShot.SPEAKER_CENTER))
-        self.auton_selector.addOption("Event Markers", PathPlannerAutoRunner("CenterSubwoofer2PieceEventMarkerAuton", self.s_Swerve).getCommand())
+        # self.auton_selector.addOption("CenterSubwoofer4PieceAuto", PathPlannerAutoRunner("CenterSubwoofer4Piece", self.s_Swerve).getCommand())
+        # self.auton_selector.addOption("Do Nothing", InstantCommand())
+        # self.auton_selector.addOption("AmpSubwoofer2Piece", PathPlannerAutoRunner("RightSubwooferTurn", self.s_Swerve).getCommand())
+        # self.auton_selector.addOption("ShootOnlyAuto", self.autoModeShot(Constants.NextShot.SPEAKER_CENTER))
+        self.auton_selector.addOption("Event Markers", PathPlannerAutoRunner("CenterSubwoofer2PieceA2", self.s_Swerve).getCommand())
+        self.auton_selector.addOption("Left Subwoofer 2 Piece", PathPlannerAutoRunner("LeftSubwoofer2PieceA3", self.s_Swerve).getCommand())
+        self.auton_selector.addOption("Left Subwoofer 3 Piece A3M4", PathPlannerAutoRunner("LeftSubwoofer3PieceA3M4", self.s_Swerve).getCommand())
+        self.auton_selector.addOption("Left Subwoofer 3 Piece A3M5", PathPlannerAutoRunner("LeftSubwoofer3PieceA3M5", self.s_Swerve).getCommand())
+        self.auton_selector.addOption("Left Subwoofer 3 Piece M4M5", PathPlannerAutoRunner("LeftSubwoofer3PieceM4M5", self.s_Swerve).getCommand())
+        self.auton_selector.addOption("Center Subwoofer 5 Piece A2A1A3M3", PathPlannerAutoRunner("CenterSubwoofer5PieceA2A1A3M3", self.s_Swerve).getCommand())
 
 
 
@@ -208,16 +213,17 @@ class RobotContainer:
         )
     
     def getDynamicShotCommand(self, translation, strafe, rotation, robotcentric) -> ParallelCommandGroup:
-        return self.s_Arm.servoArmToTargetDynamic(
-            lambda: Constants.NextShot.DYNAMIC.calculateArmAngle(self.s_Vision.getDistanceToSpeakerFieldToCameraFeet(self.s_Swerve.getPose()))
-        ).alongWith(
+        return ParallelCommandGroup(
+            self.s_Arm.servoArmToTargetDynamic(
+                lambda: Constants.NextShot.DYNAMIC.calculateArmAngle(self.s_Vision.getDistanceToSpeakerFieldToCameraFeet(self.s_Swerve.getPose()))
+            ).repeatedly(),
             InstantCommand(lambda: self.m_robotState.m_gameState.setNextShot(Constants.NextShot.DYNAMIC)),
             self.s_Shooter.shootVelocityWithSupplier(
-                lambda: Constants.NextShot.DYNAMIC.m_shooterVelocity
-            ),
-            TurnToTag(
+                lambda: Constants.NextShot.DYNAMIC.calculateShooterVelocity(self.s_Vision.getDistanceToSpeakerFieldToCameraFeet(self.s_Swerve.getPose()))
+            ).repeatedly(),
+            TurnInPlace(
                 self.s_Swerve,
-                self.s_Vision,
+                lambda: self.s_Vision.getAngleToSpeakerFieldToCamera(self.s_Swerve.getPose()),
                 translation,
                 strafe,
                 rotation,
@@ -227,8 +233,7 @@ class RobotContainer:
     
     def autoShootWhenReady(self) -> Command:
         return SequentialCommandGroup(
-            WaitUntilCommand(lambda: self.m_robotState.isArmAndShooterReady())
-            .andThen(self.s_Indexer.indexerShoot()),
+            self.s_Indexer.indexerShoot(),
             self.s_Indexer.instantStop(),
             self.s_Arm.seekArmZero().withTimeout(1.0),
         )
@@ -257,7 +262,6 @@ class RobotContainer:
         robotcentric = lambda: applyDeadband(self.robotCentric_value, 0.1)
         # slow = lambda: applyDeadband(self.driver.getRawAxis(self.slowAxis), 0.1)
         slow = lambda: 0.0
-        climberaxis = lambda: applyDeadband(self.operator.getRawAxis(XboxController.Axis.kLeftY), 0.1)
 
         self.s_Swerve.setDefaultCommand(
             TeleopSwerve(
@@ -306,29 +310,32 @@ class RobotContainer:
         self.queAmp.onTrue(InstantCommand(lambda: self.m_robotState.m_gameState.setNextShot(
             Constants.NextShot.AMP
         )).andThen(self.s_Arm.seekArmZero()))
+        self.queDynamic.onTrue(InstantCommand(lambda: self.m_robotState.m_gameState.setNextShot(
+            Constants.NextShot.DYNAMIC
+        )).andThen(self.s_Arm.seekArmZero()))
 
         self.execute.or_(self.opExec.getAsBoolean).onTrue(
-            self.s_Arm.servoArmToTargetWithSupplier(
-                lambda: self.m_robotState.m_gameState.getNextShot()
-            ).alongWith(
-                self.s_Shooter.shootVelocityWithSupplier(
-                    lambda: self.m_robotState.m_gameState.getNextShot().m_shooterVelocity
-                ),
-                TurnInPlace(
-                    self.s_Swerve,
-                    lambda: Rotation2d.fromDegrees(
-                        self.m_robotState.m_gameState.getNextShotRobotAngle()
+            ConditionalCommand(
+                self.getDynamicShotCommand(translation, strafe, rotation, robotcentric),
+                self.s_Arm.servoArmToTargetWithSupplier(
+                    lambda: self.m_robotState.m_gameState.getNextShot()
+                ).alongWith(
+                    self.s_Shooter.shootVelocityWithSupplier(
+                        lambda: self.m_robotState.m_gameState.getNextShot().m_shooterVelocity
                     ),
-                    translation,
-                    strafe,
-                    rotation,
-                    robotcentric
-                ).repeatedly()
+                    TurnInPlace(
+                        self.s_Swerve,
+                        lambda: Rotation2d.fromDegrees(
+                            self.m_robotState.m_gameState.getNextShotRobotAngle()
+                        ),
+                        translation,
+                        strafe,
+                        rotation,
+                        robotcentric
+                    ).repeatedly()
+                ),
+                lambda: self.m_robotState.m_gameState.getNextShot() == Constants.NextShot.DYNAMIC
             )
-        )
-
-        self.executeDynamic.onTrue(
-            self.getDynamicShotCommand(translation, strafe, rotation, robotcentric)
         )
 
         self.fastTurn.whileTrue(InstantCommand(lambda: self.setFastTurn(True))).whileFalse(InstantCommand(lambda: self.setFastTurn(False)))
@@ -343,7 +350,7 @@ class RobotContainer:
 
         # Shooter Buttons
         self.s_Shooter.setDefaultCommand(self.s_Shooter.stop())
-        self.shoot.or_(self.opShoot.getAsBoolean).whileTrue(cmd.parallel(self.s_Indexer.indexerTeleopShot(), self.s_Intake.intake(), self.s_Shooter.shootVelocityWithSupplier(lambda: self.m_robotState.m_gameState.getNextShot().m_shooterVelocity)))
+        self.shoot.or_(self.opShoot.getAsBoolean).whileTrue(cmd.parallel(self.s_Indexer.indexerTeleopShot(), self.s_Intake.intake(), self.s_Shooter.shootVelocityWithSupplier(lambda: 35.0)))
 
         self.autoHome.onTrue(self.s_Arm.seekArmZero())
 

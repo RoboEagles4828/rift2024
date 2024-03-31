@@ -3,75 +3,59 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.7,
-        "y": 4.47
+        "x": 0.7447826568611854,
+        "y": 6.588640937298404
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7224060871806282,
-        "y": 1.5014787821679603
+        "x": 1.7448883793016343,
+        "y": 6.754418204277743
       },
       "isLocked": false,
-      "linkedName": "LeftSubwooferPos"
+      "linkedName": "RightSubwooferPos"
     },
     {
       "anchor": {
-        "x": 5.129468619601269,
-        "y": 1.7982805582524548
+        "x": 8.054828716468956,
+        "y": 5.762627649828054
       },
       "prevControl": {
-        "x": 4.183260234806602,
-        "y": 1.7181830567274428
+        "x": 9.758219700765572,
+        "y": 5.807221063599842
       },
       "nextControl": {
-        "x": 6.483529484202615,
-        "y": 1.9129031867455444
+        "x": 7.362789953802704,
+        "y": 5.744510628442951
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "RightPiece"
     },
     {
       "anchor": {
-        "x": 8.554095209386707,
-        "y": 2.7216256751849444
+        "x": 0.7447826568611854,
+        "y": 6.588640937298404
       },
       "prevControl": {
-        "x": 6.570650526554958,
-        "y": 2.9008946262521436
-      },
-      "nextControl": {
-        "x": 9.137339216537578,
-        "y": 2.6689105466597107
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 0.7,
-        "y": 4.47
-      },
-      "prevControl": {
-        "x": 1.8914161480217522,
-        "y": -0.27636613335047916
+        "x": 1.9649674791278027,
+        "y": 6.877260060374053
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "MidlinePiece2"
+      "linkedName": "RightSubwooferPos"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1.7,
-      "rotationDegrees": 5.0,
+      "waypointRelativePos": 1,
+      "rotationDegrees": 10.0,
       "rotateFast": false
     }
   ],
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "IntakePiece",
-      "waypointRelativePos": 0.8,
+      "name": "Intake On",
+      "waypointRelativePos": 0.15,
       "command": {
         "type": "sequential",
         "data": {
@@ -94,7 +78,7 @@
     },
     {
       "name": "Shoot",
-      "waypointRelativePos": 3.0,
+      "waypointRelativePos": 2.0,
       "command": {
         "type": "parallel",
         "data": {
@@ -118,13 +102,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -54.88320993345253,
+    "rotation": 61.971500268702776,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "LeftSubwoofer",
+  "folder": "RightSubwoofer",
   "previewStartingState": {
-    "rotation": -59.0267402181966,
+    "rotation": 60.19391405403727,
     "velocity": 0
   },
   "useDefaultConstraints": true

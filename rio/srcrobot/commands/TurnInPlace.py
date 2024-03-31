@@ -11,7 +11,8 @@ from typing import Callable
 class TurnInPlace(TeleopSwerve):
     def __init__(self, s_Swerve, desiredRotationSup: Callable[[], Rotation2d], translationSup, strafeSup, rotationSup, robotCentricSup):
         super().__init__(s_Swerve, translationSup, strafeSup, rotationSup, robotCentricSup)
-        self.turnPID = PIDController(4.0, 0.0, 0.0)
+        self.turnPID = PIDController(5.0, 0.001, 0.0)
+        self.turnPID.setIZone(math.radians(2.0))
         self.turnPID.enableContinuousInput(-math.pi, math.pi)
         self.desiredRotationSupplier = desiredRotationSup
         self.angle = desiredRotationSup().radians()
@@ -21,7 +22,7 @@ class TurnInPlace(TeleopSwerve):
         super().initialize()
         self.start_angle = self.s_Swerve.getHeading().radians()
         self.turnPID.reset()
-        self.turnPID.setTolerance(math.radians(1))
+        self.turnPID.setTolerance(math.radians(0.5))
         self.turnPID.setSetpoint(self.angle)
 
     def getRotationValue(self):

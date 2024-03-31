@@ -113,8 +113,8 @@ class LED(Subsystem):
                 self.empty()
             else:
                 self.noteInIntake()
-        elif self.gameState.getNoteInIntake():
-            self.suspectTwoNotes()
+        # elif self.gameState.getNoteInIntake():
+        #     self.suspectTwoNotes()
         elif self.robotState.isShooterReady():
             self.readytoShoot()
         else:

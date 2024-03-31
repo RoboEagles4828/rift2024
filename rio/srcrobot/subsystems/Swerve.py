@@ -201,4 +201,4 @@ class Swerve(Subsystem):
 
         if optestimatedPose is not None:
             estimatedPose = optestimatedPose
-            self.swerveOdometry.addVisionMeasurement(Pose2d(estimatedPose.estimatedPose.toPose2d().X(), estimatedPose.estimatedPose.toPose2d().Y(), self.getHeading()), estimatedPose.timestampSeconds)
+            self.swerveOdometry.addVisionMeasurement(Pose2d(estimatedPose.estimatedPose.toPose2d().X(), estimatedPose.estimatedPose.toPose2d().Y(), estimatedPose.estimatedPose.toPose2d().rotation().rotateBy(Rotation2d.fromDegrees(180.0))), estimatedPose.timestampSeconds)
