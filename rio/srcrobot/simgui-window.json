@@ -5,57 +5,44 @@
   "MainWindow": {
     "GLOBAL": {
       "fps": "120",
-      "height": "720",
+      "height": "837",
       "maximized": "1",
       "style": "0",
       "userScale": "2",
-      "width": "1280",
-      "xpos": "257",
-      "ypos": "127"
-    }
-  },
-  "Table": {
-    "0x965B9C9E,2": {
-      "Column 0  Width": "160",
-      "Column 1  Weight": "1.0000",
-      "RefScale": "16"
-    },
-    "0xE56EC1C2,4": {
-      "Column 0  Weight": "1.0000",
-      "Column 1  Weight": "1.0000",
-      "Column 2  Weight": "1.0000",
-      "Column 3  Weight": "1.0000"
+      "width": "1600",
+      "xpos": "0",
+      "ypos": "23"
     }
   },
   "Window": {
-    "###/Shuffleboard/Autonomous/Auton Selector": {
-      "Collapsed": "0",
-      "Pos": "112,53",
-      "Size": "254,54"
-    },
     "###/Shuffleboard/Field/Field": {
       "Collapsed": "0",
-      "Pos": "76,24",
-      "Size": "1773,947"
+      "Pos": "503,47",
+      "Size": "604,333"
+    },
+    "###DIO": {
+      "Collapsed": "0",
+      "Pos": "470,20",
+      "Size": "162,77"
     },
     "###FMS": {
       "Collapsed": "0",
-      "Pos": "8,442",
-      "Size": "283,140"
+      "Pos": "5,540",
+      "Size": "169,184"
     },
     "###Joysticks": {
       "Collapsed": "0",
-      "Pos": "479,72",
+      "Pos": "1128,96",
       "Size": "796,240"
     },
     "###NetworkTables": {
       "Collapsed": "0",
-      "Pos": "333,242",
-      "Size": "750,312"
+      "Pos": "324,371",
+      "Size": "954,463"
     },
     "###NetworkTables Info": {
       "Collapsed": "0",
-      "Pos": "152,76",
+      "Pos": "250,130",
       "Size": "750,145"
     },
     "###Other Devices": {
@@ -63,10 +50,15 @@
       "Pos": "1025,20",
       "Size": "250,695"
     },
+    "###RoboRIO": {
+      "Collapsed": "0",
+      "Pos": "5,125",
+      "Size": "119,146"
+    },
     "###System Joysticks": {
       "Collapsed": "0",
-      "Pos": "22,351",
-      "Size": "261,218"
+      "Pos": "3,286",
+      "Size": "192,218"
     },
     "###Timing": {
       "Collapsed": "0",

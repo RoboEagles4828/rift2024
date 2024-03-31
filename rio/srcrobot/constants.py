@@ -35,6 +35,8 @@ class Constants:
         robotWidth = 26.0
         robotLength = 31.125
 
+        armLength = 18.5
+
         frontOffset = rotationBase - wheelBase
 
         wheelCircumference = chosenModule.wheelCircumference
@@ -179,6 +181,8 @@ class Constants:
         kSubwooferShootSpeed = 25.0
         kPodiumShootSpeed = 20.0
         kAmpShootSpeed = 5.0
+
+        kMechanicalAngle = 30.0
 
     class IntakeConstants:
         kIntakeMotorID = 0

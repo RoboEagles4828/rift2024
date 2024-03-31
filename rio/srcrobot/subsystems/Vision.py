@@ -92,6 +92,17 @@ class Vision(Subsystem):
         )
         return distanceToSpeakerFieldToCamera - (36.37 / 12.0)
     
+    def getDistanceVectorToSpeaker(self, pose: Pose2d):
+        speakerPos = self.speakerPositionBlue
+
+        if DriverStation.getAlliance() == DriverStation.Alliance.kRed:
+            speakerPos = self.speakerPositionRed
+        else:
+            speakerPos = self.speakerPositionBlue
+
+        distanceVector = PhotonUtils.getDistanceVectorToPose(pose, speakerPos)
+        return distanceVector
+    
     def getAngleToSpeakerFieldToCamera(self, fieldToCamera: Pose2d):
         pose = fieldToCamera
 
@@ -191,7 +202,7 @@ class Vision(Subsystem):
                     SmartDashboard.putNumber("tag transform Y", bestTarget.getBestCameraToTarget().Y())
                     SmartDashboard.putNumber("tag transform Z", bestTarget.getBestCameraToTarget().Z())
                     SmartDashboard.putNumber("tag transform angle", bestTarget.getBestCameraToTarget().rotation().angle_degrees)
-                    SmartDashboard.putNumber("tag yaw", bestTarget.getYaw())
+                    SmartDashboard.putNumber("tag yaw", bestTarget.getYaw())()
                 # SmartDashboard.putNumber("Vision Pose X", self.getEstimatedGlobalPose().estimatedPose.X())
                 # SmartDashboard.putNumber("Vision Pose Y", self.getEstimatedGlobalPose().estimatedPose.Y())
                 # SmartDashboard.putNumber("Vision Pose Angle", self.getEstimatedGlobalPose().estimatedPose.rotation().angle_degrees)
