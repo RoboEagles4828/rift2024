@@ -199,14 +199,15 @@ class Constants:
         kClimberSpeed = 0.85 # percent output
     
     class ArmConstants:
-        kKnownArmAngles = TreeMap()
-        kKnownArmAngles[0] = 5.0
-        kKnownArmAngles[1] = 6.5
-        kKnownArmAngles[2] = 10.0
-        kKnownArmAngles[3] = 12.0
-        kKnownArmAngles[4] = 17.0
-        kKnownArmAngles[5] = 20.0
-        kKnownArmAngles[6] = 23.0
+        kKnownArmAngles = InterpolatingTreeMap()
+
+        kKnownArmAngles.put(0.0, 5.0)
+        kKnownArmAngles.put(1.0, 6.5)
+        kKnownArmAngles.put(2.0, 10.0)
+        kKnownArmAngles.put(3.0, 12.0)
+        kKnownArmAngles.put(4.0, 17.0)
+        kKnownArmAngles.put(5.0, 20.0)
+        kKnownArmAngles.put(6.0, 23.0)
 
 
     # An enumeration of known shot locations and data critical to executing the
