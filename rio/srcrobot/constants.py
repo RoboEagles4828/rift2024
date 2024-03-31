@@ -10,7 +10,9 @@ from lib.util.COTSTalonFXSwerveConstants import COTSTalonFXSwerveConstants
 from lib.util.SwerveModuleConstants import SwerveModuleConstants
 import math
 from enum import Enum
+from pytreemap import TreeMap
 
+from lib.util.InterpolatingTreeMap import InterpolatingTreeMap
 from wpimath.units import rotationsToRadians
 
 from pathplannerlib.auto import HolonomicPathFollowerConfig
@@ -195,6 +197,17 @@ class Constants:
         kRightCANID = 15
         maxClimbHeight = 0
         kClimberSpeed = 0.85 # percent output
+    
+    class ArmConstants:
+        kKnownArmAngles = TreeMap()
+        kKnownArmAngles[0] = 5.0
+        kKnownArmAngles[1] = 6.5
+        kKnownArmAngles[2] = 10.0
+        kKnownArmAngles[3] = 12.0
+        kKnownArmAngles[4] = 17.0
+        kKnownArmAngles[5] = 20.0
+        kKnownArmAngles[6] = 23.0
+
 
     # An enumeration of known shot locations and data critical to executing the
     # shot. TODO decide on shooter velocity units and tune angles.
@@ -206,6 +219,8 @@ class Constants:
       PODIUM = (4, -30.0, 30.0, 26.5, 35.0, 4, 7)
       CENTER_AUTO = (5, -30.0, 30.0, 31.0, 35.0, 4, 7)
       DYNAMIC = (6, 0.0, 0.0, 0.0, 30.0, 4, 7)
+
+
 
       def __init__(self, value, blueSideBotHeading, redSideBotHeading, armAngle, shooterVelocity, red_tagID, blue_tagID):
         self._value_ = value
@@ -234,6 +249,10 @@ class Constants:
             armAngle = armRegressionEquation(distance) + 2.0
 
         return armAngle
+      
+      def calculateInterpolatedArmAngle(self, distance: float) -> float:
+          armAngle = Constants.ArmConstants.kKnownArmAngles.get(distance)
+          return armAngle
       
       def calculateShooterVelocity(self, distance: float) -> float:
             if distance <= 0.5:
