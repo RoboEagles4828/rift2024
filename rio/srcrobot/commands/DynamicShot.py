@@ -4,7 +4,7 @@ from subsystems.Arm import Arm
 from constants import Constants
 import lib.mathlib.units as Units
 import math
-from wpimath.geometry import Rotation2d, Translation2d
+from wpimath.geometry import Rotation2d, Translation2d, Transform2d
 from wpilib import DriverStation, RobotBase
 
 class DynamicShot():
@@ -38,9 +38,9 @@ class DynamicShot():
         )) - Constants.ShooterConstants.kMechanicalAngle
     
     def getInterpolatedArmAngle(self):
-        distance = Units.metersToFeet(self.vision.getDistanceVectorToSpeaker(self.swerve.getPose()).norm()) - (36.37 / 12.0) - (Constants.Swerve.robotLength / 2.0 / 12.0)
         robotVelocity = self.swerve.getTranslationVelocity().rotateBy(self.swerve.getHeading())
-        distance += robotVelocity.norm() * 0.02
+        nextPose = self.swerve.getPose().__add__(Transform2d(robotVelocity.__mul__(0.02), Rotation2d()))
+        distance = Units.metersToFeet(self.vision.getDistanceVectorToSpeaker(nextPose).norm()) - (36.37 / 12.0) - (Constants.Swerve.robotLength / 2.0 / 12.0)
         return Constants.NextShot.DYNAMIC.calculateInterpolatedArmAngle(distance)
 
     def getRobotAngle(self):
