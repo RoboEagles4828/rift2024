@@ -31,12 +31,12 @@ sync() {
         sshCommand find /home/lvuser/py/ -type f -exec touch {} + # Untested change to update ALL files on modify
         # It would be much more efficient / effective to only touch the rsynced files, but idk how to do that...
         echo $RSYNC_RESULT
-        # restart-code
     else
         echo "No changes made to files"
         echo "Not restarting robot!"
+        return 1;
     fi
-
+    return 0;
 }
 
 install-fastdeploy() { # UNTESTED!!!
@@ -88,11 +88,28 @@ install-jurigged() { # UNTESTED !!!
 help() {
     echo "In active development!"
     echo "Here be dragons!"
+    echo "Usage:"
+    echo "  check   -- Checks if the specified folder has a robot"
+    echo "  restart -- Restarts the currently deployed RIO code"
+    echo "  deploy  -- Copies files to the RIO and restarts robot code"
+    echo "  sync    -- Copies files to RIO without restarting robot code"
+    echo "  ssh     -- SSH into the RIO"
+    echo "  install -- Installs the components needed for fastdeploy and jurigged on the RIO"
+    echo "    fastdeploy -- Installs only the rsync packages needed for fastdeploy on the RIO"
+    echo "    jurigged   -- Installs only the python packages needed for jurigged on the RIO"
+    echo "  help    -- Displays this message"
+    echo "  "
+    echo ""
+    echo "Usage: rio (check | restart | deploy | sync | ssh | install | help)"
 }
 
 case $1 in 
     "check")
-        check-directory "${2-.}"
+        if [[ $(check-directory "${2-.}") ]]; then
+            echo "Robot Not Found!"
+        else
+            echo "Robot Found!"
+        fi
     ;;
 
     "restart")
@@ -100,7 +117,8 @@ case $1 in
     ;;
 
     "deploy")
-        echo "Would deploy here..."
+        sync "${2-.}"
+        restart-code
     ;;
 
     "sync")

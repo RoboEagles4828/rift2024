@@ -8,11 +8,17 @@ from wpimath.units import seconds
 class Robot(TimedRobot):
 
   def robotInit(self):
-    import jurigged;
-    jurigged.watch("/home/lvuser/py/*.py")
+    # Setup jurigged
+    try:
+      import jurigged;
+      jurigged.watch("/home/lvuser/py/*.py") # This is on the robot
+    except ImportError:
+      print("Jurigged not found, did you install through `rio install`?")
+    except:
+      print("Unknown error when initializing jurigged")
+
     # Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     # autonomous chooser on the dashboard.
-
     self.controller = CommandXboxController(0)
     self.buttonBindings()
 
