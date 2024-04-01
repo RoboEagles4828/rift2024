@@ -49,15 +49,15 @@
     {
       "anchor": {
         "x": 0.7,
-        "y": 4.47
+        "y": 4.4680573742251
       },
       "prevControl": {
-        "x": 1.8914161480217522,
-        "y": -0.27636613335047916
+        "x": 1.8914161480217517,
+        "y": -0.2783087591253792
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "MidlinePiece2"
+      "linkedName": "LeftSubwooferPos"
     }
   ],
   "rotationTargets": [
