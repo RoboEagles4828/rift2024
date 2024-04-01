@@ -25,6 +25,7 @@ class Robot(TimedRobot):
     # wpilib.CameraServer.launch()
     self.m_robotContainer = RobotContainer()
     self.m_robotContainer.m_robotState.m_gameState.setHasNote(False)
+    CommandScheduler.getInstance().setPeriod(0.02)
 
   def robotPeriodic(self):
     # Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
