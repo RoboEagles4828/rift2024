@@ -4,8 +4,8 @@ from subsystems.Arm import Arm
 from constants import Constants
 import lib.mathlib.units as Units
 import math
-from wpimath.geometry import Rotation2d, Translation2d
-from wpilib import DriverStation
+from wpimath.geometry import Rotation2d, Translation2d, Transform2d
+from wpilib import DriverStation, RobotBase
 
 class DynamicShot():
     def __init__(self, swerve: Swerve, vision: Vision, arm: Arm):
@@ -38,9 +38,9 @@ class DynamicShot():
         )) - Constants.ShooterConstants.kMechanicalAngle
     
     def getInterpolatedArmAngle(self):
-        distance = Units.metersToFeet(self.vision.getDistanceVectorToSpeaker(self.swerve.getPose()).norm()) - (36.37 / 12.0) - (Constants.Swerve.robotLength / 2.0 / 12.0)
         robotVelocity = self.swerve.getTranslationVelocity().rotateBy(self.swerve.getHeading())
-        distance += robotVelocity.norm() * 0.02
+        nextPose = self.swerve.getPose().__add__(Transform2d(robotVelocity.__mul__(0.02), Rotation2d()))
+        distance = Units.metersToFeet(self.vision.getDistanceVectorToSpeaker(nextPose).norm()) - (36.37 / 12.0) - (Constants.Swerve.robotLength / 2.0 / 12.0)
         return Constants.NextShot.DYNAMIC.calculateInterpolatedArmAngle(distance)
 
     def getRobotAngle(self):
@@ -53,5 +53,7 @@ class DynamicShot():
         if angle >= 90:
             angle = angle - 180
 
-        return Rotation2d.fromDegrees(angle).rotateBy(Rotation2d.fromDegrees(180.0))
+        if RobotBase.isSimulation() and DriverStation.getAlliance() == DriverStation.Alliance.kRed:
+            return Rotation2d.fromDegrees(angle).rotateBy(Rotation2d.fromDegrees(180.0))
+        return Rotation2d.fromDegrees(angle)
     
