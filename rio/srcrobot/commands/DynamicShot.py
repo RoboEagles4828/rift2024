@@ -5,7 +5,7 @@ from constants import Constants
 import lib.mathlib.units as Units
 import math
 from wpimath.geometry import Rotation2d, Translation2d
-from wpilib import DriverStation
+from wpilib import DriverStation, RobotBase
 
 class DynamicShot():
     def __init__(self, swerve: Swerve, vision: Vision, arm: Arm):
@@ -53,5 +53,7 @@ class DynamicShot():
         if angle >= 90:
             angle = angle - 180
 
-        return Rotation2d.fromDegrees(angle).rotateBy(Rotation2d.fromDegrees(180.0))
+        if RobotBase.isSimulation() and DriverStation.getAlliance() == DriverStation.Alliance.kRed:
+            return Rotation2d.fromDegrees(angle).rotateBy(Rotation2d.fromDegrees(180.0))
+        return Rotation2d.fromDegrees(angle)
     
