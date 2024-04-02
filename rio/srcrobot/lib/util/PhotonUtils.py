@@ -62,3 +62,8 @@ class PhotonUtils:
     def getDistanceToPose(robotPose: Pose2d, targetPose: Pose2d):
         robotTranslation = robotPose.translation()
         return robotTranslation.distance(targetPose.translation())
+    
+    @staticmethod
+    def getDistanceVectorToPose(robotPose: Pose2d, targetPose: Pose2d):
+        robotTranslation = robotPose.translation()
+        return targetPose.translation().__sub__(robotTranslation)

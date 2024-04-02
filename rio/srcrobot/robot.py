@@ -25,6 +25,7 @@ class Robot(TimedRobot):
     # wpilib.CameraServer.launch()
     self.m_robotContainer = RobotContainer()
     self.m_robotContainer.m_robotState.m_gameState.setHasNote(False)
+    CommandScheduler.getInstance().setPeriod(0.02)
 
   def robotPeriodic(self):
     # Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
@@ -41,13 +42,6 @@ class Robot(TimedRobot):
     # schedule the autonomous command (example)
     if m_autonomousCommand != None:
       m_autonomousCommand.schedule()
-
-  def autonomousExit(self) -> None:
-      if DriverStation.getAlliance() == DriverStation.Alliance.kRed:
-        currentHeading = self.m_robotContainer.s_Swerve.getHeading().degrees()
-        newHeading = Rotation2d.fromDegrees(currentHeading + 180)
-
-      self.m_robotContainer.s_Swerve.setHeading(newHeading)
 
   def teleopInit(self):
     # This makes sure that the autonomous stops running when

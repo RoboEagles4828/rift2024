@@ -19,6 +19,7 @@ from constants import Constants
 from autos.exampleAuto import exampleAuto
 from commands.TeleopSwerve import TeleopSwerve
 from commands.PathFindToTag import PathFindToTag
+from commands.DynamicShot import DynamicShot
 
 from commands.ExecuteCommand import ExecuteCommand
 from subsystems.Swerve import Swerve
@@ -84,6 +85,7 @@ class RobotContainer:
             self.s_Arm.getDegrees,
             self.s_Shooter.getVelocity
         )
+        self.dynamicShot = DynamicShot(self.s_Swerve, self.s_Vision, self.s_Arm)
 
         self.currentArmAngle = self.s_Arm.getDegrees()
 
@@ -180,13 +182,15 @@ class RobotContainer:
         Shuffleboard.getTab("Teleoperated").addDouble("Swerve Pose Y", lambda: self.s_Swerve.getPose().Y())
         Shuffleboard.getTab("Teleoperated").addDouble("Swerve Pose Theta", lambda: self.s_Swerve.getPose().rotation().degrees())
 
-        Shuffleboard.getTab("Teleoperated").addDouble("Target Distance", lambda: self.s_Vision.getDistanceToSpeakerFieldToCameraFeet(self.s_Swerve.getPose()))
-        Shuffleboard.getTab("Teleoperated").addDouble("Target Arm Angle", lambda: Constants.NextShot.DYNAMIC.calculateArmAngle(self.s_Vision.getDistanceToSpeakerFieldToCameraFeet(self.s_Swerve.getPose())))
-        Shuffleboard.getTab("Teleoperated").addDouble("Target Angle", lambda: self.s_Vision.getAngleToSpeakerFieldToCamera(self.s_Swerve.getPose()).degrees())
-
+        Shuffleboard.getTab("Teleoperated").addDouble("Target Distance X", lambda: self.s_Vision.getDistanceVectorToSpeaker(self.s_Swerve.getPose()).X())
+        Shuffleboard.getTab("Teleoperated").addDouble("Target Distance Y", lambda: self.s_Vision.getDistanceVectorToSpeaker(self.s_Swerve.getPose()).Y())
+        Shuffleboard.getTab("Teleoperated").addDouble("Target Distance Norm", lambda: self.s_Vision.getDistanceVectorToSpeaker(self.s_Swerve.getPose()).norm())
+        Shuffleboard.getTab("Teleoperated").addDouble("Target Arm Angle", lambda: self.dynamicShot.getInterpolatedArmAngle())
+        Shuffleboard.getTab("Teleoperated").addDouble("Target Robot Angle", lambda: self.dynamicShot.getRobotAngle().degrees())
+        Shuffleboard.getTab("Teleoperated").addDouble("Target Arm Angle Trig", lambda: self.dynamicShot.getTrigArmAngle())
+        Shuffleboard.getTab("Teleoperated").addDouble("Target Distance Feet", lambda: Units.metersToFeet(self.s_Vision.getDistanceVectorToSpeaker(self.s_Swerve.getPose()).norm()) - (36.37 / 12.0) - (Constants.Swerve.robotLength / 2.0 / 12.0))
+        
         Shuffleboard.getTab("Teleoperated").addDouble("Shooter Speed RPM", lambda: Conversions.MPSToRPS(self.s_Shooter.getVelocity(), self.s_Shooter.wheelCircumference) * 60.0)
-
-        self.waitTime = Shuffleboard.getTab("Autonomous").add("Wait Time", 0.0).getEntry()
 
     def autoModeShot(self, autoShot: Constants.NextShot) -> Command:
         """
@@ -215,15 +219,15 @@ class RobotContainer:
     def getDynamicShotCommand(self, translation, strafe, rotation, robotcentric) -> ParallelCommandGroup:
         return ParallelCommandGroup(
             self.s_Arm.servoArmToTargetDynamic(
-                lambda: Constants.NextShot.DYNAMIC.calculateArmAngle(self.s_Vision.getDistanceToSpeakerFieldToCameraFeet(self.s_Swerve.getPose()))
+                lambda: self.dynamicShot.getInterpolatedArmAngle()
             ).repeatedly(),
             InstantCommand(lambda: self.m_robotState.m_gameState.setNextShot(Constants.NextShot.DYNAMIC)),
             self.s_Shooter.shootVelocityWithSupplier(
-                lambda: Constants.NextShot.DYNAMIC.calculateShooterVelocity(self.s_Vision.getDistanceToSpeakerFieldToCameraFeet(self.s_Swerve.getPose()))
+                lambda: 35.0
             ).repeatedly(),
             TurnInPlace(
                 self.s_Swerve,
-                lambda: self.s_Vision.getAngleToSpeakerFieldToCamera(self.s_Swerve.getPose()),
+                lambda: self.dynamicShot.getRobotAngle(),
                 translation,
                 strafe,
                 rotation,
@@ -260,8 +264,8 @@ class RobotContainer:
         strafe = lambda: -applyDeadband(self.driver.getRawAxis(self.strafeAxis), 0.1)
         rotation = lambda: applyDeadband(self.driver.getRawAxis(self.rotationAxis), 0.1)
         robotcentric = lambda: applyDeadband(self.robotCentric_value, 0.1)
-        # slow = lambda: applyDeadband(self.driver.getRawAxis(self.slowAxis), 0.1)
-        slow = lambda: 0.0
+        slow = lambda: applyDeadband(self.driver.getRawAxis(self.slowAxis), 0.1)
+        # slow = lambda: 0.0
 
         self.s_Swerve.setDefaultCommand(
             TeleopSwerve(
@@ -350,7 +354,7 @@ class RobotContainer:
 
         # Shooter Buttons
         self.s_Shooter.setDefaultCommand(self.s_Shooter.stop())
-        self.shoot.or_(self.opShoot.getAsBoolean).whileTrue(cmd.parallel(self.s_Indexer.indexerTeleopShot(), self.s_Intake.intake(), self.s_Shooter.shootVelocityWithSupplier(lambda: 35.0)))
+        self.shoot.or_(self.opShoot.getAsBoolean).whileTrue(cmd.parallel(self.s_Indexer.indexerTeleopShot(), self.s_Intake.intake(), self.s_Shooter.shootVelocityWithSupplier(lambda: self.m_robotState.m_gameState.getNextShot().m_shooterVelocity)))
 
         self.autoHome.onTrue(self.s_Arm.seekArmZero())
 
@@ -361,6 +365,9 @@ class RobotContainer:
                 lambda: self.s_Arm.getDegrees() > 45.0
             )
         )
+        # self.emergencyArmUp.whileTrue(
+        #     self.s_Shooter.shootVelocityWithSupplier(lambda: 35.0)
+        # )
 
     def toggleFieldOriented(self):
         self.robotCentric_value = not self.robotCentric_value
@@ -393,12 +400,7 @@ class RobotContainer:
      * @return the command to run in autonomous
     """
     def getAutonomousCommand(self) -> Command:
-        auto = SequentialCommandGroup(
-            DeferredCommand(
-                lambda: WaitCommand(self.waitTime.getDouble(0.0))
-            ),
-            self.auton_selector.getSelected()
-        )
+        auto = self.auton_selector.getSelected()
         return auto
     
     def setFastTurn(self, value: bool):

@@ -35,6 +35,8 @@ class Constants:
         robotWidth = 26.0
         robotLength = 31.125
 
+        armLength = 18.5
+
         frontOffset = rotationBase - wheelBase
 
         wheelCircumference = chosenModule.wheelCircumference
@@ -121,8 +123,8 @@ class Constants:
 
         # Slowdown speed
         ## The speed is multiplied by this value when the trigger is fully held down
-        slowMoveModifier = 0.5
-        slowTurnModifier = 0.5
+        slowMoveModifier = 0.8
+        slowTurnModifier = 0.8
 
         # Module Specific Constants
         # Front Left Module - Module 0
@@ -180,6 +182,8 @@ class Constants:
         kPodiumShootSpeed = 20.0
         kAmpShootSpeed = 5.0
 
+        kMechanicalAngle = 30.0
+
     class IntakeConstants:
         kIntakeMotorID = 0
         kIntakeSpeed = 5.0
@@ -201,25 +205,38 @@ class Constants:
     class ArmConstants:
         kKnownArmAngles = InterpolatingTreeMap()
 
+        # kKnownArmAngles.put(0.0, 5.0)
+        # kKnownArmAngles.put(1.0, 6.5)
+        # kKnownArmAngles.put(2.0, 10.0)
+        # kKnownArmAngles.put(3.0, 12.0)
+        # kKnownArmAngles.put(4.0, 17.0)
+        # kKnownArmAngles.put(5.0, 20.0)
+        # kKnownArmAngles.put(6.0, 23.0)
+
         kKnownArmAngles.put(0.0, 5.0)
-        kKnownArmAngles.put(1.0, 6.5)
-        kKnownArmAngles.put(2.0, 10.0)
-        kKnownArmAngles.put(3.0, 12.0)
-        kKnownArmAngles.put(4.0, 17.0)
-        kKnownArmAngles.put(5.0, 20.0)
-        kKnownArmAngles.put(6.0, 23.0)
+        kKnownArmAngles.put(0.833, 11.8)
+        kKnownArmAngles.put(1.667, 18.0)
+        kKnownArmAngles.put(2.5, 22.0)
+        kKnownArmAngles.put(3.333, 26.0)
+        kKnownArmAngles.put(4.1667,28.7)
+        kKnownArmAngles.put(5.0, 30.0)
+        kKnownArmAngles.put(5.833, 32.35)
+        kKnownArmAngles.put(6.667, 33.3)
+        kKnownArmAngles.put(7.5, 34.15)
+        
+
 
 
     # An enumeration of known shot locations and data critical to executing the
     # shot. TODO decide on shooter velocity units and tune angles.
     class NextShot(Enum):
-      AMP = (0, -90.0, 90.0, 80.0, 8.0, 5, 6)
+      AMP = (0, -90.0, 90.0, 85.0, 8.0, 5, 6)
       SPEAKER_AMP = (1, -60.0, -60.0, 5.0, 25.0, 4, 7)
       SPEAKER_CENTER = (2, 0.0, 0.0, 5.0, 25.0, 4, 7)
       SPEAKER_SOURCE = (3, 60.0, 60.0, 5.0, 25.0, 4, 7)
       PODIUM = (4, -30.0, 30.0, 26.5, 35.0, 4, 7)
       CENTER_AUTO = (5, -30.0, 30.0, 31.0, 35.0, 4, 7)
-      DYNAMIC = (6, 0.0, 0.0, 0.0, 30.0, 4, 7)
+      DYNAMIC = (6, 0.0, 0.0, 0.0, 35.0, 4, 7)
 
 
 

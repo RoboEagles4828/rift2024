@@ -112,6 +112,10 @@ class Swerve(Subsystem):
         positions.append(self.mSwerveMods[2].getPosition())
         positions.append(self.mSwerveMods[3].getPosition())
         return positions
+    
+    def getTranslationVelocity(self) -> Translation2d:
+        speed = self.getRobotRelativeSpeeds()
+        return Translation2d(speed.vx, speed.vy)
 
     def getModules(self):
         return self.mSwerveMods
@@ -201,4 +205,7 @@ class Swerve(Subsystem):
 
         if optestimatedPose is not None:
             estimatedPose = optestimatedPose
-            self.swerveOdometry.addVisionMeasurement(Pose2d(estimatedPose.estimatedPose.toPose2d().X(), estimatedPose.estimatedPose.toPose2d().Y(), estimatedPose.estimatedPose.toPose2d().rotation().rotateBy(Rotation2d.fromDegrees(180.0))), estimatedPose.timestampSeconds)
+            heading = estimatedPose.estimatedPose.toPose2d().rotation()
+            if DriverStation.getAlliance() == DriverStation.Alliance.kRed:
+                heading = heading.rotateBy(Rotation2d.fromDegrees(180.0))
+            self.swerveOdometry.addVisionMeasurement(Pose2d(estimatedPose.estimatedPose.toPose2d().X(), estimatedPose.estimatedPose.toPose2d().Y(), heading), estimatedPose.timestampSeconds)

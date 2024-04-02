@@ -32,7 +32,7 @@ class InterpolatingTreeMap:
         dydx = float(val2)-float(val1)
         return dydx*d+float(val1)
     
-    def inverseInterpolate(up, q, down) -> float:
+    def inverseInterpolate(self, up, q, down) -> float:
         uppertoLower = float(up)-float(down)
         if uppertoLower <= 0:
             return 0.0
