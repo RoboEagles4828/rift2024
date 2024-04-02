@@ -42,7 +42,7 @@ from wpilib import SendableChooser, RobotBase
 from wpimath import applyDeadband
 
 from autos.PathPlannerAutoRunner import PathPlannerAutoRunner
-from pathplannerlib.auto import NamedCommands, PathConstraints
+from pathplannerlib.auto import NamedCommands, PathConstraints, AutoBuilder
 
 from robotState import RobotState
 
@@ -147,25 +147,7 @@ class RobotContainer:
         NamedCommands.registerCommand("Queue Podium", self.autoExecuteShot(Constants.NextShot.CENTER_AUTO))
         NamedCommands.registerCommand("Execute Shot", self.autoShootWhenReady())
 
-        self.auton_selector = SendableChooser()
-        # self.auton_selector.addOption("SourceSubwoofer2PieceMidline", PathPlannerAutoRunner("LeftSubwoofer2MidlinePiece", self.s_Swerve).getCommand())
-        self.auton_selector.addOption("AmpSubwoofer3PieceMidline", PathPlannerAutoRunner("RightSubwoofer3MidlinePiece", self.s_Swerve).getCommand())
-        # self.auton_selector.addOption("Straight Auto No Shoot", PathPlannerAutoRunner("StraightAutoNoShoot", self.s_Swerve).getCommand())
-        # self.auton_selector.addOption("AmpSubwooferTaxiAuto", PathPlannerAutoRunner("RightSubwooferTaxiAuto", self.s_Swerve).getCommand())
-        self.auton_selector.setDefaultOption("CenterSubwoofer2PieceAuto", PathPlannerAutoRunner("CenterSubwoofer2Piece", self.s_Swerve).getCommand())
-        self.auton_selector.addOption("CenterSubwoofer3PieceAuto", PathPlannerAutoRunner("CenterSubwoofer3Piece", self.s_Swerve).getCommand())
-        # self.auton_selector.addOption("CenterSubwoofer4PieceAuto", PathPlannerAutoRunner("CenterSubwoofer4Piece", self.s_Swerve).getCommand())
-        # self.auton_selector.addOption("Do Nothing", InstantCommand())
-        # self.auton_selector.addOption("AmpSubwoofer2Piece", PathPlannerAutoRunner("RightSubwooferTurn", self.s_Swerve).getCommand())
-        # self.auton_selector.addOption("ShootOnlyAuto", self.autoModeShot(Constants.NextShot.SPEAKER_CENTER))
-        self.auton_selector.addOption("Event Markers", PathPlannerAutoRunner("CenterSubwoofer2PieceA2", self.s_Swerve).getCommand())
-        self.auton_selector.addOption("Left Subwoofer 2 Piece", PathPlannerAutoRunner("LeftSubwoofer2PieceA3", self.s_Swerve).getCommand())
-        self.auton_selector.addOption("Left Subwoofer 3 Piece A3M4", PathPlannerAutoRunner("LeftSubwoofer3PieceA3M4", self.s_Swerve).getCommand())
-        self.auton_selector.addOption("Left Subwoofer 3 Piece A3M5", PathPlannerAutoRunner("LeftSubwoofer3PieceA3M5", self.s_Swerve).getCommand())
-        self.auton_selector.addOption("Left Subwoofer 3 Piece M4M5", PathPlannerAutoRunner("LeftSubwoofer3PieceM4M5", self.s_Swerve).getCommand())
-        self.auton_selector.addOption("Center Subwoofer 5 Piece A2A1A3M3", PathPlannerAutoRunner("CenterSubwoofer5PieceA2A1A3M3", self.s_Swerve).getCommand())
-
-
+        self.auton_selector = AutoBuilder.buildAutoChooser("DO NOTHING")
 
         Shuffleboard.getTab("Autonomous").add("Auton Selector", self.auton_selector)
         Shuffleboard.getTab("Teleoperated").addString("QUEUED SHOT", self.getQueuedShot)
