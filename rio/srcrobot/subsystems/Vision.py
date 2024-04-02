@@ -183,26 +183,26 @@ class Vision(Subsystem):
         else:
             return 0.0
 
-    def periodic(self):
-        if self.camera is not None:
-            result = self.camera.getLatestResult()
+    # def periodic(self):
+    #     # if self.camera is not None:
+        #     result = self.camera.getLatestResult()
 
-            if result.multiTagResult.estimatedPose.isPresent:
-                self.fieldToCamera = result.multiTagResult.estimatedPose.best
+        #     if result.multiTagResult.estimatedPose.isPresent:
+        #         self.fieldToCamera = result.multiTagResult.estimatedPose.best
 
-            hasTargets = result.hasTargets()
+        #     hasTargets = result.hasTargets()
 
-            if hasTargets:        
-                # get the best tag based on largest areaprint(f"================ {Units.inchesToMeters(self.s_Vision.getDistanceToSpeakerFieldToCameraInches(Transform3d(0.0, 0.0, 0.0, Rotation3d())))}")
-                bestTarget = self.getBestTarget(result)
-                if bestTarget is not None:
-                    SmartDashboard.putNumber("tag ID", bestTarget.getFiducialId())
-                    SmartDashboard.putNumber("pose ambiguity", bestTarget.getPoseAmbiguity())
-                    SmartDashboard.putNumber("tag transform X", bestTarget.getBestCameraToTarget().X())
-                    SmartDashboard.putNumber("tag transform Y", bestTarget.getBestCameraToTarget().Y())
-                    SmartDashboard.putNumber("tag transform Z", bestTarget.getBestCameraToTarget().Z())
-                    SmartDashboard.putNumber("tag transform angle", bestTarget.getBestCameraToTarget().rotation().angle_degrees)
-                    SmartDashboard.putNumber("tag yaw", bestTarget.getYaw())()
+        #     if hasTargets:        
+        #         # get the best tag based on largest areaprint(f"================ {Units.inchesToMeters(self.s_Vision.getDistanceToSpeakerFieldToCameraInches(Transform3d(0.0, 0.0, 0.0, Rotation3d())))}")
+        #         bestTarget = self.getBestTarget(result)
+        #         if bestTarget is not None:
+        #             SmartDashboard.putNumber("tag ID", bestTarget.getFiducialId())
+        #             SmartDashboard.putNumber("pose ambiguity", bestTarget.getPoseAmbiguity())
+        #             SmartDashboard.putNumber("tag transform X", bestTarget.getBestCameraToTarget().X())
+        #             SmartDashboard.putNumber("tag transform Y", bestTarget.getBestCameraToTarget().Y())
+        #             SmartDashboard.putNumber("tag transform Z", bestTarget.getBestCameraToTarget().Z())
+        #             SmartDashboard.putNumber("tag transform angle", bestTarget.getBestCameraToTarget().rotation().angle_degrees)
+        #             SmartDashboard.putNumber("tag yaw", bestTarget.getYaw())()
                 # SmartDashboard.putNumber("Vision Pose X", self.getEstimatedGlobalPose().estimatedPose.X())
                 # SmartDashboard.putNumber("Vision Pose Y", self.getEstimatedGlobalPose().estimatedPose.Y())
                 # SmartDashboard.putNumber("Vision Pose Angle", self.getEstimatedGlobalPose().estimatedPose.rotation().angle_degrees)

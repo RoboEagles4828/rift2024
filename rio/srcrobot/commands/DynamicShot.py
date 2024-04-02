@@ -47,7 +47,7 @@ class DynamicShot():
         distanceVector = self.vision.getDistanceVectorToSpeaker(self.swerve.getPose())
         robotVelocity = self.swerve.getTranslationVelocity().rotateBy(self.swerve.getHeading())
         angle = 90.0 - math.degrees(math.atan(
-            (distanceVector.X() + robotVelocity.X()*0.02) / (distanceVector.Y() + robotVelocity.Y()*0.02)
+            (distanceVector.X() - robotVelocity.X()*0.02) / (distanceVector.Y() - robotVelocity.Y()*0.02)
         ))
 
         if angle >= 90:

@@ -4,6 +4,7 @@ from commands2.cmd import waitSeconds
 from phoenix5 import TalonSRX, TalonSRXConfiguration, TalonSRXControlMode, TalonSRXFeedbackDevice, NeutralMode, SupplyCurrentLimitConfiguration
 from wpilib import DigitalInput
 from commands2 import InstantCommand
+from wpimath.filter import Debouncer
 import math
 
 class Indexer(Subsystem):
@@ -28,9 +29,11 @@ class Indexer(Subsystem):
         self.indexerEncoderCPR = 2048.0
         self.indexerIntakeVelocity = -(Constants.IndexerConstants.kIndexerIntakeSpeedMS/(math.pi*self.indexerDiameter))*self.indexerEncoderCPR
         self.indexerShootVelocity = -(Constants.IndexerConstants.kIndexerMaxSpeedMS/(math.pi*self.indexerDiameter))*self.indexerEncoderCPR
+
+        self.debouncer = Debouncer(0.1, Debouncer.DebounceType.kBoth)
         
     def getBeamBreakState(self):
-        return not bool(self.beamBreak.get())
+        return self.debouncer.calculate(not bool(self.beamBreak.get()))
 
     def indexerIntake(self):
         return self.run(lambda: self.indexerMotor.set(TalonSRXControlMode.Velocity, self.indexerIntakeVelocity)).withName("Intake")

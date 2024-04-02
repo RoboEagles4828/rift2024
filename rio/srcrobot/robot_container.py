@@ -264,8 +264,8 @@ class RobotContainer:
         strafe = lambda: -applyDeadband(self.driver.getRawAxis(self.strafeAxis), 0.1)
         rotation = lambda: applyDeadband(self.driver.getRawAxis(self.rotationAxis), 0.1)
         robotcentric = lambda: applyDeadband(self.robotCentric_value, 0.1)
-        # slow = lambda: applyDeadband(self.driver.getRawAxis(self.slowAxis), 0.1)
-        slow = lambda: 0.0
+        slow = lambda: applyDeadband(self.driver.getRawAxis(self.slowAxis), 0.1)
+        # slow = lambda: 0.0
 
         self.s_Swerve.setDefaultCommand(
             TeleopSwerve(
@@ -354,7 +354,7 @@ class RobotContainer:
 
         # Shooter Buttons
         self.s_Shooter.setDefaultCommand(self.s_Shooter.stop())
-        self.shoot.or_(self.opShoot.getAsBoolean).whileTrue(cmd.parallel(self.s_Indexer.indexerTeleopShot(), self.s_Intake.intake(), self.s_Shooter.shootVelocityWithSupplier(lambda: 35.0)))
+        self.shoot.or_(self.opShoot.getAsBoolean).whileTrue(cmd.parallel(self.s_Indexer.indexerTeleopShot(), self.s_Intake.intake(), self.s_Shooter.shootVelocityWithSupplier(lambda: self.m_robotState.m_gameState.getNextShot().m_shooterVelocity)))
 
         self.autoHome.onTrue(self.s_Arm.seekArmZero())
 
@@ -365,6 +365,9 @@ class RobotContainer:
                 lambda: self.s_Arm.getDegrees() > 45.0
             )
         )
+        # self.emergencyArmUp.whileTrue(
+        #     self.s_Shooter.shootVelocityWithSupplier(lambda: 35.0)
+        # )
 
     def toggleFieldOriented(self):
         self.robotCentric_value = not self.robotCentric_value
