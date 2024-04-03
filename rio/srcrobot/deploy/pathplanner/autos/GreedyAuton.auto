@@ -24,63 +24,77 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "CenterSubwoofertoA1"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Execute Shot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "A1toM1"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Execute Shot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "M1EndtoA2"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Execute Shot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "A2EndtoM2"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Execute Shot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "M2EndtoA3"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Execute Shot"
+            "commands": [
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "CenterSubwoofertoA1"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Execute Shot"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "A1toM1"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Execute Shot"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "M1EndtoA2"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Execute Shot"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "A2EndtoM2"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Execute Shot"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "M2EndtoA3"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Execute Shot"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           }
         },
         {

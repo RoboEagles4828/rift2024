@@ -43,6 +43,7 @@ from wpimath import applyDeadband
 
 from autos.PathPlannerAutoRunner import PathPlannerAutoRunner
 from pathplannerlib.auto import NamedCommands, PathConstraints, AutoBuilder
+from pathplannerlib.controller import PPHolonomicDriveController
 
 from robotState import RobotState
 
@@ -86,6 +87,7 @@ class RobotContainer:
             self.s_Shooter.getVelocity
         )
         self.dynamicShot = DynamicShot(self.s_Swerve, self.s_Vision, self.s_Arm)
+        PPHolonomicDriveController.setRotationTargetOverride(self.dynamicShot.getRotationTarget())
 
         self.currentArmAngle = self.s_Arm.getDegrees()
 
@@ -145,7 +147,7 @@ class RobotContainer:
 
         NamedCommands.registerCommand("Queue Speaker", self.autoExecuteShot(Constants.NextShot.SPEAKER_CENTER))
         NamedCommands.registerCommand("Queue Podium", self.autoExecuteShot(Constants.NextShot.CENTER_AUTO))
-        NamedCommands.registerCommand("Queue Dynamic", self.autoExecuteShot(Constants.NextShot.DYNAMIC))  #check this change with saranga
+        NamedCommands.registerCommand("Queue Dynamic", DeferredCommand(lambda: self.autoDynamicShot()))  #check this change with saranga
         NamedCommands.registerCommand("Execute Shot", self.autoShootWhenReady())
 
         self.auton_selector = AutoBuilder.buildAutoChooser("DO NOTHING")
@@ -218,6 +220,17 @@ class RobotContainer:
             ).repeatedly()
         )
     
+    def autoDynamicShot(self) -> Command:
+        return ParallelCommandGroup(
+            self.s_Arm.servoArmToTargetDynamic(
+                lambda: self.dynamicShot.getInterpolatedArmAngle()
+            ).repeatedly(),
+            InstantCommand(lambda: self.m_robotState.m_gameState.setNextShot(Constants.NextShot.DYNAMIC)),
+            self.s_Shooter.shootVelocityWithSupplier(
+                lambda: 35.0
+            ).repeatedly()
+        )
+    
     def autoShootWhenReady(self) -> Command:
         return SequentialCommandGroup(
             self.s_Indexer.indexerShoot(),
@@ -271,7 +284,7 @@ class RobotContainer:
         # Intake Buttons
         self.s_Indexer.setDefaultCommand(self.s_Indexer.stopIndexer())
         self.s_Intake.setDefaultCommand(self.s_Intake.stopIntake())
-        self.intake.whileTrue(self.s_Intake.intake().alongWith(self.s_Indexer.indexerIntake()).until(self.s_Indexer.getBeamBreakState).andThen(self.s_Indexer.instantStop()).andThen(self.s_Indexer.indexerIntake().withTimeout(0.0005)))
+        self.intake.whileTrue(self.s_Intake.intake().alongWith(self.s_Indexer.indexerIntake()).until(self.s_Indexer.getBeamBreakState).andThen(self.s_Indexer.instantStop()))
         self.systemReverse.whileTrue(self.s_Intake.outtake().alongWith(self.s_Indexer.indexerOuttake(), self.s_Shooter.shootReverse()))
 
         self.beamBreakTrigger = Trigger(self.s_Indexer.getBeamBreakState)
