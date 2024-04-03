@@ -39,22 +39,34 @@ sync() {
     return 0;
 }
 
-install-fastdeploy() { # UNTESTED!!!
-    # Download opkg packages from NI
+download-fastdeploy() {
     mkdir .rio-packages && cd .rio-packages
     curl "http://download.ni.com/ni-linux-rt/feeds/academic/2023/arm/main/cortexa9-vfpv3/libacl1_2.2.52-r0.310_cortexa9-vfpv3.ipk" -o libacl1_2.2.52-r0.310_cortexa9-vfpv3.ipk
     curl "http://download.ni.com/ni-linux-rt/feeds/academic/2023/arm/extra/cortexa9-vfpv3/rsync-lic_3.1.3-r0.23_cortexa9-vfpv3.ipk" -o rsync-lic_3.1.3-r0.23_cortexa9-vfpv3.ipk
     curl "http://download.ni.com/ni-linux-rt/feeds/academic/2023/arm/extra/cortexa9-vfpv3/rsync_3.1.3-r0.23_cortexa9-vfpv3.ipk" -o rsync_3.1.3-r0.23_cortexa9-vfpv3.ipk
+    cd ..
+}
+
+install-fastdeploy() {
+    # Download opkg packages from NI
+    if [ ! -d ".rio-packages" ]; then
+        echo "RIO packages not downloaded, attempting..."
+        download-fastdeploy
+    fi
+    cd .rio-packages
     scp *.ipk admin@$IP_ADDRESS:/
 
     # Install packages onto RIO as admin
     ssh -t admin@$IP_ADDRESS "cd / && opkg install ./libacl1_*.ipk && opkg install rsync-lic_*.ipk && opkg install rsync_*.ipk && rm -rf *.ipk"
 
-    # Delete packages from local computer
-    cd .. && rm -r .rio-packages
+    cd ..
 }
 
-install-jurigged() { # UNTESTED !!!
+clean-fastdeploy() {
+    rm -r ".rio-packages"
+}
+
+download-jurigged() {
     # Install modified jurigged & watchdog pip packages
     mkdir .pip-packages && cd .pip-packages
     
@@ -76,31 +88,51 @@ install-jurigged() { # UNTESTED !!!
     sed -i "/blessed/d" jurigged/live.py
     sed -i -r "s/print\(T\.\w+\((.*)\)/print\(\1/" jurigged/live.py
     rm ../jurigged-0.5.7-py3-none-any.whl && zip -r ../jurigged-0.5.7-py3-none-any.whl * && cd .. && rm -r jurigged
+    
+    cd ..
+}
+
+install-jurigged() {
+    if [ ! -d ".pip-packages" ]; then
+        echo "PIP packages not downloaded, attempting..."
+        download-jurigged
+    fi
+    cd .pip-packages
 
     # Install packages onto RIO as admin
     scp *.whl admin@$IP_ADDRESS:/
     ssh -t admin@$IP_ADDRESS "cd / && /usr/local/bin/pip3 install ovld-*.whl codefind-*.whl watchdog-*.whl jurigged-*.whl && rm -rf *.whl"
 
-    # Delete packages from local computer
-    cd .. && rm -r .pip-packages
+    cd ..
+}
+
+clean-jurigged() {
+    rm -r ".pip-packages"
 }
 
 help() {
     echo "In active development!"
     echo "Here be dragons!"
     echo "Usage:"
-    echo "  check   -- Checks if the specified folder has a robot"
-    echo "  restart -- Restarts the currently deployed RIO code"
-    echo "  deploy  -- Copies files to the RIO and restarts robot code"
-    echo "  sync    -- Copies files to RIO without restarting robot code"
-    echo "  ssh     -- SSH into the RIO"
-    echo "  install -- Installs the components needed for fastdeploy and jurigged on the RIO"
+    echo "  check    -- Checks if the specified folder has a robot"
+    echo "  restart  -- Restarts the currently deployed RIO code"
+    echo "  deploy   -- Copies files to the RIO and restarts robot code"
+    echo "  sync     -- Copies files to RIO without restarting robot code"
+    echo "  ssh      -- SSH into the RIO"
+    echo "  download -- Downloads and patches the components needed for fastdeploy and jurigged"
+    echo "    fastdeploy -- Downloads only the rsync packages needed for fastdeploy"
+    echo "    jurigged   -- Downloads and patches only the python packages needed for jurigged"
+    echo "  install  -- Installs the components needed for fastdeploy and jurigged on the RIO"
     echo "    fastdeploy -- Installs only the rsync packages needed for fastdeploy on the RIO"
     echo "    jurigged   -- Installs only the python packages needed for jurigged on the RIO"
-    echo "  help    -- Displays this message"
+    echo "      --preserve    -- Does not remove downloaded packages after install"
+    echo "  clean  -- Removes downloaded components for fastdeploy and jurigged"
+    echo "    fastdeploy -- Removes only the downloaded rsync packages needed for fastdeploy"
+    echo "    jurigged   -- Removes only the downloaded python packages needed for jurigged"
+    echo "  help     -- Displays this message"
     echo "  "
     echo ""
-    echo "Usage: rio (check | restart | deploy | sync | ssh | install | help)"
+    echo "Usage: rio (check | restart | deploy | sync | ssh | download | install | clean | help)"
 }
 
 case $1 in 
@@ -129,17 +161,63 @@ case $1 in
         sshCommand
     ;;
 
+    "download")
+        case $2 in
+            "fastdeploy")
+                download-fastdeploy
+            ;;
+            "jurigged")
+                download-jurigged
+            ;;
+            "")
+                download-fastdeploy
+                download-jurigged
+            ;;
+            *)
+                echo "Unknown Option: \"$2\""
+            ;;
+        esac
+    ;;
+
     "install")
         case $2 in
             "fastdeploy")
                 install-fastdeploy
-                ;;
+                if ! [ "$3" = "--preserve" ]; then
+                    clean-fastdeploy
+                fi
+            ;;
             "jurigged")
                 install-jurigged
-                ;;
+                if ! [ "$3" = "--preserve" ]; then
+                    clean-jurigged
+                fi
+            ;;
             "")
                 install-fastdeploy
                 install-jurigged
+                if ! [ "$3" = "--preserve" ]; then
+                    clean-fastdeploy
+                    clean-jurigged
+                fi
+            ;;
+            *)
+                echo "Unknown option: \"$2\""
+            ;;
+        esac
+    ;;
+
+    "clean")
+        case $2 in
+            "fastdeploy")
+                clean-fastdeploy
+                ;;
+            "jurigged")
+                clean-jurigged
+                ;;
+            "")
+                clean-fastdeploy
+                clean-jurigged
                 ;;
             *)
                 echo "Unknown option: \"$2\""
