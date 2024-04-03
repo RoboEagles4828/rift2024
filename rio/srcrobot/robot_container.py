@@ -145,6 +145,7 @@ class RobotContainer:
 
         NamedCommands.registerCommand("Queue Speaker", self.autoExecuteShot(Constants.NextShot.SPEAKER_CENTER))
         NamedCommands.registerCommand("Queue Podium", self.autoExecuteShot(Constants.NextShot.CENTER_AUTO))
+        NamedCommands.registerCommand("Queue Dynamic", self.autoExecuteShot(Constants.NextShot.DYNAMIC))  #check this change with saranga
         NamedCommands.registerCommand("Execute Shot", self.autoShootWhenReady())
 
         self.auton_selector = AutoBuilder.buildAutoChooser("DO NOTHING")

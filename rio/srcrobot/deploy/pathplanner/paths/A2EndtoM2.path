@@ -3,59 +3,59 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.3,
-        "y": 5.55
+        "x": 3.241900699594203,
+        "y": 5.524769708278964
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.6484137527279985,
-        "y": 5.176150610564066
+        "x": 4.729471785603727,
+        "y": 7.553885965926229
       },
       "isLocked": false,
-      "linkedName": "CenterSubwooferPos"
+      "linkedName": "A2DynamicEnd"
     },
     {
       "anchor": {
-        "x": 2.495046069189622,
-        "y": 4.288591765770233
+        "x": 8.244502712149956,
+        "y": 5.802345111159949
       },
       "prevControl": {
-        "x": 2.7209828473158213,
-        "y": 4.0500627773704245
+        "x": 8.554977887048505,
+        "y": 5.68353753822969
       },
       "nextControl": {
-        "x": 1.876960062419586,
-        "y": 4.941125767368613
+        "x": 7.934027537251405,
+        "y": 5.921152684090207
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.3,
-        "y": 5.55
+        "x": 2.012742177950176,
+        "y": 5.524769708278964
       },
       "prevControl": {
-        "x": 1.8573019925865395,
-        "y": 4.9860894340089
+        "x": 3.4387919348623557,
+        "y": 7.570979297842385
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "CenterSubwooferPos"
+      "linkedName": "M2DynamicEnd"
     }
   ],
   "rotationTargets": [
     {
       "waypointRelativePos": 1,
-      "rotationDegrees": -25.38092939500493,
+      "rotationDegrees": -15.0,
       "rotateFast": false
     }
   ],
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "Intake First Piece",
-      "waypointRelativePos": 0.25,
+      "name": "Intake On",
+      "waypointRelativePos": 0.1,
       "command": {
         "type": "sequential",
         "data": {
@@ -69,7 +69,7 @@
             {
               "type": "named",
               "data": {
-                "name": "Queue Speaker"
+                "name": "Queue Dynamic"
               }
             }
           ]
@@ -77,10 +77,10 @@
       }
     },
     {
-      "name": "Shoot First Piece",
+      "name": "Shoot",
       "waypointRelativePos": 2.0,
       "command": {
-        "type": "sequential",
+        "type": "parallel",
         "data": {
           "commands": [
             {

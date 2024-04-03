@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.6261101861575917,
-        "y": 7.232080429815556
+        "x": 2.626110186157592,
+        "y": 7.232080429815555
       },
       "isLocked": false,
       "linkedName": "CenterSubwooferPos"
@@ -36,7 +36,7 @@
         "y": 5.55
       },
       "prevControl": {
-        "x": 2.7491780039608407,
+        "x": 2.749178003960841,
         "y": 7.710435137969013
       },
       "nextControl": null,

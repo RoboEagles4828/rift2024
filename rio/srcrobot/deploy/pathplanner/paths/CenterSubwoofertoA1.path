@@ -16,32 +16,32 @@
     },
     {
       "anchor": {
-        "x": 2.864065028301057,
-        "y": 7.05067150872459
+        "x": 3.1,
+        "y": 7.237090477633311
       },
       "prevControl": {
-        "x": 2.3040908784220044,
-        "y": 6.552050721318781
+        "x": 2.5400258501209474,
+        "y": 6.738469690227502
       },
       "nextControl": {
-        "x": 3.2860602073559644,
-        "y": 7.426430940668475
+        "x": 3.5219951790549073,
+        "y": 7.612849909577196
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.3,
-        "y": 5.55
+        "x": 2.787185604149488,
+        "y": 6.391273187957358
       },
       "prevControl": {
-        "x": 1.9296132149929623,
-        "y": 6.2773618651253855
+        "x": 3.4167988191424525,
+        "y": 7.118635053082744
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "CenterSubwooferPos"
+      "linkedName": "A1 Dynamic"
     }
   ],
   "rotationTargets": [
@@ -69,7 +69,7 @@
             {
               "type": "named",
               "data": {
-                "name": "Queue Speaker"
+                "name": "Queue Dynamic"
               }
             }
           ]
@@ -102,7 +102,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": 40.0,
     "rotateFast": false
   },
   "reversed": false,

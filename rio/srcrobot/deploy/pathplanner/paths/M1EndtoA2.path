@@ -3,59 +3,37 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.3,
-        "y": 5.55
+        "x": 1.7706265311160687,
+        "y": 6.14926417201536
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.6484137527279985,
-        "y": 5.176150610564066
+        "x": 1.5922762876830774,
+        "y": 5.294597250863737
       },
       "isLocked": false,
-      "linkedName": "CenterSubwooferPos"
+      "linkedName": "M1DynamicEnd"
     },
     {
       "anchor": {
-        "x": 2.495046069189622,
-        "y": 4.288591765770233
+        "x": 3.241900699594203,
+        "y": 5.524769708278964
       },
       "prevControl": {
-        "x": 2.7209828473158213,
-        "y": 4.0500627773704245
-      },
-      "nextControl": {
-        "x": 1.876960062419586,
-        "y": 4.941125767368613
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 1.3,
-        "y": 5.55
-      },
-      "prevControl": {
-        "x": 1.8573019925865395,
-        "y": 4.9860894340089
+        "x": 2.2793286128358132,
+        "y": 5.662911114760941
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "CenterSubwooferPos"
+      "linkedName": "A2DynamicEnd"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 1,
-      "rotationDegrees": -25.38092939500493,
-      "rotateFast": false
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "Intake First Piece",
-      "waypointRelativePos": 0.25,
+      "name": "Intake On",
+      "waypointRelativePos": 0.15,
       "command": {
         "type": "sequential",
         "data": {
@@ -69,7 +47,7 @@
             {
               "type": "named",
               "data": {
-                "name": "Queue Speaker"
+                "name": "Queue Dynamic"
               }
             }
           ]
@@ -77,10 +55,10 @@
       }
     },
     {
-      "name": "Shoot First Piece",
-      "waypointRelativePos": 2.0,
+      "name": "Shoot",
+      "waypointRelativePos": 1.0,
       "command": {
-        "type": "sequential",
+        "type": "parallel",
         "data": {
           "commands": [
             {
