@@ -39,7 +39,7 @@ class DynamicShot():
     
     def getInterpolatedArmAngle(self):
         robotVelocity = self.swerve.getTranslationVelocity().rotateBy(self.swerve.getHeading())
-        nextPose = self.swerve.getPose().__add__(Transform2d(robotVelocity.__mul__(0.02), Rotation2d()))
+        nextPose = self.swerve.getPose().__add__(Transform2d(robotVelocity.__mul__(-0.02), Rotation2d()))
         distance = Units.metersToFeet(self.vision.getDistanceVectorToSpeaker(nextPose).norm()) - (36.37 / 12.0) - (Constants.Swerve.robotLength / 2.0 / 12.0)
         return Constants.NextShot.DYNAMIC.calculateInterpolatedArmAngle(distance)
 
