@@ -89,3 +89,18 @@ class RobotState:
         return (not self.m_gameState.hasNote()) and self.isclose(
             0.0, self.m_armAngleSupplier(), self.kArmAngleTolerance
         )
+    
+    def isReadyDynamic(self, degreesSup) -> bool:
+        arm = self.isclose(
+            degreesSup(),
+            self.m_armAngleSupplier(),
+            self.kArmAngleTolerance
+        )
+
+        shooter = self.isclose(
+            35.0,
+            self.m_shooterVelocitySupplier(),
+            self.kShooterVelocityTolerance
+        )
+
+        return arm and shooter

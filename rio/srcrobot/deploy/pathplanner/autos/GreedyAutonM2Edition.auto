@@ -58,7 +58,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "M1EndtoA2"
+                        "pathName": "A1EndtoM2"
                       }
                     },
                     {
@@ -70,7 +70,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "M2EndtoA3"
+                        "pathName": "Copy of M2EndtoA3"
                       }
                     },
                     {

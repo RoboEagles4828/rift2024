@@ -25,7 +25,7 @@ class Intake(Subsystem):
         # self.intakeMotor.configContinuousCurrentLimit(30)
         # self.intakeMotor.enableCurrentLimit(True)
 
-        self.debouncer = Debouncer(0.1, Debouncer.DebounceType.kBoth)
+        self.debouncer = Debouncer(0.05, Debouncer.DebounceType.kBoth)
 
     def getIntakeBeamBreakState(self):
         return self.debouncer.calculate(not bool(self.intakeBeam.get()))

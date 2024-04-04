@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 3.1,
-        "y": 7.237090477633311
+        "x": 2.9481279301541656,
+        "y": 7.049791274723792
       },
       "prevControl": {
-        "x": 2.5400258501209474,
-        "y": 6.738469690227502
+        "x": 2.388153780275113,
+        "y": 6.551170487317983
       },
       "nextControl": {
-        "x": 3.5219951790549073,
-        "y": 7.612849909577196
+        "x": 3.370123109209073,
+        "y": 7.425550706667678
       },
       "isLocked": false,
       "linkedName": null
@@ -65,29 +65,6 @@
               "data": {
                 "name": "IntakeUntilBeamBreak"
               }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Queue Dynamic"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Shoot First Piece",
-      "waypointRelativePos": 2.0,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Execute Shot"
-              }
             }
           ]
         }
@@ -96,7 +73,7 @@
   ],
   "globalConstraints": {
     "maxVelocity": 4.0,
-    "maxAcceleration": 4.0,
+    "maxAcceleration": 4.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },

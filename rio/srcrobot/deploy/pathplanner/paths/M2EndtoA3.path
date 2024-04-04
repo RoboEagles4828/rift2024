@@ -8,38 +8,32 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.158666896069144,
-        "y": 5.075148199002453
+        "x": 1.9509535064267867,
+        "y": 4.985872118636893
       },
       "isLocked": false,
       "linkedName": "M2DynamicEnd"
     },
     {
       "anchor": {
-        "x": 2.5337242880296307,
-        "y": 4.269248801559127
+        "x": 2.9249378272767843,
+        "y": 4.116243260735109
       },
       "prevControl": {
-        "x": 2.1301853992868143,
-        "y": 4.806096409067818
+        "x": 2.9218564899028685,
+        "y": 4.061468108703302
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 1,
-      "rotationDegrees": -31.693556057978494,
-      "rotateFast": false
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [
     {
       "name": "New Constraints Zone",
-      "minWaypointRelativePos": 0.2,
-      "maxWaypointRelativePos": 1.0,
+      "minWaypointRelativePos": 0.05,
+      "maxWaypointRelativePos": 0.25,
       "constraints": {
         "maxVelocity": 2.0,
         "maxAcceleration": 4.0,
@@ -61,29 +55,6 @@
               "data": {
                 "name": "IntakeUntilBeamBreak"
               }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Queue Dynamic"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Shoot",
-      "waypointRelativePos": 1.0,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Execute Shot"
-              }
             }
           ]
         }
@@ -92,13 +63,13 @@
   ],
   "globalConstraints": {
     "maxVelocity": 4.0,
-    "maxAcceleration": 4.0,
+    "maxAcceleration": 4.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -34.61488786557891,
+    "rotation": 0.0,
     "rotateFast": false
   },
   "reversed": false,

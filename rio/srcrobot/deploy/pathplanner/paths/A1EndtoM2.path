@@ -3,53 +3,59 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.787185604149488,
-        "y": 6.391273187957358
-      },
-      "prevControl": null,
-      "nextControl": {
-        "x": 3.787185604149488,
-        "y": 6.391273187957358
-      },
-      "isLocked": false,
-      "linkedName": "A1 Dynamic"
-    },
-    {
-      "anchor": {
-        "x": 8.525347672164271,
-        "y": 7.22371704630415
-      },
-      "prevControl": {
-        "x": 7.567842557671308,
-        "y": 7.34494335336776
-      },
-      "nextControl": {
-        "x": 9.578441467804987,
-        "y": 7.090388597291398
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
         "x": 1.7706265311160687,
         "y": 6.14926417201536
       },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.971318033031546,
+        "y": 7.130956634794626
+      },
+      "isLocked": false,
+      "linkedName": "M1DynamicEnd"
+    },
+    {
+      "anchor": {
+        "x": 8.51375262072558,
+        "y": 5.727955410713081
+      },
       "prevControl": {
-        "x": 3.6511441090663874,
-        "y": 7.374147733688292
+        "x": 9.283973588978565,
+        "y": 5.367296385896207
+      },
+      "nextControl": {
+        "x": 7.052776139450584,
+        "y": 6.412063445595818
+      },
+      "isLocked": false,
+      "linkedName": "MidlinePiece2"
+    },
+    {
+      "anchor": {
+        "x": 2.008928763620239,
+        "y": 5.519244484816654
+      },
+      "prevControl": {
+        "x": 1.7654326834077394,
+        "y": 8.220891470031528
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "M1DynamicEnd"
+      "linkedName": "M2DynamicEnd"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1,
+      "rotationDegrees": 0.0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "Intake On",
-      "waypointRelativePos": 0.5,
+      "name": "Intake First Piece",
+      "waypointRelativePos": 0.25,
       "command": {
         "type": "sequential",
         "data": {
@@ -73,7 +79,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": 0.0,
     "rotateFast": false
   },
   "reversed": false,

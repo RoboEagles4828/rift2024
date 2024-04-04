@@ -30,7 +30,7 @@ class Indexer(Subsystem):
         self.indexerIntakeVelocity = -(Constants.IndexerConstants.kIndexerIntakeSpeedMS/(math.pi*self.indexerDiameter))*self.indexerEncoderCPR
         self.indexerShootVelocity = -(Constants.IndexerConstants.kIndexerMaxSpeedMS/(math.pi*self.indexerDiameter))*self.indexerEncoderCPR
 
-        self.debouncer = Debouncer(0.1, Debouncer.DebounceType.kBoth)
+        self.debouncer = Debouncer(0.05, Debouncer.DebounceType.kBoth)
         
     def getBeamBreakState(self):
         return self.debouncer.calculate(not bool(self.beamBreak.get()))

@@ -87,7 +87,7 @@ class RobotContainer:
             self.s_Shooter.getVelocity
         )
         self.dynamicShot = DynamicShot(self.s_Swerve, self.s_Vision, self.s_Arm)
-        PPHolonomicDriveController.setRotationTargetOverride(self.dynamicShot.getRotationTarget())
+        # PPHolonomicDriveController.setRotationTargetOverride(self.dynamicShot.getRotationTarget())
 
         self.currentArmAngle = self.s_Arm.getDegrees()
 
@@ -147,7 +147,7 @@ class RobotContainer:
 
         NamedCommands.registerCommand("Queue Speaker", self.autoExecuteShot(Constants.NextShot.SPEAKER_CENTER))
         NamedCommands.registerCommand("Queue Podium", self.autoExecuteShot(Constants.NextShot.CENTER_AUTO))
-        NamedCommands.registerCommand("Queue Dynamic", DeferredCommand(lambda: self.autoDynamicShot()))  #check this change with saranga
+        NamedCommands.registerCommand("Queue Dynamic", self.autoDynamicShot()) #check this change with saranga
         NamedCommands.registerCommand("Execute Shot", self.autoShootWhenReady())
 
         self.auton_selector = AutoBuilder.buildAutoChooser("DO NOTHING")
@@ -186,8 +186,7 @@ class RobotContainer:
             InstantCommand(lambda: self.m_robotState.m_gameState.setNextShot(autoShot)),
             ParallelDeadlineGroup(
                 WaitUntilCommand(lambda: self.m_robotState.isArmAndShooterReady())
-                .withTimeout(shotTimeoutSec)
-                .andThen(WaitCommand(0.1))
+                .withTimeout(1.0)
                 .andThen(self.s_Indexer.indexerShoot()),
                 InstantCommand(
                     lambda: self.s_Shooter.setShooterVelocity(
@@ -219,23 +218,43 @@ class RobotContainer:
                 robotcentric
             ).repeatedly()
         )
-    
+
     def autoDynamicShot(self) -> Command:
-        return ParallelCommandGroup(
-            self.s_Arm.servoArmToTargetDynamic(
-                lambda: self.dynamicShot.getInterpolatedArmAngle()
-            ).repeatedly(),
-            InstantCommand(lambda: self.m_robotState.m_gameState.setNextShot(Constants.NextShot.DYNAMIC)),
-            self.s_Shooter.shootVelocityWithSupplier(
-                lambda: 35.0
-            ).repeatedly()
-        )
+        return DeferredCommand(
+            lambda:
+                ParallelDeadlineGroup(
+                    WaitUntilCommand(lambda: self.m_robotState.isReadyDynamic(lambda: self.dynamicShot.getInterpolatedArmAngle()))
+                    .withTimeout(1.0)
+                    .andThen(self.s_Indexer.indexerShoot()),
+                    self.s_Arm.servoArmToTargetDynamic(
+                        lambda: self.dynamicShot.getInterpolatedArmAngle()
+                    ),
+                    InstantCommand(lambda: self.m_robotState.m_gameState.setNextShot(Constants.NextShot.DYNAMIC)),
+                    self.s_Shooter.shootVelocityWithSupplier(
+                        lambda: 35.0
+                    ),
+                    TurnInPlace(
+                        self.s_Swerve,
+                        lambda: self.dynamicShot.getRobotAngle(),
+                        lambda: 0.0,
+                        lambda: 0.0,
+                        lambda: 0.0,
+                        lambda: False
+                    )
+                ).andThen(self.s_Arm.seekArmZero().withTimeout(0.5)),
+            )
     
     def autoShootWhenReady(self) -> Command:
-        return SequentialCommandGroup(
-            self.s_Indexer.indexerShoot(),
-            self.s_Indexer.instantStop(),
-            self.s_Arm.seekArmZero().withTimeout(1.0),
+        return DeferredCommand(
+            lambda: ConditionalCommand(
+                SequentialCommandGroup(
+                    self.s_Indexer.indexerShoot(),
+                    self.s_Indexer.instantStop(),
+                    self.s_Arm.seekArmZero().withTimeout(1.0),
+                ),
+                InstantCommand(),
+                lambda: self.s_Indexer.getBeamBreakState()
+            )
         )
     
     def autoExecuteShot(self, autoShot: Constants.NextShot) -> Command:
@@ -284,7 +303,7 @@ class RobotContainer:
         # Intake Buttons
         self.s_Indexer.setDefaultCommand(self.s_Indexer.stopIndexer())
         self.s_Intake.setDefaultCommand(self.s_Intake.stopIntake())
-        self.intake.whileTrue(self.s_Intake.intake().alongWith(self.s_Indexer.indexerIntake()).until(self.s_Indexer.getBeamBreakState).andThen(self.s_Indexer.instantStop()))
+        self.intake.whileTrue(self.s_Intake.intake().alongWith(self.s_Indexer.indexerIntake()).until(self.s_Indexer.getBeamBreakState).andThen(self.s_Indexer.instantStop()).andThen(self.s_Indexer.indexerIntake().withTimeout(0.0005)))
         self.systemReverse.whileTrue(self.s_Intake.outtake().alongWith(self.s_Indexer.indexerOuttake(), self.s_Shooter.shootReverse()))
 
         self.beamBreakTrigger = Trigger(self.s_Indexer.getBeamBreakState)
