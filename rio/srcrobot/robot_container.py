@@ -129,6 +129,7 @@ class RobotContainer:
         NamedCommands.registerCommand("IntakeOn", self.s_Intake.intakeOnce().withName("AutoIntakeOn"))
         NamedCommands.registerCommand("IntakeOff", self.s_Intake.instantStop().withName("AutoIntakeOff"))
         NamedCommands.registerCommand("IndexerOut", self.s_Indexer.indexerOuttake().withTimeout(4.0))
+        NamedCommands.registerCommand("BringArmUp", self.bringArmUp())
 
         NamedCommands.registerCommand("IntakeUntilBeamBreak", SequentialCommandGroup(
             self.s_Indexer.indexerIntakeOnce(),
@@ -256,7 +257,17 @@ class RobotContainer:
                 lambda: self.s_Indexer.getBeamBreakState()
             )
         )
-    
+    def bringArmUp(self) -> Command:
+        return DeferredCommand(
+            lambda: ParallelDeadlineGroup(
+                WaitUntilCommand(lambda: abs(self.s_Swerve.getTranslationVelocity().norm() - 0.0) < 0.1),
+                ConditionalCommand(
+                    self.s_Arm.servoArmToTargetDynamic(lambda: self.dynamicShot.getInterpolatedArmAngle()),
+                    self.s_Arm.seekArmZero(),
+                    lambda: self.s_Indexer.getBeamBreakState()
+                )
+            )
+        )
     def autoExecuteShot(self, autoShot: Constants.NextShot) -> Command:
         return ParallelCommandGroup(
             InstantCommand(

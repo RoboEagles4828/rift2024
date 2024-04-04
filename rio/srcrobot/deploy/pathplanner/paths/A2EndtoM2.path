@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.241900699594203,
-        "y": 5.524769708278964
+        "x": 2.15559153069261,
+        "y": 6.324947477948163
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.729471785603727,
-        "y": 7.553885965926229
+        "x": 3.6431626167021345,
+        "y": 8.354063735595426
       },
       "isLocked": false,
       "linkedName": "A2DynamicEnd"
@@ -32,12 +32,12 @@
     },
     {
       "anchor": {
-        "x": 2.012742177950176,
-        "y": 5.524769708278964
+        "x": 1.863212448297146,
+        "y": 6.300231898439149
       },
       "prevControl": {
-        "x": 3.4387919348623557,
-        "y": 7.570979297842385
+        "x": 3.289262205209326,
+        "y": 8.346441488002569
       },
       "nextControl": null,
       "isLocked": false,
@@ -64,6 +64,23 @@
               "type": "named",
               "data": {
                 "name": "IntakeUntilBeamBreak"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 1.75,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "BringArmUp"
               }
             }
           ]

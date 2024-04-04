@@ -3,53 +3,49 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.965435283588437,
-        "y": 7.007367911770375
+        "x": 1.863212448297146,
+        "y": 6.300231898439149
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.9654352835884366,
-        "y": 7.007367911770375
+        "x": 1.8836103487689924,
+        "y": 5.7588686975266565
       },
       "isLocked": false,
-      "linkedName": "A1 Dynamic Pickup"
+      "linkedName": "M2DynamicEnd"
     },
     {
       "anchor": {
-        "x": 8.525347672164271,
-        "y": 7.22371704630415
+        "x": 2.8429542418605385,
+        "y": 5.525134121430851
       },
       "prevControl": {
-        "x": 7.567842557671308,
-        "y": 7.34494335336776
-      },
-      "nextControl": {
-        "x": 9.578441467804987,
-        "y": 7.090388597291398
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 3.927648358004459,
-        "y": 6.191760875447491
-      },
-      "prevControl": {
-        "x": 4.733329265759922,
-        "y": 6.376611300466487
+        "x": 1.8991978012494168,
+        "y": 5.368705306629885
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "M1DynamicEnd"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0.2,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 4.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0
+      }
+    }
+  ],
   "eventMarkers": [
     {
-      "name": "Intake On",
-      "waypointRelativePos": 0.5,
+      "name": "IntakeOn",
+      "waypointRelativePos": 0.05,
       "command": {
         "type": "sequential",
         "data": {
@@ -59,22 +55,28 @@
               "data": {
                 "name": "IntakeUntilBeamBreak"
               }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Queue Dynamic"
+              }
             }
           ]
         }
       }
     },
     {
-      "name": "Bring Arm Up",
-      "waypointRelativePos": 1.7,
+      "name": "Shoot",
+      "waypointRelativePos": 1.0,
       "command": {
-        "type": "sequential",
+        "type": "parallel",
         "data": {
           "commands": [
             {
               "type": "named",
               "data": {
-                "name": "BringArmUp"
+                "name": "Execute Shot"
               }
             }
           ]
@@ -84,13 +86,13 @@
   ],
   "globalConstraints": {
     "maxVelocity": 4.0,
-    "maxAcceleration": 4.5,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": 0.0,
     "rotateFast": false
   },
   "reversed": false,

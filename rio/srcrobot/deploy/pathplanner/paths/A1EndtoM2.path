@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.7706265311160687,
-        "y": 6.14926417201536
+        "x": 3.927648358004459,
+        "y": 6.191760875447491
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.971318033031546,
-        "y": 7.130956634794626
+        "x": 5.128339859919937,
+        "y": 7.173453338226757
       },
       "isLocked": false,
       "linkedName": "M1DynamicEnd"
@@ -32,12 +32,12 @@
     },
     {
       "anchor": {
-        "x": 2.008928763620239,
-        "y": 5.519244484816654
+        "x": 1.863212448297146,
+        "y": 6.300231898439149
       },
       "prevControl": {
-        "x": 1.7654326834077394,
-        "y": 8.220891470031528
+        "x": 1.6197163680846463,
+        "y": 9.001878883654022
       },
       "nextControl": null,
       "isLocked": false,
@@ -64,6 +64,23 @@
               "type": "named",
               "data": {
                 "name": "IntakeUntilBeamBreak"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Bring Arm Up",
+      "waypointRelativePos": 1.6,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "BringArmUp"
               }
             }
           ]

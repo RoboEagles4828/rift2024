@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.7,
-        "y": 4.47
+        "x": 1.6176137474414607,
+        "y": 4.134555683880387
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.6015306941931893,
-        "y": 3.040428588672941
+        "x": 2.51914444163465,
+        "y": 2.704984272553328
       },
       "isLocked": false,
       "linkedName": "LeftSubwooferPos"
@@ -48,12 +48,12 @@
     },
     {
       "anchor": {
-        "x": 0.7,
-        "y": 4.4680573742251
+        "x": 1.6176137474414607,
+        "y": 4.134555683880387
       },
       "prevControl": {
-        "x": 1.2116286673180072,
-        "y": 2.7851961655296256
+        "x": 2.129242414759467,
+        "y": 2.4516944751849126
       },
       "nextControl": null,
       "isLocked": false,
@@ -67,19 +67,7 @@
       "rotateFast": false
     }
   ],
-  "constraintZones": [
-    {
-      "name": "New Constraints Zone",
-      "minWaypointRelativePos": 1.75,
-      "maxWaypointRelativePos": 2.05,
-      "constraints": {
-        "maxVelocity": 1.0,
-        "maxAcceleration": 4.0,
-        "maxAngularVelocity": 540.0,
-        "maxAngularAcceleration": 720.0
-      }
-    }
-  ],
+  "constraintZones": [],
   "eventMarkers": [
     {
       "name": "IntakePiece",

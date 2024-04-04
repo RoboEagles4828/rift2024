@@ -58,7 +58,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "M1EndtoA2"
+                        "pathName": "M1EndtoM2"
                       }
                     },
                     {
@@ -70,7 +70,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "M2EndtoA3"
+                        "pathName": "M2EndtoA2"
                       }
                     },
                     {
@@ -94,6 +94,6 @@
       ]
     }
   },
-  "folder": "Greedy Auton",
+  "folder": null,
   "choreoAuto": false
 }

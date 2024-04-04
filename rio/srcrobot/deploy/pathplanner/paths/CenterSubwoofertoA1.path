@@ -16,37 +16,21 @@
     },
     {
       "anchor": {
-        "x": 2.9481279301541656,
-        "y": 7.049791274723792
+        "x": 2.965435283588437,
+        "y": 7.007367911770375
       },
       "prevControl": {
-        "x": 2.388153780275113,
-        "y": 6.551170487317983
-      },
-      "nextControl": {
-        "x": 3.370123109209073,
-        "y": 7.425550706667678
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 2.787185604149488,
-        "y": 6.391273187957358
-      },
-      "prevControl": {
-        "x": 3.4167988191424525,
-        "y": 7.118635053082744
+        "x": 2.586683935678061,
+        "y": 6.681664952857305
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "A1 Dynamic"
+      "linkedName": "A1 Dynamic Pickup"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1,
+      "waypointRelativePos": 0.25,
       "rotationDegrees": 45.0,
       "rotateFast": false
     }
@@ -55,7 +39,7 @@
   "eventMarkers": [
     {
       "name": "Intake First Piece",
-      "waypointRelativePos": 0.25,
+      "waypointRelativePos": 0.1,
       "command": {
         "type": "sequential",
         "data": {
