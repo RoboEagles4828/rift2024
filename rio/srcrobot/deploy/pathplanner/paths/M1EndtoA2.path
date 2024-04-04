@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.927648358004459,
-        "y": 6.191760875447491
+        "x": 3.25141871450266,
+        "y": 6.907567610124811
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.749298114571468,
-        "y": 5.337093954295868
+        "x": 3.0730684710696687,
+        "y": 6.052900688973189
       },
       "isLocked": false,
       "linkedName": "M1DynamicEnd"
@@ -51,7 +51,7 @@
   ],
   "globalConstraints": {
     "maxVelocity": 4.0,
-    "maxAcceleration": 4.5,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
