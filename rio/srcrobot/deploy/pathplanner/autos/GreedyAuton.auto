@@ -32,9 +32,22 @@
                 "data": {
                   "commands": [
                     {
-                      "type": "path",
+                      "type": "parallel",
                       "data": {
-                        "pathName": "CenterSubwoofertoA1"
+                        "commands": [
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "IntakeUntilBeamBreak"
+                            }
+                          },
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "CenterSubwoofertoA1"
+                            }
+                          }
+                        ]
                       }
                     },
                     {
