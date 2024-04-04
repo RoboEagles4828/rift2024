@@ -16,16 +16,32 @@
     },
     {
       "anchor": {
-        "x": 8.525347672164271,
-        "y": 7.22371704630415
+        "x": 5.185888451979038,
+        "y": 6.907567610124811
       },
       "prevControl": {
-        "x": 7.567842557671308,
-        "y": 7.34494335336776
+        "x": 4.354346277067641,
+        "y": 6.903591652158761
       },
       "nextControl": {
-        "x": 9.578441467804987,
-        "y": 7.090388597291398
+        "x": 6.017430626890434,
+        "y": 6.9115435680908615
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.464453341259178,
+        "y": 7.482918666948022
+      },
+      "prevControl": {
+        "x": 7.5197018591615565,
+        "y": 7.543870726951136
+      },
+      "nextControl": {
+        "x": 9.523751392285149,
+        "y": 7.414576463108383
       },
       "isLocked": false,
       "linkedName": null
@@ -49,7 +65,7 @@
   "eventMarkers": [
     {
       "name": "Intake On",
-      "waypointRelativePos": 0.5,
+      "waypointRelativePos": 1.0,
       "command": {
         "type": "sequential",
         "data": {
@@ -66,7 +82,7 @@
     },
     {
       "name": "Bring Arm Up",
-      "waypointRelativePos": 1.7,
+      "waypointRelativePos": 2.7,
       "command": {
         "type": "sequential",
         "data": {
