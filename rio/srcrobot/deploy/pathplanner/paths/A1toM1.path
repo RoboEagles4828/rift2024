@@ -48,6 +48,22 @@
     },
     {
       "anchor": {
+        "x": 5.754293245758197,
+        "y": 6.758502542608645
+      },
+      "prevControl": {
+        "x": 7.237517373188792,
+        "y": 6.846323913423499
+      },
+      "nextControl": {
+        "x": 4.2710691183276,
+        "y": 6.670681171793791
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
         "x": 3.25141871450266,
         "y": 6.907567610124811
       },
@@ -82,7 +98,7 @@
     },
     {
       "name": "Bring Arm Up",
-      "waypointRelativePos": 2.7,
+      "waypointRelativePos": 3.4,
       "command": {
         "type": "sequential",
         "data": {
