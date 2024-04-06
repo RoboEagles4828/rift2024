@@ -8,40 +8,40 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.51914444163465,
-        "y": 2.704984272553328
+        "x": 1.5081776335011592,
+        "y": 3.1466332059093474
       },
       "isLocked": false,
       "linkedName": "LeftSubwooferPos"
     },
     {
       "anchor": {
-        "x": 5.042908533547722,
-        "y": 1.6644410144860133
+        "x": 4.85563964415781,
+        "y": 3.560763726047149
       },
       "prevControl": {
-        "x": 3.9559398171147273,
-        "y": 2.0398917611124965
+        "x": 3.315547667491664,
+        "y": 3.17948289013746
       },
       "nextControl": {
-        "x": 6.011322916771807,
-        "y": 1.3299402163227754
+        "x": 6.085956375755855,
+        "y": 3.8653534511834606
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.586973888425316,
-        "y": 0.6381252716118725
+        "x": 8.484076763212945,
+        "y": 4.134555683880387
       },
       "prevControl": {
-        "x": 7.4113180248172235,
-        "y": 0.8975069652851911
+        "x": 7.011886933104853,
+        "y": 3.56407351644754
       },
       "nextControl": {
-        "x": 9.37566423817112,
-        "y": 0.46411870639725505
+        "x": 9.237168688784108,
+        "y": 4.426383208558009
       },
       "isLocked": false,
       "linkedName": null
@@ -52,8 +52,8 @@
         "y": 4.134555683880387
       },
       "prevControl": {
-        "x": 2.129242414759467,
-        "y": 2.4516944751849126
+        "x": 1.7045859798008112,
+        "y": 2.3961532824171505
       },
       "nextControl": null,
       "isLocked": false,
@@ -63,7 +63,7 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 2.0,
-      "rotationDegrees": -20.0,
+      "rotationDegrees": 0.0,
       "rotateFast": false
     }
   ],
@@ -80,6 +80,29 @@
               "type": "named",
               "data": {
                 "name": "IntakeUntilBeamBreak"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Queue Speaker"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Shoot",
+      "waypointRelativePos": 3.0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Execute Shot"
               }
             }
           ]
