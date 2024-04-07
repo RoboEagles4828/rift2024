@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7,
-      "y": 4.47
+      "x": 0.74,
+      "y": 4.39
     },
     "rotation": -60.0
   },
@@ -26,13 +26,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "LeftSubwoofertoM4"
+            "pathName": "LeftSubwoofertoM4Modified"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Execute Shot"
+            "name": "Queue Dynamic"
           }
         },
         {
@@ -44,19 +44,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Execute Shot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "LeftSubwoofertoM3"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Execute Shot"
+            "name": "Queue Dynamic"
           }
         },
         {
@@ -68,6 +56,6 @@
       ]
     }
   },
-  "folder": "4 Piece Auton",
+  "folder": "3 Piece Auton",
   "choreoAuto": false
 }

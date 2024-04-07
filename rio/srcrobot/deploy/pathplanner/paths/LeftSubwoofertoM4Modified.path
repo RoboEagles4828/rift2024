@@ -8,40 +8,40 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.5081776335011592,
-        "y": 3.1466332059093474
+        "x": 2.8412261101245915,
+        "y": 1.475221975333649
       },
       "isLocked": false,
       "linkedName": "LeftSubwooferPos"
     },
     {
       "anchor": {
-        "x": 4.85563964415781,
-        "y": 3.560763726047149
+        "x": 5.60351480604995,
+        "y": 1.9527277988642502
       },
       "prevControl": {
-        "x": 3.315547667491664,
-        "y": 3.17948289013746
+        "x": 4.473523075220952,
+        "y": 1.7805522868537178
       },
       "nextControl": {
-        "x": 6.085956375755855,
-        "y": 3.8653534511834606
+        "x": 7.010951172901589,
+        "y": 2.167177224000438
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.484076763212945,
-        "y": 4.134555683880387
+        "x": 8.420313871078218,
+        "y": 2.481428997945715
       },
       "prevControl": {
-        "x": 7.011886933104853,
-        "y": 3.56407351644754
+        "x": 7.131516404617239,
+        "y": 2.126966322695046
       },
       "nextControl": {
-        "x": 9.237168688784108,
-        "y": 4.426383208558009
+        "x": 8.984968351348993,
+        "y": 2.636727982369281
       },
       "isLocked": false,
       "linkedName": null
@@ -52,8 +52,8 @@
         "y": 4.134555683880387
       },
       "prevControl": {
-        "x": 1.7045859798008112,
-        "y": 2.3961532824171505
+        "x": 2.8090298954632122,
+        "y": -0.6118104494700922
       },
       "nextControl": null,
       "isLocked": false,
@@ -62,8 +62,13 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 2.0,
-      "rotationDegrees": 0.0,
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": 10.0,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 2,
+      "rotationDegrees": 10.0,
       "rotateFast": false
     }
   ],
@@ -81,29 +86,6 @@
               "data": {
                 "name": "IntakeUntilBeamBreak"
               }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Queue Speaker"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Shoot",
-      "waypointRelativePos": 3.0,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Execute Shot"
-              }
             }
           ]
         }
@@ -118,7 +100,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -54.88320993345253,
+    "rotation": -57.96721920073184,
     "rotateFast": false
   },
   "reversed": false,

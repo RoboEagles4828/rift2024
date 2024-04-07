@@ -6,9 +6,10 @@
     "CenterSubwoofer",
     "Greedy Paths",
     "LeftSubwoofer",
-    "The Wrangler Paths",
+    "Sri Paths",
     "RightSubwoofer",
-    "Test Paths"
+    "Test Paths",
+    "The Wrangler Paths"
   ],
   "autoFolders": [
     "1 Piece Auton",
@@ -21,7 +22,7 @@
     "Test Auton"
   ],
   "defaultMaxVel": 4.0,
-  "defaultMaxAccel": 4.5,
+  "defaultMaxAccel": 4.0,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
   "maxModuleSpeed": 4.5

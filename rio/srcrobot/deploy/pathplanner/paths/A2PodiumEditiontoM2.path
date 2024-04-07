@@ -3,29 +3,45 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.62,
-        "y": 4.07
+        "x": 3.07,
+        "y": 5.58
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.6200012394583458,
-        "y": 4.068425542901442
+        "x": 4.378816351788993,
+        "y": 6.621870282292348
+      },
+      "isLocked": false,
+      "linkedName": "A2PodiumEdition"
+    },
+    {
+      "anchor": {
+        "x": 8.442886695763862,
+        "y": 5.845201155658877
+      },
+      "prevControl": {
+        "x": 7.736367572613748,
+        "y": 5.896399904819768
+      },
+      "nextControl": {
+        "x": 9.19110104407556,
+        "y": 5.7909809123808325
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.3186589890720046,
-        "y": 5.522015734187229
+        "x": 3.07,
+        "y": 5.58
       },
       "prevControl": {
-        "x": 1.844996018169372,
-        "y": 4.221457036842239
+        "x": 4.070543458212739,
+        "y": 6.624787400711922
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "A2PodiumEdition"
     }
   ],
   "rotationTargets": [],
@@ -43,7 +59,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "CenterSubwoofer",
+  "folder": "Sri Paths",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

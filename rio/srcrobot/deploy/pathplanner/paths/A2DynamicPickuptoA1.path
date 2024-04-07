@@ -3,32 +3,38 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.62,
-        "y": 4.07
+        "x": 3.090100695371151,
+        "y": 5.55
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.6200012394583458,
-        "y": 4.068425542901442
+        "x": 2.119402183387027,
+        "y": 5.421418384993884
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "A2DynamicPickup"
     },
     {
       "anchor": {
-        "x": 1.3186589890720046,
-        "y": 5.522015734187229
+        "x": 2.7951396452572306,
+        "y": 7.017220478509299
       },
       "prevControl": {
-        "x": 1.844996018169372,
-        "y": 4.221457036842239
+        "x": 2.4186464531305267,
+        "y": 6.464548936791387
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": 47.40330324385846,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -39,11 +45,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": 47.4,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "CenterSubwoofer",
+  "folder": "Sri Paths",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

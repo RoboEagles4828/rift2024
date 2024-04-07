@@ -1,0 +1,112 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.3,
+      "y": 5.55
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeOn"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Combo Shot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "parallel",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "IntakeUntilBeamBreak"
+                            }
+                          },
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "CenterSubwoofertoA2Dynamic"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Queue Dynamic"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "A2DynamicPickuptoM2"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Queue Dynamic"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "A2DynamicPickuptoM1"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Queue Dynamic"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "A2DynamicPickuptoA1"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Queue Dynamic"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeOff"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}
