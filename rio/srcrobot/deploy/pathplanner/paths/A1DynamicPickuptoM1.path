@@ -59,7 +59,18 @@
               "data": {
                 "name": "IntakeUntilBeamBreak"
               }
-            },
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "ArmDown",
+      "waypointRelativePos": 0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
             {
               "type": "named",
               "data": {
@@ -83,7 +94,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "CenterSubwoofer4PieceClose",
+  "folder": null,
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

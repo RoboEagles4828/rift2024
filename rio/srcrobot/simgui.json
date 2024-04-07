@@ -18,6 +18,11 @@
       "/Shuffleboard/Field/Field": "Field2d"
     },
     "windows": {
+      "/Shuffleboard/Autonomous/Auton Selector": {
+        "window": {
+          "visible": true
+        }
+      },
       "/Shuffleboard/Field/Field": {
         "XModules": {
           "arrows": false,
