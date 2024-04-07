@@ -3,45 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.07,
-        "y": 5.58
+        "x": 3.090100695371151,
+        "y": 5.55
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.378816351788993,
-        "y": 6.621870282292348
+        "x": 2.000318880398503,
+        "y": 5.422488080083582
       },
       "isLocked": false,
-      "linkedName": "A2PodiumEdition"
+      "linkedName": "A2DynamicPickup"
     },
     {
       "anchor": {
-        "x": 8.442886695763862,
-        "y": 5.845201155658877
+        "x": 3.090100695371151,
+        "y": 7.113035404049324
       },
       "prevControl": {
-        "x": 7.736367572613748,
-        "y": 5.896399904819768
-      },
-      "nextControl": {
-        "x": 9.19110104407556,
-        "y": 5.7909809123808325
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 3.07,
-        "y": 5.58
-      },
-      "prevControl": {
-        "x": 4.070543458212739,
-        "y": 6.624787400711922
+        "x": 1.8214813767274018,
+        "y": 6.975308612787636
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "A2PodiumEdition"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -49,7 +33,7 @@
   "eventMarkers": [
     {
       "name": "Intake",
-      "waypointRelativePos": 0.05,
+      "waypointRelativePos": 0,
       "command": {
         "type": "parallel",
         "data": {
@@ -57,7 +41,7 @@
             {
               "type": "named",
               "data": {
-                "name": "IntakeOn"
+                "name": "IntakeUntilBeamBreak"
               }
             },
             {
@@ -83,7 +67,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Sri Paths",
+  "folder": "CenterSubwoofer4PieceClose",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

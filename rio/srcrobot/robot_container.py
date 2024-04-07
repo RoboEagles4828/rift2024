@@ -150,6 +150,7 @@ class RobotContainer:
         NamedCommands.registerCommand("Queue Podium", self.autoExecuteShot(Constants.NextShot.CENTER_AUTO))
         NamedCommands.registerCommand("Queue Dynamic", self.autoDynamicShot()) #check this change with saranga
         NamedCommands.registerCommand("Execute Shot", self.autoShootWhenReady())
+        NamedCommands.registerCommand("Bring Arm Down", self.bringArmDown())
 
         self.auton_selector = AutoBuilder.buildAutoChooser("DO NOTHING")
 
@@ -206,7 +207,6 @@ class RobotContainer:
                 self.s_Arm.servoArmToTargetGravity(autoShot.m_armAngle)
             ),
             self.s_Indexer.instantStop(),
-            self.s_Arm.seekArmZero().withTimeout(0.5),
         )
     
     def getDynamicShotCommand(self, translation, strafe, rotation, robotcentric) -> ParallelCommandGroup:
@@ -250,7 +250,7 @@ class RobotContainer:
                         lambda: 0.0,
                         lambda: False
                     )
-                ).andThen(self.s_Arm.seekArmZero().withTimeout(0.5)),
+                )
             )
     
     def autoShootWhenReady(self) -> Command:
@@ -259,12 +259,14 @@ class RobotContainer:
                 SequentialCommandGroup(
                     self.s_Indexer.indexerShoot(),
                     self.s_Indexer.instantStop(),
-                    self.s_Arm.seekArmZero().withTimeout(1.0),
                 ),
                 InstantCommand(),
                 lambda: self.s_Indexer.getBeamBreakState()
             )
         )
+    def bringArmDown(self) -> Command:
+        return self.s_Arm.seekArmZero().withTimeout(0.5)
+    
     def bringArmUp(self) -> Command:
         return DeferredCommand(
             lambda: ParallelDeadlineGroup(
