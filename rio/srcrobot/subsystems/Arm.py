@@ -151,6 +151,14 @@ class Arm(Subsystem):
     def hardSetEncoderToZero(self):
         self.armMotor.setSelectedSensorPosition(0)
 
+    def holdPosition(self):
+        # return a command that will hold the arm in place
+        return self.run(lambda: self.armMotor.set(
+            phoenix5.ControlMode.MotionMagic,
+            self.armMotor.getSelectedSensorPosition(),
+            phoenix5.DemandType.ArbitraryFeedForward,
+            self.calculateGravityFeedForward())) \
+        .withName("holdPosition")
     
     #     
     #     Creates a command to servo the arm to a desired angle. Note that 0 is

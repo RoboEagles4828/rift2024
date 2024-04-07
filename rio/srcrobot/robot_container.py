@@ -37,7 +37,7 @@ from commands.TurnToTag import TurnToTag
 from commands.SysId import DriveSysId
 
 from wpilib.shuffleboard import Shuffleboard, BuiltInWidgets, BuiltInLayouts
-from wpilib import SendableChooser, RobotBase
+from wpilib import SendableChooser, RobotBase, DriverStation
 
 from wpimath import applyDeadband
 
@@ -176,7 +176,15 @@ class RobotContainer:
         Shuffleboard.getTab("Teleoperated").addDouble("Target Arm Angle Trig", lambda: self.dynamicShot.getTrigArmAngle())
         Shuffleboard.getTab("Teleoperated").addDouble("Target Distance Feet", lambda: Units.metersToFeet(self.s_Vision.getDistanceVectorToSpeaker(self.s_Swerve.getPose()).norm()) - (36.37 / 12.0) - (Constants.Swerve.robotLength / 2.0 / 12.0))
         
+        Shuffleboard.getTab("Teleoperated").addBoolean("PATH FLIP", self.s_Swerve.shouldFlipPath)
+        Shuffleboard.getTab("Teleoperated").addString("FMS ALLIANCE", self.getAllianceName)
         Shuffleboard.getTab("Teleoperated").addDouble("Shooter Speed RPM", lambda: Conversions.MPSToRPS(self.s_Shooter.getVelocity(), self.s_Shooter.wheelCircumference) * 60.0)
+
+    def getAllianceName(self):
+        if DriverStation.getAlliance() is None:
+            return "NONE"
+        else:
+            return DriverStation.getAlliance().name
 
     def autoModeShot(self, autoShot: Constants.NextShot) -> Command:
         """
@@ -198,7 +206,7 @@ class RobotContainer:
                 self.s_Arm.servoArmToTargetGravity(autoShot.m_armAngle)
             ),
             self.s_Indexer.instantStop(),
-            self.s_Arm.seekArmZero().withTimeout(1.0),
+            self.s_Arm.seekArmZero().withTimeout(0.5),
         )
     
     def getDynamicShotCommand(self, translation, strafe, rotation, robotcentric) -> ParallelCommandGroup:
@@ -305,7 +313,7 @@ class RobotContainer:
         )
 
         # Arm Buttons
-        self.s_Arm.setDefaultCommand(self.s_Arm.stop())
+        self.s_Arm.setDefaultCommand(self.s_Arm.holdPosition())
 
         # Driver Buttons
         self.zeroGyro.onTrue(InstantCommand(lambda: self.s_Swerve.zeroHeading()))

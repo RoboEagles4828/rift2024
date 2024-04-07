@@ -62,6 +62,7 @@ class Swerve(Subsystem):
         )
 
         Shuffleboard.getTab("Field").add(self.field)
+        self.alliance = Shuffleboard.getTab("Teleoperated").add("MANUAL ALLIANCE FLIP", False).getEntry()
 
     def drive(self, translation: Translation2d, rotation, fieldRelative, isOpenLoop):
         discreteSpeeds = ChassisSpeeds.discretize(translation.X(), translation.Y(), rotation, 0.02)
@@ -86,7 +87,6 @@ class Swerve(Subsystem):
         self.drive(Translation2d(speeds.vx, speeds.vy), -speeds.omega, False, False)
 
     def shouldFlipPath(self):
-        # return False
         return DriverStation.getAlliance() == DriverStation.Alliance.kRed
 
     def setModuleStates(self, desiredStates):
@@ -206,6 +206,4 @@ class Swerve(Subsystem):
         if optestimatedPose is not None:
             estimatedPose = optestimatedPose
             heading = estimatedPose.estimatedPose.toPose2d().rotation()
-            if DriverStation.getAlliance() == DriverStation.Alliance.kRed:
-                heading = heading.rotateBy(Rotation2d.fromDegrees(180.0))
-            self.swerveOdometry.addVisionMeasurement(Pose2d(estimatedPose.estimatedPose.toPose2d().X(), estimatedPose.estimatedPose.toPose2d().Y(), heading), estimatedPose.timestampSeconds)
+            self.swerveOdometry.addVisionMeasurement(Pose2d(estimatedPose.estimatedPose.toPose2d().X(), estimatedPose.estimatedPose.toPose2d().Y(), self.getHeading()), estimatedPose.timestampSeconds)

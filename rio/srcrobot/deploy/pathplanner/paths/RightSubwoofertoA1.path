@@ -8,45 +8,29 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7448883793016343,
-        "y": 6.754418204277743
+        "x": 1.2124866606412354,
+        "y": 6.629025435888405
       },
       "isLocked": false,
       "linkedName": "RightSubwooferPos"
     },
     {
       "anchor": {
-        "x": 2.9373211578454406,
-        "y": 7.015952492293168
+        "x": 3.17144768250529,
+        "y": 7.075177595454497
       },
       "prevControl": {
-        "x": 4.640712142142068,
-        "y": 7.060545906064957
-      },
-      "nextControl": {
-        "x": 2.2452823951791867,
-        "y": 6.997835470908066
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 0.7447826568611854,
-        "y": 6.588640937298404
-      },
-      "prevControl": {
-        "x": 1.9649674791278027,
-        "y": 6.877260060374053
+        "x": 2.670871877216356,
+        "y": 6.949954692575538
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "RightSubwooferPos"
+      "linkedName": null
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1,
+      "waypointRelativePos": 0.5,
       "rotationDegrees": 10.0,
       "rotateFast": false
     }
@@ -55,7 +39,7 @@
   "eventMarkers": [
     {
       "name": "Intake On",
-      "waypointRelativePos": 0.15,
+      "waypointRelativePos": 0.1,
       "command": {
         "type": "sequential",
         "data": {
@@ -65,29 +49,6 @@
               "data": {
                 "name": "IntakeUntilBeamBreak"
               }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Queue Speaker"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Shoot",
-      "waypointRelativePos": 2.0,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Execute Shot"
-              }
             }
           ]
         }
@@ -96,13 +57,13 @@
   ],
   "globalConstraints": {
     "maxVelocity": 4.0,
-    "maxAcceleration": 4.0,
+    "maxAcceleration": 4.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 61.971500268702776,
+    "velocity": 0.0,
+    "rotation": 10.0,
     "rotateFast": false
   },
   "reversed": false,
