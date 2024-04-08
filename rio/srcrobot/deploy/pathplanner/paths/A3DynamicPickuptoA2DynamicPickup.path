@@ -1,0 +1,87 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.735276729708733,
+        "y": 4.277459092027559
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.3860094120313082,
+        "y": 4.089232917850004
+      },
+      "isLocked": false,
+      "linkedName": "A3DynamicPickup"
+    },
+    {
+      "anchor": {
+        "x": 3.090100695371151,
+        "y": 5.55
+      },
+      "prevControl": {
+        "x": 1.821057603294683,
+        "y": 5.742103202655515
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "A2DynamicPickup"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "IntakeOn",
+      "waypointRelativePos": 0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeUntilBeamBreak"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "BringArmDown",
+      "waypointRelativePos": 0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Bring Arm Down"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": null,
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

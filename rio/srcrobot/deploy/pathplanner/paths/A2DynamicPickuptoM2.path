@@ -1,0 +1,98 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.090100695371151,
+        "y": 5.55
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.9398704691571877,
+        "y": 7.208142979874293
+      },
+      "isLocked": false,
+      "linkedName": "A2DynamicPickup"
+    },
+    {
+      "anchor": {
+        "x": 8.213958579797511,
+        "y": 5.828973669731358
+      },
+      "prevControl": {
+        "x": 8.745945908170075,
+        "y": 5.677764706490143
+      },
+      "nextControl": {
+        "x": 7.53547499936805,
+        "y": 6.02182186986946
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.090100695371151,
+        "y": 5.55
+      },
+      "prevControl": {
+        "x": 4.3049026646201005,
+        "y": 6.986699639452434
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "A2DynamicPickup"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1,
+      "rotationDegrees": -15.0,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "Intake",
+      "waypointRelativePos": 0.1,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeUntilBeamBreak"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Bring Arm Down"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Sri Paths",
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

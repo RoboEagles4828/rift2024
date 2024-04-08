@@ -30,10 +30,10 @@ class Indexer(Subsystem):
         self.indexerIntakeVelocity = -(Constants.IndexerConstants.kIndexerIntakeSpeedMS/(math.pi*self.indexerDiameter))*self.indexerEncoderCPR
         self.indexerShootVelocity = -(Constants.IndexerConstants.kIndexerMaxSpeedMS/(math.pi*self.indexerDiameter))*self.indexerEncoderCPR
 
-        self.debouncer = Debouncer(0.1, Debouncer.DebounceType.kBoth)
+        self.debouncer = Debouncer(0.05, Debouncer.DebounceType.kBoth)
         
     def getBeamBreakState(self):
-        return self.debouncer.calculate(not bool(self.beamBreak.get()))
+        return not bool(self.beamBreak.get())
 
     def indexerIntake(self):
         return self.run(lambda: self.indexerMotor.set(TalonSRXControlMode.Velocity, self.indexerIntakeVelocity)).withName("Intake")

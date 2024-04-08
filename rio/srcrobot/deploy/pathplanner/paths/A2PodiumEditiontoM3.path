@@ -1,0 +1,92 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.07,
+        "y": 5.58
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.9031740260966425,
+        "y": 4.319631508219262
+      },
+      "isLocked": false,
+      "linkedName": "A2PodiumEdition"
+    },
+    {
+      "anchor": {
+        "x": 8.327203921158704,
+        "y": 4.134236877732906
+      },
+      "prevControl": {
+        "x": 7.571769139432964,
+        "y": 4.2097614636893335
+      },
+      "nextControl": {
+        "x": 9.073659129848057,
+        "y": 4.059610024515353
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.07,
+        "y": 5.58
+      },
+      "prevControl": {
+        "x": 3.5103209338509975,
+        "y": 4.41894932228833
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "A2PodiumEdition"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "Intake",
+      "waypointRelativePos": 0.0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Bring Arm Down"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeUntilBeamBreak"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Sri Paths",
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

@@ -1,0 +1,86 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.17,
+        "y": 7.08
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.17,
+        "y": 7.08
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.46,
+        "y": 7.48
+      },
+      "prevControl": {
+        "x": 8.939645321374336,
+        "y": 7.523108097468797
+      },
+      "nextControl": {
+        "x": 7.980354678625666,
+        "y": 7.436891902531204
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.25141871450266,
+        "y": 6.907567610124811
+      },
+      "prevControl": {
+        "x": 4.353808553223951,
+        "y": 6.986291815755948
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "M1DynamicEnd"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "Intake",
+      "waypointRelativePos": 0.1,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeUntilBeamBreak"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "RightSubwoofer",
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

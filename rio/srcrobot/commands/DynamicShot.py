@@ -6,6 +6,7 @@ import lib.mathlib.units as Units
 import math
 from wpimath.geometry import Rotation2d, Translation2d, Transform2d
 from wpilib import DriverStation, RobotBase
+from robotState import RobotState
 
 class DynamicShot():
     def __init__(self, swerve: Swerve, vision: Vision, arm: Arm):
@@ -13,6 +14,7 @@ class DynamicShot():
         self.arm = arm
         self.vision = vision
         self.speakerTargetHeightMeters = Units.inchesToMeters(80.5)
+        self.robotState = RobotState()
     
     def getArmAngle(self):
         # distanceFromSpeaker = self.vision.getDistanceVectorToSpeaker(self.swerve.getPose()).norm()
@@ -53,7 +55,13 @@ class DynamicShot():
         if angle >= 90:
             angle = angle - 180
 
-        if RobotBase.isSimulation() and DriverStation.getAlliance() == DriverStation.Alliance.kRed:
+        if DriverStation.getAlliance() == DriverStation.Alliance.kRed and DriverStation.isAutonomous():
             return Rotation2d.fromDegrees(angle).rotateBy(Rotation2d.fromDegrees(180.0))
         return Rotation2d.fromDegrees(angle)
+    
+    def getRotationTarget(self):
+        if self.robotState.m_gameState.getNextShot() == Constants.NextShot.DYNAMIC:
+            return self.getRobotAngle()
+        else:
+            return None
     

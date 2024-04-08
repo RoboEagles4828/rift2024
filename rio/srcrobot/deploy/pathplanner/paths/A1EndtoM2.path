@@ -1,0 +1,109 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.25141871450266,
+        "y": 6.907567610124811
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.452110216418138,
+        "y": 7.889260072904077
+      },
+      "isLocked": false,
+      "linkedName": "M1DynamicEnd"
+    },
+    {
+      "anchor": {
+        "x": 8.51375262072558,
+        "y": 5.727955410713081
+      },
+      "prevControl": {
+        "x": 9.283973588978565,
+        "y": 5.367296385896207
+      },
+      "nextControl": {
+        "x": 7.052776139450584,
+        "y": 6.412063445595818
+      },
+      "isLocked": false,
+      "linkedName": "MidlinePiece2"
+    },
+    {
+      "anchor": {
+        "x": 1.863212448297146,
+        "y": 6.300231898439149
+      },
+      "prevControl": {
+        "x": 1.6197163680846463,
+        "y": 9.001878883654022
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "M2DynamicEnd"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1,
+      "rotationDegrees": 0.0,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "Intake First Piece",
+      "waypointRelativePos": 0.25,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeUntilBeamBreak"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Bring Arm Up",
+      "waypointRelativePos": 0.1,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Bring Arm Down"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0.0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Greedy Paths",
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

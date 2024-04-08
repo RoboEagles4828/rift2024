@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.7,
-        "y": 4.47
+        "x": 1.9257586311803483,
+        "y": 3.8131176689599475
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.6015306941931893,
-        "y": 3.040428588672941
+        "x": 2.8272893253735374,
+        "y": 2.3835462576328887
       },
       "isLocked": false,
       "linkedName": "LeftSubwooferPos"
@@ -32,28 +32,28 @@
     },
     {
       "anchor": {
-        "x": 8.586973888425316,
-        "y": 0.6381252716118725
+        "x": 8.578492451174355,
+        "y": 0.879988201626795
       },
       "prevControl": {
-        "x": 7.4113180248172235,
-        "y": 0.8975069652851911
+        "x": 7.402836587566263,
+        "y": 1.1393698953001135
       },
       "nextControl": {
-        "x": 9.37566423817112,
-        "y": 0.46411870639725505
+        "x": 9.36718280092016,
+        "y": 0.7059816364121776
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 0.7,
-        "y": 4.4680573742251
+        "x": 1.9257586311803483,
+        "y": 3.8131176689599475
       },
       "prevControl": {
-        "x": 1.2116286673180072,
-        "y": 2.7851961655296256
+        "x": 2.4373872984983542,
+        "y": 2.1302564602644734
       },
       "nextControl": null,
       "isLocked": false,
@@ -67,19 +67,7 @@
       "rotateFast": false
     }
   ],
-  "constraintZones": [
-    {
-      "name": "New Constraints Zone",
-      "minWaypointRelativePos": 1.75,
-      "maxWaypointRelativePos": 2.05,
-      "constraints": {
-        "maxVelocity": 1.0,
-        "maxAcceleration": 4.0,
-        "maxAngularVelocity": 540.0,
-        "maxAngularAcceleration": 720.0
-      }
-    }
-  ],
+  "constraintZones": [],
   "eventMarkers": [
     {
       "name": "IntakePiece",
@@ -93,20 +81,14 @@
               "data": {
                 "name": "IntakeUntilBeamBreak"
               }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Queue Speaker"
-              }
             }
           ]
         }
       }
     },
     {
-      "name": "Shoot",
-      "waypointRelativePos": 3.0,
+      "name": "Bring Arm Down",
+      "waypointRelativePos": 0.05,
       "command": {
         "type": "parallel",
         "data": {
@@ -114,7 +96,7 @@
             {
               "type": "named",
               "data": {
-                "name": "Execute Shot"
+                "name": "Bring Arm Down"
               }
             }
           ]

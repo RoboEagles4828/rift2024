@@ -231,9 +231,9 @@ class Constants:
     # shot. TODO decide on shooter velocity units and tune angles.
     class NextShot(Enum):
       AMP = (0, -90.0, 90.0, 85.0, 8.0, 5, 6)
-      SPEAKER_AMP = (1, -60.0, -60.0, 5.0, 25.0, 4, 7)
-      SPEAKER_CENTER = (2, 0.0, 0.0, 5.0, 25.0, 4, 7)
-      SPEAKER_SOURCE = (3, 60.0, 60.0, 5.0, 25.0, 4, 7)
+      SPEAKER_AMP = (1, -60.0, -60.0, 6.5, 25.0, 4, 7)
+      SPEAKER_CENTER = (2, 0.0, 0.0, 6.5, 25.0, 4, 7)
+      SPEAKER_SOURCE = (3, 60.0, 60.0, 6.5, 25.0, 4, 7)
       PODIUM = (4, -30.0, 30.0, 26.5, 35.0, 4, 7)
       CENTER_AUTO = (5, -30.0, 30.0, 31.0, 35.0, 4, 7)
       DYNAMIC = (6, 0.0, 0.0, 0.0, 35.0, 4, 7)

@@ -48,6 +48,10 @@ class Robot(TimedRobot):
     # teleop starts running. If you want the autonomous to
     # continue until interrupted by another command, remove
     # this line or comment it out.
+    # flip heading
+    if DriverStation.getAlliance() == DriverStation.Alliance.kRed:
+      self.m_robotContainer.s_Swerve.setHeading(self.m_robotContainer.s_Swerve.getHeading().rotateBy(Rotation2d.fromDegrees(180.0)))
+
     GameState().setNextShot(Constants.NextShot.SPEAKER_CENTER)
     self.m_robotContainer.s_Shooter.setDefaultCommand(self.m_robotContainer.s_Shooter.stop())
 

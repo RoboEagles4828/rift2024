@@ -6,9 +6,11 @@
     "CenterSubwoofer",
     "Greedy Paths",
     "LeftSubwoofer",
-    "The Wrangler Paths",
+    "CenterSubwoofer4PieceClose",
     "RightSubwoofer",
-    "Test Paths"
+    "Sri Paths",
+    "Test Paths",
+    "The Wrangler Paths"
   ],
   "autoFolders": [
     "1 Piece Auton",
@@ -16,8 +18,9 @@
     "3 Piece Auton",
     "4 Piece Auton",
     "5 Piece",
-    "Test Autons",
-    "Taxi Autons"
+    "Greedy Auton",
+    "Taxi Autons",
+    "Test Auton"
   ],
   "defaultMaxVel": 4.0,
   "defaultMaxAccel": 4.0,

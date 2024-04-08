@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7,
-      "y": 4.47
+      "x": 0.74,
+      "y": 4.39
     },
     "rotation": -60.0
   },
@@ -26,13 +26,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "LeftSubwoofertoM4"
+            "pathName": "ActualLeftSubwoofertoM4Modified"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Execute Shot"
+            "name": "Queue Dynamic"
           }
         },
         {
@@ -44,7 +44,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Execute Shot"
+            "name": "Queue Dynamic"
           }
         },
         {
