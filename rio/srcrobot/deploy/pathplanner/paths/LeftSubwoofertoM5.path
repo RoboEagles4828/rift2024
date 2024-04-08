@@ -1,0 +1,125 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.9257586311803483,
+        "y": 3.8131176689599475
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.8272893253735374,
+        "y": 2.3835462576328887
+      },
+      "isLocked": false,
+      "linkedName": "LeftSubwooferPos"
+    },
+    {
+      "anchor": {
+        "x": 5.042908533547722,
+        "y": 1.6644410144860133
+      },
+      "prevControl": {
+        "x": 3.9559398171147273,
+        "y": 2.0398917611124965
+      },
+      "nextControl": {
+        "x": 6.011322916771807,
+        "y": 1.3299402163227754
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.578492451174355,
+        "y": 0.879988201626795
+      },
+      "prevControl": {
+        "x": 7.402836587566263,
+        "y": 1.1393698953001135
+      },
+      "nextControl": {
+        "x": 9.36718280092016,
+        "y": 0.7059816364121776
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.9257586311803483,
+        "y": 3.8131176689599475
+      },
+      "prevControl": {
+        "x": 2.4373872984983542,
+        "y": 2.1302564602644734
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "LeftSubwooferPos"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 2.0,
+      "rotationDegrees": -20.0,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "IntakePiece",
+      "waypointRelativePos": 0.8,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeUntilBeamBreak"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Bring Arm Down",
+      "waypointRelativePos": 0.05,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Bring Arm Down"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -54.88320993345253,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "LeftSubwoofer",
+  "previewStartingState": {
+    "rotation": -59.0267402181966,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

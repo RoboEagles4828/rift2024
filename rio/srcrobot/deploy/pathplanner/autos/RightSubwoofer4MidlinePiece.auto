@@ -1,0 +1,99 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.69,
+      "y": 6.64
+    },
+    "rotation": 60.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeOn"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Combo Shot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeUntilBeamBreak"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "RightSubwooferToRightPiece"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RightPieceToRightSubwoofer"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Combo Shot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeUntilBeamBreak"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "RightSubwooferToMidlinePiece"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MidlinePieceToRightSubwoofer"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Combo Shot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeOff"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "3 Piece Auton",
+  "choreoAuto": false
+}

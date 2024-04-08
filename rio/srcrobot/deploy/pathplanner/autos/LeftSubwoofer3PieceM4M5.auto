@@ -1,0 +1,61 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.74,
+      "y": 4.39
+    },
+    "rotation": -60.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeOn"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Combo Shot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ActualLeftSubwoofertoM4Modified"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Queue Dynamic"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LeftSubwoofertoM5"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Queue Dynamic"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeOff"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "3 Piece Auton",
+  "choreoAuto": false
+}

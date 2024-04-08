@@ -15,6 +15,7 @@ class GameState:
         return cls.instance
 
     m_hasNote = True
+    m_noteInIntake = True
     """ Do we have a note onboard? Start auto holding a note. """
 
     m_nextShot = Constants.NextShot.SPEAKER_CENTER
@@ -54,6 +55,17 @@ class GameState:
         if alliance == DriverStation.Alliance.kRed:
             return nextShot.m_redSideBotHeading
         return nextShot.m_blueSideBotHeading
+    
+    def getNextShotTagID(self) -> int:
+        """
+        Return the tag ID for the next shot. This value is alliance adjusted. If
+        the FMS is misbehaving, we assume blue.
+        """
+        alliance = DriverStation.getAlliance()
+        nextShot = self.getNextShot()
+        if alliance == DriverStation.Alliance.kRed:
+            return nextShot.m_redTagID
+        return nextShot.m_blueTagID
 
     def setHasNote(self, hasNote):
         """
@@ -68,3 +80,12 @@ class GameState:
         Return true if the robot is currently holding a note. False, otherwise.
         """
         return self.m_hasNote
+    
+    def setNoteInIntake(self, m_noteInIntake):
+
+        self.m_noteInIntake = m_noteInIntake
+    
+    def getNoteInIntake(self) -> bool:
+
+        return self.m_noteInIntake
+

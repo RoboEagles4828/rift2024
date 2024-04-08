@@ -1,0 +1,108 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 0.74,
+        "y": 4.39
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.7624060871806282,
+        "y": 1.4214787821679602
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.144545704509838,
+        "y": 3.927320723785336
+      },
+      "prevControl": {
+        "x": 4.101595429998112,
+        "y": 3.569311540994571
+      },
+      "nextControl": {
+        "x": 6.429833882591614,
+        "y": 4.3685162261319
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.506836847421477,
+        "y": 2.4054030091991367
+      },
+      "prevControl": {
+        "x": 7.001937730313953,
+        "y": 2.9806115309987384
+      },
+      "nextControl": {
+        "x": 9.053861146798909,
+        "y": 2.1963172073294865
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.9257586311803483,
+        "y": 3.8131176689599475
+      },
+      "prevControl": {
+        "x": 3.1171747792020996,
+        "y": -0.9332484643905314
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "LeftSubwooferPos"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.8999999999999999,
+      "rotationDegrees": -37.217885848558026,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "IntakePiece",
+      "waypointRelativePos": 0.8,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeUntilBeamBreak"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -57.96721920073184,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "LeftSubwoofer",
+  "previewStartingState": {
+    "rotation": -59.0267402181966,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

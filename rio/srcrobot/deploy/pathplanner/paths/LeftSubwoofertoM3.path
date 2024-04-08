@@ -1,0 +1,131 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.9257586311803483,
+        "y": 3.8131176689599475
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.8163225172400466,
+        "y": 2.825195190988908
+      },
+      "isLocked": false,
+      "linkedName": "LeftSubwooferPos"
+    },
+    {
+      "anchor": {
+        "x": 4.85563964415781,
+        "y": 3.560763726047149
+      },
+      "prevControl": {
+        "x": 3.315547667491664,
+        "y": 3.17948289013746
+      },
+      "nextControl": {
+        "x": 6.085956375755855,
+        "y": 3.8653534511834606
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.484076763212945,
+        "y": 4.134555683880387
+      },
+      "prevControl": {
+        "x": 7.011886933104853,
+        "y": 3.56407351644754
+      },
+      "nextControl": {
+        "x": 9.237168688784108,
+        "y": 4.426383208558009
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.9257586311803483,
+        "y": 3.8131176689599475
+      },
+      "prevControl": {
+        "x": 2.0127308635396988,
+        "y": 2.0747152674967113
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "LeftSubwooferPos"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 2.0,
+      "rotationDegrees": 0.0,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "IntakePiece",
+      "waypointRelativePos": 0.8,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeUntilBeamBreak"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Queue Speaker"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Shoot",
+      "waypointRelativePos": 3.0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Execute Shot"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -54.88320993345253,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "LeftSubwoofer",
+  "previewStartingState": {
+    "rotation": -59.0267402181966,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

@@ -12,22 +12,15 @@
     "data": {
       "commands": [
         {
-          "type": "parallel",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Full Shooter Rev"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Full Shoot"
-                }
-              }
-            ]
+            "name": "IntakeOn"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Combo Shot"
           }
         },
         {
@@ -35,15 +28,40 @@
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "Full Intake"
+                  "pathName": "CenterSubwoofertoCenterPiece"
                 }
               },
               {
+                "type": "named",
+                "data": {
+                  "name": "IntakeUntilBeamBreak"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Combo Podium Shot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
                 "type": "path",
                 "data": {
-                  "pathName": "CenterSubwoofertoLeftPiece"
+                  "pathName": "CenterPieceToLeftPiece"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeUntilBeamBreak"
                 }
               }
             ]
@@ -58,43 +76,18 @@
         {
           "type": "named",
           "data": {
-            "name": "Full Shoot"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Full Intake"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "CenterSubwoofertoCenterPiece"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "CenterPiecetoCenterSubwoofer"
+            "name": "Combo Shot"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Full Shoot"
+            "name": "IntakeOff"
           }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "3 Piece Auton",
   "choreoAuto": false
 }

@@ -1,72 +1,72 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
     <!-- Arm Properties -->
-    <xacro:property name="arm_bar_height" value="0.0508" />
-    <xacro:property name="arm_bar_width" value="0.30" />
-    <xacro:property name="arm_bar_length" value="0.5" />
-    <xacro:property name="arm_bar_weight" value="0.419029447872" />
+    <xacro:property name="arm_bar_length" value="0.0508" />
+    <xacro:property name="arm_bar_width" value="0.0254" />
+    <xacro:property name="arm_bar_height" value="0.445" />
+    <xacro:property name="arm_mount_weight" value="0.419029447872" />
 
-    <xacro:property name="arm_mount_weight" value="7589489" /> <!-- This is a guess -->
-    <xacro:property name="arm_mount_length" value="0.25" />
-    <xacro:property name="arm_mount_width" value="0.25" />
-    <xacro:property name="arm_mount_height" value="0.25" />
+    <xacro:property name="arm_mount_length" value="0.0508" />
+    <xacro:property name="arm_mount_width" value="0.356" />
+    <xacro:property name="arm_mount_height" value="0.0254" />
+    <xacro:property name="arm_mount_weight" value="0.7589489" />
 
 
     <xacro:macro name="arm" params="parent *origin">
 
-        <link name="arm_mount_link">
+        <!-- Left Bar Arm -->
+        <link name="left_bar_link">
             <visual>
-                <origin xyz="0 0 0" rpy="0 0 ${pi/2}"/>
-                    <geometry>
-                        <mesh filename="package://rift_description/meshes/RiftSuperstructure.stl" scale="0.001 0.001 0.001"/>
-                    </geometry>
-                <material name="yellow"/>
-            </visual>
-            <collision>
-                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <origin xyz="${-arm_mount_width/2} 0 0" rpy="0 ${pi/2} ${pi/2}"/>
                 <geometry>
-                    <box size="${arm_mount_length} ${arm_mount_width} ${arm_mount_height}"/>
-                </geometry>
-            </collision>
-            <xacro:inertial_box mass="${arm_mount_weight}" x="${arm_mount_length}" y="${arm_mount_width}" z="${arm_mount_height}">
-                <origin xyz="0 0 0" rpy="0 0 0"/>
-            </xacro:inertial_box>
-
-            <!-- <xacro:inertial_box mass="0.5" xyz="0 0 0" size="0.5 0.5 0.5"/> -->
-        </link>
-        <link name="arm_bar_link">
-            <xacro:inertial_box mass="${arm_mount_weight}" x="${arm_mount_length}" y="${arm_mount_width}" z="${arm_mount_height}">
-                <origin xyz="0 0 0" rpy="0 0 0"/>
-            </xacro:inertial_box>
-            <visual>
-                <origin xyz="0.18 0 0" rpy="0 0 ${pi/2}"/>
-                <geometry>
-                    <mesh filename="package://rift_description/meshes/RiftShooterArm.stl" scale="0.001 0.001 0.001"/>
-                </geometry>
-                <material name="yellow"/>
-            </visual>
-            <collision>
-                <origin xyz="0.18 0 0" rpy="0 -${pi/60} 0"/>
-                <geometry>
+                <!-- Mesh File doesnt work -->
+                    <mesh filename="package://rift_description/meshes/ArmPart.stl" scale="1 1 1"/>
                     <box size="${arm_bar_length} ${arm_bar_width} ${arm_bar_height}"/>
                 </geometry>
+                <material name="red"/>
+            </visual>
+            <collision>
+            </collision>
+        </link>
+
+        <!-- Right Bar Arm -->
+        <link name="right_bar_link">
+            <visual>
+            <origin xyz="${arm_mount_width/2} 0 0" rpy="0 ${pi/2} ${pi/2}"/>
+                <geometry>
+                <!-- Mesh File Does Not Work -->
+                    <mesh filename="package://rift_description/meshes/ArmPart.stl" scale="1 1 1"/>
+                    <box size="${arm_bar_length} ${arm_bar_width} ${arm_bar_height}"/>
+                </geometry>
+                <material name="red"/>
+            </visual>
+            <collision>
+            </collision>
+        </link>
+
+        <!-- Arm Mount -->
+        <link name="arm_mount_link">
+            <visual>
+                <origin xyz="0 ${arm_bar_height/2} 0" rpy="${pi/2} ${pi/2} 0"/>
+                <geometry>
+                <!-- Mesh File Does not Work -->
+                    <mesh filename="package://rift_description/meshes/ShooterMount.stl" scale="1 1 1"/>
+                    <box size="${arm_mount_length} ${arm_mount_width} ${arm_mount_height}"/>
+                </geometry>
+                <material name="yellow"/>
+            </visual>
+            <collision>
             </collision>
         </link>
 
         <joint name="arm_mount_joint" type="fixed">
+            <origin xyz = "0 0 .2" rpy = "0 0 0"/>
             <parent link="${parent}"/>
             <child link="arm_mount_link"/>
             <xacro:insert_block name="origin" />
         </joint>
-        <joint name="arm_bar_joint" type="revolute">
-            <origin xyz="-0.12 0 0.13" rpy="0 0 0"/>
-            <parent link="arm_mount_link"/>
-            <child link="arm_bar_link"/>
-            <limit effort="100" velocity="100" lower="0" upper="1.57"/>
-            <xacro:insert_block name="origin" />
-        </joint>
 
-        <!-- <joint name="left_bar_joint" type="fixed">
+        <joint name="left_bar_joint" type="fixed">
             <origin xyz = "0 0 0" rpy = "0 0 0"/>
             <parent link="arm_mount_link"/>
             <child link="left_bar_link"/>
@@ -78,6 +78,6 @@
             <parent link="arm_mount_link"/>
             <child link="right_bar_link"/>
             <xacro:insert_block name="origin" />
-        </joint> -->
+        </joint>
     </xacro:macro>
 </robot>

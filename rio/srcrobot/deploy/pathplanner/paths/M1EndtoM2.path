@@ -1,0 +1,103 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.25141871450266,
+        "y": 6.907567610124811
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.441484377285317,
+        "y": 7.368226496475843
+      },
+      "isLocked": false,
+      "linkedName": "M1DynamicEnd"
+    },
+    {
+      "anchor": {
+        "x": 8.51375262072558,
+        "y": 5.727955410713081
+      },
+      "prevControl": {
+        "x": 7.9794678124787595,
+        "y": 5.674306603138405
+      },
+      "nextControl": {
+        "x": 9.075410654880576,
+        "y": 5.784352828966516
+      },
+      "isLocked": false,
+      "linkedName": "MidlinePiece2"
+    },
+    {
+      "anchor": {
+        "x": 1.863212448297146,
+        "y": 6.300231898439149
+      },
+      "prevControl": {
+        "x": 2.607674019960933,
+        "y": 7.806266218847468
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "M2DynamicEnd"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "Intake On",
+      "waypointRelativePos": 0.3,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeUntilBeamBreak"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Bring Arm Up",
+      "waypointRelativePos": 0.05,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Bring Arm Down"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Greedy Paths",
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

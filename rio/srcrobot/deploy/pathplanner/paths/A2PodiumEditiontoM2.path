@@ -1,0 +1,92 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.07,
+        "y": 5.58
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.378816351788993,
+        "y": 6.621870282292348
+      },
+      "isLocked": false,
+      "linkedName": "A2PodiumEdition"
+    },
+    {
+      "anchor": {
+        "x": 8.442886695763862,
+        "y": 5.845201155658877
+      },
+      "prevControl": {
+        "x": 7.736367572613748,
+        "y": 5.896399904819768
+      },
+      "nextControl": {
+        "x": 9.19110104407556,
+        "y": 5.7909809123808325
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.07,
+        "y": 5.58
+      },
+      "prevControl": {
+        "x": 4.070543458212739,
+        "y": 6.624787400711922
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "A2PodiumEdition"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "Intake",
+      "waypointRelativePos": 0.05,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeOn"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Bring Arm Down"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Sri Paths",
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

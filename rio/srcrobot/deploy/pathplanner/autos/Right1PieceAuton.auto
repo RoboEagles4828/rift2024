@@ -1,0 +1,25 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.7376772913344466,
+      "y": 6.610817619054913
+    },
+    "rotation": 60.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "Combo Shot"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "1 Piece Auton",
+  "choreoAuto": false
+}

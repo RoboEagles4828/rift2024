@@ -21,7 +21,7 @@ class Shooter(Subsystem):
         self.bottomShooter = TalonFX(self.kBottomShooterCANID)
         self.topShooter = TalonFX(self.kTopShooterCANID)
 
-        self.gearRatio = 3.0/4.0
+        self.gearRatio = 1.0
 
         self.wheelCircumference = 0.101*math.pi
 
@@ -40,7 +40,7 @@ class Shooter(Subsystem):
         self.topShooterConfig.current_limits.supply_time_threshold = Constants.Swerve.driveCurrentThresholdTime
 
         self.topShooterConfig.current_limits.stator_current_limit_enable = True
-        self.topShooterConfig.current_limits.stator_current_limit = 30
+        self.topShooterConfig.current_limits.stator_current_limit = 50
 
         self.bottomShooterConfig = deepcopy(self.topShooterConfig)
 
@@ -50,9 +50,9 @@ class Shooter(Subsystem):
         self.topShooter.configurator.apply(self.topShooterConfig)
         self.bottomShooter.configurator.apply(self.bottomShooterConfig)
 
-        self.VelocityControl = VelocityVoltage(0)
-        self.VoltageControl = VoltageOut(0)
-        self.percentOutput = DutyCycleOut(0)
+        self.VelocityControl = VelocityVoltage(0).with_enable_foc(False)
+        self.VoltageControl = VoltageOut(0).with_enable_foc(False)
+        self.percentOutput = DutyCycleOut(0).with_enable_foc(False)
 
         self.currentShotVelocity = 0.0
 
@@ -77,8 +77,8 @@ class Shooter(Subsystem):
         # self.topShooter.configurator.apply(self.topShooterConfig)
         # self.bottomShooter.configurator.apply(self.bottomShooterConfig)
 
-        self.topShooter.set_control(self.VoltageControl.with_output(0))
-        self.bottomShooter.set_control(self.VoltageControl.with_output(0))
+        self.topShooter.set_control(self.VoltageControl.with_output(0).with_override_brake_dur_neutral(False))
+        self.bottomShooter.set_control(self.VoltageControl.with_output(0).with_override_brake_dur_neutral(False))
 
     def idle(self):
         return self.run(lambda: self.setShooterVelocity(Constants.ShooterConstants.kAmpShootSpeed)).withName("IdleShooter")

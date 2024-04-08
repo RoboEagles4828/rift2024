@@ -1,0 +1,76 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.3,
+        "y": 5.55
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.7129015855932104,
+        "y": 5.245499575776984
+      },
+      "isLocked": false,
+      "linkedName": "CenterSubwooferPos"
+    },
+    {
+      "anchor": {
+        "x": 2.735276729708733,
+        "y": 4.277459092027559
+      },
+      "prevControl": {
+        "x": 2.075724971152091,
+        "y": 4.775027933234577
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "A3DynamicPickup"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "IntakeOn",
+      "waypointRelativePos": 0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeUntilBeamBreak"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Bring Arm Down"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -40.67355847584094,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "CenterSubwoofer4PieceClose",
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

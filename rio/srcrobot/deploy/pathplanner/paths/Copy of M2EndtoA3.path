@@ -1,0 +1,82 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.863212448297146,
+        "y": 6.300231898439149
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.3927714001469695,
+        "y": 6.306301726415527
+      },
+      "isLocked": false,
+      "linkedName": "M2DynamicEnd"
+    },
+    {
+      "anchor": {
+        "x": 2.15559153069261,
+        "y": 6.324947477948163
+      },
+      "prevControl": {
+        "x": 2.1525101933186943,
+        "y": 6.270172325916356
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "A2DynamicEnd"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0.05,
+      "maxWaypointRelativePos": 0.25,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 4.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0
+      }
+    }
+  ],
+  "eventMarkers": [
+    {
+      "name": "IntakeOn",
+      "waypointRelativePos": 0.05,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeUntilBeamBreak"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0.0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Greedy Paths",
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

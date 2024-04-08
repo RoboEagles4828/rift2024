@@ -1,0 +1,115 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.9257586311803483,
+        "y": 3.8131176689599475
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.368882097277786,
+        "y": 3.741410744449477
+      },
+      "isLocked": false,
+      "linkedName": "LeftSubwooferPos"
+    },
+    {
+      "anchor": {
+        "x": 2.62,
+        "y": 4.07
+      },
+      "prevControl": {
+        "x": 2.0489032221181502,
+        "y": 4.080300865736318
+      },
+      "nextControl": {
+        "x": 3.071593647697625,
+        "y": 4.061854610790206
+      },
+      "isLocked": false,
+      "linkedName": "A3 Piece"
+    },
+    {
+      "anchor": {
+        "x": 1.9257586311803483,
+        "y": 3.8131176689599475
+      },
+      "prevControl": {
+        "x": 2.3684856980997013,
+        "y": 3.7428740477983635
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "LeftSubwooferPos"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1,
+      "rotationDegrees": 0.0,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "Intake Piece",
+      "waypointRelativePos": 0.3,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeUntilBeamBreak"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Queue Speaker"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Shoot",
+      "waypointRelativePos": 2.0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Execute Shot"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -60.28140772833191,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "LeftSubwoofer",
+  "previewStartingState": {
+    "rotation": -58.48134101712992,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

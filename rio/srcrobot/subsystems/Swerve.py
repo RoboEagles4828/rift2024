@@ -1,16 +1,19 @@
 from SwerveModule import SwerveModule
 from constants import Constants
 
+from subsystems.Vision import Vision
+
 from wpimath.kinematics import ChassisSpeeds
 from wpimath.kinematics import SwerveDrive4Kinematics
 from wpimath.kinematics import SwerveDrive4Odometry
+from wpimath.estimator import SwerveDrive4PoseEstimator
 from wpimath.kinematics import SwerveModulePosition
 
 from navx import AHRS
 
 from wpimath.geometry import Pose2d
 from wpimath.geometry import Rotation2d
-from wpimath.geometry import Translation2d
+from wpimath.geometry import Translation2d, Transform2d
 from wpimath.kinematics import SwerveModuleState
 from wpilib.shuffleboard import Shuffleboard, BuiltInWidgets
 from commands2.subsystem import Subsystem
@@ -18,44 +21,22 @@ from commands2.subsystem import Subsystem
 from wpilib.sysid import SysIdRoutineLog
 from wpimath.units import volts
 
-from pathplannerlib.auto import AutoBuilder
+from pathplannerlib.auto import AutoBuilder, PathConstraints
 
-from wpilib import DriverStation
+from wpilib import DriverStation, RobotBase, Field2d
 from wpiutil import Sendable, SendableBuilder
 
+from sim.SwerveIMUSim import SwerveIMUSim
+from sim.SwerveModuleSim import SwerveModuleSim
+
 class Swerve(Subsystem):
-    swerveOdometry: SwerveDrive4Odometry
-    mSwerveMods: list[SwerveModule, SwerveModule, SwerveModule, SwerveModule]
-    gyro: AHRS
-
-    class SwerveSendable(Sendable):
-        def __init__(self, swerve, swerveMods):
-            self.mSwerveMods = swerveMods
-            self.swerve = swerve
-            super().__init__()
-
-        def initSendable(self, builder: SendableBuilder):
-            builder.setSmartDashboardType("SwerveDrive")
-
-            builder.addDoubleProperty("Front Left Angle", lambda: self.mSwerveMods[0].getState().angle.radians(), lambda val: None)
-            builder.addDoubleProperty("Front Left Velocity", lambda: self.mSwerveMods[0].getState().speed, lambda val: None)
-
-            builder.addDoubleProperty("Front Right Angle", lambda: self.mSwerveMods[1].getState().angle.radians(), lambda val: None)
-            builder.addDoubleProperty("Front Right Velocity", lambda: self.mSwerveMods[1].getState().speed, lambda val: None)
-
-            builder.addDoubleProperty("Back Left Angle", lambda: self.mSwerveMods[2].getState().angle.radians(), lambda val: None)
-            builder.addDoubleProperty("Back Left Velocity", lambda: self.mSwerveMods[2].getState().speed, lambda val: None)
-
-            builder.addDoubleProperty("Back Right Angle", lambda: self.mSwerveMods[3].getState().angle.radians(), lambda val: None)
-            builder.addDoubleProperty("Back Right Velocity", lambda: self.mSwerveMods[3].getState().speed, lambda val: None)
-
-            builder.addDoubleProperty("Robot Angle", lambda: self.swerve.getHeading().radians(), lambda val: None)
-        
-
     def __init__(self):
-        self.gyro = AHRS.create_spi()
-        self.gyro.calibrate()
-        self.gyro.zeroYaw()
+        if RobotBase.isSimulation():
+            self.gyro = SwerveIMUSim()
+        else:
+            self.gyro = AHRS.create_spi()
+            self.gyro.calibrate()
+            self.gyro.zeroYaw()
 
         self.mSwerveMods = [
             SwerveModule(0, Constants.Swerve.Mod0.constants),
@@ -64,7 +45,11 @@ class Swerve(Subsystem):
             SwerveModule(3, Constants.Swerve.Mod3.constants)
         ]
 
-        self.swerveOdometry = SwerveDrive4Odometry(Constants.Swerve.swerveKinematics, self.getGyroYaw(), self.getModulePositions())
+        # self.swerveOdometry = SwerveDrive4Odometry(Constants.Swerve.swerveKinematics, self.getGyroYaw(), self.getModulePositions())
+        self.swerveOdometry = SwerveDrive4PoseEstimator(Constants.Swerve.swerveKinematics, self.getGyroYaw(), self.getModulePositions(), Pose2d(0, 0, Rotation2d()))
+        self.vision : Vision = Vision.getInstance()
+
+        self.field = Field2d()
 
         AutoBuilder.configureHolonomic(
             self.getPose,
@@ -76,8 +61,8 @@ class Swerve(Subsystem):
             self
         )
 
-
-        Shuffleboard.getTab("Teleoperated").add("Swerve Drive", self.SwerveSendable(self, self.mSwerveMods))
+        Shuffleboard.getTab("Field").add(self.field)
+        self.alliance = Shuffleboard.getTab("Teleoperated").add("MANUAL ALLIANCE FLIP", False).getEntry()
 
     def drive(self, translation: Translation2d, rotation, fieldRelative, isOpenLoop):
         discreteSpeeds = ChassisSpeeds.discretize(translation.X(), translation.Y(), rotation, 0.02)
@@ -99,11 +84,10 @@ class Swerve(Subsystem):
         self.mSwerveMods[3].setDesiredState(swerveModuleStates[3], isOpenLoop)
     
     def driveRobotRelative(self, speeds: ChassisSpeeds):
-        self.drive(Translation2d(speeds.vx, speeds.vy), speeds.omega, False, False)
+        self.drive(Translation2d(speeds.vx, speeds.vy), -speeds.omega, False, False)
 
     def shouldFlipPath(self):
-        return False
-        # return DriverStation.getAlliance() == DriverStation.Alliance.kBlue
+        return DriverStation.getAlliance() == DriverStation.Alliance.kRed
 
     def setModuleStates(self, desiredStates):
         SwerveDrive4Kinematics.desaturateWheelSpeeds(desiredStates, Constants.Swerve.maxSpeed)
@@ -128,12 +112,16 @@ class Swerve(Subsystem):
         positions.append(self.mSwerveMods[2].getPosition())
         positions.append(self.mSwerveMods[3].getPosition())
         return positions
+    
+    def getTranslationVelocity(self) -> Translation2d:
+        speed = self.getRobotRelativeSpeeds()
+        return Translation2d(speed.vx, speed.vy)
 
     def getModules(self):
         return self.mSwerveMods
 
     def getPose(self):
-        return self.swerveOdometry.getPose()
+        return self.swerveOdometry.getEstimatedPosition()
 
     def setPose(self, pose):
         self.swerveOdometry.resetPosition(self.getGyroYaw(), tuple(self.getModulePositions()), pose)
@@ -141,7 +129,7 @@ class Swerve(Subsystem):
     def getHeading(self):
         return self.getPose().rotation()
 
-    def setHeading(self, heading):
+    def setHeading(self, heading: Rotation2d):
         self.swerveOdometry.resetPosition(self.getGyroYaw(), tuple(self.getModulePositions()), Pose2d(self.getPose().translation(), heading))
 
     def zeroHeading(self):
@@ -152,7 +140,7 @@ class Swerve(Subsystem):
 
     def getGyroYaw(self):
         return Rotation2d.fromDegrees(self.gyro.getYaw()).__mul__(-1)
-
+    
     def resetModulesToAbsolute(self):
         self.mSwerveMods[0].resetToAbsolute()
         self.mSwerveMods[1].resetToAbsolute()
@@ -182,8 +170,40 @@ class Swerve(Subsystem):
                 .position(mod.getPosition().distance)\
                 .velocity(mod.getState().speed)
             
+    def pathFindToPose(self, pose: Pose2d, constraints: PathConstraints, goalEndVel: float):
+        return AutoBuilder.pathfindToPose(pose, constraints)
+    
+    def getSwerveModulePoses(self, robot_pose: Pose2d):
+        poses = []
+
+        locations: list[Translation2d] = [
+            Constants.Swerve.frontLeftLocation,
+            Constants.Swerve.frontRightLocation,
+            Constants.Swerve.backLeftLocation,
+            Constants.Swerve.backRightLocation
+        ]
+
+        for idx, module in enumerate(self.mSwerveMods):
+            loc = locations[idx]
+            poses.append(
+                robot_pose + Transform2d(loc, module.getState().angle)
+            )
+        
+        return poses
+            
     def stop(self):
         self.drive(Translation2d(), 0, False, True)
 
     def periodic(self):
+        if RobotBase.isSimulation():
+            modulePoses = self.getSwerveModulePoses(self.getPose())
+            self.gyro.updateOdometry(Constants.Swerve.swerveKinematics, self.getModuleStates(), modulePoses, self.field)
+            self.field.getRobotObject().setPose(self.getPose())
+
         self.swerveOdometry.update(self.getGyroYaw(), tuple(self.getModulePositions()))
+        optestimatedPose = self.vision.getEstimatedGlobalPose()
+
+        if optestimatedPose is not None:
+            estimatedPose = optestimatedPose
+            heading = estimatedPose.estimatedPose.toPose2d().rotation()
+            self.swerveOdometry.addVisionMeasurement(Pose2d(estimatedPose.estimatedPose.toPose2d().X(), estimatedPose.estimatedPose.toPose2d().Y(), self.getHeading()), estimatedPose.timestampSeconds)

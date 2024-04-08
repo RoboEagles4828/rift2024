@@ -1,0 +1,49 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.63,
+      "y": 4.13
+    },
+    "rotation": -60.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeOn"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Combo Shot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LeftSubwoofertoA3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LeftSubwoofertoM5"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeOff"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "3 Piece Auton",
+  "choreoAuto": false
+}

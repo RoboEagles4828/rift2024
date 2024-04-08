@@ -1,39 +1,54 @@
 {
+  "HALProvider": {
+    "Other Devices": {
+      "Compressor[0]": {
+        "header": {
+          "open": true
+        }
+      },
+      "window": {
+        "visible": false
+      }
+    }
+  },
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
-      "/Shuffleboard/Auton/Auton Selector": "String Chooser",
       "/Shuffleboard/Autonomous/Auton Selector": "String Chooser",
-      "/Shuffleboard/Teleop/Gyro": "Gyro",
-      "/Shuffleboard/Teleop/Swerve Subsystem": "Subsystem",
-      "/Shuffleboard/Teleoperated/Arm Sub": "Subsystem",
-      "/Shuffleboard/Teleoperated/Climber Sub": "Subsystem",
-      "/Shuffleboard/Teleoperated/Indexer Sub": "Subsystem",
-      "/Shuffleboard/Teleoperated/Intake Sub": "Subsystem",
-      "/Shuffleboard/Teleoperated/Shooter Sub": "Subsystem",
-      "/Shuffleboard/Teleoperated/Swerve Subsystem": "Subsystem",
-      "/SmartDashboard/Auton Selector": "String Chooser",
-      "/SmartDashboard/Indexer Sub": "Subsystem",
-      "/SmartDashboard/Intake Sub": "Subsystem",
-      "/SmartDashboard/Shooter Sub": "Subsystem",
-      "/SmartDashboard/Swerve Subsystem": "Subsystem"
+      "/Shuffleboard/Field/Field": "Field2d"
+    },
+    "windows": {
+      "/Shuffleboard/Autonomous/Auton Selector": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/Shuffleboard/Field/Field": {
+        "XModules": {
+          "arrows": false,
+          "style": "Hidden"
+        },
+        "bottom": 1476,
+        "height": 8.210550308227539,
+        "left": 150,
+        "right": 2961,
+        "top": 79,
+        "width": 16.541748046875,
+        "window": {
+          "visible": true
+        }
+      }
     }
   },
   "NetworkTables": {
     "transitory": {
-      "SmartDashboard": {
+      "Shuffleboard": {
+        "Teleoperated": {
+          "open": true
+        },
         "open": true
       }
     }
-  },
-  "NetworkTables Info": {
-    "Server": {
-      "Subscribers": {
-        "open": true
-      },
-      "open": true
-    },
-    "visible": true
   },
   "NetworkTables View": {
     "visible": false

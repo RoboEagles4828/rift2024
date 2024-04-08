@@ -1,0 +1,43 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.7,
+      "y": 6.5378068842075185
+    },
+    "rotation": -60.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeOn"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Combo Shot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LeftSubwoofertoA3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeOff"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "2 Piece Autons",
+  "choreoAuto": false
+}

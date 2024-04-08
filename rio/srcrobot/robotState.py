@@ -11,7 +11,7 @@ class RobotState:
 
     kRobotHeadingTolerance = 2.0
     kArmAngleTolerance = 1.0
-    kShooterVelocityTolerance = 10.0
+    kShooterVelocityTolerance = 3.0
 
     m_gameState = GameState()
 
@@ -42,28 +42,40 @@ class RobotState:
         self.m_armAngleSupplier = armAngleSupplier
         self.m_shooterVelocitySupplier = shooterVelocitySupplier
 
+    def isclose(self, a, b, tolerance) -> bool:
+        return abs(a - b) < tolerance
+
     def isShooterReady(self) -> bool:
         """
         Return true if the current arm angle and shooter velocity are both within
         tolerance for the needs of the next desired shot.
         """
         shot = self.m_gameState.getNextShot()
-        return math.isclose(
-            shot.m_armAngle, self.m_armAngleSupplier(), abs_tol=self.kArmAngleTolerance
-        ) and math.isclose(
+        return self.isclose(
             shot.m_shooterVelocity,
             self.m_shooterVelocitySupplier(),
-            abs_tol=self.kShooterVelocityTolerance,
+            self.kShooterVelocityTolerance,
         )
+    
+    def isArmReady(self) -> bool:
+        shot = self.m_gameState.getNextShot()
+        return self.isclose(
+            shot.m_armAngle,
+            self.m_armAngleSupplier(),
+            self.kArmAngleTolerance
+        )
+    
+    def isArmAndShooterReady(self) -> bool:
+        return self.isShooterReady() and self.isArmReady()
 
     def isRobotReady(self) -> bool:
         """
         Return true if isShooterReady and the robot is turned correctly for the next shot.
         """
-        return self.isShooterReady() and math.isclose(
+        return self.isArmAndShooterReady() and self.isclose(
             self.m_gameState.getNextShotRobotAngle(),
             self.m_robotHeadingSupplier(),
-            abs_tol=self.kRobotHeadingTolerance,
+            self.kRobotHeadingTolerance,
         )
 
     def isReadyToIntake(self) -> bool:
@@ -74,6 +86,21 @@ class RobotState:
         :return: True if we do not have a note and the arm is in the proper
         intaking position.
         """
-        return (not self.m_gameState.hasNote()) and math.isclose(
-            0.0, self.m_armAngleSupplier(), abs_tol=self.kArmAngleTolerance
+        return (not self.m_gameState.hasNote()) and self.isclose(
+            0.0, self.m_armAngleSupplier(), self.kArmAngleTolerance
         )
+    
+    def isReadyDynamic(self, degreesSup) -> bool:
+        arm = self.isclose(
+            degreesSup(),
+            self.m_armAngleSupplier(),
+            self.kArmAngleTolerance
+        )
+
+        shooter = self.isclose(
+            35.0,
+            self.m_shooterVelocitySupplier(),
+            self.kShooterVelocityTolerance
+        )
+
+        return arm and shooter

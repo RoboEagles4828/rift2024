@@ -1,0 +1,52 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.2611943189988075,
+        "y": 6.980220966091649
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.164560109116186,
+        "y": 7.030392606126772
+      },
+      "isLocked": false,
+      "linkedName": "RightPiece"
+    },
+    {
+      "anchor": {
+        "x": 0.7447826568611854,
+        "y": 6.588640937298404
+      },
+      "prevControl": {
+        "x": 1.0977081386512335,
+        "y": 7.110453968418158
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "RightSubwooferPos"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 60.0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "RightSubwoofer",
+  "previewStartingState": {
+    "rotation": 0.0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

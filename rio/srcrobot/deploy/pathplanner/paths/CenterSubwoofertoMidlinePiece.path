@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 1.3,
-        "y": 5.5
+        "y": 5.55
       },
       "prevControl": null,
       "nextControl": {
         "x": 2.4489823918612683,
-        "y": 7.90401405448807
+        "y": 7.95401405448807
       },
       "isLocked": false,
       "linkedName": null
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "CenterSubwoofer",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

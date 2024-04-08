@@ -10,7 +10,9 @@ from lib.util.COTSTalonFXSwerveConstants import COTSTalonFXSwerveConstants
 from lib.util.SwerveModuleConstants import SwerveModuleConstants
 import math
 from enum import Enum
+from pytreemap import TreeMap
 
+from lib.util.InterpolatingTreeMap import InterpolatingTreeMap
 from wpimath.units import rotationsToRadians
 
 from pathplannerlib.auto import HolonomicPathFollowerConfig
@@ -29,6 +31,12 @@ class Constants:
         trackWidth = Units.inchesToMeters(20.75)
         wheelBase = Units.inchesToMeters(20.75)
         rotationBase = Units.inchesToMeters(31.125 - 5.25)
+
+        robotWidth = 26.0
+        robotLength = 31.125
+
+        armLength = 18.5
+
         frontOffset = rotationBase - wheelBase
 
         wheelCircumference = chosenModule.wheelCircumference
@@ -106,7 +114,7 @@ class Constants:
 
         holonomicPathConfig = HolonomicPathFollowerConfig(
             PIDConstants(5.0, 0.0, 0.0),
-            PIDConstants(0.0, 0.0, 0.0),
+            PIDConstants(4.0, 0.0, 0.0),
             maxAutoModuleSpeed,
             #distance from center to the furthest module
             Units.inchesToMeters(16),
@@ -115,8 +123,8 @@ class Constants:
 
         # Slowdown speed
         ## The speed is multiplied by this value when the trigger is fully held down
-        slowMoveModifier = 0.5
-        slowTurnModifier = 0.5
+        slowMoveModifier = 0.8
+        slowTurnModifier = 0.8
 
         # Module Specific Constants
         # Front Left Module - Module 0
@@ -174,14 +182,16 @@ class Constants:
         kPodiumShootSpeed = 20.0
         kAmpShootSpeed = 5.0
 
+        kMechanicalAngle = 30.0
+
     class IntakeConstants:
         kIntakeMotorID = 0
         kIntakeSpeed = 5.0
     
     class IndexerConstants:
         kIndexerMotorID = 14
-        kIndexerMaxSpeedMS = 10.0
-        kIndexerIntakeSpeedMS = 2.0
+        kIndexerMaxSpeedMS = 20.0
+        kIndexerIntakeSpeedMS = 0.5
         kBeamBreakerID = 0
 
     class ClimberConstants:
@@ -190,30 +200,83 @@ class Constants:
         kLeftCANID = 4
         kRightCANID = 15
         maxClimbHeight = 0
-        kClimberSpeed = 0.75 # percent output
+        kClimberSpeed = 0.85 # percent output
+    
+    class ArmConstants:
+        kKnownArmAngles = InterpolatingTreeMap()
+
+        # kKnownArmAngles.put(0.0, 5.0)
+        # kKnownArmAngles.put(1.0, 6.5)
+        # kKnownArmAngles.put(2.0, 10.0)
+        # kKnownArmAngles.put(3.0, 12.0)
+        # kKnownArmAngles.put(4.0, 17.0)
+        # kKnownArmAngles.put(5.0, 20.0)
+        # kKnownArmAngles.put(6.0, 23.0)
+
+        kKnownArmAngles.put(0.0, 5.0)
+        kKnownArmAngles.put(0.833, 11.8)
+        kKnownArmAngles.put(1.667, 18.0)
+        kKnownArmAngles.put(2.5, 22.0)
+        kKnownArmAngles.put(3.333, 26.0)
+        kKnownArmAngles.put(4.1667,28.7)
+        kKnownArmAngles.put(5.0, 30.0)
+        kKnownArmAngles.put(5.833, 32.35)
+        kKnownArmAngles.put(6.667, 33.3)
+        kKnownArmAngles.put(7.5, 34.15)
+        
+
+
 
     # An enumeration of known shot locations and data critical to executing the
     # shot. TODO decide on shooter velocity units and tune angles.
     class NextShot(Enum):
-      AMP = (0, -90.0, 90.0, 90.0, 5.0)
-      SPEAKER_AMP = (1, 60.0, -60.0, 5.0, 25.0)
-      SPEAKER_CENTER = (2, 0.0, 0.0, 5.0, 25.0)
-      SPEAKER_SOURCE = (3, -60.0, 60.0, 5.0, 25.0)
-      PODIUM = (4, -30.0, 30.0, 25.0, 45.0)
+      AMP = (0, -90.0, 90.0, 85.0, 8.0, 5, 6)
+      SPEAKER_AMP = (1, -60.0, -60.0, 6.5, 25.0, 4, 7)
+      SPEAKER_CENTER = (2, 0.0, 0.0, 6.5, 25.0, 4, 7)
+      SPEAKER_SOURCE = (3, 60.0, 60.0, 6.5, 25.0, 4, 7)
+      PODIUM = (4, -30.0, 30.0, 26.5, 35.0, 4, 7)
+      CENTER_AUTO = (5, -30.0, 30.0, 31.0, 35.0, 4, 7)
+      DYNAMIC = (6, 0.0, 0.0, 0.0, 35.0, 4, 7)
 
-      def __init__(self, value, blueSideBotHeading, redSideBotHeading, armAngle, shooterVelocity):
+
+
+      def __init__(self, value, blueSideBotHeading, redSideBotHeading, armAngle, shooterVelocity, red_tagID, blue_tagID):
         self._value_ = value
         self.m_blueSideBotHeading = blueSideBotHeading
         self.m_redSideBotHeading = redSideBotHeading
         self.m_armAngle = armAngle
         self.m_shooterVelocity = shooterVelocity
+        self.m_redTagID = red_tagID
+        self.m_blueTagID = blue_tagID
 
-      def calculate(self, distance):
-        shooterRegressionEquation = lambda x: (0.178571*(x**2)) + (0.107143*x) + 24.9286
-        armRegressionEquation = lambda x: (0.175*(x**2)) + (1.605*x) + 8.88
+      def calculateArmAngle(self, distance: float) -> float:
+        # a = -0.0694444
+        # b = 0.755952
+        # c = 0.968254
+        # d = 5.0
+        # armRegressionEquation = lambda x: a * (x**3) + b * (x**2) + c * x + d
 
-        shooterSpeed = shooterRegressionEquation(distance)
-        armAngle = armRegressionEquation(distance)
+        a = 0.130952
+        b = 2.35714
+        c = 4.58333
+        armRegressionEquation = lambda x: a * (x**2) + b * x + c
 
-        return (shooterSpeed, armAngle)
+        if distance <= 0.5:
+            armAngle = armRegressionEquation(0)
+        else:
+            armAngle = armRegressionEquation(distance) + 2.0
+
+        return armAngle
+      
+      def calculateInterpolatedArmAngle(self, distance: float) -> float:
+          armAngle = Constants.ArmConstants.kKnownArmAngles.get(distance)
+          return armAngle
+      
+      def calculateShooterVelocity(self, distance: float) -> float:
+            if distance <= 0.5:
+                shooterVelocity = 25.0
+            else:
+                shooterVelocity = 35.0
+            
+            return shooterVelocity
     

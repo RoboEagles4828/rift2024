@@ -14,6 +14,12 @@
         {
           "type": "named",
           "data": {
+            "name": "IntakeOn"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "Combo Shot"
           }
         },
@@ -37,15 +43,9 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "CenterPiecetoCenterSubwoofer"
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "Combo Shot"
+            "name": "Combo Podium Shot"
           }
         },
         {
@@ -55,7 +55,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CenterSubwoofertoLeftPiece"
+                  "pathName": "CenterPieceToLeftPiece"
                 }
               },
               {
@@ -131,6 +131,6 @@
       ]
     }
   },
-  "folder": null,
+  "folder": "4 Piece Auton",
   "choreoAuto": false
 }
