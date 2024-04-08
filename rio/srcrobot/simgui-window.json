@@ -17,12 +17,12 @@
   "Window": {
     "###/Shuffleboard/Autonomous/Auton Selector": {
       "Collapsed": "0",
-      "Pos": "60,60",
-      "Size": "307,60"
+      "Pos": "131,64",
+      "Size": "254,54"
     },
     "###/Shuffleboard/Field/Field": {
       "Collapsed": "0",
-      "Pos": "1531,542",
+      "Pos": "586,224",
       "Size": "869,547"
     },
     "###DIO": {
@@ -33,12 +33,12 @@
     "###FMS": {
       "Collapsed": "0",
       "Pos": "5,540",
-      "Size": "202,214"
+      "Size": "169,184"
     },
     "###Joysticks": {
       "Collapsed": "0",
       "Pos": "1128,96",
-      "Size": "976,82"
+      "Size": "796,73"
     },
     "###NetworkTables": {
       "Collapsed": "0",
@@ -63,12 +63,12 @@
     "###System Joysticks": {
       "Collapsed": "0",
       "Pos": "3,286",
-      "Size": "232,254"
+      "Size": "192,218"
     },
     "###Timing": {
       "Collapsed": "0",
       "Pos": "5,150",
-      "Size": "162,142"
+      "Size": "135,127"
     },
     "Debug##Default": {
       "Collapsed": "0",
@@ -78,7 +78,7 @@
     "Robot State": {
       "Collapsed": "0",
       "Pos": "5,20",
-      "Size": "109,134"
+      "Size": "92,116"
     }
   }
 }

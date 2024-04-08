@@ -207,6 +207,7 @@ class RobotContainer:
                 self.s_Arm.servoArmToTargetGravity(autoShot.m_armAngle)
             ),
             self.s_Indexer.instantStop(),
+            self.s_Arm.seekArmZero().withTimeout(0.5)
         )
     
     def getDynamicShotCommand(self, translation, strafe, rotation, robotcentric) -> ParallelCommandGroup:
@@ -250,7 +251,7 @@ class RobotContainer:
                         lambda: 0.0,
                         lambda: False
                     )
-                )
+                ).andThen(self.s_Arm.seekArmZero().withTimeout(0.5))
             )
     
     def autoShootWhenReady(self) -> Command:
@@ -265,7 +266,7 @@ class RobotContainer:
             )
         )
     def bringArmDown(self) -> Command:
-        return self.s_Arm.seekArmZero().withTimeout(0.5)
+        return DeferredCommand(lambda: self.s_Arm.seekArmZero().withTimeout(0.5))
     
     def bringArmUp(self) -> Command:
         return DeferredCommand(

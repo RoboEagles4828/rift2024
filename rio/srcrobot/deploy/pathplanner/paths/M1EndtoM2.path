@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.417904628087024,
-        "y": 6.9872154432101325
+        "x": 4.441484377285317,
+        "y": 7.368226496475843
       },
       "isLocked": false,
       "linkedName": "M1DynamicEnd"
@@ -36,8 +36,8 @@
         "y": 6.300231898439149
       },
       "prevControl": {
-        "x": 2.608059998358004,
-        "y": 6.128623525325068
+        "x": 2.607674019960933,
+        "y": 7.806266218847468
       },
       "nextControl": null,
       "isLocked": false,
@@ -59,12 +59,6 @@
               "data": {
                 "name": "IntakeUntilBeamBreak"
               }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Queue Dynamic"
-              }
             }
           ]
         }
@@ -72,7 +66,7 @@
     },
     {
       "name": "Bring Arm Up",
-      "waypointRelativePos": 1.65,
+      "waypointRelativePos": 0.05,
       "command": {
         "type": "sequential",
         "data": {
@@ -80,7 +74,7 @@
             {
               "type": "named",
               "data": {
-                "name": "BringArmUp"
+                "name": "Bring Arm Down"
               }
             }
           ]

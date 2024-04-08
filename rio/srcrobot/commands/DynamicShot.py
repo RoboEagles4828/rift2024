@@ -55,7 +55,7 @@ class DynamicShot():
         if angle >= 90:
             angle = angle - 180
 
-        if DriverStation.getAlliance() == DriverStation.Alliance.kRed:
+        if DriverStation.getAlliance() == DriverStation.Alliance.kRed and DriverStation.isAutonomous():
             return Rotation2d.fromDegrees(angle).rotateBy(Rotation2d.fromDegrees(180.0))
         return Rotation2d.fromDegrees(angle)
     

@@ -103,6 +103,12 @@
           "data": {
             "name": "IntakeOff"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Bring Arm Down"
+          }
         }
       ]
     }

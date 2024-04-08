@@ -55,20 +55,14 @@
               "data": {
                 "name": "IntakeUntilBeamBreak"
               }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Queue Dynamic"
-              }
             }
           ]
         }
       }
     },
     {
-      "name": "Shoot",
-      "waypointRelativePos": 1.0,
+      "name": "Bring Arm Down",
+      "waypointRelativePos": 0.0,
       "command": {
         "type": "parallel",
         "data": {
@@ -76,7 +70,7 @@
             {
               "type": "named",
               "data": {
-                "name": "Execute Shot"
+                "name": "Bring Arm Down"
               }
             }
           ]

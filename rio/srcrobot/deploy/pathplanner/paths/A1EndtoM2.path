@@ -72,7 +72,7 @@
     },
     {
       "name": "Bring Arm Up",
-      "waypointRelativePos": 1.6,
+      "waypointRelativePos": 0.1,
       "command": {
         "type": "parallel",
         "data": {
@@ -80,7 +80,7 @@
             {
               "type": "named",
               "data": {
-                "name": "BringArmUp"
+                "name": "Bring Arm Down"
               }
             }
           ]
