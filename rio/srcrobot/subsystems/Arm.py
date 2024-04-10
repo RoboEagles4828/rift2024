@@ -36,7 +36,7 @@ class Arm(Subsystem):
         self.kIZoneMotionMagic = 3.0*self.kEncoderTicksPerDegreeOfArmMotion
         self.kDMotionMagic = 0.4 #0.4
         self.kCruiseVelocity = 1000.0 # ticks per 100ms
-        self.kMaxAccel = 1000.0 # Accel to cruise in 1 sec
+        self.kMaxAccel = 1500.0 # Accel to cruise in 1 sec
         self.kServoToleranceDegrees = 0.5 # +/- 1.0  for 2.0 degree window
         # Velocity for safely zeroing arm encoder in native units (ticks) per 100ms
         self.kZeroEncoderVelocity = -self.kEncoderTicksPerDegreeOfArmMotion * 6.5
