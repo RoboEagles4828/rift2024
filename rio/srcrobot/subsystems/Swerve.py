@@ -202,8 +202,12 @@ class Swerve(Subsystem):
 
         self.swerveOdometry.update(self.getGyroYaw(), tuple(self.getModulePositions()))
         optestimatedPose = self.vision.getEstimatedGlobalPose()
+        optestimatedPose2 = self.vision.getSecondEstimatedGlobalPose()
 
         if optestimatedPose is not None:
             estimatedPose = optestimatedPose
-            heading = estimatedPose.estimatedPose.toPose2d().rotation()
             self.swerveOdometry.addVisionMeasurement(Pose2d(estimatedPose.estimatedPose.toPose2d().X(), estimatedPose.estimatedPose.toPose2d().Y(), self.getHeading()), estimatedPose.timestampSeconds)
+        
+        if optestimatedPose2 is not None:
+            estimatedPose2 = optestimatedPose2
+            self.swerveOdometry.addVisionMeasurement(Pose2d(estimatedPose2.estimatedPose.toPose2d().X(), estimatedPose2.estimatedPose.toPose2d().Y(), self.getHeading()), estimatedPose2.timestampSeconds)
