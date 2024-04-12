@@ -46,6 +46,15 @@ class TurnInPlace(TeleopSwerve):
         else:
             self.angularvelMRadiansPerSecond = -self.turnPID.calculate(self.s_Swerve.getHeading().radians(), self.angle)
             self.angularvelMRadiansPerSecond = math.copysign(math.fabs(self.angularvelMRadiansPerSecond) + self.kBarelyNotTurnFeedforward, self.angularvelMRadiansPerSecond)
+            # NOTE: It is possible that you will want to adjust or eliminate the feed forward.
+            # This would be late in tuning if there is a small oscillation that will not go away.
+            # Then, the line above that adds the feed forward would change to be a conditional
+            # something like this with "someValue" needing to be determined but is probably small
+            # like 2 or 3 degrees (with radian conversion as needed).
+            # if (math.fabs(self.turnPID.getPositionError()) > someValue):
+            #     self.angularvelMRadiansPerSecond = math.copysign(math.fabs(self.angularvelMRadiansPerSecond) + self.kBarelyNotTurnFeedforward, self.angularvelMRadiansPerSecond)
+            # else:
+            #     self.angularvelMRadiansPerSecond = math.copysign(math.fabs(self.angularvelMRadiansPerSecond) + (self.kBarelyNotTurnFeedforward / 2.0), self.angularvelMRadiansPerSecond)
             return self.angularvelMRadiansPerSecond
 
     def isFinished(self) -> bool:
