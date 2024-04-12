@@ -11,7 +11,7 @@ from wpimath.kinematics import SwerveModulePosition
 
 from navx import AHRS
 
-from wpimath.geometry import Pose2d
+from wpimath.geometry import Pose2d, Pose3d
 from wpimath.geometry import Rotation2d
 from wpimath.geometry import Translation2d, Transform2d
 from wpimath.kinematics import SwerveModuleState
@@ -206,8 +206,53 @@ class Swerve(Subsystem):
 
         if optestimatedPose is not None:
             estimatedPose = optestimatedPose
-            self.swerveOdometry.addVisionMeasurement(Pose2d(estimatedPose.estimatedPose.toPose2d().X(), estimatedPose.estimatedPose.toPose2d().Y(), self.getHeading()), estimatedPose.timestampSeconds)
+
+            tags = estimatedPose.targetsUsed
+            tagPoses: list[Pose3d] = []
+            distance = 0.0
+            stddevs = (0.0, 0.0, 0.0)
+            
+            if len(tags) > 0:
+                for tag in tags:
+                    id = tag.getFiducialId()
+                    pose = self.vision.aprilTagFieldLayout.getTagPose(id)
+                    if pose is not None:
+                        tagPoses.append(pose)
+
+                if len(tagPoses) > 0:
+                    for tagPose in tagPoses:
+                        distance += tagPose.translation().distance(estimatedPose.estimatedPose.translation())
+
+                    distance /= len(tagPoses)
+                
+                xyStdDev = (Constants.StandardDeviations.singleTagXY if len(tagPoses) == 1 else Constants.StandardDeviations.multiTagXY) * distance**2
+                stddevs = (xyStdDev, xyStdDev, Constants.StandardDeviations.tagRot)
+                
+
+            self.swerveOdometry.addVisionMeasurement(Pose2d(estimatedPose.estimatedPose.toPose2d().X(), estimatedPose.estimatedPose.toPose2d().Y(), self.getHeading()), estimatedPose.timestampSeconds, stddevs)
         
         if optestimatedPose2 is not None:
             estimatedPose2 = optestimatedPose2
-            self.swerveOdometry.addVisionMeasurement(Pose2d(estimatedPose2.estimatedPose.toPose2d().X(), estimatedPose2.estimatedPose.toPose2d().Y(), self.getHeading()), estimatedPose2.timestampSeconds)
+
+            tags2 = estimatedPose2.targetsUsed
+            tagPoses2: list[Pose3d] = []
+            distance2 = 0.0
+            stddevs2 = (0.0, 0.0, 0.0)
+
+            if len(tags2) > 0:
+                for tag in tags2:
+                    id = tag.getFiducialId()
+                    pose = self.vision.aprilTagFieldLayout.getTagPose(id)
+                    if pose is not None:
+                        tagPoses2.append(pose)
+
+                if len(tagPoses2) > 0:
+                    for i, tagPose in enumerate(tagPoses2):
+                        distance2 += tagPose.translation().distance(estimatedPose2.estimatedPose.translation())
+
+                    distance2 /= len(tagPoses2)
+                
+                xyStdDev2 = (Constants.StandardDeviations.singleTagXY if len(tagPoses2) == 1 else Constants.StandardDeviations.multiTagXY) * distance2**2
+                stddevs2 = (xyStdDev2, xyStdDev2, Constants.StandardDeviations.tagRot)
+
+            self.swerveOdometry.addVisionMeasurement(Pose2d(estimatedPose2.estimatedPose.toPose2d().X(), estimatedPose2.estimatedPose.toPose2d().Y(), self.getHeading()), estimatedPose2.timestampSeconds, stddevs2)
