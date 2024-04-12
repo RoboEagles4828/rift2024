@@ -205,6 +205,11 @@ class Constants:
         kRightCANID = 15
         maxClimbHeight = 0
         kClimberSpeed = 0.85 # percent output
+
+    class StandardDeviations:
+        singleTagXY = 0.03
+        multiTagXY = 0.05
+        tagRot = math.radians(40.0)
     
     class ArmConstants:
         kKnownArmAngles = InterpolatingTreeMap()
@@ -241,6 +246,7 @@ class Constants:
       PODIUM = (4, -30.0, 30.0, 26.5, 35.0, 4, 7)
       CENTER_AUTO = (5, -30.0, 30.0, 31.0, 35.0, 4, 7)
       DYNAMIC = (6, 0.0, 0.0, 0.0, 35.0, 4, 7)
+      PASSING = (7, -30.0, 30.0, 0.0, 25.0, 4, 7)
 
 
 
