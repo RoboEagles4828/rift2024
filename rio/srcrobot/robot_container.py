@@ -198,7 +198,7 @@ class RobotContainer:
             InstantCommand(lambda: self.m_robotState.m_gameState.setNextShot(autoShot)),
             ParallelDeadlineGroup(
                 WaitUntilCommand(lambda: self.m_robotState.isArmAndShooterReady())
-                .withTimeout(1.0)
+                .withTimeout(0.5)
                 .andThen(self.s_Indexer.indexerShoot()),
                 InstantCommand(
                     lambda: self.s_Shooter.setShooterVelocity(
@@ -209,7 +209,7 @@ class RobotContainer:
                 self.s_Arm.servoArmToTargetGravity(autoShot.m_armAngle)
             ),
             self.s_Indexer.instantStop(),
-            self.s_Arm.seekArmZero().withTimeout(0.5)
+            self.s_Arm.seekArmZero().withTimeout(0.3)
         )
     
     def getDynamicShotCommand(self, translation, strafe, rotation, robotcentric) -> ParallelCommandGroup:

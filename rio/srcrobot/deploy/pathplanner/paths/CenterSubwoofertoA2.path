@@ -59,29 +59,6 @@
               "data": {
                 "name": "IntakeUntilBeamBreak"
               }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Queue Speaker"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Shoot First Piece",
-      "waypointRelativePos": 2.0,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Execute Shot"
-              }
             }
           ]
         }
