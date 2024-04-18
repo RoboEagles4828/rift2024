@@ -318,7 +318,7 @@ class RobotContainer:
         )
 
         # Arm Buttons
-        self.s_Arm.setDefaultCommand(self.s_Arm.holdPosition())
+        self.s_Arm.setDefaultCommand(self.s_Arm.stop())
 
         # Driver Buttons
         self.zeroGyro.or_(self.opZero).onTrue(InstantCommand(lambda: self.s_Swerve.zeroHeading()))
@@ -382,7 +382,7 @@ class RobotContainer:
                     self.s_Shooter.shootVelocityWithSupplier(
                         lambda: self.m_robotState.m_gameState.getNextShot().m_shooterVelocity
                     ),
-                    turnInPlaceCmd
+                    turnInPlaceCmd.repeatedly()
                 ),
                 lambda: self.m_robotState.m_gameState.getNextShot() == Constants.NextShot.DYNAMIC
             )

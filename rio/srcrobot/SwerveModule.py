@@ -46,10 +46,10 @@ class SwerveModule:
         self.resetToAbsolute()
 
         self.mDriveMotor = TalonFX(moduleConstants.driveMotorID, "canivore")
-        if moduleNumber == 1:
-            self.mDriveMotor.configurator.apply(self.ctreConfigs.swerveDriveFXConfigFR)
-        else:
-            self.mDriveMotor.configurator.apply(self.ctreConfigs.swerveDriveFXConfig)
+        # if moduleNumber == 2:
+        #     self.mDriveMotor.configurator.apply(self.ctreConfigs.swerveDriveFXConfigFR)
+        # else:
+        #     self.mDriveMotor.configurator.apply(self.ctreConfigs.swerveDriveFXConfig)
         self.mDriveMotor.configurator.set_position(0.0)
 
         if RobotBase.isSimulation():
