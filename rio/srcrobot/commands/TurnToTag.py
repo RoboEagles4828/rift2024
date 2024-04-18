@@ -16,14 +16,14 @@ class TurnToTag(TeleopSwerve):
         # gains to 0 and seeing what value for this makes the robot just
         # start turing. We probably want a value just below that. The just
         # starts turning value may be okay too.
-        self.kBarelyNotTurnFeedforward = 1 #degrees per second
+        self.kBarelyNotTurnFeedforward = 0.5 #degrees per second
         # With the feedforward right, the gains should be able to be much
         # smaller. We may not even need the I and D. This should result
         # in much more control. These changes are based on some CD reading
         # and example code checking, such as here (https://www.chiefdelphi.com/t/heading-pid-tips/150244)
         # and here (https://github.com/6391-Ursuline-Bearbotics/2020_UARobotics_Infinite_Recharge/blob/master/src/main/java/frc/robot/commands/TurnToAngle.java).
         # ALL ZERO FOR FEEDFORWARD TUNING.
-        self.turnPID = PIDController(1.0, 0.0, 0.01)
+        self.turnPID = PIDController(3.0, 0.0, 0.0)
         # INITIAL VALUES FOR FEEDFORWARD TUNING.
         # self.turnPID = PIDController(1.0, 0.0, 0.0)
         # PUT THIS BACK IF I GAIN ATTEMPTED.

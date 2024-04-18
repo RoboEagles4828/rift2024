@@ -248,8 +248,6 @@ class Constants:
       DYNAMIC = (6, 0.0, 0.0, 0.0, 35.0, 4, 7)
       PASSING = (7, -30.0, 30.0, 5.0, 20.0, 4, 7)
 
-
-
       def __init__(self, value, blueSideBotHeading, redSideBotHeading, armAngle, shooterVelocity, red_tagID, blue_tagID):
         self._value_ = value
         self.m_blueSideBotHeading = blueSideBotHeading
