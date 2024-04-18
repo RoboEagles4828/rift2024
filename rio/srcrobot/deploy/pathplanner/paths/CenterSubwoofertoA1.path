@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.9311096218902313,
-        "y": 6.276263333360588
+        "x": 1.8931028901753009,
+        "y": 6.202353139466402
       },
       "isLocked": false,
       "linkedName": "CenterSubwooferPos"
     },
     {
       "anchor": {
-        "x": 3.25141871450266,
-        "y": 7.306058637276201
+        "x": 2.96925847964262,
+        "y": 7.084523430848138
       },
       "prevControl": {
-        "x": 2.8687493812308276,
-        "y": 6.984968023333749
+        "x": 3.3602612346665923,
+        "y": 7.444082312414052
       },
       "nextControl": {
-        "x": 3.4983565272065626,
-        "y": 7.513259494498743
+        "x": 2.8588189249579425,
+        "y": 6.982965264689883
       },
       "isLocked": false,
       "linkedName": "A1 Dynamic Pickup"
@@ -36,8 +36,8 @@
         "y": 5.55
       },
       "prevControl": {
-        "x": 2.4648687712807096,
-        "y": 6.586107194388922
+        "x": 3.127193959311034,
+        "y": 5.523446473015217
       },
       "nextControl": null,
       "isLocked": false,
@@ -51,11 +51,23 @@
       "rotateFast": false
     }
   ],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 1.85,
+      "maxWaypointRelativePos": 2.0,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 2.0,
+        "maxAngularVelocity": 720.0,
+        "maxAngularAcceleration": 720.0
+      }
+    }
+  ],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.0,
-    "maxAcceleration": 4.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 720.0,
     "maxAngularAcceleration": 720.0
   },
@@ -70,5 +82,5 @@
     "rotation": 0,
     "velocity": 0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }
