@@ -221,7 +221,7 @@ class RobotContainer:
             self.s_Shooter.shootVelocityWithSupplier(
                 lambda: 35.0
             ).repeatedly(),
-            TurnInPlace(
+            TurnToTag(
                 self.s_Swerve,
                 lambda: self.dynamicShot.getRobotAngle(),
                 translation,
@@ -245,7 +245,7 @@ class RobotContainer:
                     self.s_Shooter.shootVelocityWithSupplier(
                         lambda: 35.0
                     ),
-                    TurnInPlace(
+                    TurnToTag(
                         self.s_Swerve,
                         lambda: self.dynamicShot.getRobotAngle(),
                         lambda: 0.0,
