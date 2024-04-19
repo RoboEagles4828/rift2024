@@ -321,7 +321,7 @@ class RobotContainer:
         self.s_Arm.setDefaultCommand(self.s_Arm.stop())
 
         # Driver Buttons
-        self.zeroGyro.or_(self.opZero).onTrue(InstantCommand(lambda: self.s_Swerve.zeroHeading()))
+        self.zeroGyro.onTrue(InstantCommand(lambda: self.s_Swerve.zeroHeading()))
         self.robotCentric.onTrue(InstantCommand(lambda: self.toggleFieldOriented()))
 
         # Intake Buttons
@@ -403,6 +403,7 @@ class RobotContainer:
         self.shoot.or_(self.opShoot.getAsBoolean).whileTrue(cmd.parallel(self.s_Indexer.indexerTeleopShot(), self.s_Intake.intake(), self.s_Shooter.shootVelocityWithSupplier(lambda: self.m_robotState.m_gameState.getNextShot().m_shooterVelocity), self.s_Arm.servoArmToTargetWithSupplier(lambda: self.m_robotState.m_gameState.getNextShot())))
 
         self.autoHome.onTrue(self.s_Arm.seekArmZero())
+        self.opZero.onTrue(InstantCommand(lambda: self.s_Arm.hardSetEncoderToZero()))
 
         self.emergencyArmUp.onTrue(
             ConditionalCommand(

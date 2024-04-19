@@ -89,7 +89,7 @@ class TurnInPlace(TeleopSwerve):
         # and example code checking, such as here (https://www.chiefdelphi.com/t/heading-pid-tips/150244)
         # and here (https://github.com/6391-Ursuline-Bearbotics/2020_UARobotics_Infinite_Recharge/blob/master/src/main/java/frc/robot/commands/TurnToAngle.java).
         # ALL ZERO FOR FEEDFORWARD TUNING.
-        self.turnPID = PIDController(4.0, 0.0, 0.0)
+        self.turnPID = PIDController(5.0, 0.0, 0.0)
         # INITIAL VALUES FOR FEEDFORWARD TUNING.
         # self.turnPID = PIDController(1.0, 0.0, 0.0)
         # PUT THIS BACK IF I GAIN ATTEMPTED.
