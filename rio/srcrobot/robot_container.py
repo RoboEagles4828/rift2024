@@ -198,7 +198,7 @@ class RobotContainer:
             InstantCommand(lambda: self.m_robotState.m_gameState.setNextShot(autoShot)),
             ParallelDeadlineGroup(
                 WaitUntilCommand(lambda: self.m_robotState.isArmAndShooterReady())
-                .withTimeout(1.0)
+                .withTimeout(0.5)
                 .andThen(self.s_Indexer.indexerShoot()),
                 InstantCommand(
                     lambda: self.s_Shooter.setShooterVelocity(
@@ -209,7 +209,7 @@ class RobotContainer:
                 self.s_Arm.servoArmToTargetGravity(autoShot.m_armAngle)
             ),
             self.s_Indexer.instantStop(),
-            self.s_Arm.seekArmZero().withTimeout(0.5)
+            self.s_Arm.seekArmZero().withTimeout(0.3)
         )
     
     def getDynamicShotCommand(self, translation, strafe, rotation, robotcentric) -> ParallelCommandGroup:
@@ -221,7 +221,7 @@ class RobotContainer:
             self.s_Shooter.shootVelocityWithSupplier(
                 lambda: 35.0
             ).repeatedly(),
-            TurnInPlace(
+            TurnToTag(
                 self.s_Swerve,
                 lambda: self.dynamicShot.getRobotAngle(),
                 translation,
@@ -245,7 +245,7 @@ class RobotContainer:
                     self.s_Shooter.shootVelocityWithSupplier(
                         lambda: 35.0
                     ),
-                    TurnInPlace(
+                    TurnToTag(
                         self.s_Swerve,
                         lambda: self.dynamicShot.getRobotAngle(),
                         lambda: 0.0,
@@ -318,10 +318,10 @@ class RobotContainer:
         )
 
         # Arm Buttons
-        self.s_Arm.setDefaultCommand(self.s_Arm.holdPosition())
+        self.s_Arm.setDefaultCommand(self.s_Arm.stop())
 
         # Driver Buttons
-        self.zeroGyro.or_(self.opZero).onTrue(InstantCommand(lambda: self.s_Swerve.zeroHeading()))
+        self.zeroGyro.onTrue(InstantCommand(lambda: self.s_Swerve.zeroHeading()))
         self.robotCentric.onTrue(InstantCommand(lambda: self.toggleFieldOriented()))
 
         # Intake Buttons
@@ -382,7 +382,7 @@ class RobotContainer:
                     self.s_Shooter.shootVelocityWithSupplier(
                         lambda: self.m_robotState.m_gameState.getNextShot().m_shooterVelocity
                     ),
-                    turnInPlaceCmd
+                    turnInPlaceCmd.repeatedly()
                 ),
                 lambda: self.m_robotState.m_gameState.getNextShot() == Constants.NextShot.DYNAMIC
             )
@@ -400,9 +400,10 @@ class RobotContainer:
 
         # Shooter Buttons
         self.s_Shooter.setDefaultCommand(self.s_Shooter.stop())
-        self.shoot.or_(self.opShoot.getAsBoolean).whileTrue(cmd.parallel(self.s_Indexer.indexerTeleopShot(), self.s_Intake.intake(), self.s_Shooter.shootVelocityWithSupplier(lambda: self.m_robotState.m_gameState.getNextShot().m_shooterVelocity)))
+        self.shoot.or_(self.opShoot.getAsBoolean).whileTrue(cmd.parallel(self.s_Indexer.indexerTeleopShot(), self.s_Intake.intake(), self.s_Shooter.shootVelocityWithSupplier(lambda: self.m_robotState.m_gameState.getNextShot().m_shooterVelocity), self.s_Arm.servoArmToTargetWithSupplier(lambda: self.m_robotState.m_gameState.getNextShot())))
 
         self.autoHome.onTrue(self.s_Arm.seekArmZero())
+        self.opZero.onTrue(InstantCommand(lambda: self.s_Arm.hardSetEncoderToZero()))
 
         self.emergencyArmUp.onTrue(
             ConditionalCommand(

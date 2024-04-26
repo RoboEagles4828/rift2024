@@ -155,7 +155,8 @@ class Arm(Subsystem):
 
     def holdPosition(self):
         # return a command that will hold the arm in place
-        return self.servoArmToTarget(self.lastServoTarget).withName("holdPosition")
+        # return self.servoArmToTarget(self.lastServoTarget).withName("holdPosition")
+        return self.servoArmToTarget(self.getDegrees())
     
     #     
     #     Creates a command to servo the arm to a desired angle. Note that 0 is
