@@ -247,7 +247,7 @@ class Constants:
       PODIUM = (4, -30.0, 30.0, 26.5, 35.0, 4, 7)
       CENTER_AUTO = (5, -30.0, 30.0, 31.0, 35.0, 4, 7)
       DYNAMIC = (6, 0.0, 0.0, 0.0, 35.0, 4, 7)
-      PASSING = (7, -30.0, 30.0, 8.0, 20.0, 4, 7)
+      PASSING = (7, -30.0, 30.0, 12.0, 18.0, 4, 7)
 
       def __init__(self, value, blueSideBotHeading, redSideBotHeading, armAngle, shooterVelocity, red_tagID, blue_tagID):
         self._value_ = value

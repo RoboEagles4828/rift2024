@@ -382,7 +382,8 @@ class RobotContainer:
                     self.s_Shooter.shootVelocityWithSupplier(
                         lambda: self.m_robotState.m_gameState.getNextShot().m_shooterVelocity
                     ),
-                    turnInPlaceCmd.repeatedly()
+                    turnInPlaceCmd.repeatedly(),
+                    self.s_Intake.intake().withTimeout(4.0)
                 ),
                 lambda: self.m_robotState.m_gameState.getNextShot() == Constants.NextShot.DYNAMIC
             )
