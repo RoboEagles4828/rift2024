@@ -82,6 +82,9 @@ class Constants:
         driveCurrentThreshold = 60
         driveCurrentThresholdTime = 0.1
         driveEnableCurrentLimit = True
+        
+        driveStatorCurrentLimit = 130
+        driveEnableStatorCurrentLimit = True
 
         openLoopRamp = 0.0
         closedLoopRamp = 0.0
@@ -132,8 +135,9 @@ class Constants:
             driveMotorID = 2
             angleMotorID = 1
             canCoderID = 3
-            angleOffset = Rotation2d(rotationsToRadians(-0.347168))
-            # angleOffset = Rotation2d(rotationsToRadians(-0.352051))
+            # angleOffset = Rotation2d(rotationsToRadians(-0.354492))
+            angleOffset = Rotation2d(rotationsToRadians(-0.349121))
+                # angleOffset = Rotation2d(rotationsToRadians(-0.352051))
             constants = SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset)
 
         # Front Right Module - Module 1
@@ -141,7 +145,7 @@ class Constants:
             driveMotorID = 19
             angleMotorID = 18
             canCoderID = 20
-            angleOffset = Rotation2d(rotationsToRadians(-0.229980))
+            angleOffset = Rotation2d(rotationsToRadians(-0.2320910))
             # angleOffset = Rotation2d(rotationsToRadians(-0.233887))
             constants = SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset)
         
@@ -151,7 +155,7 @@ class Constants:
             angleMotorID = 8
             canCoderID = 7
             # angleOffset = Rotation2d(rotationsToRadians(0.148193))
-            angleOffset = Rotation2d(rotationsToRadians(0.181641))
+            angleOffset = Rotation2d(rotationsToRadians(0.175781))
             # angleOffset = Rotation2d(rotationsToRadians(0.155762))
             constants = SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset)
 
@@ -160,7 +164,7 @@ class Constants:
             driveMotorID = 12
             angleMotorID = 11
             canCoderID = 10
-            angleOffset = Rotation2d(rotationsToRadians(0.065918))
+            angleOffset = Rotation2d(rotationsToRadians(0.068359))
             # angleOffset = Rotation2d(rotationsToRadians(0.063232))
             constants = SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset)
 
