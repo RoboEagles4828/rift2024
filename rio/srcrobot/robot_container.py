@@ -318,7 +318,7 @@ class RobotContainer:
         )
 
         # Arm Buttons
-        self.s_Arm.setDefaultCommand(self.s_Arm.stop())
+        self.s_Arm.setDefaultCommand(self.s_Arm.holdPosition())
 
         # Driver Buttons
         self.zeroGyro.onTrue(InstantCommand(lambda: self.s_Swerve.zeroHeading()))
@@ -413,6 +413,17 @@ class RobotContainer:
             )
         )
         # self.emergencyArmUp.whileTrue(.
+        #     self.s_Shooter.shootVelocityWithSupplier(lambda: 35.0)
+        # )
+
+        self.emergencyArmUp.onTrue(
+            ConditionalCommand(
+                self.s_Arm.seekArmZero(),
+                self.s_Arm.servoArmToTargetGravity(90.0),
+                lambda: self.s_Arm.getDegrees() > 45.0
+            )
+        )
+        # self.emergencyArmUp.whileTrue(
         #     self.s_Shooter.shootVelocityWithSupplier(lambda: 35.0)
         # )
 
