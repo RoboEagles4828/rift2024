@@ -26,9 +26,11 @@ class Vision(Subsystem):
 
         try:
             self.camera : PhotonCamera | None = PhotonCamera("camera1")
+            self.camera2 : PhotonCamera | None = PhotonCamera("camera2")
         except:
             self.camera : PhotonCamera | None = None
-            print("========= NO PHOTON CAMERA FOUND =========")
+            self.camera2 : PhotonCamera | None = None
+            print("========= NO PHOTON CAMERAS FOUND =========")
 
         self.aprilTagFieldLayout = loadAprilTagLayoutField(AprilTagField.k2024Crescendo)
 
@@ -40,13 +42,21 @@ class Vision(Subsystem):
         # Up = 11.5 in
         # Froward = (frame / 2.0) - 1.25 in
 
+        # self.robotToCamera = Transform3d(
+        #     Translation3d(-Units.inchesToMeters((31.125 / 2.0) - 1.25), -Units.inchesToMeters(6.5), Units.inchesToMeters(11.5)),
+        #     Rotation3d.fromDegrees(0.0, -45.0, 180.0)
+        # )
         self.robotToCamera = Transform3d(
-            Translation3d(-Units.inchesToMeters((31.125 / 2.0) - 1.25), -Units.inchesToMeters(6.5), Units.inchesToMeters(11.5)),
-            Rotation3d.fromDegrees(0.0, -45.0, 180.0)
+            Translation3d(-Units.inchesToMeters((31.125 / 2.0) - 3.25), -Units.inchesToMeters(7), Units.inchesToMeters(10.5)),
+            Rotation3d.fromDegrees(180.0, -45.0, 180.0)
+        )
+        self.robotToCamera2 = Transform3d(
+            Translation3d(-Units.inchesToMeters((31.125 / 2.0) - 2.5), -Units.inchesToMeters(7), Units.inchesToMeters(9)),
+            Rotation3d.fromDegrees(180.0, -15.0, 180.0)
         )
         self.fieldToCamera = Transform3d()
 
-        if self.camera is not None:
+        if self.camera is not None and self.camera2 is not None:
             try:
                 self.photonPoseEstimator = PhotonPoseEstimator(
                     self.aprilTagFieldLayout, 
@@ -55,9 +65,18 @@ class Vision(Subsystem):
                     self.robotToCamera 
                 )
                 self.photonPoseEstimator.multiTagFallbackStrategy = PoseStrategy.LOWEST_AMBIGUITY
+
+                self.photonPoseEstimator2 = PhotonPoseEstimator(
+                    self.aprilTagFieldLayout, 
+                    PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+                    self.camera2,
+                    self.robotToCamera2 
+                )
+                self.photonPoseEstimator2.multiTagFallbackStrategy = PoseStrategy.LOWEST_AMBIGUITY
             except:
                 self.photonPoseEstimator = None
-                print("===== PHOTON PROBLEM (POSE ESTIMATOR) =======")
+                self.photonPoseEstimator2 = None
+                print("===== PHOTON PROBLEM (POSE ESTIMATORS) =======")
 
         self.CAMERA_HEIGHT_METERS = Units.inchesToMeters(11.5)
         self.SPEAKER_HEIGHT_METERS = 1.45 # meters
@@ -76,6 +95,11 @@ class Vision(Subsystem):
         if self.camera is None or self.photonPoseEstimator is None:
             return None
         return self.photonPoseEstimator.update()
+    
+    def getSecondEstimatedGlobalPose(self):
+        if self.camera2 is None or self.photonPoseEstimator2 is None:
+            return None
+        return self.photonPoseEstimator2.update()
     
     def getDistanceToSpeakerFieldToCameraFeet(self, fieldToCamera: Pose2d):
         pose = fieldToCamera
@@ -123,14 +147,19 @@ class Vision(Subsystem):
     def getCamera(self):
         return self.camera
     
+    def getSecondCamera(self):
+        return self.camera2
+    
     def hasTargetBooleanSupplier(self):
-        return lambda: self.camera.getLatestResult().hasTargets()
+        return lambda: self.camera.getLatestResult().hasTargets() or self.camera2.getLatestResult().hasTargets()
     
     def takeSnapshot(self):
         self.camera.takeInputSnapshot()
+        self.camera2.takeInputSnapshot()
 
     def setPipeline(self, pipelineIdx):
         self.camera.setPipelineIndex(pipelineIdx)
+        self.camera2.setPipelineIndex(pipelineIdx)
 
     def setTagMode(self):
         self.setPipeline(0)
@@ -147,29 +176,32 @@ class Vision(Subsystem):
         return targets[0]
     
     def isTargetSeen(self, tagID) -> bool:
-        if self.camera is None:
+        if self.camera is None or self.camera2 is None:
             return False
         result = self.camera.getLatestResult()
-        if result.hasTargets() == False:
+        result2 = self.camera2.getLatestResult()
+        if result.hasTargets() == False and result2.hasTargets() == False:
             return False
         best_target = self.getBestTarget(result)
-        return best_target.getFiducialId() == tagID
+        second_best_target = self.getBestTarget(result2)
+        return best_target.getFiducialId() == tagID or second_best_target.getFiducialId() == tagID
     
     def isTargetSeenLambda(self, tagIDSupplier: Callable[[], int]) -> bool:
-        if self.camera is None:
+        if self.camera is None or self.camera2 is None:
             return False
         result = self.camera.getLatestResult()
-        if result.hasTargets() == False:
+        result2 = self.camera2.getLatestResult()
+        if result.hasTargets() == False and result2.hasTargets() == False:
             return False
         best_target = self.getBestTarget(result)
-        return best_target.getFiducialId() == tagIDSupplier()
+        second_best_target = self.getBestTarget(result2)
+        return best_target.getFiducialId() == tagIDSupplier() or second_best_target.getFiducialId() == tagIDSupplier()
     
     def getSortedTargetsList(self, result: PhotonPipelineResult):
         targets = result.getTargets()
         targets.sort(key=lambda target: target.area, reverse=True)
         return targets
 
-    
     def getAngleToTag(self, tagIDSupplier: Callable[[], int]):
         if self.camera is None:
             return 0.0

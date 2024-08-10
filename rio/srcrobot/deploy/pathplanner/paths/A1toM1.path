@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.25141871450266,
-        "y": 7.306058637276201
+        "x": 2.96925847964262,
+        "y": 7.084523430848138
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.251418714502659,
-        "y": 7.306058637276201
+        "x": 3.9692584796426194,
+        "y": 7.084523430848138
       },
       "isLocked": false,
       "linkedName": "A1 Dynamic Pickup"
@@ -44,7 +44,13 @@
       "linkedName": "M1DynamicEnd"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.6,
+      "rotationDegrees": 0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [
     {
@@ -85,7 +91,7 @@
   "globalConstraints": {
     "maxVelocity": 4.0,
     "maxAcceleration": 4.0,
-    "maxAngularVelocity": 540.0,
+    "maxAngularVelocity": 720.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {

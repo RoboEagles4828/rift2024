@@ -40,7 +40,7 @@ class Shooter(Subsystem):
         self.topShooterConfig.current_limits.supply_time_threshold = Constants.Swerve.driveCurrentThresholdTime
 
         self.topShooterConfig.current_limits.stator_current_limit_enable = True
-        self.topShooterConfig.current_limits.stator_current_limit = 50
+        self.topShooterConfig.current_limits.stator_current_limit = 60
 
         self.bottomShooterConfig = deepcopy(self.topShooterConfig)
 

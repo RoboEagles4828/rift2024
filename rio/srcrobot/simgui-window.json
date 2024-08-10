@@ -14,11 +14,31 @@
       "ypos": "23"
     }
   },
+  "Table": {
+    "0x542B5671,4": {
+      "Column 0  Width": "333",
+      "Column 1  Width": "156",
+      "Column 2  Width": "156",
+      "Column 3  Width": "26",
+      "RefScale": "13"
+    },
+    "0x965B9C9E,2": {
+      "Column 0  Width": "130",
+      "Column 1  Weight": "1.0000",
+      "RefScale": "13"
+    },
+    "0xE56EC1C2,4": {
+      "Column 0  Weight": "1.0000",
+      "Column 1  Weight": "1.0000",
+      "Column 2  Weight": "1.0000",
+      "Column 3  Weight": "1.0000"
+    }
+  },
   "Window": {
     "###/Shuffleboard/Autonomous/Auton Selector": {
       "Collapsed": "0",
       "Pos": "131,64",
-      "Size": "254,54"
+      "Size": "307,60"
     },
     "###/Shuffleboard/Field/Field": {
       "Collapsed": "0",
@@ -33,22 +53,22 @@
     "###FMS": {
       "Collapsed": "0",
       "Pos": "5,540",
-      "Size": "169,184"
+      "Size": "202,214"
     },
     "###Joysticks": {
       "Collapsed": "0",
       "Pos": "1128,96",
-      "Size": "796,73"
+      "Size": "976,82"
     },
     "###NetworkTables": {
       "Collapsed": "0",
-      "Pos": "324,371",
+      "Pos": "607,875",
       "Size": "954,463"
     },
     "###NetworkTables Info": {
       "Collapsed": "0",
       "Pos": "250,130",
-      "Size": "750,145"
+      "Size": "1464,890"
     },
     "###Other Devices": {
       "Collapsed": "0",
@@ -63,12 +83,12 @@
     "###System Joysticks": {
       "Collapsed": "0",
       "Pos": "3,286",
-      "Size": "192,218"
+      "Size": "232,254"
     },
     "###Timing": {
       "Collapsed": "0",
       "Pos": "5,150",
-      "Size": "135,127"
+      "Size": "162,142"
     },
     "Debug##Default": {
       "Collapsed": "0",
@@ -78,7 +98,7 @@
     "Robot State": {
       "Collapsed": "0",
       "Pos": "5,20",
-      "Size": "92,116"
+      "Size": "109,134"
     }
   }
 }

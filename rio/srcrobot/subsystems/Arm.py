@@ -8,7 +8,7 @@ import wpimath
 import wpilib
 from wpilib.shuffleboard import Shuffleboard
 import phoenix5
-from phoenix5 import TalonSRXControlMode, TalonSRXFeedbackDevice, SupplyCurrentLimitConfiguration, StatorCurrentLimitConfiguration
+from phoenix5 import TalonSRXControlMode, TalonSRXFeedbackDevice, SupplyCurrentLimitConfiguration, StatorCurrentLimitConfiguration, NeutralMode
 import math
 
 class Arm(Subsystem):
@@ -35,8 +35,8 @@ class Arm(Subsystem):
         self.kIMotionMagic = 0.003
         self.kIZoneMotionMagic = 3.0*self.kEncoderTicksPerDegreeOfArmMotion
         self.kDMotionMagic = 0.4 #0.4
-        self.kCruiseVelocity = 1000.0 # ticks per 100ms
-        self.kMaxAccel = 1000.0 # Accel to cruise in 1 sec
+        self.kCruiseVelocity = 1100.0 # ticks per 100ms
+        self.kMaxAccel = 1500.0 # Accel to cruise in 1 sec
         self.kServoToleranceDegrees = 0.5 # +/- 1.0  for 2.0 degree window
         # Velocity for safely zeroing arm encoder in native units (ticks) per 100ms
         self.kZeroEncoderVelocity = -self.kEncoderTicksPerDegreeOfArmMotion * 6.5
@@ -79,6 +79,8 @@ class Arm(Subsystem):
         supply_configs = SupplyCurrentLimitConfiguration(True, current_limit, current_threshold, current_threshold_time)
 
         self.armMotor.configSupplyCurrentLimit(supply_configs)
+
+        self.commandPosition = 0.0
 
         Shuffleboard.getTab("Teleoperated").addDouble("Arm degrees", self.getDegrees)
 
@@ -153,12 +155,8 @@ class Arm(Subsystem):
 
     def holdPosition(self):
         # return a command that will hold the arm in place
-        return self.run(lambda: self.armMotor.set(
-            phoenix5.ControlMode.MotionMagic,
-            self.armMotor.getSelectedSensorPosition(),
-            phoenix5.DemandType.ArbitraryFeedForward,
-            self.calculateGravityFeedForward())) \
-        .withName("holdPosition")
+        # return self.servoArmToTarget(self.lastServoTarget).withName("holdPosition")
+        return self.servoArmToTarget(self.getDegrees())
     
     #     
     #     Creates a command to servo the arm to a desired angle. Note that 0 is

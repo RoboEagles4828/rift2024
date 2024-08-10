@@ -70,4 +70,4 @@ class CTREConfigs:
         self.swerveDriveFXConfig.closed_loop_ramps.voltage_closed_loop_ramp_period = Constants.Swerve.closedLoopRamp
 
         self.swerveDriveFXConfigFR = deepcopy(self.swerveDriveFXConfig)
-        # self.swerveDriveFXConfigFR.motor_output.inverted = InvertedValue.CLOCKWISE_POSITIVE
+        # self.swerveDriveFXConfigFR.motor_output.neutral_mode = Constants.Swerve.angleNeutralMode

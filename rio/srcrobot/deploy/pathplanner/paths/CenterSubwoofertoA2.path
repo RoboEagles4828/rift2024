@@ -59,29 +59,6 @@
               "data": {
                 "name": "IntakeUntilBeamBreak"
               }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Queue Speaker"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Shoot First Piece",
-      "waypointRelativePos": 2.0,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Execute Shot"
-              }
             }
           ]
         }
@@ -91,7 +68,7 @@
   "globalConstraints": {
     "maxVelocity": 4.0,
     "maxAcceleration": 4.0,
-    "maxAngularVelocity": 540.0,
+    "maxAngularVelocity": 720.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {

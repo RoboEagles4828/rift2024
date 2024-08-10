@@ -41,16 +41,28 @@
     }
   },
   "NetworkTables": {
+    "Retained Values": {
+      "open": false
+    },
+    "properties": true,
+    "timestamp": true,
     "transitory": {
       "Shuffleboard": {
         "Teleoperated": {
           "open": true
-        },
-        "open": true
+        }
       }
     }
   },
-  "NetworkTables View": {
-    "visible": false
+  "NetworkTables Info": {
+    "Connections": {
+      "open": true
+    },
+    "Server": {
+      "Publishers": {
+        "open": true
+      },
+      "open": true
+    }
   }
 }

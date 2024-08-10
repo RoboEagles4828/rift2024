@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.6484137527279985,
-        "y": 5.176150610564066
+        "x": 1.5290727197506244,
+        "y": 4.786814506770788
       },
       "isLocked": false,
       "linkedName": "CenterSubwooferPos"
     },
     {
       "anchor": {
-        "x": 2.495046069189622,
-        "y": 4.288591765770233
+        "x": 2.647096896976997,
+        "y": 4.164749854768265
       },
       "prevControl": {
-        "x": 2.7209828473158213,
-        "y": 4.0500627773704245
+        "x": 2.6420916886392916,
+        "y": 3.8362404121237885
       },
       "nextControl": {
-        "x": 1.876960062419586,
-        "y": 4.941125767368613
+        "x": 2.6611996411398593,
+        "y": 5.090362598956955
       },
       "isLocked": false,
       "linkedName": null
@@ -36,8 +36,8 @@
         "y": 5.55
       },
       "prevControl": {
-        "x": 1.8573019925865395,
-        "y": 4.9860894340089
+        "x": 1.926318118838923,
+        "y": 5.67232090532623
       },
       "nextControl": null,
       "isLocked": false,
@@ -47,11 +47,28 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 1,
-      "rotationDegrees": -25.38092939500493,
+      "rotationDegrees": -25.0,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 1.7,
+      "rotationDegrees": 0,
       "rotateFast": false
     }
   ],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 1.35,
+      "maxWaypointRelativePos": 2.0,
+      "constraints": {
+        "maxVelocity": 1.5,
+        "maxAcceleration": 4.0,
+        "maxAngularVelocity": 720.0,
+        "maxAngularAcceleration": 720.0
+      }
+    }
+  ],
   "eventMarkers": [
     {
       "name": "Intake First Piece",
@@ -65,29 +82,6 @@
               "data": {
                 "name": "IntakeUntilBeamBreak"
               }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Queue Speaker"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Shoot First Piece",
-      "waypointRelativePos": 2.0,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Execute Shot"
-              }
             }
           ]
         }
@@ -97,7 +91,7 @@
   "globalConstraints": {
     "maxVelocity": 4.0,
     "maxAcceleration": 4.0,
-    "maxAngularVelocity": 540.0,
+    "maxAngularVelocity": 720.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {

@@ -114,7 +114,7 @@ class Constants:
 
         holonomicPathConfig = HolonomicPathFollowerConfig(
             PIDConstants(5.0, 0.0, 0.0),
-            PIDConstants(4.0, 0.0, 0.0),
+            PIDConstants(5.0, 0.0, 0.0),
             maxAutoModuleSpeed,
             #distance from center to the furthest module
             Units.inchesToMeters(16),
@@ -132,7 +132,8 @@ class Constants:
             driveMotorID = 2
             angleMotorID = 1
             canCoderID = 3
-            angleOffset = Rotation2d(rotationsToRadians(0.145020))
+            angleOffset = Rotation2d(rotationsToRadians(-0.347168))
+            # angleOffset = Rotation2d(rotationsToRadians(-0.352051))
             constants = SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset)
 
         # Front Right Module - Module 1
@@ -140,7 +141,8 @@ class Constants:
             driveMotorID = 19
             angleMotorID = 18
             canCoderID = 20
-            angleOffset = Rotation2d(rotationsToRadians(1.267334))
+            angleOffset = Rotation2d(rotationsToRadians(-0.229980))
+            # angleOffset = Rotation2d(rotationsToRadians(-0.233887))
             constants = SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset)
         
         # Back Left Module - Module 2
@@ -148,7 +150,9 @@ class Constants:
             driveMotorID = 9
             angleMotorID = 8
             canCoderID = 7
-            angleOffset = Rotation2d(rotationsToRadians(0.648926))
+            # angleOffset = Rotation2d(rotationsToRadians(0.148193))
+            angleOffset = Rotation2d(rotationsToRadians(0.181641))
+            # angleOffset = Rotation2d(rotationsToRadians(0.155762))
             constants = SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset)
 
         # Back Right Module - Module 3
@@ -156,7 +160,8 @@ class Constants:
             driveMotorID = 12
             angleMotorID = 11
             canCoderID = 10
-            angleOffset = Rotation2d(rotationsToRadians(1.575195))
+            angleOffset = Rotation2d(rotationsToRadians(0.065918))
+            # angleOffset = Rotation2d(rotationsToRadians(0.063232))
             constants = SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset)
 
     class AutoConstants:
@@ -201,6 +206,11 @@ class Constants:
         kRightCANID = 15
         maxClimbHeight = 0
         kClimberSpeed = 0.85 # percent output
+
+    class StandardDeviations:
+        singleTagXY = 0.03
+        multiTagXY = 0.05
+        tagRot = math.radians(40.0)
     
     class ArmConstants:
         kKnownArmAngles = InterpolatingTreeMap()
@@ -237,8 +247,7 @@ class Constants:
       PODIUM = (4, -30.0, 30.0, 26.5, 35.0, 4, 7)
       CENTER_AUTO = (5, -30.0, 30.0, 31.0, 35.0, 4, 7)
       DYNAMIC = (6, 0.0, 0.0, 0.0, 35.0, 4, 7)
-
-
+      PASSING = (7, -30.0, 30.0, 8.0, 20.0, 4, 7)
 
       def __init__(self, value, blueSideBotHeading, redSideBotHeading, armAngle, shooterVelocity, red_tagID, blue_tagID):
         self._value_ = value

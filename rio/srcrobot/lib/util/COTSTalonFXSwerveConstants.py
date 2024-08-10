@@ -41,7 +41,7 @@ class COTSTalonFXSwerveConstants:
             angleKI = 0.0
             angleKD = 0.0
 
-            driveMotorInvert = InvertedValue.COUNTER_CLOCKWISE_POSITIVE
+            driveMotorInvert = InvertedValue.CLOCKWISE_POSITIVE
             angleMotorInvert = InvertedValue.CLOCKWISE_POSITIVE
             cancoderInvert = SensorDirectionValue.COUNTER_CLOCKWISE_POSITIVE
             return COTSTalonFXSwerveConstants(wheelDiameter, angleGearRatio, driveGearRatio, angleKP, angleKI, angleKD, driveMotorInvert, angleMotorInvert, cancoderInvert)

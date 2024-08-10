@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.7447826568611854,
-        "y": 6.588640937298404
+        "x": 0.6907950630244355,
+        "y": 6.6644557188418405
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7448883793016343,
-        "y": 6.754418204277743
+        "x": 1.6909007854648843,
+        "y": 6.83023298582118
       },
       "isLocked": false,
       "linkedName": "RightSubwooferPos"
@@ -32,12 +32,12 @@
     },
     {
       "anchor": {
-        "x": 0.7447826568611854,
-        "y": 6.588640937298404
+        "x": 0.6907950630244355,
+        "y": 6.6644557188418405
       },
       "prevControl": {
-        "x": 1.9649674791278027,
-        "y": 6.877260060374053
+        "x": 1.9109798852910527,
+        "y": 6.9530748419174895
       },
       "nextControl": null,
       "isLocked": false,
@@ -97,7 +97,7 @@
   "globalConstraints": {
     "maxVelocity": 4.0,
     "maxAcceleration": 4.0,
-    "maxAngularVelocity": 540.0,
+    "maxAngularVelocity": 720.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
