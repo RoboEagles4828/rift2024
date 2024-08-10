@@ -56,6 +56,9 @@ class CTREConfigs:
         self.swerveDriveFXConfig.current_limits.supply_current_limit = Constants.Swerve.driveCurrentLimit
         self.swerveDriveFXConfig.current_limits.supply_current_threshold = Constants.Swerve.driveCurrentThreshold
         self.swerveDriveFXConfig.current_limits.supply_time_threshold = Constants.Swerve.driveCurrentThresholdTime
+        
+        self.swerveDriveFXConfig.current_limits.stator_current_limit = Constants.Swerve.driveStatorCurrentLimit
+        self.swerveDriveFXConfig.current_limits.stator_current_limit_enable = Constants.Swerve.driveEnableStatorCurrentLimit
 
         # PID Config 
         self.swerveDriveFXConfig.slot0.k_p = Constants.Swerve.driveKP

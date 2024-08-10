@@ -382,7 +382,8 @@ class RobotContainer:
                     self.s_Shooter.shootVelocityWithSupplier(
                         lambda: self.m_robotState.m_gameState.getNextShot().m_shooterVelocity
                     ),
-                    turnInPlaceCmd.repeatedly()
+                    turnInPlaceCmd.repeatedly(),
+                    self.s_Intake.intake().withTimeout(4.0)
                 ),
                 lambda: self.m_robotState.m_gameState.getNextShot() == Constants.NextShot.DYNAMIC
             )
@@ -413,17 +414,6 @@ class RobotContainer:
             )
         )
         # self.emergencyArmUp.whileTrue(.
-        #     self.s_Shooter.shootVelocityWithSupplier(lambda: 35.0)
-        # )
-
-        self.emergencyArmUp.onTrue(
-            ConditionalCommand(
-                self.s_Arm.seekArmZero(),
-                self.s_Arm.servoArmToTargetGravity(90.0),
-                lambda: self.s_Arm.getDegrees() > 45.0
-            )
-        )
-        # self.emergencyArmUp.whileTrue(
         #     self.s_Shooter.shootVelocityWithSupplier(lambda: 35.0)
         # )
 
