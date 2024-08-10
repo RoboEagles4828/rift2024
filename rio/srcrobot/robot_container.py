@@ -318,7 +318,7 @@ class RobotContainer:
         )
 
         # Arm Buttons
-        self.s_Arm.setDefaultCommand(self.s_Arm.stop())
+        self.s_Arm.setDefaultCommand(self.s_Arm.holdPosition())
 
         # Driver Buttons
         self.zeroGyro.onTrue(InstantCommand(lambda: self.s_Swerve.zeroHeading()))

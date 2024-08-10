@@ -98,7 +98,6 @@ class TurnInPlace(TeleopSwerve):
         self.desiredRotationSupplier = desiredRotationSup
         self.currentRotation = rotationSup
 
-
     def initialize(self):
         super().initialize()
         self.turnPID.reset()
