@@ -17,6 +17,7 @@ from lib.mathlib.conversions import Conversions
 from constants import Constants
 
 from autos.exampleAuto import exampleAuto
+from autos.conditionalAuto import conditionalAuto
 from commands.TeleopSwerve import TeleopSwerve
 from commands.PathFindToTag import PathFindToTag
 from commands.DynamicShot import DynamicShot
@@ -42,7 +43,7 @@ from wpilib import SendableChooser, RobotBase, DriverStation
 from wpimath import applyDeadband
 
 from autos.PathPlannerAutoRunner import PathPlannerAutoRunner
-from pathplannerlib.auto import NamedCommands, PathConstraints, AutoBuilder
+from pathplannerlib.auto import NamedCommands, PathConstraints
 from pathplannerlib.controller import PPHolonomicDriveController
 
 from robotState import RobotState
@@ -154,7 +155,9 @@ class RobotContainer:
         NamedCommands.registerCommand("Execute Shot", self.autoShootWhenReady())
         NamedCommands.registerCommand("Bring Arm Down", self.bringArmDown())
 
-        self.auton_selector = AutoBuilder.buildAutoChooser("DO NOTHING")
+        self.auton_selector = SendableChooser()
+        self.auton_selector.setDefaultOption("Example Auto", exampleAuto().getCommand())
+        self.auton_selector.addOption("Conditional Auto 1", conditionalAuto().getCommand())
 
         Shuffleboard.getTab("Autonomous").add("Auton Selector", self.auton_selector)
         Shuffleboard.getTab("Teleoperated").addString("QUEUED SHOT", self.getQueuedShot)
