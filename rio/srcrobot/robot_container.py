@@ -158,8 +158,8 @@ class RobotContainer:
 
         self.auton_selector = SendableChooser()
         self.auton_selector.setDefaultOption("Example Auto", exampleAuto().getCommand())
-        self.auton_selector.addOption("Conditional Auto 1", conditionalAuto().getCommand())
-        self.auton_selector.addOption("Conditional Auto 1", centerA2A1M1M2M3().getCommand())
+        self.auton_selector.addOption("Custom Conditional Auto", conditionalAuto().getCommand())
+        self.auton_selector.addOption("AutoMaker Auto", centerA2A1M1M2M3().getCommand())
 
         Shuffleboard.getTab("Autonomous").add("Auton Selector", self.auton_selector)
         Shuffleboard.getTab("Teleoperated").addString("QUEUED SHOT", self.getQueuedShot)
