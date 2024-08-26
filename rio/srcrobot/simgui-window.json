@@ -9,7 +9,7 @@
       "maximized": "1",
       "style": "0",
       "userScale": "2",
-      "width": "1600",
+      "width": "1512",
       "xpos": "0",
       "ypos": "23"
     }
@@ -38,11 +38,11 @@
     "###/Shuffleboard/Autonomous/Auton Selector": {
       "Collapsed": "0",
       "Pos": "131,64",
-      "Size": "307,60"
+      "Size": "254,54"
     },
     "###/Shuffleboard/Field/Field": {
       "Collapsed": "0",
-      "Pos": "586,224",
+      "Pos": "315,176",
       "Size": "869,547"
     },
     "###DIO": {
@@ -53,20 +53,20 @@
     "###FMS": {
       "Collapsed": "0",
       "Pos": "5,540",
-      "Size": "202,214"
+      "Size": "175,184"
     },
     "###Joysticks": {
       "Collapsed": "0",
       "Pos": "1128,96",
-      "Size": "976,82"
+      "Size": "796,73"
     },
     "###NetworkTables": {
       "Collapsed": "0",
-      "Pos": "607,875",
+      "Pos": "607,818",
       "Size": "954,463"
     },
     "###NetworkTables Info": {
-      "Collapsed": "0",
+      "Collapsed": "1",
       "Pos": "250,130",
       "Size": "1464,890"
     },
@@ -83,12 +83,12 @@
     "###System Joysticks": {
       "Collapsed": "0",
       "Pos": "3,286",
-      "Size": "232,254"
+      "Size": "192,218"
     },
     "###Timing": {
       "Collapsed": "0",
       "Pos": "5,150",
-      "Size": "162,142"
+      "Size": "135,127"
     },
     "Debug##Default": {
       "Collapsed": "0",
@@ -98,7 +98,7 @@
     "Robot State": {
       "Collapsed": "0",
       "Pos": "5,20",
-      "Size": "109,134"
+      "Size": "92,116"
     }
   }
 }

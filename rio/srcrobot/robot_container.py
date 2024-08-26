@@ -9,6 +9,7 @@ import commands2.cmd as cmd
 from CTREConfigs import CTREConfigs
 from commands2 import CommandScheduler
 import math
+import json
 
 from wpimath.geometry import *
 import wpimath.units as Units
@@ -16,7 +17,7 @@ import lib.mathlib.units as CustomUnits
 from lib.mathlib.conversions import Conversions
 from constants import Constants
 
-from autos.exampleAuto import exampleAuto
+from autos.autoRunner import autoRunner
 from commands.TeleopSwerve import TeleopSwerve
 from commands.PathFindToTag import PathFindToTag
 from commands.DynamicShot import DynamicShot
@@ -42,11 +43,12 @@ from wpilib import SendableChooser, RobotBase, DriverStation
 from wpimath import applyDeadband
 
 from autos.PathPlannerAutoRunner import PathPlannerAutoRunner
-from pathplannerlib.auto import NamedCommands, PathConstraints, AutoBuilder
+from pathplannerlib.auto import NamedCommands, PathConstraints
 from pathplannerlib.controller import PPHolonomicDriveController
 
 from robotState import RobotState
 
+null = None
 
 class RobotContainer:
     ctreConfigs = CTREConfigs()
@@ -154,11 +156,15 @@ class RobotContainer:
         NamedCommands.registerCommand("Execute Shot", self.autoShootWhenReady())
         NamedCommands.registerCommand("Bring Arm Down", self.bringArmDown())
 
-        self.auton_selector = AutoBuilder.buildAutoChooser("DO NOTHING")
-
+        # Auton chooser
+        self.auton_selector = SendableChooser()
+        center4PieceJSON =  [{"x":1.3049052133333332,"y":5.621111154362416,"theta":0,"type":"Shot","id":0,"status":null,"delay":0,"continueAsPlanned":["continue","continue","continue","continue"]},{"x":2.6098104266666664,"y":4.225018187919463,"theta":-25,"type":"Shot","id":1,"status":null,"delay":0,"continueAsPlanned":["continue","continue","continue","continue"]},{"x":2.81197884,"y":5.474154,"theta":70,"type":"Shot","id":2,"status":null,"delay":0,"continueAsPlanned":["continue","continue","continue","continue"]},{"x":2.7935998933333335,"y":6.906986255033557,"theta":70,"type":"Shot","id":3,"status":null,"delay":0,"continueAsPlanned":["continue","continue","continue","continue"]}]
+        self.auton_selector.setDefaultOption("center4Piece", autoRunner(self.s_Swerve, self.s_Intake, self.s_Indexer, self.s_Shooter, self.s_Arm, self.s_Vision, center4PieceJSON).getCommand())
+        center45PieceJSON =  [{"x":1.3049052133333332,"y":5.621111154362416,"theta":0,"type":"Shot","id":0,"status":null,"delay":0,"continueAsPlanned":["continue","continue","continue","continue"]},{"x":2.6098104266666664,"y":4.225018187919463,"theta":-25,"type":"Shot","id":1,"status":null,"delay":0,"continueAsPlanned":["continue","continue","continue","continue"]},{"x":2.81197884,"y":5.474154,"theta":70,"type":"Shot","id":2,"status":null,"delay":0,"continueAsPlanned":["continue","continue","continue","continue"]},{"x":2.7935998933333335,"y":6.906986255033557,"theta":70,"type":"Shot","id":3,"status":null,"delay":0,"continueAsPlanned":["continue","continue","continue","continue"]},{"x":8.123494426666667,"y":7.513184516778524,"theta":0,"type":"Regular","id":4,"status":null,"delay":0,"continueAsPlanned":["continue","continue","continue","continue"]}]
+        self.auton_selector.setDefaultOption("center45Piece", autoRunner(self.s_Swerve, self.s_Intake, self.s_Indexer, self.s_Shooter, self.s_Arm, self.s_Vision, center45PieceJSON).getCommand())
+        
         Shuffleboard.getTab("Autonomous").add("Auton Selector", self.auton_selector)
         Shuffleboard.getTab("Teleoperated").addString("QUEUED SHOT", self.getQueuedShot)
-
         Shuffleboard.getTab("Teleoperated").addBoolean("Field Oriented", self.getFieldOriented)
         Shuffleboard.getTab("Teleoperated").addBoolean("Zero Gyro", self.zeroGyro.getAsBoolean)
         Shuffleboard.getTab("Teleoperated").addBoolean("Beam Break", self.s_Indexer.getBeamBreakState)
