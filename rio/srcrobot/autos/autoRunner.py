@@ -5,7 +5,6 @@ from subsystems.indexer import Indexer
 from subsystems.Shooter import Shooter
 from subsystems.Arm import Arm
 from subsystems.Vision import Vision
-from wpilib import DriverStation
 from commands.DynamicShot import DynamicShot
 from wpimath.geometry import Pose2d, Rotation2d;
 from commands2 import ParallelDeadlineGroup, InstantCommand, InstantCommand, ConditionalCommand, WaitCommand, PrintCommand, SequentialCommandGroup, ParallelCommandGroup, WaitUntilCommand, DeferredCommand
@@ -159,9 +158,11 @@ class autoRunner:
         def doNothing():
             pass
         return (SequentialCommandGroup(
-            self.s_Swerve.setPose(Pose2d(1.36,5.584,Rotation2d(0))), #test blue subwoofer SIM
-            #self.s_Swerve.setPose(Pose2d(15.071,5.584,Rotation2d(Math.pi))), #test red subwoofer SIM
+            #self.s_Swerve.setPose(Pose2d(1.36,5.584,Rotation2d(0))), #test blue center subwoofer SIM
+            #self.s_Swerve.setPose(Pose2d(.625,6.778,Rotation2d(60*Math.pi/180))), #test blue amp-side subwoofer SIM
+            #self.s_Swerve.setPose(Pose2d(0.717,4.372,Rotation2d(-60*Math.pi/180))), #test blue amp-side subwoofer SIM
+            #self.s_Swerve.setPose(Pose2d(15.071,5.584,Rotation2d(Math.pi))), #test red center subwoofer SIM
             SequentialCommandGroup(self.autoDynamicShot(), self.autoShootWhenReady()) if self.targets[0]["type"] == "Shot" else doNothing(), 
             self.s_Swerve.periodic(),
-            ((SequentialCommandGroup(WaitCommand(self.targets[i]["delay"]), self.runTrajectory(self.targets[i]["id"], self.targets[i+1]["x"], self.targets[i+1]["y"], self.targets[i+1]["theta"], self.targets[i+1]["type"] == "Shot", self.targets[i+1]["type"] == "Translation", self.dist(self.targets[i]["x"], self.targets[i]["y"], self.targets[i+1]["x"], self.targets[i+1]["y"]) < 3, self.targets[i]["continueAsPlanned"])),) for i in range(len(self.targets)-1)) if getAlliance("kBlue" if self.s_Swerve.getPose().translation().x < 8.2 else "kRed") else ((SequentialCommandGroup(WaitCommand(self.targetsFlipped[i]["delay"]), self.runTrajectory(self.targetsFlipped[i]["id"], self.targetsFlipped[i+1]["x"], self.targetsFlipped[i+1]["y"], self.targetsFlipped[i+1]["theta"], self.targetsFlipped[i+1]["type"] == "Shot", self.targetsFlipped[i+1]["type"] == "Translation", self.dist(self.targetsFlipped[i]["x"], self.targetsFlipped[i]["y"], self.targetsFlipped[i+1]["x"], self.targetsFlipped[i+1]["y"]) < 3, self.targetsFlipped[i+1]["continueAsPlanned"])),) for i in range(len(self.targetsFlipped)-1)),
+            ((SequentialCommandGroup(WaitCommand(float(self.targets[i]["delay"])), self.runTrajectory(self.targets[i]["id"], self.targets[i+1]["x"], self.targets[i+1]["y"], self.targets[i+1]["theta"], self.targets[i+1]["type"] == "Shot", self.targets[i+1]["type"] == "Translation", self.dist(self.targets[i]["x"], self.targets[i]["y"], self.targets[i+1]["x"], self.targets[i+1]["y"]) < 3, self.targets[i]["continueAsPlanned"])),) for i in range(len(self.targets)-1)) if getAlliance("kBlue" if self.s_Swerve.getPose().translation().x < 8.2 else "kRed") else ((SequentialCommandGroup(WaitCommand(float(self.targetsFlipped[i]["delay"])), self.runTrajectory(self.targetsFlipped[i]["id"], self.targetsFlipped[i+1]["x"], self.targetsFlipped[i+1]["y"], self.targetsFlipped[i+1]["theta"], self.targetsFlipped[i+1]["type"] == "Shot", self.targetsFlipped[i+1]["type"] == "Translation", self.dist(self.targetsFlipped[i]["x"], self.targetsFlipped[i]["y"], self.targetsFlipped[i+1]["x"], self.targetsFlipped[i+1]["y"]) < 3, self.targetsFlipped[i+1]["continueAsPlanned"])),) for i in range(len(self.targetsFlipped)-1)),
         ))
