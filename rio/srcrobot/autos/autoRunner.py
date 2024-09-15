@@ -49,7 +49,12 @@ class autoRunner:
         return Math.sqrt(Math.pow((x2-x1),2) + Math.pow((y2-y1),2))
 
     def intake(self):
-        self.s_Intake.intakeOnce().withName("AutoIntakeOn").withTimeout(5)
+        return SequentialCommandGroup(
+            self.s_Intake.intakeOnce(),
+            self.s_Indexer.indexerIntakeOnce(),
+            WaitUntilCommand(self.s_Indexer.getBeamBreakState).withTimeout(4.0).finallyDo(lambda interrupted: self.s_Indexer.stopMotor()),
+            self.s_Indexer.instantStop()
+        ).withTimeout(5.0)
     
     def autoDynamicShot(self) -> Command:
         return DeferredCommand(
